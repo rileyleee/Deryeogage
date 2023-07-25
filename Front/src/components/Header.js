@@ -1,40 +1,40 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './Header.css'
 
 function Header() {
   // 토큰 유무에 따라 로그인 <-> 마이페이지 변경할 수 있게 쓸거임
   const insertedToken = localStorage.getItem("Token");
   return (
-    <Navbar expand="lg">
-      <Container>
-        <Navbar.Brand href={"/"}>
-          <img alt="Logo" src="../assets/Logo.png" />
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto">
-            <Nav.Link href={"/adopt"}>입양게시판</Nav.Link>
-            <Nav.Link href={"/review"}>입양후기</Nav.Link>
-            <NavDropdown title="진단하기" id="basic-nav-dropdown">
-              <NavDropdown.Item href={"/simulation"}>
-                시뮬레이션
-              </NavDropdown.Item>
-              <NavDropdown.Item href={"/checklist"}>
-                체크리스트
-              </NavDropdown.Item>
-            </NavDropdown>
-            {insertedToken ? (
-              <Nav.Link href={"/profile"}>마이페이지</Nav.Link>
-            ) : (
-              <Nav.Link href={"/login"}>로그인</Nav.Link>
-            )}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+          <a class="navbar-brand" href="/"><img alt='Logo' src="/assets/Logo.png" width="40"/></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/adopt">입양게시판</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/review">입양후기</a>
+            </li>
+            <li class="nav-item dropdown">
+              <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                진단하기
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/simulation">시뮬레이션</a></li>
+                <li><a class="dropdown-item" href="/checklist">체크리스트</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">로그인</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
 }
 

@@ -1,10 +1,11 @@
-import './Footer.css'
+import React from 'react';
+import * as S from "../styled/Footer.style"
 
 function Footer() {
   return (
-    <div className='footer'>
+    <S.FooterWrapper className='footer my-3'>
       <p>@KKOSUNNAE 데려가개</p>
-    </div>
+    </S.FooterWrapper>
   );
 }
 
