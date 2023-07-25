@@ -1,11 +1,11 @@
 // 마이페이지(프로필)
 
 function Profile() {
-    return(
-        <div>
-
-        </div>
-    )
+  return (
+  <div>
+    <h1>마이페이지</h1>
+  </div>
+  );
 }
 
-export default Profile
+export default Profile;

@@ -3,7 +3,7 @@
 function Home() {
   return (
     <div id="home">
-
+      <h1>Main page</h1>
     </div>
   );
 }
