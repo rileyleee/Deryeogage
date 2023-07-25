@@ -1,4 +1,4 @@
-package com.kkosunnae.deryeogage.simulation;
+package com.kkosunnae.deryeogage.domain.simulation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
