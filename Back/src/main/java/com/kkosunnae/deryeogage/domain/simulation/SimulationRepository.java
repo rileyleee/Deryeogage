@@ -1,4 +1,4 @@
-package com.kkosunnae.deryeogage.simulation;
+package com.kkosunnae.deryeogage.domain.simulation;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
