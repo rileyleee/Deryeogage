@@ -30,7 +30,7 @@ import CheckListResult from "./pages/Check/CheckListResult";
 
 function App() {
   return (
-    <div>
+    <div class="container">
       <Router>
         <Header />
 
