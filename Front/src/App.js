@@ -4,8 +4,8 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 // User
-import Login from "./pages/User/Login"; 
-import LoginHandeler from "./pages/User/LoginHandeler"; 
+import Login from "./pages/User/Login";
+import LoginHandeler from "./pages/User/LoginHandeler";
 import Profile from "./pages/User/Profile";
 
 // Main
@@ -25,12 +25,15 @@ import ReviewBoardDetail from "./pages/Review/ReviewBoardDetail";
 import Simulation from "./pages/Check/Simulation";
 import CheckList from "./pages/Check/CheckList";
 import CheckListResult from "./pages/Check/CheckListResult";
+import Survey from "./pages/User/Survey";
+import Mission from "./pages/User/Misson";
+import NotFound from "./pages/NotFound/NotFound";
 
 // Check
 
 function App() {
   return (
-    <div>
+    <div className="container">
       <Router>
         <Header />
 
@@ -56,11 +59,24 @@ function App() {
 
           {/* 마이페이지 */}
           <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/survey" element={<Survey />} />
 
           {/* 시뮬레이션, 사전테스트 */}
           <Route path="/simulation" element={<Simulation />} />
           <Route path="/checklist" element={<CheckList />} />
           <Route path="/checklist/:id" element={<CheckListResult />} />
+          
+          {/* 미션페이지 */}
+          <Route path="/mission" element={<Mission />} />
+          <Route path="/mission/:" element={<CheckList />} />
+
+
+          {/* 입양후기게시판 */}
+
+          {/* NotFound */}
+          <Route path="*" element={<NotFound />}></Route>
+          
+
         </Routes>
 
         <Footer />
