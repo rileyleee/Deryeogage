@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "simulation")
+@Table(name = "SIMULATION")
 public class SimulationEntity {
 
     @Id
@@ -70,11 +70,9 @@ public class SimulationEntity {
     private Byte quizNum;
 
     @Column(name = "end")
-    private Byte end;
+    private boolean end;
 
     @Column(name = "end_check")
-    private Byte endCheck;
-
-    // getters and setters
+    private boolean endCheck;
 }
 
