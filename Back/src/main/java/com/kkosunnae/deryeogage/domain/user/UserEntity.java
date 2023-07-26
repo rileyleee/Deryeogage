@@ -13,6 +13,7 @@ import com.kkosunnae.deryeogage.domain.review.ReviewCommentEntity;
 import com.kkosunnae.deryeogage.domain.review.ReviewEntity;
 import com.kkosunnae.deryeogage.domain.simulation.SimulationEntity;
 import com.kkosunnae.deryeogage.domain.survey.SurveyEntity;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "user")
+
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +40,8 @@ public class UserEntity {
     private String ageRange;
 
     @Column(name="created_date")
-    private LocalDateTime createdDate;
+    //private LocalDateTime createdDate;
+    private String createdDate;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private SurveyEntity survey;
@@ -81,4 +84,12 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user")
     private List<MissionEntity> missions = new ArrayList<>();
+
+    @Builder
+    protected UserEntity(Long id, String nickname, String ageRange, String createdDate) {
+        this.id = id;
+        this.nickname = nickname;
+        this.ageRange = ageRange;
+        this.createdDate = createdDate;
+    }
 }

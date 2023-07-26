@@ -7,7 +7,7 @@ CREATE TABLE `user` (
 	`nickname`	varchar(20)	NULL,
 	`image_url`	varchar(100)	NULL,
 	`age_range`	varchar(6)	NULL,
-	`created_date`	datetime	NULL,
+	`created_date`	varchar(30)	NULL,
     PRIMARY KEY (`id`)
 );
 
