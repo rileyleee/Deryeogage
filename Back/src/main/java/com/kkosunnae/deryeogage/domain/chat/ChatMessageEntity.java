@@ -1,6 +1,7 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
 import lombok.Getter;
+import org.hibernate.annotations.common.util.StringHelper;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,7 +21,7 @@ public class ChatMessageEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "created_date")
