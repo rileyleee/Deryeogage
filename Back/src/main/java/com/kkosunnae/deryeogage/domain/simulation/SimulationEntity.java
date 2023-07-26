@@ -58,10 +58,10 @@ public class SimulationEntity {
     private Float train4;
 
     @Column
-    private Integer health;
+    private Byte health;
 
     @Column(name = "quiz_num")
-    private Integer quizNum;
+    private Byte quizNum;
 
     @Column(length = 20)
     private String title;

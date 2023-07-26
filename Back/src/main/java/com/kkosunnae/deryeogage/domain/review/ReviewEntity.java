@@ -20,7 +20,7 @@ public class ReviewEntity {
     @Column(length = 20)
     private String title;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "created_date")

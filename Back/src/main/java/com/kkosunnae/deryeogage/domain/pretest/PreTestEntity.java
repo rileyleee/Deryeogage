@@ -9,12 +9,13 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Table(name="pretest")
 @RequiredArgsConstructor
 public class PreTestEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name="user_id")
     private Long userId;
@@ -26,5 +27,5 @@ public class PreTestEntity {
     private String promise;
 
     @Column
-    private Integer score;
+    private Byte score;
 }
