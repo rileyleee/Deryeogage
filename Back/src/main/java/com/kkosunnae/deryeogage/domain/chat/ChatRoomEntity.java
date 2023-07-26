@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class ChatRoomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "board_id")
     private Integer boardId;

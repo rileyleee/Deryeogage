@@ -19,7 +19,7 @@ public class UserEntity {
     @Column(name="image_url", length = 100)
     private String imageUrl;
 
-    @Column(name="age_range", length = 6)
+    @Column(name="age_range")
     private String ageRange;
 
     @Column(name="created_date")
