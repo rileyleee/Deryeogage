@@ -22,9 +22,4 @@ public class SimulationController {
             return simulation;
         }
     }
-
-    @PostMapping
-    public void simulationCreate(){
-
-    }
 }
