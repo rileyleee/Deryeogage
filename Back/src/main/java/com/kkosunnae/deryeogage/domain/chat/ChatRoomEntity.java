@@ -1,9 +1,13 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
+import com.kkosunnae.deryeogage.domain.board.BoardEntity;
+import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,15 +17,21 @@ public class ChatRoomEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "board_id")
-    private Integer boardId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private BoardEntity board;
 
-    @Column(name = "user_id1")
-    private Long userId1;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id1")
+    private UserEntity provider;
 
-    @Column(name = "user_id2")
-    private Long userId2;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id2")
+    private UserEntity adopter;
 
     @Column(name = "scheduled_date")
     private LocalDate scheduledDate;
+
+    @OneToMany(mappedBy = "chatRoom")
+    private List<ChatMessageEntity> chatMessages = new ArrayList<>();
 }
