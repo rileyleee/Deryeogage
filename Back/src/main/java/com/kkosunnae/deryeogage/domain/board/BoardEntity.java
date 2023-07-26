@@ -6,63 +6,63 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+
+
 @Entity
+@Getter
 @Table(name = "board")
 public class BoardEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    private Long id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name="user_id")
     private Long userId;
 
-    @Column(name = "region_code")
+    @Column(name="region_code", length = 15)
     private String regionCode;
 
-    @Column(name = "dog_type_code")
+    @Column(name="dog_type_code", length = 15)
     private String dogTypeCode;
 
-    @Column(name = "title")
+    @Column(length = 20)
     private String title;
 
-    @Column(name = "friendly")
-    private Character friendly;
+    @Column(length = 1)
+    private String friendly;
 
-    @Column(name = "activity")
-    private Character activity;
+    @Column(length = 1)
+    private String activity;
 
-    @Column(name = "dependency")
-    private Character dependency;
+    @Column(length = 1)
+    private String dependency;
 
-    @Column(name = "bark")
-    private Character bark;
+    @Column(length = 1)
+    private String bark;
 
-    @Column(name = "hair")
-    private Character hair;
+    @Column(length = 1)
+    private String hair;
 
-    @Column(name = "name")
+    @Column(length = 10)
     private String name;
 
-    @Column(name = "gender")
-    private boolean gender;
+    @Column
+    private Boolean gender;
 
-    @Column(name = "age")
-    private Byte age;
+    @Column
+    private Integer age;
 
-    @Column(name = "chip_yn")
-    private boolean chipYn;
+    @Column(name="chipYn")
+    private Boolean chip_yn;
 
-    @Column(name = "health")
+    @Column(length = 300)
     private String health;
 
-    @Column(name = "introduction")
+    @Column(length = 300)
     private String introduction;
 
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    @Column(name="createdDate")
+    private LocalDateTime created_date;
 
 }

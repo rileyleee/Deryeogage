@@ -7,27 +7,24 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
 @Entity
-@Table(name = "SIMULATION")
+@Getter
+@Table(name = "simulation")
 public class SimulationEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "pet_type")
+    @Column(length = 20, name = "pet_type")
     private String petType;
 
-    @Column(name = "pet_name")
+    @Column(length = 20, name = "pet_name")
     private String petName;
 
-    @Column(name = "background")
+    @Column(length = 20)
     private String background;
 
     @Column(name = "start_time")
@@ -36,43 +33,42 @@ public class SimulationEntity {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @Column(name = "cost")
+    @Column
     private Integer cost;
 
     @Column(name = "last_time")
     private LocalDateTime lastTime;
 
-    @Column(name = "pet_require")
+    @Column(length = 20, name = "pet_require")
     private String petRequire;
 
-    @Column(name = "pet_emotion")
+    @Column(length = 20, name = "pet_emotion")
     private String petEmotion;
 
-    @Column(name = "train1")
+    @Column
     private Float train1;
 
-    @Column(name = "train2")
+    @Column
     private Float train2;
 
-    @Column(name = "train3")
+    @Column
     private Float train3;
 
-    @Column(name = "train4")
+    @Column
     private Float train4;
 
-    @Column(name = "health")
-    private Byte health;
-
-    @Column(name = "title")
-    private String title;
+    @Column
+    private Integer health;
 
     @Column(name = "quiz_num")
-    private Byte quizNum;
+    private Integer quizNum;
 
-    @Column(name = "end")
-    private boolean end;
+    @Column(length = 20)
+    private String title;
+
+    @Column
+    private Boolean end;
 
     @Column(name = "end_check")
-    private boolean endCheck;
+    private Boolean endCheck;
 }
-

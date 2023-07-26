@@ -7,27 +7,27 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Table(name = "survey")
 public class SurveyEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Id @GeneratedValue
-    @Column(name = "id")
-    private Integer id;
+    @Column(name="user_id")
+    private Long userId;
 
-    @Column(name = "user_id")
-    private UserEntity user;
+    @Column(length = 1)
+    private String friendly;
 
-    @Column(name = "friendly")
-    private Character friendly;
+    @Column(length = 1)
+    private String activity;
 
-    @Column(name = "activity")
-    private Character activity;
+    @Column(length = 1)
+    private String dependency;
 
-    @Column(name = "dependency")
-    private Character dependency;
+    @Column(length = 1)
+    private String hair;
 
-    @Column(name = "hair")
-    private Character hair;
-
-    @Column(name = "bark")
-    private Character bark;
+    @Column(length = 1)
+    private String bark;
 }
