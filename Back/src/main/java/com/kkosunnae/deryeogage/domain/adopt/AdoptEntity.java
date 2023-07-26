@@ -22,8 +22,9 @@ public class AdoptEntity {
     @Column(name = "to_user_id")
     private Long toUserId;
 
-    @Column
-    private String status;
+    @Column(columnDefinition = "enum('depart', 'arrive')")
+    @Enumerated(EnumType.STRING)
+    private AdoptStatus status;
 
     @Column(name = "from_confirm_yn")
     private Boolean fromConfirmYn;
@@ -33,4 +34,5 @@ public class AdoptEntity {
 
     @Column(name = "scheduled_date")
     private LocalDate scheduledDate;
+
 }

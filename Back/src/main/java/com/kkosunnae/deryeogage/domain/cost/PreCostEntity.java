@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class PreCostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name="user_id")
     private Long userId;
@@ -23,13 +23,13 @@ public class PreCostEntity {
     private String cost;
 
     @Column(name="pay_yn")
-    private Boolean payYN;
+    private Boolean payYn;
 
     @Column(name="pay_date")
     private LocalDateTime payDate;
 
     @Column(name="return_yn")
-    private Boolean returnYN;
+    private Boolean returnYn;
 
     @Column(name="return_date")
     private LocalDateTime returnDate;

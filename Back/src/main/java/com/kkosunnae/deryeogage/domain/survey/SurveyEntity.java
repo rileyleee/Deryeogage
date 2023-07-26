@@ -11,23 +11,18 @@ import javax.persistence.*;
 public class SurveyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name="user_id")
     private Long userId;
 
-    @Column(length = 1)
-    private String friendly;
+    private Character friendly;
 
-    @Column(length = 1)
-    private String activity;
+    private Character activity;
 
-    @Column(length = 1)
-    private String dependency;
+    private Character dependency;
 
-    @Column(length = 1)
-    private String hair;
+    private Character hair;
 
-    @Column(length = 1)
-    private String bark;
+    private Character bark;
 }

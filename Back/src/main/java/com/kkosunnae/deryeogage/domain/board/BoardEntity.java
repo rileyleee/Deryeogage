@@ -15,7 +15,7 @@ public class BoardEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name="user_id")
     private Long userId;
@@ -29,32 +29,25 @@ public class BoardEntity {
     @Column(length = 20)
     private String title;
 
-    @Column(length = 1)
-    private String friendly;
+    private Character friendly;
 
-    @Column(length = 1)
-    private String activity;
+    private Character activity;
 
-    @Column(length = 1)
-    private String dependency;
+    private Character dependency;
 
-    @Column(length = 1)
-    private String bark;
+    private Character bark;
 
-    @Column(length = 1)
-    private String hair;
+    private Character hair;
 
     @Column(length = 10)
     private String name;
 
-    @Column
     private Boolean gender;
 
-    @Column
-    private Integer age;
+    private Byte age;
 
-    @Column(name="chipYn")
-    private Boolean chip_yn;
+    @Column(name="chip_yn")
+    private Boolean chipYn;
 
     @Column(length = 300)
     private String health;
@@ -62,7 +55,7 @@ public class BoardEntity {
     @Column(length = 300)
     private String introduction;
 
-    @Column(name="createdDate")
-    private LocalDateTime created_date;
+    @Column(name="created_date")
+    private LocalDateTime createdDate;
 
 }
