@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Switch } from "react-router-dom";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -33,55 +33,53 @@ import NotFound from "./pages/NotFound/NotFound";
 
 function App() {
   return (
-    <div class="container">
-      <Router>
-        <Header />
+    <>
+      <div class="container">
+        <Router>
+          <Header />
 
-        <Routes>
-          {/* 메인페이지 */}
-          <Route path="/" element={<Home />} />
+          <Routes>
+            {/* 메인페이지 */}
+            <Route path="/" element={<Home />} />
 
-          {/* 로그인 */}
-          <Route path="/login" element={<Login />} />
+            {/* 로그인 */}
+            <Route path="/login" element={<Login />} />
 
-          {/* Redirect_URI */}
-          <Route path="/oauth" element={<LoginHandeler />} />
+            {/* Redirect_URI */}
+            <Route path="/oauth" element={<LoginHandeler />} />
 
-          {/* 입양게시판 */}
-          <Route path="/adopt" element={<AdoptBoard />} />
-          <Route path="/adopt/create" element={<AdoptBoardCreate />} />
-          <Route path="/adopt/:id" element={<AdoptBoardDetail />} />
+            {/* 입양게시판 */}
+            <Route path="/adopt" element={<AdoptBoard />} />
+            <Route path="/adopt/create" element={<AdoptBoardCreate />} />
+            <Route path="/adopt/:id" element={<AdoptBoardDetail />} />
 
-          {/* 입양후기게시판 */}
-          <Route path="/review" element={<ReviewBoard />} />
-          <Route path="/review/create" element={<ReviewBoardCreate />} />
-          <Route path="/review/:id" element={<ReviewBoardDetail />} />
+            {/* 입양후기게시판 */}
+            <Route path="/review" element={<ReviewBoard />} />
+            <Route path="/review/create" element={<ReviewBoardCreate />} />
+            <Route path="/review/:id" element={<ReviewBoardDetail />} />
 
-          {/* 마이페이지 */}
-          <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/survey" element={<Survey />} />
+            {/* 마이페이지 */}
+            <Route path="/profile/:id" element={<Profile />} />
+            <Route path="/survey" element={<Survey />} />
 
-          {/* 시뮬레이션, 사전테스트 */}
-          <Route path="/simulation" element={<Simulation />} />
-          <Route path="/checklist" element={<CheckList />} />
-          <Route path="/checklist/:id" element={<CheckListResult />} />
-          
-          {/* 미션페이지 */}
-          <Route path="/mission" element={<Mission />} />
-          <Route path="/mission/:" element={<CheckList />} />
+            {/* 시뮬레이션, 사전테스트 */}
+            <Route path="/simulation" element={<Simulation />} />
+            <Route path="/checklist" element={<CheckList />} />
+            <Route path="/checklist/:id" element={<CheckListResult />} />
 
+            {/* 미션페이지 */}
+            <Route path="/mission" element={<Mission />} />
+            <Route path="/mission/:" element={<CheckList />} />
 
-          {/* 입양후기게시판 */}
+            {/* 입양후기게시판 */}
 
-          {/* NotFound */}
-          <Route path="*" element={<NotFound />}></Route>
-          
-
-        </Routes>
-
-      </Router>
-        <Footer />
-    </div>
+            {/* NotFound */}
+            <Route path="*" element={<NotFound />}></Route>
+          </Routes>
+        </Router>
+      </div>
+      <Footer />
+    </>
   );
 }
 
