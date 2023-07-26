@@ -12,9 +12,7 @@ function Login() {
   const KakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
-  return (
-      <button onClick={KakaoLogin}>카카오로그인</button>
-  );
+  return <button onClick={KakaoLogin}>카카오로그인</button>;
 }
 
 export default Login;

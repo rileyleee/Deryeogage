@@ -1,9 +1,14 @@
 // 입양게시판 - 전체 게시글 조회 페이지
 import NotLogin from "../../components/Adopt/NotLogin";
-import NotSurvey from "../../components/Adopt/NotSurvey"; 
-import LoginSurvey from "../../components/Adopt/LoginSurvey"; 
+import NotSurvey from "../../components/Adopt/NotSurvey";
+import LoginSurvey from "../../components/Adopt/LoginSurvey";
+import { useNavigate } from "react-router-dom";
 
 function AdoptBoard() {
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate("/adopt/create");
+  };
   return (
     <div>
       <h1>AdoptBoard</h1>
@@ -13,7 +18,7 @@ function AdoptBoard() {
       <LoginSurvey />
 
       {/* 그 다음 강아지 게시물들 보여줘야함 */}
-      
+      <button onClick={onClick}>글 작성하기</button>
     </div>
   );
 }

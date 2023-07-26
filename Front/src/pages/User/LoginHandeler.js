@@ -8,9 +8,8 @@ const LoginHandeler = (props) => {
   const navigate = useNavigate();
   // 인가코드 뽑아오기
   const code = new URL(window.location.href).searchParams.get("code");
-  console.log(code)
+  console.log(code);
   // 인가코드 백으로 보내는 코드
-    
 
   return (
     <div className="LoginHandeler">
