@@ -3,7 +3,7 @@ import './Header.css'
 
 function Header() {
   // 토큰 유무에 따라 로그인 <-> 마이페이지 변경할 수 있게 쓸거임
-  const insertedToken = localStorage.getItem("Token");
+  // const insertedToken = localStorage.getItem("Token");
   return (
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
