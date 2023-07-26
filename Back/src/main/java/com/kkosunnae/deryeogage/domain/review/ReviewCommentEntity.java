@@ -1,6 +1,7 @@
 package com.kkosunnae.deryeogage.domain.review;
 
 
+import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -14,11 +15,13 @@ public class ReviewCommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
-    @Column(name = "review_id")
-    private Integer reviewId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "review_id")
+    private ReviewEntity review;
 
     @Column(length = 100)
     private String content;

@@ -1,5 +1,7 @@
 package com.kkosunnae.deryeogage.domain.cost;
 
+import com.kkosunnae.deryeogage.domain.board.BoardEntity;
+import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -13,11 +15,13 @@ public class PreCostEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
-    @Column(name="board_id")
-    private Integer boardId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private BoardEntity board;
 
     @Column(length = 6)
     private String cost;

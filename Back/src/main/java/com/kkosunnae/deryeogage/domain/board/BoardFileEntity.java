@@ -14,8 +14,9 @@ public class BoardFileEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "board_id")
-    private Integer boardId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private BoardEntity board;
 
     @Column(length = 20, name = "original_name")
     private String originalName;
