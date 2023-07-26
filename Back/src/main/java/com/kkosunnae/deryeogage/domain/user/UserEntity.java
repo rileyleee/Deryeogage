@@ -2,27 +2,26 @@ package com.kkosunnae.deryeogage.domain.user;
 
 import lombok.Getter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "USER")
+@Table(name = "user")
 public class UserEntity {
-
     @Id
-    @GeneratedValue
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(length = 20)
     private String nickname;
 
-    private String image_url;
+    @Column(name="image_url", length = 100)
+    private String imageUrl;
 
-    private String age_range;
+    @Column(name="age_range", length = 6)
+    private String ageRange;
 
-    private LocalDateTime created_date;
-
+    @Column(name="created_date")
+    private LocalDateTime createdDate;
 }
