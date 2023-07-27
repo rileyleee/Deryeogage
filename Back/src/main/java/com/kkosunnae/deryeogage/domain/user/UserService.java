@@ -120,23 +120,12 @@ public class UserService {
             userInfo.setNickname(profile.getAsJsonObject().get("nickname").getAsString());
             userInfo.setAgeRange(age_range.getAsString());
 
-
             System.out.println("userInfo.id = " + userInfo.getId());
             System.out.println("userInfo.nickname = " + userInfo.getNickname());
             System.out.println("userInfo.age_range = " + userInfo.getAgeRange());
             System.out.println("userInfo.created_date = " + userInfo.getCreatedDate());
 
-
-
             Long id = element.getAsJsonObject().get("id").getAsLong();
-//            LocalDateTime createdDate = LocalDateTime.now();
-//            String nickname = profile.getAsJsonObject().get("nickname").getAsString();
-//            String ageRange = age_range.getAsString();
-//
-//            System.out.println("entity.id = " + id);
-//            System.out.println("entity.nickname = " + nickname);
-//            System.out.println("entity.age_range = " + ageRange);
-//            System.out.println("entity.created_date = " + createdDate);
 
             // 디비에서 확인하고
             Optional<UserEntity> existingUser = userRepository.findById(id);
@@ -150,13 +139,6 @@ public class UserService {
             } else {
                 // 없으면 Entity에 담기
                 user = userInfo.toEntity();
-
-//                user = UserEntity.builder()
-//                        .id(id)
-//                        .createdDate(createdDate)
-//                        .nickname(nickname)
-//                        .ageRange(ageRange)
-//                        .build();
 
                 log.info("Info confirm: " + user.getCreatedDate());
                 userRepository.save(user); //디비에 저장
