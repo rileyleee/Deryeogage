@@ -1,5 +1,6 @@
 package com.kkosunnae.deryeogage.domain.user;
 
+import com.kkosunnae.deryeogage.global.util.Response;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService){
@@ -20,23 +21,23 @@ public class UserController {
     }
     @ResponseBody
     @GetMapping("/oauth")
-    public ResponseEntity<?> oAuthInfo(@RequestParam("code") String code) {
+    public Response<Object> oAuthInfo(@RequestParam("code") String code) {
         if (code == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return Response.fail(HttpStatus.UNAUTHORIZED);
         } else {
             log.info("code: " + code);
             String accessToken = userService.getAccessToken(code);
-            return new ResponseEntity<UserDto>(userService.regist(accessToken), HttpStatus.OK);
+            return Response.success(userService.regist(accessToken));
         }
     }
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<?> login(UserDto user) {
+    public Response<Object> login(UserDto user) {
         UserDto loginedUser = userService.login(user.getNickname());
         if (loginedUser == null) {
-            return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
+            return Response.fail(HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<UserDto>(loginedUser, HttpStatus.CREATED);
+        return Response.success(loginedUser);
     }
 }
