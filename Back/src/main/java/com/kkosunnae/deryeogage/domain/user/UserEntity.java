@@ -85,10 +85,12 @@ public class UserEntity {
     }
 
     @Builder
-    protected UserEntity(Long id, String nickname, String ageRange, LocalDateTime createdDate) {
+    protected UserEntity(Long id, String nickname, String ageRange, String imageUrl, LocalDateTime createdDate) {
         this.id = id;
         this.nickname = nickname;
         this.ageRange = ageRange;
+        this.imageUrl = imageUrl;
         this.createdDate = createdDate;
     }
+
 }

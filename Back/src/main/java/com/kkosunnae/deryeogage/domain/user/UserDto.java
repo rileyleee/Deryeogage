@@ -19,4 +19,14 @@ public class UserDto {
     private LocalDateTime createdDate; //SQL 수정 또는 날짜형식으로 변환?
     //private String createdDate;
 
+    public UserEntity toEntity(){
+        return UserEntity.builder()
+                .id(this.id)
+                .nickname(this.nickname)
+                .ageRange(this.ageRange)
+                .imageUrl(this.imageUrl)
+                .createdDate(this.createdDate)
+                .build();
+    }
+
 }
