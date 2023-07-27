@@ -3,11 +3,11 @@ use test;
 DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
-	`id`	bigint	auto_increment NOT NULL,
+	`id`	bigint,
 	`nickname`	varchar(20)	NULL,
-	`image_url`	varchar(100)	NULL,
-	`age_range`	varchar(6)	NULL,
-	`created_date`	varchar(30)	NULL,
+	`image_url`	varchar(100) null,
+	`age_range`	varchar(6)	not NULL,
+	`created_date`	datetime not NULL,
     PRIMARY KEY (`id`)
 );
 
