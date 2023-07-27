@@ -41,7 +41,7 @@ public class UserService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=5350906875f54e9bff0134a84d70e619");
-            sb.append("&redirect_uri=http://localhost:3000/oauth");
+            sb.append("&redirect_uri=http://localhost:3000/user/oauth");
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -129,14 +129,14 @@ public class UserService {
 
 
             Long id = element.getAsJsonObject().get("id").getAsLong();
-            LocalDateTime createdDate = LocalDateTime.now();
-            String nickname = profile.getAsJsonObject().get("nickname").getAsString();
-            String ageRange = age_range.getAsString();
-
-            System.out.println("entity.id = " + id);
-            System.out.println("entity.nickname = " + nickname);
-            System.out.println("entity.age_range = " + ageRange);
-            System.out.println("entity.created_date = " + createdDate);
+//            LocalDateTime createdDate = LocalDateTime.now();
+//            String nickname = profile.getAsJsonObject().get("nickname").getAsString();
+//            String ageRange = age_range.getAsString();
+//
+//            System.out.println("entity.id = " + id);
+//            System.out.println("entity.nickname = " + nickname);
+//            System.out.println("entity.age_range = " + ageRange);
+//            System.out.println("entity.created_date = " + createdDate);
 
             // 디비에서 확인하고
             Optional<UserEntity> existingUser = userRepository.findById(id);
@@ -149,12 +149,14 @@ public class UserService {
                 return userInfo;
             } else {
                 // 없으면 Entity에 담기
-                user = UserEntity.builder()
-                        .id(id)
-                        .createdDate(createdDate)
-                        .nickname(nickname)
-                        .ageRange(ageRange)
-                        .build();
+                user = userInfo.toEntity();
+
+//                user = UserEntity.builder()
+//                        .id(id)
+//                        .createdDate(createdDate)
+//                        .nickname(nickname)
+//                        .ageRange(ageRange)
+//                        .build();
 
                 log.info("Info confirm: " + user.getCreatedDate());
                 userRepository.save(user); //디비에 저장
@@ -165,6 +167,11 @@ public class UserService {
         }
 
         return userInfo;
+    }
+
+    public UserDto login(String nickname) {
+        UserDto user = new UserDto();
+        return user;
     }
 }
 

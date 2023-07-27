@@ -3,11 +3,11 @@ use test;
 DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
-	`id`	bigint	auto_increment NOT NULL,
+	`id`	bigint,
 	`nickname`	varchar(20)	NULL,
-	`image_url`	varchar(100)	NULL,
-	`age_range`	varchar(6)	NULL,
-	`created_date`	varchar(30)	NULL,
+	`image_url`	varchar(100) null,
+	`age_range`	varchar(6)	not NULL,
+	`created_date`	datetime not NULL,
     PRIMARY KEY (`id`)
 );
 
@@ -158,9 +158,9 @@ CREATE TABLE `simulation` (
     PRIMARY KEY (`id`)
 );
 
-DROP TABLE IF EXISTS `like`;
+DROP TABLE IF EXISTS `zzim`;
 
-CREATE TABLE `like` (
+CREATE TABLE `zzim` (
 	`id`	int auto_increment	NOT NULL,
 	`board_id`	int	NOT NULL,
 	`user_id`	bigint	NOT NULL,
@@ -269,7 +269,7 @@ PRIMARY KEY (`id`)
 -- 	`id`
 -- );
 
--- ALTER TABLE `like` ADD CONSTRAINT `PK_LIKE` PRIMARY KEY (
+-- ALTER TABLE `zzim` ADD CONSTRAINT `PK_zzim` PRIMARY KEY (
 -- 	`id`
 -- );
 
@@ -426,14 +426,14 @@ REFERENCES `user` (
 	`id`
 );
 
-ALTER TABLE `like` ADD CONSTRAINT `FK_board_TO_like_1` FOREIGN KEY (
+ALTER TABLE `zzim` ADD CONSTRAINT `FK_board_TO_zzim_1` FOREIGN KEY (
 	`board_id`
 )
 REFERENCES `board` (
 	`id`
 ) ON DELETE CASCADE;
 
-ALTER TABLE `like` ADD CONSTRAINT `FK_user_TO_like_1` FOREIGN KEY (
+ALTER TABLE `zzim` ADD CONSTRAINT `FK_user_TO_zzim_1` FOREIGN KEY (
 	`user_id`
 )
 REFERENCES `user` (
