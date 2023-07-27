@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Api
 @RestController
-@RequestMapping("/drgg-user")
+@RequestMapping("/")
 public class UserController {
 
     private UserService userService;
@@ -26,8 +26,7 @@ public class UserController {
         } else {
             log.info("code: " + code);
             String accessToken = userService.getAccessToken(code);
-            userService.regist(accessToken);
-            return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
+            return new ResponseEntity<UserDto>(userService.regist(accessToken), HttpStatus.OK);
         }
     }
 }

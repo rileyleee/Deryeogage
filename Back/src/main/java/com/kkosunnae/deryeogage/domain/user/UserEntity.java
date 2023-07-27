@@ -24,10 +24,8 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "user")
-
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 20)
@@ -40,8 +38,7 @@ public class UserEntity {
     private String ageRange;
 
     @Column(name="created_date")
-    //private LocalDateTime createdDate;
-    private String createdDate;
+    private LocalDateTime createdDate;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private SurveyEntity survey;
@@ -85,8 +82,11 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<MissionEntity> missions = new ArrayList<>();
 
+    protected UserEntity() {
+    }
+
     @Builder
-    protected UserEntity(Long id, String nickname, String ageRange, String createdDate) {
+    protected UserEntity(Long id, String nickname, String ageRange, LocalDateTime createdDate) {
         this.id = id;
         this.nickname = nickname;
         this.ageRange = ageRange;

@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
 
     @Autowired
@@ -82,9 +84,10 @@ public class UserService {
     }
 
 
-    public Long regist(String accessToken) {
+    public UserDto regist(String accessToken) {
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
+        UserDto userInfo = new UserDto();
         UserEntity user = null;
 
 
@@ -112,16 +115,28 @@ public class UserService {
             JsonElement age_range = kakaoAccount.getAsJsonObject().get("age_range");
 
             //dto에 저장하기
+            userInfo.setId(element.getAsJsonObject().get("id").getAsLong());
+            userInfo.setCreatedDate(LocalDateTime.now());
+            userInfo.setNickname(profile.getAsJsonObject().get("nickname").getAsString());
+            userInfo.setAgeRange(age_range.getAsString());
 
-//            userInfo.setId(element.getAsJsonObject().get("id").getAsLong());
-//            userInfo.setCreatedDate(element.getAsJsonObject().get("connected_at").getAsString());
-//            userInfo.setNickname(profile.getAsJsonObject().get("nickname").getAsString());
-//            userInfo.setAgeRange(age_range.getAsString());
+
+            System.out.println("userInfo.id = " + userInfo.getId());
+            System.out.println("userInfo.nickname = " + userInfo.getNickname());
+            System.out.println("userInfo.age_range = " + userInfo.getAgeRange());
+            System.out.println("userInfo.created_date = " + userInfo.getCreatedDate());
+
+
 
             Long id = element.getAsJsonObject().get("id").getAsLong();
-            String createdDate = element.getAsJsonObject().get("connected_at").getAsString();
+            LocalDateTime createdDate = LocalDateTime.now();
             String nickname = profile.getAsJsonObject().get("nickname").getAsString();
             String ageRange = age_range.getAsString();
+
+            System.out.println("entity.id = " + id);
+            System.out.println("entity.nickname = " + nickname);
+            System.out.println("entity.age_range = " + ageRange);
+            System.out.println("entity.created_date = " + createdDate);
 
             // 디비에서 확인하고
             Optional<UserEntity> existingUser = userRepository.findById(id);
@@ -130,10 +145,10 @@ public class UserService {
                 user = existingUser.get(); //유저 반영
                 log.info("User already exists: " + existingUser.get().getId());
                 // 로그인 처리...가능하도록
-                // 유저 아이디 반환
-                return existingUser.get().getId();
+                // 유저 반환
+                return userInfo;
             } else {
-                // 없으면 저장하고
+                // 없으면 Entity에 담기
                 user = UserEntity.builder()
                         .id(id)
                         .createdDate(createdDate)
@@ -141,7 +156,7 @@ public class UserService {
                         .ageRange(ageRange)
                         .build();
 
-                log.info("Info confirm: " + user.toString());
+                log.info("Info confirm: " + user.getCreatedDate());
                 userRepository.save(user); //디비에 저장
             }
 
@@ -149,7 +164,7 @@ public class UserService {
             e.printStackTrace();
         }
 
-        return user.getId();
+        return userInfo;
     }
 }
 

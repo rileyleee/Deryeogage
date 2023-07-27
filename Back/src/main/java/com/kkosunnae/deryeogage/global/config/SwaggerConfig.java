@@ -13,21 +13,23 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.OAS_30) // 3.0 문서버전으로 세팅
+                .useDefaultResponseMessages(true)
+                .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.kkosunnae.deryeogage"))
-                .paths(PathSelectors.ant("/drgg*/**"))
-                .build()
-                .apiInfo(apiInfo());
+                .paths(PathSelectors.any())
+                .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("데려가개 백엔드 테스트")
                 .description("데려가개 백엔드 테스트")
-                .version("0.1")
+                .version("1.0")
                 .build();
     }
 }
