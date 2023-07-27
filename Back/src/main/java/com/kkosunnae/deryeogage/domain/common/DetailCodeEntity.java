@@ -1,12 +1,12 @@
 package com.kkosunnae.deryeogage.domain.common;
 
 
+import com.kkosunnae.deryeogage.domain.board.BoardEntity;
 import lombok.Getter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,9 +17,16 @@ public class DetailCodeEntity {
     @Column(length = 15)
     private String value;
 
-    @Column(length = 10)
-    private String id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
+    private MasterCodeEntity id;
 
     @Column(length = 15)
     private String name;
+
+    @OneToMany(mappedBy = "regionCode")
+    private List<BoardEntity> regionCodeBoards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "dogTypeCode")
+    private List<BoardEntity> dogTypeCodeBoards = new ArrayList<>();
 }

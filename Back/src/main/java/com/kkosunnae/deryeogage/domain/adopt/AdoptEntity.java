@@ -13,14 +13,17 @@ public class AdoptEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "board_id")
-    private Integer boardId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private BoardEntity board;
 
-    @Column(name = "from_user_id")
-    private Long fromUserId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "from_user_id")
+    private UserEntity fromUser;
 
-    @Column(name = "to_user_id")
-    private Long toUserId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_user_id")
+    private UserEntity toUser;
 
     @Column(columnDefinition = "enum('depart', 'arrive')")
     @Enumerated(EnumType.STRING)
@@ -34,5 +37,8 @@ public class AdoptEntity {
 
     @Column(name = "scheduled_date")
     private LocalDate scheduledDate;
+
+    @OneToOne(mappedBy = "adopt")
+    private MissionEntity mission;
 
 }
