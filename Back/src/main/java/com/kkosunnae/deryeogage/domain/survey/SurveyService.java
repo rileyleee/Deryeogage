@@ -1,13 +1,11 @@
 package com.kkosunnae.deryeogage.domain.survey;
 
-import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Transactional
 @RequiredArgsConstructor
