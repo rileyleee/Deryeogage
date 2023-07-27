@@ -7,8 +7,8 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Table(name = "like")
-public class LikeEntity {
+@Table(name = "jjim")
+public class JjimEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
