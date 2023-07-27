@@ -31,11 +31,13 @@ public class SurveyDto {
 
     private char bark;
 
+
     public SurveyEntity toEntity(UserRepository userRepository) {
         UserEntity user = userRepository.findById(this.user)
                 .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
 
         return SurveyEntity.builder()
+                .id(this.id)
                 .user(user)
                 .friendly(this.friendly)
                 .activity(this.activity)

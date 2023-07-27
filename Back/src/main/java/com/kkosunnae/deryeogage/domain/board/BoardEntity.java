@@ -6,7 +6,9 @@ import com.kkosunnae.deryeogage.domain.common.DetailCodeEntity;
 import com.kkosunnae.deryeogage.domain.cost.PostCostEntity;
 import com.kkosunnae.deryeogage.domain.cost.PreCostEntity;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -15,8 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Entity
 @Getter
+@RequiredArgsConstructor
+@Builder
+@Entity
 @Table(name = "board")
 public class BoardEntity {
 
@@ -85,4 +89,42 @@ public class BoardEntity {
 
     @OneToMany(mappedBy = "board")
     private List<AdoptEntity> adopts = new ArrayList<>();
+
+    public BoardDto toDto(){
+        return BoardDto.builder()
+                .id(this.id)
+                .user(this.user.getId())
+                .regionCode(this.regionCode.getValue())
+                .dogTypeCode(this.regionCode.getValue())
+                .title(this.title)
+                .friendly(this.friendly)
+                .activity(this.activity)
+                .dependency(this.dependency)
+                .bark(this.bark)
+                .hair(this.hair)
+                .name(this.name)
+                .gender(this.gender)
+                .age(this.age)
+                .chipYn(this.chipYn)
+                .health(this.health)
+                .introduction(this.introduction)
+                .createdDate(this.createdDate)
+                .build();
+    }
+    public void update(BoardDto boardDto) {
+        this.title = boardDto.getTitle();
+        this.friendly = boardDto.getFriendly();
+        this.activity = boardDto.getActivity();
+        this.dependency = boardDto.getDependency();
+        this.bark = boardDto.getBark();
+        this.hair = boardDto.getHair();
+        this.name = boardDto.getName();
+        this.gender = boardDto.isGender();
+        this.age = boardDto.getAge();
+        this.chipYn = boardDto.isChipYn();
+        this.health = boardDto.getHealth();
+        this.introduction = boardDto.getIntroduction();
+        this.createdDate = boardDto.getCreatedDate();
+    }
+
 }
