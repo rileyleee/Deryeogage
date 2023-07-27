@@ -1,10 +1,13 @@
 package com.kkosunnae.deryeogage.domain.review;
 
 
+import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,8 +17,9 @@ public class ReviewEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     @Column(length = 20)
     private String title;
@@ -25,4 +29,7 @@ public class ReviewEntity {
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;
+
+    @OneToMany(mappedBy = "review")
+    private List<ReviewCommentEntity> reviewComments = new ArrayList<>();
 }

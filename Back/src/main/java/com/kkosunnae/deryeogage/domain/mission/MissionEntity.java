@@ -1,5 +1,7 @@
 package com.kkosunnae.deryeogage.domain.mission;
 
+import com.kkosunnae.deryeogage.domain.adopt.AdoptEntity;
+import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -12,11 +14,13 @@ public class MissionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "adopt_id")
-    private Integer adoptId;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "adopt_id")
+    private AdoptEntity adopt;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     @Column(length = 100, name = "mission_url1")
     private String missionUrl1;

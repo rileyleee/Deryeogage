@@ -1,22 +1,26 @@
 package com.kkosunnae.deryeogage.domain.simulation;
 
 
+import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@ToString
 @Table(name = "simulation")
 public class SimulationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     @Column(length = 20, name = "pet_type")
     private String petType;
