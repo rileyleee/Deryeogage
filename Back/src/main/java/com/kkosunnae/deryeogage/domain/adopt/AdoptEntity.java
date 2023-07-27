@@ -1,5 +1,8 @@
 package com.kkosunnae.deryeogage.domain.adopt;
 
+import com.kkosunnae.deryeogage.domain.board.BoardEntity;
+import com.kkosunnae.deryeogage.domain.mission.MissionEntity;
+import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Getter;
 
 import javax.persistence.*;
