@@ -40,8 +40,8 @@ public class UserService {
             BufferedWriter bw = new BufferedWriter((new OutputStreamWriter(conn.getOutputStream())));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id=5350906875f54e9bff0134a84d70e619");
-            sb.append("&redirect_uri=http://localhost:3000/user/oauth");
+            sb.append("&client_id=a65a27e309425ab2073ffc92e98c1eb4");
+            sb.append("&redirect_uri=http://localhost:8000/user/oauth");
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -112,7 +112,7 @@ public class UserService {
             JsonElement profile = kakaoAccount.getAsJsonObject().get("profile");
 
             // 선택항목인 연령대를 제공하지 않을 경우 코드 구현
-            // 기존 코드
+            // 기존 코드(필수 수집처림)
             //JsonElement age_range = kakaoAccount.getAsJsonObject().get("age_range");
 
 
@@ -120,7 +120,11 @@ public class UserService {
             Optional<JsonElement> age_range = Optional.ofNullable(kakaoAccount.getAsJsonObject().get("age_range"));
 
             // age_range가 존재하는 경우에만 값을 DTO에 설정
-            age_range.ifPresent(age -> userInfo.setAgeRange(age.getAsString()));
+            if(age_range.isPresent()){
+                userInfo.setAgeRange(age_range.get().getAsString());
+            } else { // 없을 경우에 등록 값
+                userInfo.setAgeRange("0");
+            }
 
             //dto에 저장하기
             userInfo.setId(element.getAsJsonObject().get("id").getAsLong());
