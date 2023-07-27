@@ -33,18 +33,23 @@ public class SurveyEntity {
 
     private Character bark;
 
-    public static SurveyEntity toEntity(SurveyDto surveyDto, UserRepository userRepository) {
-        UserEntity user = userRepository.findById(surveyDto.getUserId())
-                .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
-
-        return SurveyEntity.builder()
-                .user(user)
-                .friendly(surveyDto.getFriendly())
-                .activity(surveyDto.getActivity())
-                .dependency(surveyDto.getDependency())
-                .hair(surveyDto.getHair())
-                .bark(surveyDto.getBark())
+    public SurveyDto toDto() {
+        return SurveyDto.builder()
+                .id(this.id)
+                .user(this.user.getId())
+                .friendly(this.friendly)
+                .activity(this.activity)
+                .dependency(this.dependency)
+                .hair(this.hair)
+                .bark(this.bark)
                 .build();
     }
 
+    public void update(SurveyDto surveyDto) {
+        this.friendly = surveyDto.getFriendly();
+        this.activity = surveyDto.getActivity();
+        this.dependency = surveyDto.getDependency();
+        this.hair = surveyDto.getHair();
+        this.bark = surveyDto.getBark();
+    }
 }
