@@ -57,10 +57,8 @@ public class UserService {
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 
-
             accessToken = element.getAsJsonObject().get("access_token").getAsString();
             refreshToken = element.getAsJsonObject().get("refresh_token").getAsString();
-
 
             log.info("access_token : " + accessToken);
             log.info("refresh_token : " + refreshToken);
@@ -112,13 +110,23 @@ public class UserService {
             JsonElement element = parser.parse(result);
             JsonElement kakaoAccount = element.getAsJsonObject().get("kakao_account");
             JsonElement profile = kakaoAccount.getAsJsonObject().get("profile");
-            JsonElement age_range = kakaoAccount.getAsJsonObject().get("age_range");
+
+            // 선택항목인 연령대를 제공하지 않을 경우 코드 구현
+            // 기존 코드
+            //JsonElement age_range = kakaoAccount.getAsJsonObject().get("age_range");
+
+
+            // age_range를 Optional로 감싸서 선언
+            Optional<JsonElement> age_range = Optional.ofNullable(kakaoAccount.getAsJsonObject().get("age_range"));
+
+            // age_range가 존재하는 경우에만 값을 DTO에 설정
+            age_range.ifPresent(age -> userInfo.setAgeRange(age.getAsString()));
 
             //dto에 저장하기
             userInfo.setId(element.getAsJsonObject().get("id").getAsLong());
             userInfo.setCreatedDate(LocalDateTime.now());
             userInfo.setNickname(profile.getAsJsonObject().get("nickname").getAsString());
-            userInfo.setAgeRange(age_range.getAsString());
+            //userInfo.setAgeRange(age_range.getAsString());
 
             System.out.println("userInfo.id = " + userInfo.getId());
             System.out.println("userInfo.nickname = " + userInfo.getNickname());

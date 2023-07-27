@@ -71,7 +71,7 @@ public class BoardEntity {
     private List<ChatRoomEntity> chatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "board")
-    private List<ZzimEntity> likes = new ArrayList<>();
+    private List<ZzimEntity> zzims = new ArrayList<>();
 
     @OneToMany(mappedBy = "board")
     private List<BoardFileEntity> boardFiles = new ArrayList<>();
