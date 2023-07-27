@@ -18,13 +18,15 @@ public class SurveyController {
     }
 
     @PostMapping("/surveys")
-    public ResponseEntity<Object> saveSurvey(SurveyDto survey) {
-        return null;
+    public ResponseEntity<Object> saveSurvey(SurveyDto surveyDto) {
+        surveyService.save(surveyDto);
+        return ResponseEntity.status(HttpStatus.OK).body("성공적으로 저장되었습니다.");
     }
 
     @PutMapping("/surveys/{userId}")
-    public ResponseEntity<Object> update(@RequestParam Long userId) {
-        return null;
+    public ResponseEntity<Object> update(@RequestParam Long userId, SurveyDto surveyDto) {
+        surveyService.update(userId, surveyDto);
+        return ResponseEntity.status(HttpStatus.OK).body("성공적으로 수정되었습니다.");
     }
 }
 
