@@ -2,7 +2,8 @@ package com.kkosunnae.deryeogage.domain.user;
 
 import com.kkosunnae.deryeogage.domain.adopt.AdoptEntity;
 import com.kkosunnae.deryeogage.domain.board.BoardEntity;
-import com.kkosunnae.deryeogage.domain.board.JjimEntity;
+import com.kkosunnae.deryeogage.domain.board.LikeEntity;
+import com.kkosunnae.deryeogage.domain.chat.ChatMessageEntity;
 import com.kkosunnae.deryeogage.domain.chat.ChatRoomEntity;
 import com.kkosunnae.deryeogage.domain.cost.PostCostEntity;
 import com.kkosunnae.deryeogage.domain.cost.PreCostEntity;
@@ -12,7 +13,6 @@ import com.kkosunnae.deryeogage.domain.review.ReviewCommentEntity;
 import com.kkosunnae.deryeogage.domain.review.ReviewEntity;
 import com.kkosunnae.deryeogage.domain.simulation.SimulationEntity;
 import com.kkosunnae.deryeogage.domain.survey.SurveyEntity;
-import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -25,6 +25,7 @@ import java.util.List;
 @Table(name = "user")
 public class UserEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 20)
@@ -61,7 +62,7 @@ public class UserEntity {
     private List<ChatRoomEntity> adopterChatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<JjimEntity> jjims = new ArrayList<>();
+    private List<LikeEntity> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<BoardEntity> boards = new ArrayList<>();
@@ -80,17 +81,4 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user")
     private List<MissionEntity> missions = new ArrayList<>();
-
-    protected UserEntity() {
-    }
-
-    @Builder
-    protected UserEntity(Long id, String nickname, String ageRange, String imageUrl, LocalDateTime createdDate) {
-        this.id = id;
-        this.nickname = nickname;
-        this.ageRange = ageRange;
-        this.imageUrl = imageUrl;
-        this.createdDate = createdDate;
-    }
-
 }
