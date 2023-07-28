@@ -26,6 +26,7 @@
     "react-star-ratings": "^2.3.0",
     "redux": "^4.2.1",
     "styled-components": "^6.0.5",
+    "swiper": "^10.0.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

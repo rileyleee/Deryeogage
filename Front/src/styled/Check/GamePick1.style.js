@@ -1,20 +1,9 @@
 import styled from "styled-components";
 
-export const GameStartfirst = styled.div`
-    &.first {
-        margin-top: 1%;
-        margin-bottom: 1%;
-        border: 1px #FF914D solid;
-        border-radius: 30px;
-        background-color: white;
-        height: 38vw;
-    }
-`
-
 export const GameStartsecond = styled.div`
     &.second {
         border: 1px #C5C1BF dashed;
-        margin-top: 4%;
+        margin-top: 3vw;
         height: 32vw;
         /* background-color: beige; */
         /* padding-bottom: 35%; */

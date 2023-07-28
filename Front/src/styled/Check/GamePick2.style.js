@@ -1,32 +1,34 @@
 import styled from "styled-components";
 
-export const GameStartfirst = styled.div`
-    &.first {
-        margin-top: 1%;
-        margin-bottom: 1%;
-        border: 1px #FF914D solid;
-        border-radius: 30px;
-        background-color: white;
-        height: 38vw;
-    }
-`
-
 export const GameStartsecond = styled.div`
     &.second {
         border: 1px #C5C1BF dashed;
-        margin-top: 4%;
+        margin-top: 3vw;
         height: 32vw;
         /* background-color: beige; */
         /* padding-bottom: 35%; */
     }
 `
 
-export const GamePick2BGI = styled.div`
-    &.bgi {
-        height:20vw;
-        background-color: black;
-        margin-left: 5vw;
-        margin-right: 5vw;
+export const GamePick2BGI = styled.button`
+    height:22vw;
+    width: 40vw;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border: none;
+    /* background-color: bisque; */
+    &.one {
+        background-image: url("assets/home/home2.png");
+        border: ${props => (props.isClicked ? '3px #FF914D solid' : 'none')};
+    }
+    &.two {
+        background-image: url("assets/home/벽난로 집.gif");
+        border: ${props => (props.isClicked ? '3px #FF914D solid' : 'none')};
+    }
+    &.three {
+        background-image: url("assets/home/home2.png");
+        border: ${props => (props.isClicked ? '3px #FF914D solid' : 'none')};
     }
 `
 
@@ -35,7 +37,7 @@ export const GamePick1Text = styled.p`
     font-weight: bold;
     color: #4A2511;
     text-align: center;
-    margin-top: 2vw;
+    margin-top: 1vw;
 `
 
 export const GamePick1Btn = styled.button`
@@ -46,7 +48,11 @@ export const GamePick1Btn = styled.button`
         padding: 0.5vw 1vw;
         border-radius: 30px;
         color: white;
-        margin-top: 1vw;
+        /* margin-top: 1vw; */
     }
 `
 
+export const GamePick2Arrow = styled.img`
+    width: 2vw;
+    height: 2vw;
+`
