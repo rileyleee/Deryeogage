@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const Radio = () => {
-  // 상태(state)를 사용하여 선택된 성별을 기록합니다.
+  // 상태(state)를 사용하여 선택된 성별을 기록
   const [gender, setGender] = useState('');
 
   // 성별이 변경될 때 실행되는 함수
@@ -30,8 +30,6 @@ const Radio = () => {
         />
         여자
       </label>
-
-      {gender && <p>{gender}</p>}
     </div>
   );
 };

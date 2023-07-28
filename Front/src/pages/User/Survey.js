@@ -14,7 +14,7 @@ function Survey() {
       <SurveyPaw title="친화력" />
       <SurveyPaw title="활동량" />
       <SurveyPaw title="의존성" />
-      <SurveyPaw title="짖음" />
+      <SurveyPaw title="짖&nbsp;&nbsp;&nbsp;&nbsp;음" />
       <SurveyPaw title="털빠짐" />
       <button>등록하기</button>
     </div>
