@@ -6,10 +6,7 @@ import com.kkosunnae.deryeogage.domain.common.DetailCodeEntity;
 import com.kkosunnae.deryeogage.domain.cost.PostCostEntity;
 import com.kkosunnae.deryeogage.domain.cost.PreCostEntity;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,8 +15,7 @@ import java.util.List;
 
 
 @Getter
-@RequiredArgsConstructor
-@Builder
+@NoArgsConstructor
 @Entity
 @Table(name = "board")
 public class BoardEntity {
@@ -89,6 +85,27 @@ public class BoardEntity {
 
     @OneToMany(mappedBy = "board")
     private List<AdoptEntity> adopts = new ArrayList<>();
+
+    @Builder
+    public BoardEntity(Integer id, UserEntity user, DetailCodeEntity regionCode, DetailCodeEntity dogTypeCode, String title, Character friendly, Character activity, Character dependency, Character bark, Character hair, String name, Boolean gender, Byte age, Boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
+        this.id = id;
+        this.user = user;
+        this.regionCode = regionCode;
+        this.dogTypeCode = dogTypeCode;
+        this.title = title;
+        this.friendly = friendly;
+        this.activity = activity;
+        this.dependency = dependency;
+        this.bark = bark;
+        this.hair = hair;
+        this.name = name;
+        this.gender = gender;
+        this.age = age;
+        this.chipYn = chipYn;
+        this.health = health;
+        this.introduction = introduction;
+        this.createdDate = createdDate;
+    }
 
     public BoardDto toDto(){
         return BoardDto.builder()
