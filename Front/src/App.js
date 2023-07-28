@@ -46,7 +46,7 @@ function App() {
             <Route path="/login" element={<Login />} />
 
             {/* Redirect_URI */}
-            <Route path="/oauth" element={<LoginHandeler />} />
+            <Route path="/users/oauth" element={<LoginHandeler />} />
 
             {/* 입양게시판 */}
             <Route path="/adopt" element={<AdoptBoard />} />

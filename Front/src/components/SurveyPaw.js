@@ -19,20 +19,20 @@ function SurveyPaw(props) {
 
   return (
     <Wrap>
-      <p>{props.title}
       <Paws>
+      <p>{props.title} &nbsp;
         {ARRAY.map((el, idx) => {
           return (
             <PiPawPrintFill
               key={idx}
-              size="50"
+              size="25"
               onClick={() => handleStarClick(el)}
               className={clicked[el] && 'orangePaw'}
             />
           );
         })}
-      </Paws>
       </p>
+      </Paws>
     </Wrap>
   );
 }
@@ -43,6 +43,7 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 15px;
+
 `;
 
 const Paws = styled.div`
@@ -53,11 +54,6 @@ const Paws = styled.div`
     color: gray;
     cursor: pointer;
   }
-
-  :hover svg {
-    color: #fcc419;
-  }
-
 
   .orangePaw {
     color: #FF914D;
