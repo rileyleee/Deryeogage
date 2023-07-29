@@ -40,7 +40,7 @@ public class JwtUtil {
     }
 
 
-   // 토큰에서 회원 정보 추출
+   // 토큰에서 회원 ID 추출
     public Long getUserId(String token){
 
         //디코더 객체 생성

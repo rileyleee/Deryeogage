@@ -3,14 +3,14 @@ package com.kkosunnae.deryeogage.domain.survey;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.NoSuchElementException;
 
 @Getter
-@RequiredArgsConstructor
-@Builder
+@NoArgsConstructor
 @Entity
 @Table(name = "survey")
 public class SurveyEntity {
@@ -32,6 +32,17 @@ public class SurveyEntity {
     private Character hair;
 
     private Character bark;
+
+    @Builder
+    private SurveyEntity(Integer id, UserEntity user, Character friendly, Character activity, Character dependency, Character hair, Character bark) {
+        this.id = id;
+        this.user = user;
+        this.friendly = friendly;
+        this.activity = activity;
+        this.dependency = dependency;
+        this.hair = hair;
+        this.bark = bark;
+    }
 
     public SurveyDto toDto() {
         return SurveyDto.builder()
