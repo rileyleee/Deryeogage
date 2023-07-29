@@ -2,10 +2,7 @@ package com.kkosunnae.deryeogage.domain.survey;
 
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -13,8 +10,7 @@ import javax.persistence.OneToOne;
 import java.util.NoSuchElementException;
 
 @Getter @Setter
-@RequiredArgsConstructor
-@Builder
+@NoArgsConstructor
 public class SurveyDto {
 
     private int id;
@@ -31,11 +27,23 @@ public class SurveyDto {
 
     private char bark;
 
+    @Builder
+    public SurveyDto(int id, long user, char friendly, char activity, char dependency, char hair, char bark) {
+        this.id = id;
+        this.user = user;
+        this.friendly = friendly;
+        this.activity = activity;
+        this.dependency = dependency;
+        this.hair = hair;
+        this.bark = bark;
+    }
+
     public SurveyEntity toEntity(UserRepository userRepository) {
         UserEntity user = userRepository.findById(this.user)
                 .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
 
         return SurveyEntity.builder()
+                .id(this.id)
                 .user(user)
                 .friendly(this.friendly)
                 .activity(this.activity)

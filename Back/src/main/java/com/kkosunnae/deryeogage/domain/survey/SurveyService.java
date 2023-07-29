@@ -1,14 +1,15 @@
 package com.kkosunnae.deryeogage.domain.survey;
 
-import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
+import com.kkosunnae.deryeogage.global.exception.custom.NoSuchUserException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 @Service
@@ -20,12 +21,13 @@ public class SurveyService {
     @Transactional(readOnly = true)
     public SurveyDto getSurvey(Long userId) {
         SurveyEntity survey = surveyRepository.findByUserId(userId)
-                .orElseThrow(() -> new NoSuchElementException("설문조사가 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchUserException("유저가 존재하지 않습니다."));
 
         return survey.toDto();
     }
 
     public int save(SurveyDto surveyDto) {
+        log.info("설문조사를 작성한 user ID : ", surveyDto.getUser());
         SurveyEntity survey = surveyRepository.save(surveyDto.toEntity(userRepository));
         return survey.getId();
     }
