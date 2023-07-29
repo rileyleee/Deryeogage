@@ -18,6 +18,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -40,8 +41,8 @@ public class UserService {
             BufferedWriter bw = new BufferedWriter((new OutputStreamWriter(conn.getOutputStream())));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id=a65a27e309425ab2073ffc92e98c1eb4");
-            sb.append("&redirect_uri=http://localhost:8000/user/oauth");
+            sb.append("&client_id=5350906875f54e9bff0134a84d70e619"); //현재 프론트 서버
+            sb.append("&redirect_uri=http://localhost:3000/users/oauth");
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -82,7 +83,7 @@ public class UserService {
     }
 
 
-    public UserDto regist(String accessToken) {
+    public Long regist(String accessToken) {
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
         UserDto userInfo = new UserDto();
@@ -112,32 +113,32 @@ public class UserService {
             JsonElement profile = kakaoAccount.getAsJsonObject().get("profile");
 
             // 선택항목인 연령대를 제공하지 않을 경우 코드 구현
-            // 기존 코드(필수 수집처림)
+            // 기존 코드(필수 수집처리)
             //JsonElement age_range = kakaoAccount.getAsJsonObject().get("age_range");
 
 
-            // age_range를 Optional로 감싸서 선언
+            // age_range를 Optional로 감싸서 선언(미동의시 )
             Optional<JsonElement> age_range = Optional.ofNullable(kakaoAccount.getAsJsonObject().get("age_range"));
 
             // age_range가 존재하는 경우에만 값을 DTO에 설정
-            if(age_range.isPresent()){
+            if (age_range.isPresent()) {
                 userInfo.setAgeRange(age_range.get().getAsString());
             } else { // 없을 경우에 등록 값
                 userInfo.setAgeRange("0");
             }
 
             //dto에 저장하기
-            userInfo.setId(element.getAsJsonObject().get("id").getAsLong());
+            Long id = element.getAsJsonObject().get("id").getAsLong();
+            userInfo.setId(id);
             userInfo.setCreatedDate(LocalDateTime.now());
             userInfo.setNickname(profile.getAsJsonObject().get("nickname").getAsString());
-            //userInfo.setAgeRange(age_range.getAsString());
 
+            //카카오 제공 사용자 정보 확인
             System.out.println("userInfo.id = " + userInfo.getId());
             System.out.println("userInfo.nickname = " + userInfo.getNickname());
             System.out.println("userInfo.age_range = " + userInfo.getAgeRange());
             System.out.println("userInfo.created_date = " + userInfo.getCreatedDate());
 
-            Long id = element.getAsJsonObject().get("id").getAsLong();
 
             // 디비에서 확인하고
             Optional<UserEntity> existingUser = userRepository.findById(id);
@@ -145,9 +146,7 @@ public class UserService {
                 // 유저가 이미 존재한다면;
                 user = existingUser.get(); //유저 반영
                 log.info("User already exists: " + existingUser.get().getId());
-                // 로그인 처리...가능하도록
-                // 유저 반환
-                return userInfo;
+
             } else {
                 // 없으면 Entity에 담기
                 user = userInfo.toEntity();
@@ -159,13 +158,7 @@ public class UserService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return userInfo;
-    }
-
-    public UserDto login(String nickname) {
-        UserDto user = new UserDto();
-        return user;
+        // 로그인 처리 가능하도록 유저 프론트에 반환
+        return userInfo.getId();
     }
 }
-
