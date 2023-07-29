@@ -13,23 +13,24 @@ import java.util.NoSuchElementException;
 @Setter
 @NoArgsConstructor
 public class BoardDto {
-    private Integer id;
-    private Long user;
+    private int id;
+    private long user;
     private String regionCode;
     private String dogTypeCode;
     private String title;
-    private Character friendly;
-    private Character activity;
-    private Character dependency;
-    private Character bark;
-    private Character hair;
+    private char friendly;
+    private char activity;
+    private char dependency;
+    private char bark;
+    private char hair;
     private String name;
     private boolean gender;
-    private Byte age;
+    private byte age;
     private boolean chipYn;
     private String health;
     private String introduction;
     private LocalDateTime createdDate;
+
 
     public boolean isChipYn() {
         return chipYn;
@@ -38,7 +39,7 @@ public class BoardDto {
         return gender;
     }
     @Builder
-    public BoardDto(Integer id, Long user, String regionCode, String dogTypeCode, String title, Character friendly, Character activity, Character dependency, Character bark, Character hair, String name, boolean gender, Byte age, boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
+    public BoardDto(int id, long user, String regionCode, String dogTypeCode, String title, char friendly, char activity, char dependency, char bark, char hair, String name, boolean gender, byte age, boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
         this.id = id;
         this.user = user;
         this.regionCode = regionCode;
@@ -71,7 +72,6 @@ public class BoardDto {
 
 
         return BoardEntity.builder()
-                .id(id)
                 .user(user)
                 .regionCode(region)
                 .dogTypeCode(dogType)
