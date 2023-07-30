@@ -9,6 +9,7 @@ import GamePick2 from "../../components/Check/GamePick2";
 import GameDogChip from "../../components/Check/GameDogChip";
 import GameBasicScreen from "../../components/Check/GameBasicScreen";
 import GameTraining from "../../components/Check/GameTraining";
+import GameWalking from "../../components/Check/GameWalking"
 
 function Simulation() {
   const [activatedNum, setActivatedNum] = useState(1) // 다음, 이전 페이지로 이동하기 위한 변수
@@ -34,7 +35,8 @@ function Simulation() {
     3 : <GamePick2 onNextPage={handleNextPage} onPreviousPage={handlePreviousPage} />,
     4 : <GameDogChip onNextPage={handleNextPage} onPreviousPage={handlePreviousPage} />,
     5 : <GameBasicScreen handleMove={handleMove} />,
-    6 : <GameTraining handleMove={handleMove}/>
+    6 : <GameTraining handleMove={handleMove}/>,
+    7 : <GameWalking handleMove={handleMove}/>
   }
   return (
     <div className="container" id="Simulation">

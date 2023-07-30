@@ -4,10 +4,10 @@ export const GameStartsecond = styled.div`
     &.second {
         height: 70vh;
         padding: 1vh;
-        background-image: url("assets/home/home2.png");
+        background-image: url("assets/corgi 2/idle2.gif"), url("assets/home/home2.png");
         background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
+        background-position: 50% 95%, center;
+        background-size: 35% 40%, cover;
     }
 `
 
@@ -50,3 +50,10 @@ export const GameBasicMenu = styled.div`
     margin-bottom: 1vh;
     padding: 1vh 0.5vw 0 1vh;
 `
+
+/* export const GameDog = styled.div`
+    background-image: url("assets/corgi 2/jump.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 35% 40%;
+` */

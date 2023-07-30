@@ -8,12 +8,13 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
         props.handleMove(num)
     }
   return (
-    <S.GameStartsecond className="col-10 second d-flex justify-content-between">
+    <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-between">
+        <div className="d-flex justify-content-between">
             <div>
                 <S.GameBasicButton onClick={() => setHandleMove(6)}>훈련하러 가기</S.GameBasicButton> 
                 {/* 바로 실행 안되게 하려면 화살표 함수 필수.. */}
                 <br />
-                <S.GameBasicButton>산책하러 가기</S.GameBasicButton>
+                <S.GameBasicButton onClick={() => setHandleMove(7)}>산책하러 가기</S.GameBasicButton>
             </div>
             <div>
                 <S.GameBasicButton as="div">뽀리네 집</S.GameBasicButton>
@@ -39,8 +40,11 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                     <S.GameBasicButton>돈 벌러 가기</S.GameBasicButton>
                     </div>
                 </div>
-                <S.GameBasicOver>중도포기하기</S.GameBasicOver>
             </div>
+        </div>
+        <div className="d-flex justify-content-end">
+            <S.GameBasicOver>중도포기하기</S.GameBasicOver>
+        </div>
     </S.GameStartsecond>
     );
   }
