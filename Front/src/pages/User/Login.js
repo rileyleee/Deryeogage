@@ -1,6 +1,19 @@
 // 로그인 페이지
 
 import React from "react";
+import styled from "styled-components";
+
+
+const Button = styled.button`
+  border: none;
+  background-color: #ff914d;
+  padding: 0.5vw 1vw;
+  border-radius: 30px;
+  color: white;
+  margin-top: 1vw;
+`;
+
+
 
 function Login() {
   // 카카오 로그인 함수를 실행시키면 아래에 설정해 놓은 KAKAO_AUTH_URL 주소로 이동한다
@@ -12,7 +25,7 @@ function Login() {
   const KakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
-  return <button onClick={KakaoLogin}>카카오로그인</button>;
+  return <Button onClick={KakaoLogin}>카카오로그인</Button>;
 }
 
 export default Login;

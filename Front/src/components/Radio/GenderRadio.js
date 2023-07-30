@@ -11,7 +11,7 @@ const Radio = () => {
 
   return (
     <div>
-      <label>
+      <label style={{ marginRight: '20px' }}>
         <input
           type="radio"
           value="남자"
