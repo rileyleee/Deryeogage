@@ -7,7 +7,6 @@ import com.kkosunnae.deryeogage.domain.cost.PostCostEntity;
 import com.kkosunnae.deryeogage.domain.cost.PreCostEntity;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -72,7 +71,7 @@ public class BoardEntity {
     private List<ChatRoomEntity> chatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "board")
-    private List<LikeEntity> likes = new ArrayList<>();
+    private List<JjimEntity> jjims = new ArrayList<>();
 
     @OneToMany(mappedBy = "board")
     private List<BoardFileEntity> boardFiles = new ArrayList<>();
