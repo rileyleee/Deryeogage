@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -150,8 +151,6 @@ public class UserService {
             } else {
                 // 없으면 Entity에 담기
                 user = userInfo.toEntity();
-
-                log.info("Info confirm: " + user.getCreatedDate());
                 userRepository.save(user); //디비에 저장
             }
 
@@ -160,5 +159,15 @@ public class UserService {
         }
         // 로그인 처리 가능하도록 유저 프론트에 반환
         return userInfo.getId();
+    }
+
+    // 로그인한 유저의 닉네임 가져오기
+    public String getUserNickname(Long userId) {
+
+        UserEntity loginedUser = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("사용자가 존재하지 않습니다."));
+
+        String nickname = loginedUser.getNickname();
+        return nickname;
     }
 }

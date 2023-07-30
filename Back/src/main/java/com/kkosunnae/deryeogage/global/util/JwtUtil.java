@@ -7,7 +7,6 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import javax.crypto.SecretKey;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
@@ -74,11 +73,12 @@ public class JwtUtil {
     }
 
     // 유효성 검사
-    public void validateToken(String token) throws RuntimeException {
+    public boolean validateToken(String token) throws RuntimeException {
         SecretKey secretKey = Keys.hmacShaKeyFor(SK.getBytes(StandardCharsets.UTF_8));
 
         try {
-            Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+         Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+         return true;
         } catch (ExpiredJwtException e) {
             throw new RuntimeException("Expired JWT token: 토큰 만료");
         } catch (UnsupportedJwtException e) {

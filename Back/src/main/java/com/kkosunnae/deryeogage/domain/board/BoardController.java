@@ -6,7 +6,6 @@ import com.kkosunnae.deryeogage.global.util.Response;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +27,7 @@ public class BoardController {
     @PostMapping("/boards")
     public Response<Object> saveBoard(@RequestHeader HttpHeaders header, @RequestBody BoardDto boardDto){
         String token = header.getFirst("accessToken");
+        log.info("헤더에서 가져온 토큰 정보: "+ token);
 
         Long userId = jwtUtil.getUserId(token);
         boardDto.setUserId(userId);
