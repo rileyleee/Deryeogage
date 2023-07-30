@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 
 @Builder
 @Getter @Setter
-@AllArgsConstructor
 public class PreTestDto {
 
     private int id;
