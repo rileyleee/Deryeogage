@@ -3,15 +3,15 @@ import styled from "styled-components";
 export const GameStartsecond = styled.div`
     &.second {
         border: 1px #C5C1BF dashed;
-        margin-top: 3vw;
-        height: 32vw;
+        height: 70vh;
+        padding: 3vh;
         /* background-color: beige; */
         /* padding-bottom: 35%; */
     }
 `
 
 export const GamePick2BGI = styled.button`
-    height:22vw;
+    height:45vh;
     width: 40vw;
     background-repeat: no-repeat;
     background-position: center;
@@ -20,15 +20,15 @@ export const GamePick2BGI = styled.button`
     /* background-color: bisque; */
     &.one {
         background-image: url("assets/home/home2.png");
-        border: ${props => (props.isClicked ? '3px #FF914D solid' : 'none')};
+        border: ${props => (props.isclicked ? '3px #FF914D solid' : 'none')};
     }
     &.two {
         background-image: url("assets/home/벽난로 집.gif");
-        border: ${props => (props.isClicked ? '3px #FF914D solid' : 'none')};
+        border: ${props => (props.isclicked ? '3px #FF914D solid' : 'none')};
     }
     &.three {
         background-image: url("assets/home/home2.png");
-        border: ${props => (props.isClicked ? '3px #FF914D solid' : 'none')};
+        border: ${props => (props.isclicked ? '3px #FF914D solid' : 'none')};
     }
 `
 
@@ -37,7 +37,6 @@ export const GamePick1Text = styled.p`
     font-weight: bold;
     color: #4A2511;
     text-align: center;
-    margin-top: 1vw;
 `
 
 export const GamePick1Btn = styled.button`

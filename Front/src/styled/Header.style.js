@@ -7,7 +7,7 @@ export const HeaderWrapper = styled.nav`
     }
 `
 
-// export const ButtonWrapper = styled.button`
-//     background-color: #FFE7BA;
-//     border: none;
-// `
+export const ButtonWrapper = styled.button`
+    background-color: #FFE7BA;
+    border: none;
+`

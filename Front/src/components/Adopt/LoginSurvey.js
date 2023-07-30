@@ -12,7 +12,7 @@ function LoginSurvey() {
         className="carousel slide"
         data-bs-ride="true"
       >
-        <div class="carousel-indicators">
+        <div className="carousel-indicators">
           <button
             type="button"
             data-bs-target="#carouselExampleIndicators"
@@ -36,13 +36,13 @@ function LoginSurvey() {
         </div>
         <div className="carousel-inner">
           <div className="carousel-item active">
-            <img src="asset/kkomi1.jpg" class="d-block w-100" alt="..." />
+            <img src="asset/kkomi1.jpg" className="d-block w-100" alt="..." />
           </div>
           <div className="carousel-item">
-            <img src="asset/kkomi2.jpg" class="d-block w-100" alt="..." />
+            <img src="asset/kkomi2.jpg" className="d-block w-100" alt="..." />
           </div>
           <div className="carousel-item">
-            <img src="asset/kkomi3.jpg" class="d-block w-100" alt="..." />
+            <img src="asset/kkomi3.jpg" className="d-block w-100" alt="..." />
           </div>
         </div>
         <button

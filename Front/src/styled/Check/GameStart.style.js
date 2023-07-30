@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const GameStartsecond = styled.div`
     &.second {
-        margin-top: 3vw;
-        height: 32vw;
+        padding: 3vh;
+        height: 70vh;
         position: relative;
         /* background-color: beige; */
         /* padding-bottom: 35%; */
@@ -49,10 +49,10 @@ export const GameStartPtag = styled.p`
 `
 
 export const GameStartButton = styled.button`
-    margin-top: 2vw;
+    margin-top: 4vh;
     font-weight: bold;
     width: 13vw;
-    height: 4vw;
+    height: 7vh;
     background-color: #FF914D;
     border-radius: 30px;
     border: none;
