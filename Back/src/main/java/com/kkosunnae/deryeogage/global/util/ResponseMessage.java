@@ -12,6 +12,7 @@ public enum ResponseMessage {
     }
 
     public String getMessage() {
+
         return this.message;
     }
 }
