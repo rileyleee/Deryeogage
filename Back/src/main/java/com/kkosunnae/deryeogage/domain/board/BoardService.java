@@ -20,6 +20,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final DetailCodeRepository detailCodeRepository;
+    private final JjimRepository jjimRepository;
 
     //게시글 작성
     @Transactional
@@ -30,7 +31,6 @@ public class BoardService {
         return board.getId();
     }
 
-    //longValue 맞나..... 모르겠어요 아래 다
 
     //게시글 수정
     @Transactional
@@ -61,5 +61,22 @@ public class BoardService {
     public Page<BoardDto> findAll(final Pageable pageable) {
         Page<BoardEntity> boardPage = boardRepository.findAll(pageable);
         return boardPage.map(BoardEntity::toDto);
+    }
+
+    //게시글 찜
+    @Transactional
+    public int like(JjimDto jjimDto){
+
+        if(!jjimRepository.existsByUserIdAndBoardId(jjimDto.getUserId(), jjimDto.getBoardId())) {
+            JjimEntity jjim = jjimRepository.save(jjimDto.toEntity(boardRepository, userRepository));
+            return jjim.getId();
+        }//만약 이미 찜한 게시글이라면
+        else throw new IllegalArgumentException("이미 찜한 게시판입니다.");
+    }
+
+    //게시글 찜취소
+    @Transactional
+    public void unlike(Long userId, Integer boardId){
+        jjimRepository.deleteByUserIdAndBoardId(userId, boardId);
     }
 }
