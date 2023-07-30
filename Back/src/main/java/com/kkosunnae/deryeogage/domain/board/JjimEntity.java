@@ -1,14 +1,17 @@
 package com.kkosunnae.deryeogage.domain.board;
 
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @Getter
-@Table(name = "like")
-public class LikeEntity {
+@NoArgsConstructor
+@Entity
+@Table(name = "jjim")
+public class JjimEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +24,18 @@ public class LikeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @Builder
+    public JjimEntity(BoardEntity board, UserEntity user){
+        this.board = board;
+        this.user = user;
+    }
+
+    public JjimDto toDto(){
+        return JjimDto.builder()
+                .boardId(this.board.getId())
+                .userId((this.user.getId()))
+                .build();
+    }
 }
+

@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 @NoArgsConstructor
 public class BoardDto {
     private int id;
-    private long user;
+    private long userId;
     private String regionCode;
     private String dogTypeCode;
     private String title;
@@ -39,9 +39,9 @@ public class BoardDto {
         return gender;
     }
     @Builder
-    public BoardDto(int id, long user, String regionCode, String dogTypeCode, String title, char friendly, char activity, char dependency, char bark, char hair, String name, boolean gender, byte age, boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
+    public BoardDto(int id, long userId, String regionCode, String dogTypeCode, String title, char friendly, char activity, char dependency, char bark, char hair, String name, boolean gender, byte age, boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
         this.id = id;
-        this.user = user;
+        this.userId = userId;
         this.regionCode = regionCode;
         this.dogTypeCode = dogTypeCode;
         this.title = title;
@@ -61,7 +61,7 @@ public class BoardDto {
 
 
     public BoardEntity toEntity(UserRepository userRepository, DetailCodeRepository detailCodeEntity){
-        UserEntity user = userRepository.findById(this.user)
+        UserEntity user = userRepository.findById(this.userId)
            .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
 
         DetailCodeEntity region = detailCodeEntity.findByValue(this.regionCode)

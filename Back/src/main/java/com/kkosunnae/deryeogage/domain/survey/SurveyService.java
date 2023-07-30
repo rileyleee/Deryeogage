@@ -1,14 +1,14 @@
 package com.kkosunnae.deryeogage.domain.survey;
 
-import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 @Service
@@ -26,6 +26,7 @@ public class SurveyService {
     }
 
     public int save(SurveyDto surveyDto) {
+        log.info("설문조사를 작성한 user ID : ", surveyDto.getUser());
         SurveyEntity survey = surveyRepository.save(surveyDto.toEntity(userRepository));
         return survey.getId();
     }

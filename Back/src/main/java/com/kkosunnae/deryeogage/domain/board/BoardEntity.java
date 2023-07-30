@@ -110,7 +110,7 @@ public class BoardEntity {
     public BoardDto toDto(){
         return BoardDto.builder()
 //                .id(this.id)
-                .user(this.user.getId())
+                .userId(this.user.getId())
                 .regionCode(this.regionCode.getValue())
                 .dogTypeCode(this.dogTypeCode.getValue())
                 .title(this.title)
