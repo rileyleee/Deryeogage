@@ -14,4 +14,9 @@ public class NoSuchExceptionHandler {
     public ResponseEntity<Response<Object>> handleNoSuchElementException(RuntimeException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Response.error(exception.getMessage()));
     }
+
+    @ExceptionHandler(NoSuchUserException.class)
+    public ResponseEntity<Response<Object>> handleNoSuchUserException(RuntimeException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Response.error(exception.getMessage()));
+    }
 }
