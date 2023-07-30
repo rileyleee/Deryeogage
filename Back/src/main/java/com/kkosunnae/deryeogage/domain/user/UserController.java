@@ -27,6 +27,7 @@ public class UserController {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
+
     @ResponseBody
     @GetMapping("/oauth")
     public Response<Object> oAuthInfo(@RequestParam("code") String code) throws UnsupportedEncodingException {

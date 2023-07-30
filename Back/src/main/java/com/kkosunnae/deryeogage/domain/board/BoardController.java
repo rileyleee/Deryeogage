@@ -26,18 +26,19 @@ public class BoardController {
     //글 작성 // Swagger테스트한다고 @requestBody 뺌
     @PostMapping("/boards")
     public Response<Object> saveBoard(@RequestHeader HttpHeaders header, @RequestBody BoardDto boardDto){
-
         String token = header.getFirst("accessToken");
         log.info("헤더에서 가져온 토큰 정보: "+ token);
-        Long userId = jwtUtil.getUserId(token);
 
+        Long userId = jwtUtil.getUserId(token);
         boardDto.setUserId(userId);
 
         log.info("userId :", boardDto.getUserId());
 
         boardService.save(boardDto);
         return Response.success(null);
+
     }
+
 
     //글 수정
     @PutMapping("/boards/{boardId}")
@@ -56,9 +57,7 @@ public class BoardController {
     public Response<Object> deleteBoard(@PathVariable int boardId){
         boardService.deleteById(boardId);
         return Response.success(null);
-//        return new ResponseEntity<String>("Delete Complete", HttpStatus.OK);
-    }
-
+  }
 
     //글 상세조회
     @GetMapping("boards/{boardId}")
@@ -69,22 +68,37 @@ public class BoardController {
 
     //글 목록 조회
     @GetMapping("/boards")
-    public ResponseEntity<Page<BoardDto>> findBoards(Pageable pageable) {
+    public Response<Page<BoardDto>> findBoards(Pageable pageable) {
         Page<BoardDto> boardList = boardService.findAll(pageable);
-        return new ResponseEntity<>(boardList, HttpStatus.OK);
+        return Response.success(boardList);
     }
 
 
 
-//    //분양글 찜
-//    @PostMapping("/boards/{boardId}/like")
-//    public ResponseEntity<?> boardLike(){
-//
-//    }
+    //분양글 찜
+    @PostMapping("/boards/{boardId}/like")
+    public Response<Object> boardLike(@RequestHeader HttpHeaders header, @PathVariable int boardId, JjimDto jjimDto){
 
-//    //분양글 찜 취소
-//    @DeleteMapping("/boards/{boardId}/like")
-//    public ResponseEntity<?> boardUnlike(){
-//
-//    }
+        String token = header.get("accessToken").toString();
+        Long userId = jwtUtil.getUserId(token);
+
+        jjimDto.setUserId(userId);
+        jjimDto.setBoardId(boardId);
+
+        boardService.like(jjimDto);
+        return Response.success(null);
+    }
+
+    //분양글 찜 취소
+    @DeleteMapping("/boards/{boardId}/like")
+    public Response<Object> boardUnlike(@RequestHeader HttpHeaders header, @PathVariable int boardId){
+
+        String token = header.get("accessToken").toString();
+        Long userId = jwtUtil.getUserId(token);
+
+        boardService.unlike(userId, boardId);
+
+        return Response.success(null);
+
+    }
 }
