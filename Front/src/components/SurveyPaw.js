@@ -6,32 +6,28 @@ import styled from 'styled-components';
 
 const ARRAY = [0, 1, 2, 3, 4];
 
-function SurveyPaw(props) {
-  const [clicked, setClicked] = useState([false, false, false, false, false]);
+function SurveyPaw({ title, onSelect }) {
+  const [selectedIdx, setSelectedIdx] = useState(-1);
 
   const handleStarClick = index => {
-    let clickStates = [...clicked];
-    for (let i = 0; i < 5; i++) {
-      clickStates[i] = i <= index ? true : false;
-    }
-    setClicked(clickStates);
+    setSelectedIdx(index);
+    onSelect(index + 1); // 선택한 정보를 1~5 점으로 전달
   };
 
   return (
     <Wrap>
       <Paws>
-      <p>{props.title} &nbsp;
-        {ARRAY.map((el, idx) => {
-          return (
+        <p>
+          <Span>{title} </Span>
+          {ARRAY.map((el, idx) => (
             <PiPawPrintFill
               key={idx}
-              size="25"
-              onClick={() => handleStarClick(el)}
-              className={clicked[el] && 'orangePaw'}
+              size="40"
+              onClick={() => handleStarClick(idx)}
+              className={selectedIdx >= idx ? 'orangePaw' : ''}
             />
-          );
-        })}
-      </p>
+          ))}
+        </p>
       </Paws>
     </Wrap>
   );
@@ -43,6 +39,11 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 15px;
+
+`;
+
+const Span = styled.span`
+  margin: 1vw;
 
 `;
 

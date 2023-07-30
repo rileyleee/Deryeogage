@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 
 const Radio = () => {
-  // 상태(state)를 사용하여 선택된 성별을 기록
+  // 상태(state)를 사용하여 선택된 칩 등록 여부를 기록
   const [dogchip, setDogchip] = useState('');
 
-  // 성별이 변경될 때 실행되는 함수
+  // 칩 등록 여부가 바뀔때마다 실행되는 함수
   const handleDogchipChange = (event) => {
     setDogchip(event.target.value);
   };
 
   return (
     <div>
-      <label>
+      <label style={{ marginRight: '20px' }}>
         <input
           type="radio"
           value="등록"
@@ -21,7 +21,7 @@ const Radio = () => {
         등록
       </label>
 
-      <label>
+      <label style={{ marginRight: '20px' }}>
         <input
           type="radio"
           value="미등록"

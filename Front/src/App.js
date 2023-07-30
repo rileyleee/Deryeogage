@@ -31,10 +31,13 @@ import NotFound from "./pages/NotFound/NotFound";
 
 // Check
 
+
+
+
 function App() {
   return (
     <>
-      <div class="container">
+      <div className="container">
         <Router>
           <Header />
 
