@@ -27,8 +27,7 @@ public class BoardController {
     //글 작성 // Swagger테스트한다고 @requestBody 뺌
     @PostMapping("/boards")
     public Response<Object> saveBoard(@RequestHeader HttpHeaders header, @RequestBody BoardDto boardDto){
-
-        String token = header.get("accessToken").toString();
+        String token = header.getFirst("accessToken");
 
         Long userId = jwtUtil.getUserId(token);
         boardDto.setUserId(userId);
@@ -37,6 +36,7 @@ public class BoardController {
 
         boardService.save(boardDto);
         return Response.success(null);
+
     }
 
 
