@@ -8,7 +8,6 @@ public enum ResponseMessage {
     private final String message;
 
     ResponseMessage(String message) {
-
         this.message = message;
     }
 

@@ -43,4 +43,5 @@ public class AdoptEntity {
 
     @OneToOne(mappedBy = "adopt")
     private MissionEntity mission;
+
 }

@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 
 public interface SimulationRepository extends JpaRepository<SimulationEntity,Integer> {
     @Override
-    SimulationEntity save(SimulationEntity simulation);
+    SimulationEntity save(SimulationEntity simulationEntity);
 
-    SimulationEntity findTopByUserIdAndEndTimeAfterOrderByIdDesc(Long userId, LocalDateTime now);
+    SimulationEntity findTopByUserIdOrderByIdDesc(Long userId);
 
     SimulationEntity findTopByUserIdAndEndCheckFalseOrderByIdDesc(Long userId);
 }

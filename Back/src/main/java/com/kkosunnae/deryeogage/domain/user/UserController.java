@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -28,27 +27,6 @@ public class UserController {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
-
-    // 카카오 로그인 후 프론트로 accessToken 전달
-//    @ResponseBody
-//    @GetMapping("/oauth")
-//    public ResponseEntity<?> oAuthInfo(@RequestParam("code") String code) throws UnsupportedEncodingException {
-//        if (code == null) {
-//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//        } else {
-//            log.info("code: " + code);
-//            String accessToken = userService.getAccessToken(code);
-//            Long userId = userService.regist(accessToken);
-//            // access 토큰 프론트에 반환
-//            Map<String, String> userJwt = new HashMap<>();
-//            userJwt.put("accessToken", jwtUtil.createToken("claimUser", userId));
-//            userJwt.put("message", "loginClaimUser");
-//
-//            return new ResponseEntity<>(userJwt, HttpStatus.OK);
-//        }
-//    }
-
-
     @ResponseBody
     @GetMapping("/oauth")
     public Response<Object> oAuthInfo(@RequestParam("code") String code) throws UnsupportedEncodingException {
@@ -77,5 +55,4 @@ public class UserController {
         String nickname = userService.getUserNickname(userId);
         return Response.success(nickname);
     }
-
 }
