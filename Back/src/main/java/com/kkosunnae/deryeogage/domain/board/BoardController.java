@@ -27,9 +27,10 @@ public class BoardController {
     @PostMapping("/boards")
     public Response<Object> saveBoard(@RequestHeader HttpHeaders header, @RequestBody BoardDto boardDto){
 
-        String token = header.get("accessToken").toString();
-
+        String token = header.getFirst("accessToken");
+        log.info("헤더에서 가져온 토큰 정보: "+ token);
         Long userId = jwtUtil.getUserId(token);
+
         boardDto.setUserId(userId);
 
         log.info("userId :", boardDto.getUserId());

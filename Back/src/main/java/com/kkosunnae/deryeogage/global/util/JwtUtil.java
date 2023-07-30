@@ -2,46 +2,58 @@ package com.kkosunnae.deryeogage.global.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
+import javax.crypto.SecretKey;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 
+
+@Slf4j
 @Component
 public class JwtUtil {
 
-    private static final String SK = "B307willbethewinnerofthefirstproject";
+    @Value("${security.jwt.token.SK}")
+    private String SK;
 
-
-    private long tokenValidTime = 30*60*1000L; // 토큰 유효시간 30분
+    @Value("${security.jwt.token.tokenValidTime}")
+    private long tokenValidTime;
 
     // 토큰 생성
-    public String createToken(String claimUser, Long data) throws UnsupportedEncodingException {
+
+    public String createToken(String claimId, Long data) throws UnsupportedEncodingException {
 
         Date now = new Date();
 
-        return Jwts.builder()
-                .setHeaderParam("enc", "HS256")
-                .setHeaderParam("type","JWT")
+        SecretKey secretKey = Keys.hmacShaKeyFor(SK.getBytes(StandardCharsets.UTF_8));
+
+        String token = Jwts.builder()
+                //.setHeaderParam("enc", "HS256")
+                .setHeaderParam("typ","JWT")
                 .claim("userId", data)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime()+tokenValidTime))
-                .signWith(SignatureAlgorithm.HS256, SK.getBytes("UTF-8"))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
+
+
+        return token;
     }
 
-
-    // 유효성 검사
-    public void validation(String token) throws UnsupportedEncodingException {
-        Jwts.parser().setSigningKey(SK.getBytes("UTF-8")).parseClaimsJws(token);
-    }
-
-
-   // 토큰에서 회원 ID 추출
+    // 토큰에서 회원 ID 추출
     public Long getUserId(String token){
+
+        // 유효성 검사
+        try {
+            validateToken(token);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("토큰에 문제가 있어요 Invalid token: " + e.getMessage());
+        }
 
         //디코더 객체 생성
         Base64.Decoder decoder = Base64.getDecoder();
@@ -50,13 +62,34 @@ public class JwtUtil {
         final String[] splitJwt = token.split("\\.");
 
         //payload 디코딩
-        final String payloadStr = new String(decoder.decode(splitJwt[1].getBytes()));
+        final String payLoadStr = new String(decoder.decode(splitJwt[1].getBytes()));
 
         //디코딩된 문자열 JSON으로 변환
         JsonParser parser = new JsonParser();
-        JsonObject jsonObject = parser.parse(payloadStr).getAsJsonObject();
+        JsonObject jsonObject = parser.parse(payLoadStr).getAsJsonObject();
 
         //사용자의 id를 반환
         return jsonObject.get("userId").getAsLong();
     }
+
+    // 유효성 검사
+    public boolean validateToken(String token) throws RuntimeException {
+        SecretKey secretKey = Keys.hmacShaKeyFor(SK.getBytes(StandardCharsets.UTF_8));
+
+        try {
+         Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+         return true;
+        } catch (ExpiredJwtException e) {
+            throw new RuntimeException("Expired JWT token: 토큰 만료");
+        } catch (UnsupportedJwtException e) {
+            throw new RuntimeException("Unsupported JWT token: 지원되지 않는 토큰");
+        } catch (MalformedJwtException e) {
+            throw new RuntimeException("Invalid JWT token: 유효하지 않은 토큰");
+        } catch (SignatureException e) {
+            throw new RuntimeException("Invalid JWT signature: 유효하지 않은 서명");
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("JWT claims string is empty.: claims이 비어있음");
+        }
+    }
+
 }

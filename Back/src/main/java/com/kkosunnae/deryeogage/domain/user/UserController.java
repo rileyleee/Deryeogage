@@ -1,8 +1,8 @@
 package com.kkosunnae.deryeogage.domain.user;
 
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
+import com.kkosunnae.deryeogage.global.util.Response;
 import io.swagger.annotations.Api;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -30,32 +30,52 @@ public class UserController {
     }
 
     // 카카오 로그인 후 프론트로 accessToken 전달
+//    @ResponseBody
+//    @GetMapping("/oauth")
+//    public ResponseEntity<?> oAuthInfo(@RequestParam("code") String code) throws UnsupportedEncodingException {
+//        if (code == null) {
+//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//        } else {
+//            log.info("code: " + code);
+//            String accessToken = userService.getAccessToken(code);
+//            Long userId = userService.regist(accessToken);
+//            // access 토큰 프론트에 반환
+//            Map<String, String> userJwt = new HashMap<>();
+//            userJwt.put("accessToken", jwtUtil.createToken("claimUser", userId));
+//            userJwt.put("message", "loginClaimUser");
+//
+//            return new ResponseEntity<>(userJwt, HttpStatus.OK);
+//        }
+//    }
+
+
     @ResponseBody
     @GetMapping("/oauth")
-    public ResponseEntity<?> oAuthInfo(@RequestParam("code") String code) throws UnsupportedEncodingException {
+    public Response<Object> oAuthInfo(@RequestParam("code") String code) throws UnsupportedEncodingException {
         if (code == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return Response.fail(HttpStatus.UNAUTHORIZED);
         } else {
             log.info("code: " + code);
             String accessToken = userService.getAccessToken(code);
             Long userId = userService.regist(accessToken);
+
             // access 토큰 프론트에 반환
             Map<String, Object> userJwt = new HashMap<>();
             userJwt.put("accessToken", jwtUtil.createToken("claimUser", userId));
             userJwt.put("message", "loginClaimUser");
-            
-            return new ResponseEntity<>(userJwt, HttpStatus.OK);
+            return Response.success(userJwt);
         }
     }
 
 
+
     // 현재 로그인된 사용자 닉네임 반환
     @GetMapping("/")
-    public ResponseEntity<?> loginedUser(@RequestHeader HttpHeaders header) throws Exception {
+    public Response<Object> loginedUser(@RequestHeader HttpHeaders header) throws Exception {
         String token = header.get("accessToken").toString();
         Long userId = jwtUtil.getUserId(token);
         String nickname = userService.getUserNickname(userId);
-        return new ResponseEntity<String>(nickname, HttpStatus.OK);
+        return Response.success(nickname);
     }
 
 }
