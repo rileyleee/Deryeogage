@@ -1,37 +1,49 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
-import com.kkosunnae.deryeogage.domain.board.BoardEntity;
-import com.kkosunnae.deryeogage.domain.user.UserEntity;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
 @Getter
 @Table(name = "chat_room")
-public class ChatRoomEntity {
+public class ChatRoomEntity extends BaseTime{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
-    private BoardEntity board;
+    @Column(name="board_id")
+    private Integer boardId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id1")
-    private UserEntity provider;
+    @Column(name="user_id1")
+    private Long userId1;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id2")
-    private UserEntity adopter;
+    @Column(name="user_id2")
+    private Long userId2;
 
-    @Column(name = "scheduled_date")
-    private LocalDate scheduledDate;
+    private String roomName;
 
-    @OneToMany(mappedBy = "chatRoom")
-    private List<ChatMessageEntity> chatMessages = new ArrayList<>();
+    @Column(name="scheduled_date")
+    private LocalDateTime scheduledDate;
+
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
+    private List<ChatMessageEntity> chatMessageList;
+
+    @Builder
+    public ChatRoomEntity(Integer boardId, Long userId1, Long userId2, String roomName) {
+        this.boardId = boardId;
+        this.userId1 = userId1;
+        this.userId2 = userId2;
+        this.roomName = roomName;
+    }
+
+    public Integer update(ChatRoomRequestDto requestDto) {
+        this.roomName = requestDto.getRoomName();
+        return this.id;
+    }
 }

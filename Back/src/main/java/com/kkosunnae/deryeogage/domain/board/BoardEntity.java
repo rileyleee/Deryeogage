@@ -72,8 +72,8 @@ public class BoardEntity {
     @Column(name="created_date")
     private LocalDateTime createdDate;
 
-    @OneToMany(mappedBy = "board")
-    private List<ChatRoomEntity> chatRooms = new ArrayList<>();
+//    @OneToMany(mappedBy = "board")
+//    private List<ChatRoomEntity> chatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "board")
     private List<JjimEntity> jjims = new ArrayList<>();
