@@ -25,7 +25,7 @@ public class BoardFileDto {
         this.originalName = originalName;
         this.savedName = savedName;
         this.type = type;
-        this.path = path;
+        this.path = path; // 경로가 필요한가요 S3에 저장하는데요 엉엉 일단 DB path null 가능 처리
         this.createdDate = createdDate;
     }
 

@@ -11,11 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,12 +23,20 @@ public class S3FileService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public List<String> uploadFile(List<MultipartFile> multipartFile) { //DTO에 반영필요...
-        List<String> fileNameList = new ArrayList<>();
+    public Map<String, List> uploadFile(List<MultipartFile> multipartFile) { //DTO에 반영필요...
+        Map<String, List> nameList = new HashMap<>();
+
+        List<String> savedNameList = new ArrayList<>();
+        List<String> originalNameList = new ArrayList<>();
+        List<String> savedPathList = new ArrayList<>();
 
         // forEach 구문을 통해 multipartFile로 넘어온 파일들 하나씩 fileNameList에 추가
         multipartFile.forEach(file -> {
-            String fileName = createFileName(file.getOriginalFilename());
+
+            String originalName = file.getOriginalFilename();
+            originalNameList.add(originalName); // 파일 원본명 저장
+
+            String fileName = createFileName(originalName);
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(file.getSize());
             objectMetadata.setContentType(file.getContentType());
@@ -40,10 +47,19 @@ public class S3FileService {
             } catch (IOException e) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "파일 업로드에 실패했습니다.");
             }
-            fileNameList.add(fileName);
+            savedNameList.add(fileName); //업로드된 파일명 저장
+
+            String pathUrl = amazonS3.getUrl(bucket, fileName).toExternalForm();
+            savedPathList.add(pathUrl); //파일 경로 저장
+
+
         });
 
-        return fileNameList;
+        nameList.put("original", originalNameList);
+        nameList.put("saved", savedNameList);
+        nameList.put("path", savedPathList);
+
+        return nameList;
     }
 
     public void deleteFile(String fileName) {
@@ -57,9 +73,18 @@ public class S3FileService {
     private String getFileExtension(String fileName) {
         // file 형식이 잘못된 경우를 확인하기 위해 만들어진 로직이며, 파일 타입과 상관없이 업로드할 수 있게 하기 위해 .의 존재 유무만 판단
         try {
-            return fileName.substring(fileName.lastIndexOf("."));
+            String extension = fileName.substring(fileName.lastIndexOf("."));
+            // 이미지 파일과 동영상 파일만 허용하도록 제한
+            if (!extension.equalsIgnoreCase(".jpg")
+                    && !extension.equalsIgnoreCase(".png")
+                    && !extension.equalsIgnoreCase(".gif")
+                    && !extension.equalsIgnoreCase(".mp4")) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "허용되지 않는 확장자의 파일(" + fileName + ") 입니다.");
+            }
+            return extension;
         } catch (StringIndexOutOfBoundsException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일(" + fileName + ") 입니다.");
         }
     }
 }
+

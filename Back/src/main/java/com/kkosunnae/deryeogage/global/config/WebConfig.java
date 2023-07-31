@@ -1,4 +1,5 @@
 package com.kkosunnae.deryeogage.global.config;
+
 import com.kkosunnae.deryeogage.global.interceptor.JwtInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +8,8 @@ import org.springframework.web.servlet.config.annotation.*;
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
+    private final JwtInterceptor jwtInterceptor;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/swagger-ui/**")
@@ -20,12 +23,19 @@ public class WebConfig implements WebMvcConfigurer {
                 .setViewName("forward:/swagger-ui/index.html");
     }
 
-    private final JwtInterceptor jwtInterceptor;
     @Override
-    public void addInterceptors (InterceptorRegistry registry) { //로그인하지 않아도 들어갈 수 있는 uri 등록
+    public void addInterceptors(InterceptorRegistry registry) { //로그인하지 않아도 들어갈 수 있는 uri 등록
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/swagger-ui/index.html", "/users/oauth", "/boards/list", "/files/**");
+                .excludePathPatterns(
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/v3/api-docs/**",
+                        "/webjars/**",
+                        "/users/oauth",
+                        "/boards/list",
+                        "/files/**");
     }
 
     //CORS 에러를 해결하기 위해서 컨트롤러에서 세분화 하여 처리할 수도 있지만
