@@ -73,7 +73,7 @@ public class UserService {
     }
 
     private String getResponse(HttpURLConnection conn) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
         String inputLine;
         StringBuilder response = new StringBuilder();
         while ((inputLine = br.readLine()) != null) {
