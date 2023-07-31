@@ -62,12 +62,23 @@ function Simulation() {
     6 : <GameTraining existdata={SimulationExistValue} handleMove={handleMove}/>,
     7 : <GameWalking handleMove={handleMove}/>,
   }
+
+  // activatedNum에 따라서 GameStartfirst의 테두리 색을 지정
+  const getBorderColor = (num) => {
+    switch (num) {
+        case 6:
+            return "#6458F5";
+        default:
+            return "#FF914D"; // 기본 색상
+    }
+  }
+  console.log(activatedNum)
   return (
     <div className="container" id="Simulation">
       <GameText />
       <div className="row">
           <div className="col-1"></div>
-          <S.GameStartfirst className="col-10 first">
+          <S.GameStartfirst className="col-10 first" borderColor={getBorderColor(activatedNum)}>
             <div className="container">
               <div className="row">
                 <div className="col-1"></div>

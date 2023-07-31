@@ -11,17 +11,6 @@ export const GameStartsecond = styled.div`
     }
 `
 
-export const GameBasicButton = styled.button`
-    border: 1px #FF914D solid;
-    background-color: white;
-    border-radius: 30px;
-    padding: 3px 1vw;
-    margin-bottom: 1vh;
-    font-weight: bold;
-    width: 9vw;
-    text-align: center
-`
-
 export const GameBasicOver = styled.button`
     border:none;
     background-color: transparent;

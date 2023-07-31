@@ -3,6 +3,7 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as S from "../../styled/Check/GameBasicScreen.style"
 import GameMenu from "./GameMenu"
+import GameBtn from "./GameBtn"
 
 
 function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
@@ -14,20 +15,20 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-between">
         <div className="d-flex justify-content-between">
             <div>
-                <S.GameBasicButton onClick={() => setHandleMove(6)}>훈련하러 가기</S.GameBasicButton> 
+                <GameBtn className="orange" onClick={() => setHandleMove(6)}>훈련하러 가기</GameBtn> 
                 {/* 바로 실행 안되게 하려면 화살표 함수 필수.. */}
                 <br />
-                <S.GameBasicButton onClick={() => setHandleMove(7)}>산책하러 가기</S.GameBasicButton>
+                <GameBtn className="orange" onClick={() => setHandleMove(7)}>산책하러 가기</GameBtn>
             </div>
             <div>
-                <S.GameBasicButton as="div">뽀리네 집</S.GameBasicButton>
+                <GameBtn className="orange" as="div">뽀리네 집</GameBtn>
             </div>
             <div className="d-flex flex-column justify-content-between align-items-end">
                 <div className="d-flex flex-column">
-                    <GameMenu existData={existData}/>
+                    <GameMenu borderColor="#FF914D" existData={existData}/>
                     <div className="d-flex flex-column align-items-end">
-                    <S.GameBasicButton>가격표 보기</S.GameBasicButton>
-                    <S.GameBasicButton>돈 벌러 가기</S.GameBasicButton>
+                    <GameBtn className="orange">가격표 보기</GameBtn>
+                    <GameBtn className="orange">돈 벌러 가기</GameBtn>
                     </div>
                 </div>
             </div>

@@ -11,17 +11,6 @@ export const GameStartsecond = styled.div`
     }
 `
 
-export const GameBasicButton = styled.button`
-    border: 1px #6458F5 solid;
-    background-color: white;
-    border-radius: 30px;
-    padding: 3px 1vw;
-    margin-bottom: 1vh;
-    font-weight: bold;
-    width: 8vw;
-    text-align: center
-`
-
 export const GameBasicHp = styled.div`
     background-image: linear-gradient(to right, #6458F5 50%, white 50%);
     width: 10vw;
@@ -48,14 +37,13 @@ export const GameTraningBox = styled.button`
     border: 1px #6458F5 solid;
     background-color: white;
     border-radius: 15px;
-    width: 7vw;
     height: 8vh;
 `
 
 export const GameTrainingBar = styled.div`
     border: 1px #6458F5 solid;
     border-radius: 15px;
-    background-image: linear-gradient(to right, #6458F5 50%, white 50%);
+    background-image: linear-gradient(to right, rgba(100, 88, 245, 0.5) 50%, white 50%);
     width: 6vw;
     height: 2vh;
     margin-top: 1vh;

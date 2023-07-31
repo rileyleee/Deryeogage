@@ -4,9 +4,8 @@ import * as S from "../../styled/Check/GameMenu.style"
 
 function GameMenu(props) {
     const existData = props.existData
-    console.log(existData.health)
-    console.log("Last time: ", existData.lastTime);
-    console.log("Start time: ", existData.startTime);
+    const borderColor = props.borderColor || "#FF914D";
+    console.log(existData)
 
     const timeDifferenceFromStorage = JSON.parse(localStorage.getItem('timeDifference'));
     let initialHoursDifference, initialMinutesDifference;
@@ -30,6 +29,7 @@ function GameMenu(props) {
         hours: initialHoursDifference,
         minutes: initialMinutesDifference
     });
+    const [cost, setCost] = useState(() => localStorage.getItem('cost') || existData.cost);
 
     useEffect(() => {
         let hpTimer = 0;
@@ -67,13 +67,17 @@ function GameMenu(props) {
         localStorage.setItem('hpPercentage', hpPercentage);
         localStorage.setItem('timeDifference', JSON.stringify(timeDifference));
     }, [hpPercentage, timeDifference]);
-
+    
     const displayTime = () => {
         return `${timeDifference.hours.toString().padStart(2, '0')}:${timeDifference.minutes.toString().padStart(2, '0')}`;
     }
 
+    useEffect(() => {
+        localStorage.setItem('cost', existData.cost);
+    }, [existData.cost]);
+
     return (
-        <S.GameBasicMenu className="d-flex">
+        <S.GameBasicMenu className="d-flex" borderColor={borderColor}>
             <S.GameBasicIcon>
                 <p>⏰</p>
                 <p>💸</p>
@@ -82,8 +86,8 @@ function GameMenu(props) {
             </S.GameBasicIcon>
             <div>
                 <p>{displayTime()}</p>
-                <p>{existData.cost}원</p>
-                <S.GameBasicHp hpPercentage={hpPercentage}></S.GameBasicHp>
+                <p>{cost}원</p>
+                <S.GameBasicHp borderColor={borderColor} hpPercentage={hpPercentage}>{hpPercentage}</S.GameBasicHp>
                 <p>날씨 맑음</p>
             </div>
         </S.GameBasicMenu>

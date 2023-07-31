@@ -3,6 +3,7 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as S from "../../styled/Check/GameTraining.style"
 import GameMenu from "./GameMenu"
+import GameBtn from "./GameBtn"
 
 function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     const existData = props.existdata // 받아온 데이터
@@ -13,14 +14,14 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-between">
         <div className="d-flex justify-content-between">
             <div>
-                <S.GameBasicButton onClick={() => setHandleMove(5)}>집으로 돌아가기</S.GameBasicButton> 
+                <GameBtn className="blue" onClick={() => setHandleMove(5)}>집으로 돌아가기</GameBtn> 
             </div>
             <div>
-                <S.GameBasicButton as="div">훈련장</S.GameBasicButton>
+                <GameBtn className="blue" as="div">훈련장</GameBtn>
             </div>
             <div className="d-flex flex-column justify-content-between align-items-end">
                 <div className="d-flex flex-column">
-                    <GameMenu existData={existData}/>
+                    <GameMenu borderColor="#6458F5" existData={existData}/>
                 </div>
             </div>
         </div>
