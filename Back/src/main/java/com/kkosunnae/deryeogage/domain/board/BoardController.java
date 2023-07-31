@@ -9,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -25,11 +23,11 @@ public class BoardController {
 
     //글 작성 // Swagger테스트한다고 @requestBody 뺌
     @PostMapping("/boards")
-    public Response<Object> saveBoard(@RequestHeader HttpHeaders header, @RequestBody BoardDto boardDto){
-        String token = header.getFirst("accessToken");
-        log.info("헤더에서 가져온 토큰 정보: "+ token);
+    public Response<Object> saveBoard(@RequestHeader("Authorization") String authorizationHeader, @RequestBody BoardDto boardDto){
+        String jwtToken = authorizationHeader.substring(7);
+        log.info("헤더에서 가져온 토큰 정보: "+ jwtToken);
 
-        Long userId = jwtUtil.getUserId(token);
+        Long userId = jwtUtil.getUserId(jwtToken);
         boardDto.setUserId(userId);
 
         log.info("userId :", boardDto.getUserId());
@@ -67,7 +65,7 @@ public class BoardController {
     }
 
     //글 목록 조회
-    @GetMapping("/boards")
+    @GetMapping("/boards/list")
     public Response<Page<BoardDto>> findBoards(Pageable pageable) {
         Page<BoardDto> boardList = boardService.findAll(pageable);
         return Response.success(boardList);
