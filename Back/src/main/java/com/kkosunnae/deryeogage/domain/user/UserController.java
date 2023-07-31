@@ -5,7 +5,6 @@ import com.kkosunnae.deryeogage.global.util.Response;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.io.UnsupportedEncodingException;
@@ -49,10 +48,12 @@ public class UserController {
 
 
     // 현재 로그인된 사용자 닉네임 반환
-    @GetMapping("/")
-    public Response<Object> loginedUser(@RequestHeader HttpHeaders header) throws Exception {
-        String token = header.get("accessToken").toString();
-        Long userId = jwtUtil.getUserId(token);
+    @GetMapping
+    public Response<Object> loginedUser(@RequestHeader("Authorization") String authorizationHeader) throws Exception {
+        log.info("이 메서드 실행 완");
+
+        String jwtToken = authorizationHeader.substring(7);
+        Long userId = jwtUtil.getUserId(jwtToken);
         String nickname = userService.getUserNickname(userId);
         return Response.success(nickname);
     }
