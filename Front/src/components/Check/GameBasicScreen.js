@@ -2,8 +2,11 @@
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as S from "../../styled/Check/GameBasicScreen.style"
+import GameMenu from "./GameMenu"
+
 
 function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
+    const existData = props.existdata // 받아온 데이터
     const setHandleMove = (num) => {
         props.handleMove(num)
     }
@@ -21,20 +24,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
             </div>
             <div className="d-flex flex-column justify-content-between align-items-end">
                 <div className="d-flex flex-column">
-                    <S.GameBasicMenu className="d-flex">
-                        <S.GameBasicIcon>
-                            <p>⏰</p>
-                            <p>💸</p>
-                            <p>💖</p>
-                            <p>🌞</p>
-                        </S.GameBasicIcon>
-                        <div>
-                            <p>20:00</p>
-                            <p>300,000원</p>
-                            <S.GameBasicHp></S.GameBasicHp>
-                            <p>날씨 맑음</p>
-                        </div>
-                    </S.GameBasicMenu>
+                    <GameMenu existData={existData}/>
                     <div className="d-flex flex-column align-items-end">
                     <S.GameBasicButton>가격표 보기</S.GameBasicButton>
                     <S.GameBasicButton>돈 벌러 가기</S.GameBasicButton>
