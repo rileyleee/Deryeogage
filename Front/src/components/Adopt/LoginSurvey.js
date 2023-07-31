@@ -1,10 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import styled from "styled-components";
 
-function LoginSurvey(props) {
+function LoginSurvey() {
   return (
     <div>
-      <p>{props.user}님의 선호도조사를 기반으로 강아지를 추천해드려요!</p>
+      <p><Span>{localStorage.getItem("nickname")}</Span>님의 선호도조사를 기반으로 강아지를 추천해드려요!</p>
 
       {/* 캐러셀로 강아지 추천 해줄거임 */}
       <Carousel>
@@ -86,6 +86,9 @@ function LoginSurvey(props) {
 }
 
 export default LoginSurvey;
+export const Span = styled.span`
+  color: rgba(255, 145, 77, 1);
+`;
 
 export const Carousel = styled.div`
   display: flex;

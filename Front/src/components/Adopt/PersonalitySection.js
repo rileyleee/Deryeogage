@@ -12,6 +12,7 @@ function PersonalitySection({ friendly, setFriendly, activity, setActivity, depe
         <SurveyPaw title="의존성" onSelect={setDependency} />
         <SurveyPaw title="왈왈왈" onSelect={setBark} />
         <SurveyPaw title="털빠짐" onSelect={setHair} />
+        <Text>강아지의 성격과 특성을 선택하면 <br/> 입양자의 선호도조사 결과에 따른 강아지의 추천이 가능하게 됩니다.</Text>
       </DogCheck>
     </Div>
   );
@@ -35,6 +36,11 @@ export const Div = styled.div`
   /* 스타일을 추가하여 간격을 줍니다. */
   margin: 1vw 0;
   padding: 1vh;
+  font-size: 2vh;
+`;
+export const Text = styled.div`
+  /* 스타일을 추가하여 간격을 줍니다. */
+
   font-size: 2vh;
 `;
 

@@ -5,7 +5,7 @@ import GenderRadio from "../../components/Radio/GenderRadio";
 import ChipRadio from "../../components/Radio/ChipRadio";
 import styled from "styled-components";
 
-function DogInfoSection() {
+function DogInfoSection({ name, setName, age, setAge, region, setRegion, gender, setGender, chip, setChip }) {
   return (
     <Div>
       강아지의 <Span>기본정보</Span>를 작성해주세요.
@@ -13,12 +13,30 @@ function DogInfoSection() {
         <P>
           강아지의 <Span>이름</Span>을 작성해주세요.
         </P>
-          <input type="text" name="name" placeholder="이름" />
+        <input
+          type="text"
+          name="name"
+          placeholder="이름"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
 
         <P>강아지의 <Span>나이</Span>를 작성해주세요.</P>
-        <input type="text" name="age" placeholder="나이" />
+        <input
+          type="text"
+          name="age"
+          placeholder="나이"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+        />
         <P>현재 강아지가 살고있는 <Span>지역</Span>을 작성해주세요.</P>
-        <input type="text" name="region" placeholder="지역" />
+        <input
+          type="text"
+          name="region"
+          placeholder="지역"
+          value={region}
+          onChange={(e) => setRegion(e.target.value)}
+        />
         <P>
         <Span>성별</Span>을 선택해주세요.
           <GenderRadio />

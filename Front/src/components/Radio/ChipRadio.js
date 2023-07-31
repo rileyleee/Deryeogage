@@ -21,25 +21,16 @@ const Radio = () => {
         등록
       </label>
 
-      <label style={{ marginRight: '20px' }}>
+      <label>
         <input
           type="radio"
           value="미등록"
           checked={dogchip === '미등록'}
           onChange={handleDogchipChange}
         />
-        미등록
+        미등록(알 수 없음)
       </label>
 
-      <label>
-        <input
-          type="radio"
-          value="알 수 없음"
-          checked={dogchip === '알 수 없음'}
-          onChange={handleDogchipChange}
-        />
-        알 수 없음
-      </label>
     </div>
   );
 };
