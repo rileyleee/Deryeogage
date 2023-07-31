@@ -1,8 +1,6 @@
 package com.kkosunnae.deryeogage.global.interceptor;
 
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,7 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
-    private static final String HEADER_AUTH = "accessToken";
+    private static final String HEADER_AUTH = "Authorization"; //프론트에서 넘기는 헤더 key 반영
+    private static final String TOKEN_PREFIX = "Bearer ";//프론트에서 넘기는 헤더 value 반영
 
     private final JwtUtil jwtUtil;
 
@@ -25,9 +24,9 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         String token = request.getHeader(HEADER_AUTH);
 
-
-        if (token != null) {
-            if (jwtUtil.validateToken(token)) { // JWT 토큰이 유효하면
+        if (token != null && token.startsWith(TOKEN_PREFIX)) {
+            String jwtToken = token.substring(TOKEN_PREFIX.length());
+            if (jwtUtil.validateToken(jwtToken)) { // JWT 토큰이 유효하면
                 return true;
             }
 
