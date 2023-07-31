@@ -25,7 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors (InterceptorRegistry registry) { //로그인하지 않아도 들어갈 수 있는 uri 등록
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/swagger-ui/index.html", "/users/oauth", "/boards/list");
+                .excludePathPatterns("/swagger-ui/index.html", "/users/oauth", "/boards/list", "/files/**");
     }
 
     //CORS 에러를 해결하기 위해서 컨트롤러에서 세분화 하여 처리할 수도 있지만
