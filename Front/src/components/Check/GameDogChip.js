@@ -2,10 +2,45 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as S from "../../styled/Check/GameDogChip.style"
+import {useRecoilValue} from "recoil"
+import { SimulationBGI, SimulationDog, SimulationName } from "../../recoil/SimulationAtom"
+import axios from "axios";
+import {useRecoilState} from "recoil"
+import { SimulationExistAtom } from "../../recoil/SimulationAtom"
 
 function GameDogChip(props) {
   const {onNextPage, onPreviousPage} = props
   const [dogNumber, setdogNumber] = useState(false);
+  const SimulationDogValue = useRecoilValue(SimulationDog)
+  const SimulationNameValue = useRecoilValue(SimulationName)
+  const SimulationBGIValue = useRecoilValue(SimulationBGI)
+  console.log(SimulationDogValue, SimulationNameValue, SimulationBGIValue)
+  const Token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI5NDE0NzU5ODEsImlhdCI6MTY5MDg2MTYyNCwiZXhwIjoxNjkwOTQ4MDI0fQ.gwG8VXy4cnWArzap78NJfvvSQGxB61AUgvRkmMjpwuM'
+  const [existValue, setExistValue] = useRecoilState(SimulationExistAtom)
+
+  const handleSubmit = async () => {
+    try {
+        const response = await axios.post(
+            'http://localhost:8080/simulations/create',
+            {
+              "petType": SimulationDogValue,
+              "petName": SimulationNameValue,
+              "background": SimulationBGIValue
+            },
+            {
+              headers: {
+                'Authorization' : 'Bearer '+ Token, // 이곳에 실제 토큰 값을 넣으세요.
+                // 'Content-Type': 'application/json'
+              }
+            }
+        );
+
+        console.log(response.data);
+        setExistValue(response.data)
+    } catch (error) {
+        console.error(error);
+    }
+};
 
   const handleShowNum = buttonIndex => {
     setdogNumber(buttonIndex);
@@ -23,7 +58,7 @@ function GameDogChip(props) {
       <S.GameDogChipNum show={dogNumber}>강아지 등록 번호 : {RandomNumber()}</S.GameDogChipNum>
       <div className='d-flex justify-content-between'>
         <S.GamePick1Btn className='btn' type="submit" onClick={onPreviousPage}>이전으로</S.GamePick1Btn>
-        <S.GamePick1Btn className='btn' type="submit" onClick={onNextPage}>다음으로</S.GamePick1Btn>
+        <S.GamePick1Btn className='btn' type="submit" onClick={() => {handleSubmit(); onNextPage();}}>다음으로</S.GamePick1Btn>
       </div>
     </S.GameStartsecond>
   );

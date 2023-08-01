@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const Radio = () => {
-  // 상태(state)를 사용하여 선택된 성별을 기록
-  const [gender, setGender] = useState('');
-
+const GenderRadio = ({ gender, setGender }) => {
   // 성별이 변경될 때 실행되는 함수
   const handleGenderChange = (event) => {
-    setGender(event.target.value);
+    setGender(event.target.value === '남자');
   };
 
   return (
@@ -15,7 +12,7 @@ const Radio = () => {
         <input
           type="radio"
           value="남자"
-          checked={gender === '남자'}
+          checked={gender}
           onChange={handleGenderChange}
         />
         남자
@@ -25,7 +22,7 @@ const Radio = () => {
         <input
           type="radio"
           value="여자"
-          checked={gender === '여자'}
+          checked={!gender}
           onChange={handleGenderChange}
         />
         여자
@@ -34,4 +31,4 @@ const Radio = () => {
   );
 };
 
-export default Radio;
+export default GenderRadio;

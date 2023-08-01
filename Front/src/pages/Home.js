@@ -1,6 +1,10 @@
 import React from "react";
+import axios from 'axios'
 import styled from "styled-components";
-import { PiPawPrintFill } from "react-icons/pi"; 
+import { PiPawPrintFill } from "react-icons/pi";
+import {useRecoilState} from "recoil"
+import { SimulationExistAtom, SimulationStartAtom, SimulationNum } from "../recoil/SimulationAtom"
+import {useNavigate} from 'react-router-dom'
 
 const HomeContainer = styled.div`
   max-width: 1200px;
@@ -57,6 +61,39 @@ const StyledLink = styled.a`
 `;
 
 function Home() {
+  // const userId = 2941475981; // 임의의 사용자 ID로 설정했습니다.
+  const [existValue, setExistValue] = useRecoilState(SimulationExistAtom)
+  // const [startValue, setStartValue] = useRecoilState(SimulationStartAtom)
+  // const [num, setNum] = useRecoilState(SimulationNum)
+  const navigate = useNavigate()
+  const handleSurveyLinkClick = async (event) => {
+    event.preventDefault();
+  
+    try {
+      const url = 'http://localhost:8080/simulations';
+      const Token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI5NDE0NzU5ODEsImlhdCI6MTY5MDg2MTYyNCwiZXhwIjoxNjkwOTQ4MDI0fQ.gwG8VXy4cnWArzap78NJfvvSQGxB61AUgvRkmMjpwuM'
+      const response = await axios.get(url, {
+        headers: {
+          'Authorization' : 'Bearer '+ Token, // 이곳에 실제 토큰 값을 넣으세요.
+          // 'Content-Type': 'application/json'
+        }
+      });
+      console.log(response.data);
+      if (response.data !== 'Start a new simulation') {
+        setExistValue(response.data)
+        localStorage.setItem('activatedNum', 5) // 시뮬레이션 게임 진행중이면 5 저장
+        // setNum(5) // 리코일에도 저장
+      } else {
+        // setStartValue(response.data)
+        localStorage.setItem('activatedNum', 1) // 시뮬레이션 게임 시작해야 하면 1 저장
+        // setNum(1)// 리코일에도 저장
+      }
+      navigate("/simulations")
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  console.log(existValue)
   return (
     <HomeContainer>
       <Main>
@@ -72,7 +109,7 @@ function Home() {
       <ContentContainer>
         <Div>
           <p>시뮬레이션을 통해 가상으로 강아지를 키워보세요!</p>
-          <StyledLink href={"/simulation"}><PiPawPrintFill/> 시뮬레이션하러 가기</StyledLink>
+          <StyledLink href={"/simulations"} onClick={handleSurveyLinkClick}><PiPawPrintFill/> 시뮬레이션하러 가기</StyledLink>
         </Div>
         <Div>
           <p>선호도 조사를 통해 나의 생활에 맞는 강아지를 찾아보세요!</p>

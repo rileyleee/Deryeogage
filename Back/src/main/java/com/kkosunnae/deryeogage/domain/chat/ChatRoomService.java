@@ -1,5 +1,6 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
+import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,12 @@ import java.util.stream.Collectors;
 public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
+    private final UserRepository userRepository;
 
     /** ChatRoom 조회 */
 
-    public List<ChatRoomResponseDto> findAll() {
-        List<ChatRoomEntity> chatRooms = chatRoomRepository.findAll();
-        // 여기서 ChatRoom을 ChatRoomResponseDto로 변환하는 로직이 필요합니다.
-        // 예를 들어, Java 8 Stream API를 사용하여 변환할 수 있습니다.
+    public List<ChatRoomResponseDto> findAll(Long userId) {
+        List<ChatRoomEntity> chatRooms = chatRoomRepository.findAllByUser1_IdOrUser2_Id(userId, userId);
         return chatRooms.stream()
                 .map(chatRoom -> new ChatRoomResponseDto(chatRoom))
                 .collect(Collectors.toList());
@@ -37,7 +37,7 @@ public class ChatRoomService {
     /** ChatRoom 생성 */
     @Transactional
     public Integer save(final ChatRoomRequestDto requestDto) {
-        return this.chatRoomRepository.save(requestDto.toEntity()).getId();
+        return this.chatRoomRepository.save(requestDto.toEntity(userRepository)).getId();
     }
 
     /** ChatRoom 수정 */

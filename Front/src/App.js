@@ -33,9 +33,13 @@ import NotFound from "./pages/NotFound/NotFound";
 // Check
 
 
-
+import React, { useEffect } from "react";
 
 function App() {
+    useEffect(() => {
+      localStorage.setItem('activatedNum', 5); // SomePage에 들어왔을 때 activatedNum을 5로 설정
+    }, []);
+
   return (
     <>
       <div className="container">
@@ -55,21 +59,21 @@ function App() {
             {/* 입양게시판 */}
             <Route path="/adopt" element={<AdoptBoard />} />
             <Route path="/adopt/create" element={<AdoptBoardCreate />} />
-            <Route path="/adopt/:id" element={<AdoptBoardDetail />} />
+            <Route path="/adopt/:boardId" element={<AdoptBoardDetail />} />
 
             {/* 입양후기게시판 */}
             <Route path="/review" element={<ReviewBoard />} />
             <Route path="/review/create" element={<ReviewBoardCreate />} />
-            <Route path="/review/:id" element={<ReviewBoardDetail />} />
+            <Route path="/review/:boardId" element={<ReviewBoardDetail />} />
 
             {/* 마이페이지 */}
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/survey" element={<Survey />} />
 
             {/* 시뮬레이션, 사전테스트 */}
-            <Route path="/simulation" element={<Simulation />} />
+            <Route path="/simulations" element={<Simulation />} />
             <Route path="/checklist" element={<CheckList />} />
-            <Route path="/checklist/:id" element={<CheckListResult />} />
+            <Route path="/checklist/result" element={<CheckListResult />} />
 
             {/* 미션페이지 */}
             <Route path="/mission" element={<Mission />} />

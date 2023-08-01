@@ -36,3 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
+### S3 Keys ###
+application-s3.properties

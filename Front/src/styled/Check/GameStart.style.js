@@ -9,7 +9,7 @@ export const GameStartsecond = styled.div`
         /* padding-bottom: 35%; */
     }
     &::before {
-        background-image: url("assets/home/home2.png");
+        background-image: url("assets/home/home1.png");
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
