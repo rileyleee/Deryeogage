@@ -21,10 +21,10 @@ public class BoardFileEntity {
     @JoinColumn(name = "board_id")
     private BoardEntity board;
 
-    @Column(length = 20, name = "original_name")
+    @Column(length = 100, name = "original_name")
     private String originalName;
 
-    @Column(length = 20, name = "saved_name")
+    @Column(length = 100, name = "saved_name")
     private String savedName;
 
     @Column

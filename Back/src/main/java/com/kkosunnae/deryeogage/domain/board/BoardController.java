@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -88,9 +90,13 @@ public class BoardController {
 
     //글 상세조회
     @GetMapping("boards/{boardId}")
-    public Response<BoardDto> selectBoard(@PathVariable int boardId){
+    public Response<List<Object>> selectBoard(@PathVariable int boardId){
         BoardDto thisBoard = boardService.getBoard(boardId);
-        return Response.success(thisBoard);
+        Map<String, String> uploadedFiles = boardService.getBoardFiles(boardId);
+        List<Object> boardSet = new ArrayList<>();
+        boardSet.add(thisBoard);
+        boardSet.add(uploadedFiles);
+        return Response.success(boardSet);
     }
 
     //글 목록 조회
@@ -128,4 +134,6 @@ public class BoardController {
         return Response.success(null);
 
     }
+
+
 }
