@@ -1,7 +1,6 @@
 package com.kkosunnae.deryeogage.domain.board;
 
 import com.kkosunnae.deryeogage.domain.common.DetailCodeRepository;
-import com.kkosunnae.deryeogage.domain.user.UserDto;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.IntStream;
+
 import java.util.Optional;
 
 @Slf4j
@@ -25,6 +28,7 @@ public class BoardService {
     private final UserRepository userRepository;
     private final DetailCodeRepository detailCodeRepository;
     private final JjimRepository jjimRepository;
+    private final BoardFileRepository boardFileRepository;
 
     //게시글 작성
     @Transactional
@@ -46,9 +50,6 @@ public class BoardService {
     @Transactional
     public int update(Integer id, BoardDto boardDto){
         BoardEntity board = boardRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 유저의 게시글이 없습니다. id : "+id));
-//
-//        Optional<UserEntity> user = userRepository.findById(boardDto.getUserId());
-//        boardDto.setUserNickname(user.get().getNickname());
 
         Optional<UserEntity> user = userRepository.findById(boardDto.getUserId());
         if (user.isPresent()) {
@@ -60,10 +61,6 @@ public class BoardService {
         } else {
             throw new IllegalArgumentException("해당 유저가 존재하지 않습니다. user id: " + boardDto.getUserId());
         }
-//        boardDto.setCreatedDate(LocalDateTime.now());
-//        board.update(boardDto);
-//        boardRepository.save(board);
-//        return board.getId();
     }
 
     //게시글 삭제
@@ -103,4 +100,39 @@ public class BoardService {
     public void unlike(Long userId, Integer boardId){
         jjimRepository.deleteByUserIdAndBoardId(userId, boardId);
     }
+
+
+    //게시글에 저장된 파일 저장
+    public void saveBoardFile(Integer boardId, Map<String, List> nameList) {
+
+        LocalDateTime uploadTime = LocalDateTime.now();
+
+        List<String> originalNames = nameList.get("original");
+        List<String> savedNames = nameList.get("saved");
+        List<String> savedPaths = nameList.get("path");
+
+        // Dto에 담기: IntStream을 사용해서 index 기반으로 처리
+        IntStream.range(0, originalNames.size())
+                .forEach(i -> {
+                    BoardFileDto boardFileDto = new BoardFileDto();
+
+                    boardFileDto.setBoardId(boardId);
+                    boardFileDto.setOriginalName(originalNames.get(i));
+                    boardFileDto.setSavedName(savedNames.get(i));
+                    String fileType = savedNames.get(i).split("\\.")[1];
+
+                    if (fileType.equals("mp4")) { //동영상
+                        boardFileDto.setType(true);
+                    } else { //이미지
+                        boardFileDto.setType(false);
+                    }
+
+                    boardFileDto.setPath(savedPaths.get(i));
+                    boardFileDto.setCreatedDate(uploadTime);
+
+                    // 그 다음 Entity로 변환하여 DB에 저장
+                    boardFileRepository.save(boardFileDto.toEntity(boardRepository));
+                });
+    }
+
 }
