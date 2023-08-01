@@ -3,7 +3,6 @@ package com.kkosunnae.deryeogage.domain.user;
 import com.kkosunnae.deryeogage.domain.adopt.AdoptEntity;
 import com.kkosunnae.deryeogage.domain.board.BoardEntity;
 import com.kkosunnae.deryeogage.domain.board.JjimEntity;
-import com.kkosunnae.deryeogage.domain.chat.ChatMessageEntity;
 import com.kkosunnae.deryeogage.domain.chat.ChatRoomEntity;
 import com.kkosunnae.deryeogage.domain.cost.PostCostEntity;
 import com.kkosunnae.deryeogage.domain.cost.PreCostEntity;
@@ -55,11 +54,11 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<SimulationEntity> simulations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "provider")
-    private List<ChatRoomEntity> providerChatRooms = new ArrayList<>();
-
-    @OneToMany(mappedBy = "adopter")
-    private List<ChatRoomEntity> adopterChatRooms = new ArrayList<>();
+//    @OneToMany(mappedBy = "provider")
+//    private List<ChatRoomEntity> providerChatRooms = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "adopter")
+//    private List<ChatRoomEntity> adopterChatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<JjimEntity> jjims = new ArrayList<>();

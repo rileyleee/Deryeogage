@@ -1,7 +1,7 @@
 package com.kkosunnae.deryeogage.domain.simulation;
 
+import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +10,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/simulations")
 public class SimulationController {
+    private final JwtUtil jwtUtil;
+
     private final SimulationService simulationService;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<Object> simulationStart(@PathVariable Long userId){
+    @GetMapping
+    public ResponseEntity<Object> simulationStart(@RequestHeader("Authorization") String authorizationHeader){
+        String jwtToken = authorizationHeader.substring(7);
+
+        Long userId = jwtUtil.getUserId(jwtToken);
+
         SimulationDto simulationDto = simulationService.getSimulation(userId);
         if (simulationDto == null) {
             // 새로운 시뮬레이션 시작을 의미하는 메시지와 함께 200 OK 응답
@@ -35,7 +41,12 @@ public class SimulationController {
     }
 
     @PostMapping("/create")
-    public SimulationDto simulationCreate(@RequestBody SimulationDto simulationDto){
+    public SimulationDto simulationCreate(@RequestHeader("Authorization") String authorizationHeader, @RequestBody SimulationDto simulationDto){
+        String jwtToken = authorizationHeader.substring(7);
+
+        Long userId = jwtUtil.getUserId(jwtToken);
+        simulationDto.setUser(userId);
+
         SimulationDto createdSimulation = simulationService.saveSimulation(simulationDto);
         return createdSimulation;
     }

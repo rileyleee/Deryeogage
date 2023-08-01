@@ -1,9 +1,11 @@
 package com.kkosunnae.deryeogage.domain.simulation;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "simulation")
-public class SimulationEntity {
+public class SimulationEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -31,13 +33,13 @@ public class SimulationEntity {
     @Column(length = 20)
     private String background;
 
-    @Column(name = "start_time")
+    @Column(name = "start_time",updatable = false)
     private LocalDateTime startTime;
 
-    @Column(name = "end_time")
+    @Column(name = "end_time",updatable = false)
     private LocalDateTime endTime;
 
-    @Column
+    @Column(name = "cost")
     private Integer cost;
 
     @Column(name = "last_time")

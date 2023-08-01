@@ -1,9 +1,11 @@
 package com.kkosunnae.deryeogage.domain.simulation;
 
-import com.kkosunnae.deryeogage.domain.user.UserDto;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
@@ -68,16 +70,16 @@ public class SimulationDto {
                 .background(this.background)
                 .startTime(this.startTime)
                 .endTime(this.endTime)
-                .cost(this.cost)
+                .cost((cost != null) ? cost : 300000)
                 .lastTime(this.lastTime)
                 .petRequire(this.petRequire)
                 .petEmotion(this.petEmotion)
-                .train1(this.train1)
-                .train2(this.train2)
-                .train3(this.train3)
-                .train4(this.train4)
-                .health(this.health)
-                .quizNum(this.quizNum)
+                .train1((train1 != null) ? train1 : 0.0f)
+                .train2((train2 != null) ? train2 : 0.0f)
+                .train3((train3 != null) ? train3 : 0.0f)
+                .train4((train4 != null) ? train4 : 0.0f)
+                .health((health != null) ? health : 100)
+                .quizNum((quizNum != null) ? quizNum : 0)
                 .title(this.title)
                 .end(this.end)
                 .endCheck(this.endCheck)
