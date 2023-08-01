@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import ImageSection from "../../components/Adopt/ImageSection";
 import DogInfoSection from "../../components/Adopt/DogInfoSection";
@@ -6,6 +7,9 @@ import PersonalitySection from "../../components/Adopt/PersonalitySection";
 import * as S from "../../styled/Adopt/AdoptBoardCreate.style";
 
 function AdoptBoardCreate() {
+
+  const navigate = useNavigate();
+
   // 이미지 등록 관련 코드
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImageFiles, setSelectedImageFiles] = useState([]);
@@ -81,8 +85,8 @@ function AdoptBoardCreate() {
   const handleIntroductionChange = (event) => {
     setDogIntroduction(event.target.value);
   };
-  console.log(dogGender)
-  console.log(dogChip)
+  console.log(dogGender);
+  console.log(dogChip);
   // axios 요청 보내기
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -129,12 +133,14 @@ function AdoptBoardCreate() {
           },
         }
       );
-      console.log(response.data);
+      console.log("boardId: ", response.data.data)
+      const boardId = response.data.data;  // 이 부분이 수정되었습니다.
+      navigate(`/adopt/${boardId}`);
+      
     } catch (error) {
       console.error(error);
     }
   };
-
   return (
     <>
       <h2>분양게시판 글 작성하기</h2>

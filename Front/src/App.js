@@ -59,12 +59,12 @@ function App() {
             {/* 입양게시판 */}
             <Route path="/adopt" element={<AdoptBoard />} />
             <Route path="/adopt/create" element={<AdoptBoardCreate />} />
-            <Route path="/adopt/:id" element={<AdoptBoardDetail />} />
+            <Route path="/adopt/:boardId" element={<AdoptBoardDetail />} />
 
             {/* 입양후기게시판 */}
             <Route path="/review" element={<ReviewBoard />} />
             <Route path="/review/create" element={<ReviewBoardCreate />} />
-            <Route path="/review/:id" element={<ReviewBoardDetail />} />
+            <Route path="/review/:boardId" element={<ReviewBoardDetail />} />
 
             {/* 마이페이지 */}
             <Route path="/profile/:id" element={<Profile />} />
