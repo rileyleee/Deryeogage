@@ -11,12 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.stream.IntStream;
-
-import java.util.Optional;
 
 @Slf4j
 @Transactional
@@ -32,14 +28,14 @@ public class BoardService {
 
     //게시글 작성
     @Transactional
-    public int save(BoardDto boardDto){
+    public int save(BoardDto boardDto) {
         log.info("게시글 제목 : ", boardDto.getTitle());
         boardDto.setCreatedDate(LocalDateTime.now());
 
         Optional<UserEntity> user = userRepository.findById(boardDto.getUserId());
         boardDto.setUserNickname(user.get().getNickname());
 
-        log.info("user 닉네임게시글작성서비스: "+ user.get().getNickname());
+        log.info("user 닉네임게시글작성서비스: " + user.get().getNickname());
 
         BoardEntity board = boardRepository.save(boardDto.toEntity(userRepository, detailCodeRepository));
         return board.getId();
@@ -48,8 +44,8 @@ public class BoardService {
 
     //게시글 수정
     @Transactional
-    public int update(Integer id, BoardDto boardDto){
-        BoardEntity board = boardRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 유저의 게시글이 없습니다. id : "+id));
+    public int update(Integer id, BoardDto boardDto) {
+        BoardEntity board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 유저의 게시글이 없습니다. id : " + id));
 
         Optional<UserEntity> user = userRepository.findById(boardDto.getUserId());
         if (user.isPresent()) {
@@ -65,15 +61,15 @@ public class BoardService {
 
     //게시글 삭제
     @Transactional
-    public void deleteById(Integer id){
+    public void deleteById(Integer id) {
         boardRepository.deleteById(id);
     }
 
     //게시글 상세 조회
     @Transactional(readOnly = true)
-    public BoardDto getBoard(Integer boardId){
+    public BoardDto getBoard(Integer boardId) {
         BoardEntity board = boardRepository.findById(boardId)
-                .orElseThrow(()-> new NoSuchElementException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("게시글을 찾을 수 없습니다."));
         return board.toDto();
     }
 
@@ -86,9 +82,9 @@ public class BoardService {
 
     //게시글 찜
     @Transactional
-    public int like(JjimDto jjimDto){
+    public int like(JjimDto jjimDto) {
 
-        if(!jjimRepository.existsByUserIdAndBoardId(jjimDto.getUserId(), jjimDto.getBoardId())) {
+        if (!jjimRepository.existsByUserIdAndBoardId(jjimDto.getUserId(), jjimDto.getBoardId())) {
             JjimEntity jjim = jjimRepository.save(jjimDto.toEntity(boardRepository, userRepository));
             return jjim.getId();
         }//만약 이미 찜한 게시글이라면
@@ -97,7 +93,7 @@ public class BoardService {
 
     //게시글 찜취소
     @Transactional
-    public void unlike(Long userId, Integer boardId){
+    public void unlike(Long userId, Integer boardId) {
         jjimRepository.deleteByUserIdAndBoardId(userId, boardId);
     }
 
@@ -134,5 +130,40 @@ public class BoardService {
                     boardFileRepository.save(boardFileDto.toEntity(boardRepository));
                 });
     }
+
+    //게시글에 저장된 파일 조회
+    public Map<String, String> getBoardFiles(int boardId) {
+
+        // 저장한 이름과 주소목록 담을 Map 선언
+        Map<String, String> uploadedFiles = new HashMap<>();
+        log.info("Here1");
+
+        List<BoardFileEntity> boardFiles = boardFileRepository.findByBoardId(boardId)
+                .orElseThrow(() -> new RuntimeException("Failed to fetch board files for board id: " + boardId));
+        log.info("Here1.5");
+        log.info("리스트 갯수"+boardFiles.size());
+
+
+        for(int a = 0; a<boardFiles.size(); a++){
+            log.info("있다고");
+        }
+        // 해당 게시글의 파일이 저장된 S3상 파일별 주소목록 반환
+//        List<BoardFileEntity> boardFiles = boardFileRepository.findByBoardId(boardId)
+//                .orElse(Collections.emptyList()); //등록된 파일 없으면 빈 리스트 반환
+
+        // 파일 엔티티 목록 반복문 돌면서 하나씩 프론트에 반환할 map에 넣기
+        IntStream.range(0, boardFiles.size())
+                .forEach(i -> {
+                    BoardFileEntity boardFileEntity = boardFiles.get(i);
+                    BoardFileDto eachFileDto = boardFileEntity.toDto();
+                    uploadedFiles.put(eachFileDto.getSavedName(), eachFileDto.getPath()); //저장된 이름과 경로 반환
+                    log.info("Here2");
+                });
+
+        return uploadedFiles;
+    }
+
+
+
 
 }
