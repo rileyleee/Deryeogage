@@ -1,32 +1,32 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
-import com.kkosunnae.deryeogage.domain.user.UserEntity;
+import lombok.Builder;
 import lombok.Getter;
-import org.hibernate.annotations.common.util.StringHelper;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
+@NoArgsConstructor
 @Getter
 @Table(name = "chat_message")
-public class ChatMessageEntity {
+public class ChatMessageEntity extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chatroom_id")
+    @Column(name="user_id")
+    private Long userId;
+    private String message;
+
+    @ManyToOne
     private ChatRoomEntity chatRoom;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
-
-    @Column(columnDefinition = "TEXT")
-    private String content;
-
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    @Builder
+    public ChatMessageEntity(Long userId, String message, ChatRoomEntity chatRoom) {
+        this.userId = userId;
+        this.message = message;
+        this.chatRoom = chatRoom;
+    }
 }

@@ -1,6 +1,8 @@
 package com.kkosunnae.deryeogage.domain.board;
 
 import com.kkosunnae.deryeogage.domain.common.DetailCodeRepository;
+import com.kkosunnae.deryeogage.domain.user.UserDto;
+import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+
 @Slf4j
 @Transactional
 @RequiredArgsConstructor
@@ -27,6 +31,12 @@ public class BoardService {
     public int save(BoardDto boardDto){
         log.info("게시글 제목 : ", boardDto.getTitle());
         boardDto.setCreatedDate(LocalDateTime.now());
+
+        Optional<UserEntity> user = userRepository.findById(boardDto.getUserId());
+        boardDto.setUserNickname(user.get().getNickname());
+
+        log.info("user 닉네임게시글작성서비스: "+ user.get().getNickname());
+
         BoardEntity board = boardRepository.save(boardDto.toEntity(userRepository, detailCodeRepository));
         return board.getId();
     }
@@ -36,10 +46,24 @@ public class BoardService {
     @Transactional
     public int update(Integer id, BoardDto boardDto){
         BoardEntity board = boardRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 유저의 게시글이 없습니다. id : "+id));
-        boardDto.setCreatedDate(LocalDateTime.now());
-        board.update(boardDto);
-        boardRepository.save(board);
-        return board.getId();
+//
+//        Optional<UserEntity> user = userRepository.findById(boardDto.getUserId());
+//        boardDto.setUserNickname(user.get().getNickname());
+
+        Optional<UserEntity> user = userRepository.findById(boardDto.getUserId());
+        if (user.isPresent()) {
+            boardDto.setUserNickname(user.get().getNickname());
+            boardDto.setCreatedDate(LocalDateTime.now());
+            board.update(boardDto);
+            boardRepository.save(board);
+            return board.getId();
+        } else {
+            throw new IllegalArgumentException("해당 유저가 존재하지 않습니다. user id: " + boardDto.getUserId());
+        }
+//        boardDto.setCreatedDate(LocalDateTime.now());
+//        board.update(boardDto);
+//        boardRepository.save(board);
+//        return board.getId();
     }
 
     //게시글 삭제
@@ -50,8 +74,8 @@ public class BoardService {
 
     //게시글 상세 조회
     @Transactional(readOnly = true)
-    public BoardDto getBoard(Integer id){
-        BoardEntity board = boardRepository.findById(id)
+    public BoardDto getBoard(Integer boardId){
+        BoardEntity board = boardRepository.findById(boardId)
                 .orElseThrow(()-> new NoSuchElementException("게시글을 찾을 수 없습니다."));
         return board.toDto();
     }

@@ -1,6 +1,5 @@
 package com.kkosunnae.deryeogage.domain.board;
 
-import com.kkosunnae.deryeogage.domain.user.UserDto;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import com.kkosunnae.deryeogage.global.util.Response;
 import io.swagger.annotations.Api;
@@ -8,10 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @Slf4j
 @Api
@@ -25,12 +22,17 @@ public class BoardController {
 
     //글 작성 // Swagger테스트한다고 @requestBody 뺌
     @PostMapping("/boards")
-    public Response<Object> saveBoard(@RequestHeader HttpHeaders header, @RequestBody BoardDto boardDto){
-        String token = header.getFirst("accessToken");
-        log.info("헤더에서 가져온 토큰 정보: "+ token);
+    public Response<Object> saveBoard(@RequestHeader("Authorization") String authorizationHeader, @RequestBody BoardDto boardDto){
+        String jwtToken = authorizationHeader.substring(7);
+        log.info("헤더에서 가져온 토큰 정보: "+ jwtToken);
 
-        Long userId = jwtUtil.getUserId(token);
+        Long userId = jwtUtil.getUserId(jwtToken);
+
+        log.info("글작성아이디 "+ userId);
+//        log.info("글작성닉네임 "+ userDto.getNickname());
+
         boardDto.setUserId(userId);
+//        boardDto.setUserNickname(userDto.getNickname());
 
         log.info("userId :", boardDto.getUserId());
 
@@ -42,19 +44,37 @@ public class BoardController {
 
     //글 수정
     @PutMapping("/boards/{boardId}")
-    public Response<Object> updateBoard(@PathVariable int boardId, UserDto userDto, BoardDto boardDto){
+    public Response<Object> updateBoard(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId, @RequestBody BoardDto boardDto){
 
-//        BoardDto thisBoard = boardService.getBoard(boardId).toDto();
-        //if(thisBoard.getUser()!=userDto.getId()){ 여기서 board id 아직 안뽑았음!!
-        // return new ResponseEntity<String>("UNAUTHORIZED", HttpStatus.OK);
-        // }
+        String jwtToken = authorizationHeader.substring(7);
+        Long requestUserId = jwtUtil.getUserId(jwtToken);
+
+        BoardDto thisBoard = boardService.getBoard(boardId);
+
+        log.info("수정: 게시글 유저 정보 : "+thisBoard.getUserId());
+        log.info("요청 유저 정보 : "+requestUserId);
+
+        if(thisBoard.getUserId()!=requestUserId){
+            return Response.fail(null);
+        }
+        boardDto.setUserId(requestUserId);
+
         boardService.update(boardId, boardDto);
         return Response.success(null);
     }
 
     //글 삭제
     @DeleteMapping("/boards/{boardId}")
-    public Response<Object> deleteBoard(@PathVariable int boardId){
+    public Response<Object> deleteBoard(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId){
+
+        String jwtToken = authorizationHeader.substring(7);
+        Long requestUserId = jwtUtil.getUserId(jwtToken);
+
+        BoardDto thisBoard = boardService.getBoard(boardId);
+        if(thisBoard.getUserId()!=requestUserId){
+            return Response.fail(null);
+        }
+
         boardService.deleteById(boardId);
         return Response.success(null);
   }
@@ -67,7 +87,7 @@ public class BoardController {
     }
 
     //글 목록 조회
-    @GetMapping("/boards")
+    @GetMapping("/boards/list")
     public Response<Page<BoardDto>> findBoards(Pageable pageable) {
         Page<BoardDto> boardList = boardService.findAll(pageable);
         return Response.success(boardList);
@@ -77,10 +97,10 @@ public class BoardController {
 
     //분양글 찜
     @PostMapping("/boards/{boardId}/like")
-    public Response<Object> boardLike(@RequestHeader HttpHeaders header, @PathVariable int boardId, JjimDto jjimDto){
+    public Response<Object> boardLike(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId, JjimDto jjimDto){
 
-        String token = header.get("accessToken").toString();
-        Long userId = jwtUtil.getUserId(token);
+        String jwtToken = authorizationHeader.substring(7);
+        Long userId = jwtUtil.getUserId(jwtToken);
 
         jjimDto.setUserId(userId);
         jjimDto.setBoardId(boardId);
@@ -91,10 +111,10 @@ public class BoardController {
 
     //분양글 찜 취소
     @DeleteMapping("/boards/{boardId}/like")
-    public Response<Object> boardUnlike(@RequestHeader HttpHeaders header, @PathVariable int boardId){
+    public Response<Object> boardUnlike(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId){
 
-        String token = header.get("accessToken").toString();
-        Long userId = jwtUtil.getUserId(token);
+        String jwtToken = authorizationHeader.substring(7);
+        Long userId = jwtUtil.getUserId(jwtToken);
 
         boardService.unlike(userId, boardId);
 
