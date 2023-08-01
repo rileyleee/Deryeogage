@@ -71,18 +71,26 @@ const CenteredDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 6vh;
+  height: auto;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  padding: 0;
 `;
 
 const Div = styled.div`
   margin-top: 1%;
   padding: 1vw;
-  width: 40vw;
-  height: 70vh;
+  width: 100%;
+  max-width: 40vw;
+  min-width: 300px;
+  height: auto;
+  min-height: 70vh;
   background-color: white;
   border: 1px #ff914d solid;
   border-radius: 30px;
   text-align: center;
+  overflow: auto;
 `;
 
 const SurveyContainer = styled.div`
