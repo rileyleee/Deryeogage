@@ -3,11 +3,7 @@ package com.kkosunnae.deryeogage.domain.simulation;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
 
 @Service
 @Slf4j

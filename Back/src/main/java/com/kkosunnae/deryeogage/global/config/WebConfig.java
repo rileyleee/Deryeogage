@@ -1,5 +1,4 @@
 package com.kkosunnae.deryeogage.global.config;
-
 import com.kkosunnae.deryeogage.global.interceptor.JwtInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) { //로그인하지 않아도 들어갈 수 있는 uri 등록
+    public void addInterceptors (InterceptorRegistry registry) { //로그인하지 않아도 들어갈 수 있는 uri 등록
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(

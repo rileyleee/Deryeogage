@@ -38,6 +38,9 @@ public class BoardEntity {
     private DetailCodeEntity dogTypeCode;
 
     @Column(length = 20)
+    private String userNickname;
+
+    @Column(length = 20)
     private String title;
 
     private Character friendly;
@@ -69,8 +72,8 @@ public class BoardEntity {
     @Column(name="created_date")
     private LocalDateTime createdDate;
 
-    @OneToMany(mappedBy = "board")
-    private List<ChatRoomEntity> chatRooms = new ArrayList<>();
+//    @OneToMany(mappedBy = "board")
+//    private List<ChatRoomEntity> chatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "board")
     private List<JjimEntity> jjims = new ArrayList<>();
@@ -88,10 +91,11 @@ public class BoardEntity {
     private List<AdoptEntity> adopts = new ArrayList<>();
 
     @Builder
-    public BoardEntity(UserEntity user, DetailCodeEntity regionCode, DetailCodeEntity dogTypeCode, String title, Character friendly, Character activity, Character dependency, Character bark, Character hair, String name, Boolean gender, Byte age, Boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
+    public BoardEntity(UserEntity user, DetailCodeEntity regionCode, DetailCodeEntity dogTypeCode, String userNickname, String title, Character friendly, Character activity, Character dependency, Character bark, Character hair, String name, Boolean gender, Byte age, Boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
         this.user = user;
         this.regionCode = regionCode;
         this.dogTypeCode = dogTypeCode;
+        this.userNickname = userNickname;
         this.title = title;
         this.friendly = friendly;
         this.activity = activity;
@@ -113,6 +117,7 @@ public class BoardEntity {
                 .userId(this.user.getId())
                 .regionCode(this.regionCode.getValue())
                 .dogTypeCode(this.dogTypeCode.getValue())
+                .userNickname(this.userNickname)
                 .title(this.title)
                 .friendly(this.friendly)
                 .activity(this.activity)
@@ -129,6 +134,7 @@ public class BoardEntity {
                 .build();
     }
     public void update(BoardDto boardDto) {
+        this.userNickname = boardDto.getUserNickname();
         this.title = boardDto.getTitle();
         this.friendly = boardDto.getFriendly();
         this.activity = boardDto.getActivity();

@@ -17,6 +17,7 @@ public class BoardDto {
     private long userId;
     private String regionCode;
     private String dogTypeCode;
+    private String userNickname;
     private String title;
     private char friendly;
     private char activity;
@@ -39,11 +40,12 @@ public class BoardDto {
         return gender;
     }
     @Builder
-    public BoardDto(int id, long userId, String regionCode, String dogTypeCode, String title, char friendly, char activity, char dependency, char bark, char hair, String name, boolean gender, byte age, boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
+    public BoardDto(int id, long userId, String regionCode, String dogTypeCode, String userNickname, String title, char friendly, char activity, char dependency, char bark, char hair, String name, boolean gender, byte age, boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
         this.id = id;
         this.userId = userId;
         this.regionCode = regionCode;
         this.dogTypeCode = dogTypeCode;
+        this.userNickname = userNickname;
         this.title = title;
         this.friendly = friendly;
         this.activity = activity;
@@ -75,6 +77,7 @@ public class BoardDto {
                 .user(user)
                 .regionCode(region)
                 .dogTypeCode(dogType)
+                .userNickname(userNickname)
                 .title(title)
                 .friendly(friendly)
                 .activity(activity)

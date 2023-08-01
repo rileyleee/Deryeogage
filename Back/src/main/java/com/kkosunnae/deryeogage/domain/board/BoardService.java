@@ -1,6 +1,7 @@
 package com.kkosunnae.deryeogage.domain.board;
 
 import com.kkosunnae.deryeogage.domain.common.DetailCodeRepository;
+import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
+
+import java.util.Optional;
 
 @Slf4j
 @Transactional
@@ -29,9 +32,15 @@ public class BoardService {
 
     //게시글 작성
     @Transactional
-    public int save(BoardDto boardDto) {
+    public int save(BoardDto boardDto){
         log.info("게시글 제목 : ", boardDto.getTitle());
         boardDto.setCreatedDate(LocalDateTime.now());
+
+        Optional<UserEntity> user = userRepository.findById(boardDto.getUserId());
+        boardDto.setUserNickname(user.get().getNickname());
+
+        log.info("user 닉네임게시글작성서비스: "+ user.get().getNickname());
+
         BoardEntity board = boardRepository.save(boardDto.toEntity(userRepository, detailCodeRepository));
         return board.getId();
     }
@@ -39,25 +48,32 @@ public class BoardService {
 
     //게시글 수정
     @Transactional
-    public int update(Integer id, BoardDto boardDto) {
-        BoardEntity board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 유저의 게시글이 없습니다. id : " + id));
-        boardDto.setCreatedDate(LocalDateTime.now());
-        board.update(boardDto);
-        boardRepository.save(board);
-        return board.getId();
+    public int update(Integer id, BoardDto boardDto){
+        BoardEntity board = boardRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 유저의 게시글이 없습니다. id : "+id));
+
+        Optional<UserEntity> user = userRepository.findById(boardDto.getUserId());
+        if (user.isPresent()) {
+            boardDto.setUserNickname(user.get().getNickname());
+            boardDto.setCreatedDate(LocalDateTime.now());
+            board.update(boardDto);
+            boardRepository.save(board);
+            return board.getId();
+        } else {
+            throw new IllegalArgumentException("해당 유저가 존재하지 않습니다. user id: " + boardDto.getUserId());
+        }
     }
 
     //게시글 삭제
     @Transactional
-    public void deleteById(Integer id) {
+    public void deleteById(Integer id){
         boardRepository.deleteById(id);
     }
 
     //게시글 상세 조회
     @Transactional(readOnly = true)
-    public BoardDto getBoard(Integer id) {
-        BoardEntity board = boardRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("게시글을 찾을 수 없습니다."));
+    public BoardDto getBoard(Integer boardId){
+        BoardEntity board = boardRepository.findById(boardId)
+                .orElseThrow(()-> new NoSuchElementException("게시글을 찾을 수 없습니다."));
         return board.toDto();
     }
 
@@ -70,9 +86,9 @@ public class BoardService {
 
     //게시글 찜
     @Transactional
-    public int like(JjimDto jjimDto) {
+    public int like(JjimDto jjimDto){
 
-        if (!jjimRepository.existsByUserIdAndBoardId(jjimDto.getUserId(), jjimDto.getBoardId())) {
+        if(!jjimRepository.existsByUserIdAndBoardId(jjimDto.getUserId(), jjimDto.getBoardId())) {
             JjimEntity jjim = jjimRepository.save(jjimDto.toEntity(boardRepository, userRepository));
             return jjim.getId();
         }//만약 이미 찜한 게시글이라면
@@ -81,7 +97,7 @@ public class BoardService {
 
     //게시글 찜취소
     @Transactional
-    public void unlike(Long userId, Integer boardId) {
+    public void unlike(Long userId, Integer boardId){
         jjimRepository.deleteByUserIdAndBoardId(userId, boardId);
     }
 
