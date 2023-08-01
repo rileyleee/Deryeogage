@@ -6,6 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, Integer> {
+    /** ChatRoom 목록조회 - 사용자 ID가 user1 또는 user2에 속한 채팅방 */
+    List<ChatRoomEntity> findAllByUser1_IdOrUser2_Id(Long userId1, Long userId2);
+
     /** ChatRoom 조회 - RoomName 검색, 정확히 일치 */
     ChatRoomEntity findByRoomName(String roomName);
 
