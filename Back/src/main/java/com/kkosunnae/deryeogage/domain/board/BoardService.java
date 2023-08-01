@@ -136,18 +136,14 @@ public class BoardService {
 
         // 저장한 이름과 주소목록 담을 Map 선언
         Map<String, String> uploadedFiles = new HashMap<>();
-        log.info("Here1");
-
+        
+        // 1개 이상 이미지 또는 동영상을 등록해야 하기 때문에 찾아오지 못하면 잘못된 값이므로 에러 반환 맞음
         List<BoardFileEntity> boardFiles = boardFileRepository.findByBoardId(boardId)
                 .orElseThrow(() -> new RuntimeException("Failed to fetch board files for board id: " + boardId));
-        log.info("Here1.5");
+
         log.info("리스트 갯수"+boardFiles.size());
 
-
-        for(int a = 0; a<boardFiles.size(); a++){
-            log.info("있다고");
-        }
-        // 해당 게시글의 파일이 저장된 S3상 파일별 주소목록 반환
+        // 해당 게시글의 파일이 저장된 S3상 파일별 주소목록 반환 (이미지 파일 등록 개수 하한 정하지 않은 경우 활용)
 //        List<BoardFileEntity> boardFiles = boardFileRepository.findByBoardId(boardId)
 //                .orElse(Collections.emptyList()); //등록된 파일 없으면 빈 리스트 반환
 
@@ -157,13 +153,9 @@ public class BoardService {
                     BoardFileEntity boardFileEntity = boardFiles.get(i);
                     BoardFileDto eachFileDto = boardFileEntity.toDto();
                     uploadedFiles.put(eachFileDto.getSavedName(), eachFileDto.getPath()); //저장된 이름과 경로 반환
-                    log.info("Here2");
                 });
 
         return uploadedFiles;
     }
-
-
-
 
 }
