@@ -47,7 +47,7 @@ public class BoardController {
 
         // DB에 파일이름 저장
         boardService.saveBoardFile(boardId, nameList);
-        return Response.success(null);
+        return Response.success(boardId);
     }
 
 

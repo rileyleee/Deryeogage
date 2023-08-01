@@ -122,7 +122,6 @@ public class BoardService {
                     } else { //이미지
                         boardFileDto.setType(false);
                     }
-
                     boardFileDto.setPath(savedPaths.get(i));
                     boardFileDto.setCreatedDate(uploadTime);
 
