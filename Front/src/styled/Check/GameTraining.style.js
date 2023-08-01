@@ -4,7 +4,7 @@ export const GameStartsecond = styled.div`
     &.second {
         height: 70vh;
         padding: 1vh;
-        background-image: url("assets/corgi 2/jump.gif"),url("assets/things/ground.png"),url("assets/training/gym.png");
+        background-image: url(${props => `assets/${props.petType}/${props.changingWord}${props.petType}.gif`}),url("assets/things/ground.png"),url("assets/training/gym.png");
         background-repeat: no-repeat;
         background-position: center, 50% 70%, center;
         background-size: 35% 40%, 35% 15%, cover;

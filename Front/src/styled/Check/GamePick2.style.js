@@ -19,15 +19,15 @@ export const GamePick2BGI = styled.button`
     border: none;
     /* background-color: bisque; */
     &.one {
-        background-image: url("assets/home/home2.png");
+        background-image: url("assets/home/home1.png");
         border: ${props => (props.isclicked ? '3px #FF914D solid' : 'none')};
     }
     &.two {
-        background-image: url("assets/home/벽난로 집.gif");
+        background-image: url("assets/home/home2.png");
         border: ${props => (props.isclicked ? '3px #FF914D solid' : 'none')};
     }
     &.three {
-        background-image: url("assets/home/home2.png");
+        background-image: url("assets/home/home3.png");
         border: ${props => (props.isclicked ? '3px #FF914D solid' : 'none')};
     }
 `

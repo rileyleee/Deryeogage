@@ -4,24 +4,32 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import * as S from "../../styled/Check/GameBasicScreen.style"
 import GameMenu from "./GameMenu"
 import GameBtn from "./GameBtn"
-
+import {useRecoilValue} from "recoil"
+import { SimulationExistAtom } from "../../recoil/SimulationAtom"
 
 function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
-    const existData = props.existdata // 받아온 데이터
+    const existData = useRecoilValue(SimulationExistAtom)
+    // const existData = props.existdata // 받아온 데이터
     const setHandleMove = (num) => {
         props.handleMove(num)
     }
+    console.log(existData.petType)
+    console.log(existData.petName)
+    console.log(existData.background)
   return (
-    <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-between">
+    <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-between"
+    petType={existData.petType}
+    background={existData.background}
+    >
         <div className="d-flex justify-content-between">
             <div>
                 <GameBtn className="orange" onClick={() => setHandleMove(6)}>훈련하러 가기</GameBtn> 
                 {/* 바로 실행 안되게 하려면 화살표 함수 필수.. */}
                 <br />
-                <GameBtn className="orange" onClick={() => setHandleMove(7)}>산책하러 가기</GameBtn>
+                <GameBtn existData={existData} className="orange" onClick={() => setHandleMove(7)}>산책하러 가기</GameBtn>
             </div>
             <div>
-                <GameBtn className="orange" as="div">뽀리네 집</GameBtn>
+                <GameBtn className="orange" as="div">{existData.petName}네 집</GameBtn>
             </div>
             <div className="d-flex flex-column justify-content-between align-items-end">
                 <div className="d-flex flex-column">

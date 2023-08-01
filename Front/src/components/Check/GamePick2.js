@@ -2,14 +2,19 @@
 import React, {useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as S from "../../styled/Check/GamePick2.style"
+import {useRecoilState} from "recoil"
+import { SimulationBGI } from "../../recoil/SimulationAtom"
 
 function GamePick2(props) {
   const {onNextPage, onPreviousPage} = props
   const [currentButton, setCurrentButton] = useState(null);
+  const [BGIValue, setBGIValue] = useRecoilState(SimulationBGI)
 
   const handleButtonPick = buttonIndex => {
     setCurrentButton(buttonIndex);
+    setBGIValue(buttonIndex)
   };
+  console.log(BGIValue)
     return (
       <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-around">
           <S.GamePick1Text className='bgi'>강아지를 키울 집을 골라주세요!</S.GamePick1Text>
@@ -23,13 +28,13 @@ function GamePick2(props) {
             </div>
             <div className="carousel-inner">
               <div className="carousel-item active">
-                <S.GamePick2BGI className={`d-block one ${currentButton === 0 ? 'clicked' : ''}`} onClick={() => handleButtonPick(0)} isclicked={currentButton === 0}></S.GamePick2BGI>
+                <S.GamePick2BGI className={`d-block one ${currentButton === 1 ? 'clicked' : ''}`} onClick={() => handleButtonPick(1)} isclicked={currentButton === 1}></S.GamePick2BGI>
               </div>
               <div className="carousel-item">
-                <S.GamePick2BGI className={`d-block two ${currentButton === 1 ? 'clicked' : ''}`} onClick={() => handleButtonPick(1)} isclicked={currentButton === 1}></S.GamePick2BGI>
+                <S.GamePick2BGI className={`d-block two ${currentButton === 2 ? 'clicked' : ''}`} onClick={() => handleButtonPick(2)} isclicked={currentButton === 2}></S.GamePick2BGI>
               </div>
               <div className="carousel-item">
-                <S.GamePick2BGI className={`d-block three ${currentButton === 2 ? 'clicked' : ''}`} onClick={() => handleButtonPick(2)} isclicked={currentButton === 2}></S.GamePick2BGI>
+                <S.GamePick2BGI className={`d-block three ${currentButton === 3 ? 'clicked' : ''}`} onClick={() => handleButtonPick(3)} isclicked={currentButton === 3}></S.GamePick2BGI>
               </div>
             </div>
             <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">

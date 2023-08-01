@@ -33,9 +33,13 @@ import NotFound from "./pages/NotFound/NotFound";
 // Check
 
 
-
+import React, { useEffect } from "react";
 
 function App() {
+    useEffect(() => {
+      localStorage.setItem('activatedNum', 5); // SomePage에 들어왔을 때 activatedNum을 5로 설정
+    }, []);
+
   return (
     <>
       <div className="container">

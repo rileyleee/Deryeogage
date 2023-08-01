@@ -5,9 +5,6 @@ import * as S from "../../styled/Check/GameMenu.style"
 function GameMenu(props) {
     const existData = props.existData
     const borderColor = props.borderColor || "#FF914D";
-    // console.log(existData)
-    // console.log(Number(existData.startTime.substr(11, 2)))
-    // console.log(Number(existData.startTime.substr(14, 2)))
 
     const timeDifferenceFromStorage = JSON.parse(localStorage.getItem('timeDifference'));
     let initialHoursDifference, initialMinutesDifference;
