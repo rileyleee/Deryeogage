@@ -1,5 +1,6 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
+import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,14 +18,17 @@ public class ChatRoomEntity extends BaseTime{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id1")
+    private UserEntity user1;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id2")
+    private UserEntity user2;
+
+
     @Column(name="board_id")
     private Integer boardId;
-
-    @Column(name="user_id1")
-    private Long userId1;
-
-    @Column(name="user_id2")
-    private Long userId2;
 
     private String roomName;
 
@@ -35,10 +39,10 @@ public class ChatRoomEntity extends BaseTime{
     private List<ChatMessageEntity> chatMessageList;
 
     @Builder
-    public ChatRoomEntity(Integer boardId, Long userId1, Long userId2, String roomName) {
+    public ChatRoomEntity(Integer boardId, UserEntity user1, UserEntity user2, String roomName) {
         this.boardId = boardId;
-        this.userId1 = userId1;
-        this.userId2 = userId2;
+        this.user1 = user1;
+        this.user2 = user2;
         this.roomName = roomName;
     }
 
