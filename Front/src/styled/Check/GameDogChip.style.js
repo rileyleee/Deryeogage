@@ -24,10 +24,6 @@ export const GameDogChipButton = styled.button`
 
 export const GameDogChipNum = styled.p`
     font-size: 2vw;
-    /* position: absolute;
-    left: 50%;
-    top: 50%; 
-    transform: translate(-50%, -50%); */
     text-align: center;
     display: ${props => (props.show ? "block" : "none")}
 `
