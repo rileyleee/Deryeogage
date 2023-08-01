@@ -27,7 +27,7 @@ function Header() {
                 진단하기
               </S.ButtonWrapper>
               <ul className="dropdown-menu">
-                <li><a className="dropdown-item" href="/simulation">시뮬레이션</a></li>
+                <li><a className="dropdown-item" href="/simulations">시뮬레이션</a></li>
                 <li><a className="dropdown-item" href="/checklist">체크리스트</a></li>
               </ul>
             </li>

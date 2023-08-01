@@ -27,7 +27,27 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                 <div className="d-flex flex-column">
                     <GameMenu borderColor="#FF914D" existData={existData}/>
                     <div className="d-flex flex-column align-items-end">
-                    <GameBtn className="orange">가격표 보기</GameBtn>
+                    <GameBtn className="orange" data-bs-toggle="modal" data-bs-target="#exampleModal">가격표 보기</GameBtn>
+                    <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm modal-dialog-centered">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">가격표</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <S.GameModalBody>
+                                    <p>▪ 밥 2000원</p>
+                                    <p>▪ 간식 1000원</p>
+                                    <p>▪ 배변패드 500원</p>
+                                    <p>▪ 장난감 500원</p>
+                                    <p>▪ 산책 1000원</p>
+                                    <p>▪ 병원비 100000원</p>
+                                </S.GameModalBody>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                     <GameBtn className="orange">돈 벌러 가기</GameBtn>
                     </div>
                 </div>

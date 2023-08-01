@@ -67,7 +67,7 @@ function App() {
             <Route path="/survey" element={<Survey />} />
 
             {/* 시뮬레이션, 사전테스트 */}
-            <Route path="/simulation" element={<Simulation />} />
+            <Route path="/simulations" element={<Simulation />} />
             <Route path="/checklist" element={<CheckList />} />
             <Route path="/checklist/:id" element={<CheckListResult />} />
 

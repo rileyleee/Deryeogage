@@ -19,21 +19,10 @@ function Simulation() {
   const SimulationNumValue = useRecoilValue(SimulationNum)
   const SimulationExistValue = useRecoilValue(SimulationExistAtom)
   // localStorage에서 값을 가져와서 초기 상태를 설정합니다.
-  const [activatedNum, setActivatedNum] = useState(() => parseInt(localStorage.getItem('activatedNum'), 10) || SimulationNumValue) 
+  const [activatedNum, setActivatedNum] = useState(() => localStorage.getItem('activatedNum') || SimulationNumValue) 
   // 다음, 이전 페이지로 이동하기 위한 변수
 
   // activatedNum이 변경될 때마다 localStorage를 업데이트 합니다.
-
-
-  useEffect(() => {
-    // 현재 주소를 가져옵니다.
-    const currentPath = location.pathname;
-  
-    // 만약 현재 주소가 http://localhost:8080/simulations/2941475981이 아닌 경우에만 activatedNum을 5로 변경합니다.
-    if (currentPath !== "/simulations/2941475981") {
-      setActivatedNum(5);
-    }
-  }, [location]);
   
   useEffect(() => {
     localStorage.setItem('activatedNum', activatedNum);

@@ -61,7 +61,7 @@ const StyledLink = styled.a`
 `;
 
 function Home() {
-  const userId = 2941475981; // 임의의 사용자 ID로 설정했습니다.
+  // const userId = 2941475981; // 임의의 사용자 ID로 설정했습니다.
   const [existValue, setExistValue] = useRecoilState(SimulationExistAtom)
   const [startValue, setStartValue] = useRecoilState(SimulationStartAtom)
   const [num, setNum] = useRecoilState(SimulationNum)
@@ -70,10 +70,11 @@ function Home() {
     event.preventDefault();
   
     try {
-      const url = `http://localhost:8080/simulations/${userId}`;
+      const url = 'http://localhost:8080/simulations';
+      const Token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI5NDE0NzU5ODEsImlhdCI6MTY5MDgwOTcyMywiZXhwIjoxNjkwODk2MTIzfQ.BuVCe--S4BhvAK4s7Fwj6JNqOYN-yryqFTjFpusWME0'
       const response = await axios.get(url, {
         headers: {
-          'accessToken': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI5NDE0NzU5ODEsImlhdCI6MTY5MDc2NjAzOCwiZXhwIjoxNjkwODUyNDM4fQ.-BScSWR1lOUkD4Tevx47DRa6BHvPDFqAaDgVGuolblY', // 이곳에 실제 토큰 값을 넣으세요.
+          'Authorization' : 'Bearer '+ Token, // 이곳에 실제 토큰 값을 넣으세요.
           // 'Content-Type': 'application/json'
         }
       });
@@ -85,7 +86,7 @@ function Home() {
         setStartValue(response.data)
         setNum(1)
       }
-      navigate("/simulation")
+      navigate("/simulations")
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +107,7 @@ function Home() {
       <ContentContainer>
         <Div>
           <p>시뮬레이션을 통해 가상으로 강아지를 키워보세요!</p>
-          <StyledLink href={"/simulation"} onClick={handleSurveyLinkClick}><PiPawPrintFill/> 시뮬레이션하러 가기</StyledLink>
+          <StyledLink href={"/simulations"} onClick={handleSurveyLinkClick}><PiPawPrintFill/> 시뮬레이션하러 가기</StyledLink>
         </Div>
         <Div>
           <p>선호도 조사를 통해 나의 생활에 맞는 강아지를 찾아보세요!</p>

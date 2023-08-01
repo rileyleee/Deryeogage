@@ -5,7 +5,9 @@ import * as S from "../../styled/Check/GameMenu.style"
 function GameMenu(props) {
     const existData = props.existData
     const borderColor = props.borderColor || "#FF914D";
-    console.log(existData)
+    // console.log(existData)
+    // console.log(Number(existData.startTime.substr(11, 2)))
+    // console.log(Number(existData.startTime.substr(14, 2)))
 
     const timeDifferenceFromStorage = JSON.parse(localStorage.getItem('timeDifference'));
     let initialHoursDifference, initialMinutesDifference;
@@ -15,8 +17,8 @@ function GameMenu(props) {
         initialMinutesDifference = timeDifferenceFromStorage.minutes;
     } else {
         // If timeDifference does not exist in localStorage, calculate it
-        initialHoursDifference = (existData.lastTime[3] - existData.startTime[3] + 24) % 24;
-        initialMinutesDifference = (existData.lastTime[4] - existData.startTime[4] + 60) % 60;
+        initialHoursDifference = (Number(existData.lastTime.substr(11, 2)) - Number(existData.startTime.substr(11, 2)) + 24) % 24;
+        initialMinutesDifference = (Number(existData.lastTime.substr(14, 2)) - Number(existData.startTime.substr(14, 2)) + 60) % 60;
 
         if (initialMinutesDifference < 0) {
             initialMinutesDifference += 60;
@@ -30,6 +32,8 @@ function GameMenu(props) {
         minutes: initialMinutesDifference
     });
     const [cost, setCost] = useState(() => localStorage.getItem('cost') || existData.cost);
+    console.log(hpPercentage)
+    console.log(timeDifference)
 
     useEffect(() => {
         let hpTimer = 0;

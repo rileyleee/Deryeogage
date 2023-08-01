@@ -18,9 +18,8 @@ export const GameBasicOver = styled.button`
     color: white;
 `
 
-/* export const GameDog = styled.div`
-    background-image: url("assets/corgi 2/jump.gif");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 35% 40%;
-` */
+export const GameModalBody = styled.div`
+    background-color: #FFF7E7;
+    padding: 1vw;
+    border-radius: 20px;
+`
