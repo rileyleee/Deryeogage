@@ -17,26 +17,29 @@ const LoginContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 89vh;
+  height: auto;
+  min-height: 100vh;
 `;
 
 const LoginBox = styled.div`
-  padding: 1.5rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
   background-color: white;
   border: 1px #ff914d solid;
   border-radius: 30px;
   text-align: center;
   margin-top: 1%;
   padding: 1vw;
-  width: 40vw;
-  height: 60vh;
+  width: 100%;
+  max-width: 40vw;
+  min-width: 300px;
+  height: auto;
 `;
 
 const Title = styled.h3`
   color: rgba(255, 145, 77, 1);
   margin-bottom: 1rem;
 `;
-
 function Login() {
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;

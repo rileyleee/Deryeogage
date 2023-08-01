@@ -1,4 +1,5 @@
 // 입양게시판 - 전체 게시글 조회 페이지
+import styled from "styled-components";
 import NotLogin from "../../components/Adopt/NotLogin";
 import NotSurvey from "../../components/Adopt/NotSurvey";
 import LoginSurvey from "../../components/Adopt/LoginSurvey";
@@ -30,9 +31,26 @@ function AdoptBoard() {
 
       {/* 그 다음 강아지 게시물들 보여줘야함 */}
       <DogListItem />
-      <button onClick={onClick}>글 작성하기</button>
+      <Button onClick={onClick}>글 작성하기</Button>
     </div>
   );
 }
 
 export default AdoptBoard;
+
+export const Button = styled.button`
+  border: none;
+  background-color: #ff914d;
+  padding: 0.5vw 1vw;
+  border-radius: 30px;
+  color: white;
+  margin-top: 1vw;
+  left: 50%;
+  transform: translateX(-50%); /* Add this to center the button horizontally */
+  position: relative; /* Add this to enable the horizontal centering */
+
+  /* Additional styles (optional) */
+  display: block;
+  width: fit-content;
+  cursor: pointer;
+`;

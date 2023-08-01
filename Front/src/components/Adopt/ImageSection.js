@@ -2,30 +2,74 @@
 
 import React from "react";
 import * as S from "../../styled/Adopt/AdoptBoardCreate.style";
+import styled from "styled-components";
 
-function ImageSection({ selectedImages, handleImageChange }) {
+function ImageSection({
+  selectedImages,
+  selectedVideos,
+  handleImageChange,
+  handleVideoChange,
+  handleImageRemove,
+  handleVideoRemove,
+}) {
   return (
     <div>
-      강아지의 <S.Span>사진</S.Span>을 등록해주세요.
+      <S.Span>사진</S.Span>을 등록해주세요.
       <S.FlexContainer>
         {/* "Add Photo" button */}
         <S.ImageContainer>
-          <label htmlFor="dogimg">➕</label>
+          <label htmlFor="img-upload">➕</label>
           <input
             type="file"
             multiple
-            accept=".jpg, .jpeg, .png"
+            accept="*"
             style={{ display: "none" }}
-            id="dogimg"
+            id="img-upload"
             onChange={handleImageChange}
           />
         </S.ImageContainer>
 
         {/* Image previews */}
-        {selectedImages.length > 0 &&
+        {selectedImages &&
+          selectedImages.length > 0 &&
           selectedImages.map((imageURL, index) => (
             <S.ImageContainer key={index}>
-              <S.PreviewImage src={imageURL} alt={`미리보기 ${index + 1}`} />
+              <S.PreviewImage
+                src={imageURL}
+                alt={`이미지 미리보기 ${index + 1}`}
+                onClick={() => handleImageRemove(index)} // 이 부분 추가
+              />
+            </S.ImageContainer>
+          ))}
+      </S.FlexContainer>
+      <S.Span>동영상</S.Span>을 등록해주세요.
+      <S.FlexContainer>
+        {/* "Add Video" button */}
+        <S.ImageContainer>
+          <label htmlFor="video-upload">➕</label>
+          <input
+            type="file"
+            multiple
+            accept="*"
+            style={{ display: "none" }}
+            id="video-upload"
+            onChange={handleVideoChange}
+          />
+        </S.ImageContainer>
+
+        {/* Video previews */}
+        {selectedVideos &&
+          selectedVideos.length > 0 &&
+          selectedVideos.map((videoURL, index) => (
+            <S.ImageContainer key={index}>
+              <VideoPreview
+                src={videoURL}
+                alt={`비디오 미리보기 ${index + 1}`}
+                autoPlay
+                loop
+                muted
+                onClick={() => handleVideoRemove(index)} // 이 부분 추가
+              />
             </S.ImageContainer>
           ))}
       </S.FlexContainer>
@@ -34,3 +78,10 @@ function ImageSection({ selectedImages, handleImageChange }) {
 }
 
 export default ImageSection;
+
+const VideoPreview = styled.video`
+  width: 100px; // Adjust this to your preferred width
+  height: 100px; // Adjust this to your preferred height
+  object-fit: cover;
+  border-radius: 30px;
+`;

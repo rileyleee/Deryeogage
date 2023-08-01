@@ -1,156 +1,189 @@
-// 입양게시판 - 게시글 작성 페이지
-
 import React, { useState } from "react";
 import axios from "axios";
-import * as S from "../../styled/Adopt/AdoptBoardCreate.style";
-import PersonalitySection from "../../components/Adopt/PersonalitySection";
-import DogInfoSection, { Div } from "../../components/Adopt/DogInfoSection";
 import ImageSection from "../../components/Adopt/ImageSection";
+import DogInfoSection from "../../components/Adopt/DogInfoSection";
+import PersonalitySection from "../../components/Adopt/PersonalitySection";
+import * as S from "../../styled/Adopt/AdoptBoardCreate.style";
 
-function AdoptBoardCreate(props) {
+function AdoptBoardCreate() {
+  // 이미지 등록 관련 코드
   const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImageFiles, setSelectedImageFiles] = useState([]);
+  const handleImageChange = (event) => {
+    const files = event.target.files;
+    const selectedImagesArray = [...selectedImages];
+    const selectedImageFilesArray = [...selectedImageFiles];
+    for (let i = 0; i < files.length; i++) {
+      selectedImagesArray.push(URL.createObjectURL(files[i]));
+      selectedImageFilesArray.push(files[i]);
+    }
+    setSelectedImages(selectedImagesArray);
+    setSelectedImageFiles(selectedImageFilesArray);
+    event.target.value = null; // 이 부분 추가
+  };
+
+  // 동영상 등록 관련 코드
+  const [selectedVideos, setSelectedVideos] = useState([]);
+  const [selectedVideoFiles, setSelectedVideoFiles] = useState([]);
+  const handleVideoChange = (event) => {
+    const files = event.target.files;
+    const selectedVideosArray = [...selectedVideos];
+    const selectedVideoFilesArray = [...selectedVideoFiles];
+    for (let i = 0; i < files.length; i++) {
+      selectedVideosArray.push(URL.createObjectURL(files[i]));
+      selectedVideoFilesArray.push(files[i]);
+    }
+    setSelectedVideos(selectedVideosArray);
+    setSelectedVideoFiles(selectedVideoFilesArray);
+    event.target.value = null; // 이 부분 추가
+  };
+
+  // 이미지 삭제 관련 코드
+  const handleImageRemove = (indexToRemove) => {
+    setSelectedImages(
+      selectedImages.filter((_, index) => index !== indexToRemove)
+    );
+    setSelectedImageFiles(
+      selectedImageFiles.filter((_, index) => index !== indexToRemove)
+    );
+  };
+
+  // 비디오 삭제 관련 코드
+  const handleVideoRemove = (indexToRemove) => {
+    setSelectedVideos(
+      selectedVideos.filter((_, index) => index !== indexToRemove)
+    );
+    setSelectedVideoFiles(
+      selectedVideoFiles.filter((_, index) => index !== indexToRemove)
+    );
+  };
+
+  // 강아지 특성(선호도 조사) 관련 코드
   const [friendly, setFriendly] = useState(0);
   const [activity, setActivity] = useState(0);
   const [dependency, setDependency] = useState(0);
   const [bark, setBark] = useState(0);
   const [hair, setHair] = useState(0);
-  const [age, setAge] = useState("");
-  const [name, setName] = useState("");
-  const [region, setRegion] = useState("");
-  const [chip, setChip] = useState(false); // 초기 값을 false로 변경
-  const [gender, setGender] = useState(false); // 초기 값을 false로 변경
-  const [health, setHealth] = useState("");
-  const [introduction, setIntroduction] = useState("");
 
-  const handleChipChange = (event) => {
-    setChip(event.target.value === "등록" ? true : false); // 등록 선택 시 true, 미등록 선택 시 false
+  // DogInfoSection에서 관리할 state들 추가
+  const [dogName, setDogName] = useState("");
+  const [dogAge, setDogAge] = useState(0);
+  const [dogRegion, setDogRegion] = useState("");
+  const [dogGender, setDogGender] = useState(false);
+  const [dogChip, setDogChip] = useState(false);
+
+  // 강아지 소개, 건강정보 관련 코드
+  const [dogHealth, setDogHealth] = useState("");
+  const [dogIntroduction, setDogIntroduction] = useState("");
+  const handleHealthChange = (event) => {
+    setDogHealth(event.target.value);
   };
-
-  const handleGenderChange = (event) => {
-    setGender(event.target.value === "male" ? true : false); // male 선택 시 true, female 선택 시 false
+  const handleIntroductionChange = (event) => {
+    setDogIntroduction(event.target.value);
   };
-
-  const handleImageChange = (event) => {
-    const files = event.target.files;
-    const selectedImagesArray = [...selectedImages];
-    for (let i = 0; i < files.length; i++) {
-      selectedImagesArray.push(URL.createObjectURL(files[i]));
-    }
-    setSelectedImages(selectedImagesArray);
-  };
-
-  const onClick = (event) => {
+  console.log(dogGender)
+  console.log(dogChip)
+  // axios 요청 보내기
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const token = localStorage.getItem("accessToken");
 
-    const data = {
-      name: name,
-      age: age,
-      region: region,
-      gender: gender,
-      chip: chip,
-      health: health,
-      introduction: introduction,
-      friendly: friendly,
-      activity: activity,
-      dependency: dependency,
-      bark: bark,
-      hair: hair,
-    };
+    // FormData 객체 생성
+    const formData = new FormData();
 
-    // HTTP POST 요청 보내기
-    // axios
-    //   .post("http://localhost:8080/boards", data)
-    //   .then((res) => {
-    //     // 요청이 성공적으로 처리되었을 때 실행되는 코드
-    //     console.log(res.data); // 응답 데이터 확인
-    //     // 성공적으로 작성되었다는 메시지를 사용자에게 알리거나 다른 작업을 수행할 수 있음
+    // 이미지 파일들 추가
+    selectedImageFiles.forEach((image) => {
+      formData.append("multipartFile", image);
+    });
 
-    //     // 게시글 작성 후 폼 요소들을 초기화
-    //     setAge("");
-    //     setRegion("");
-    //     setGender("");
-    //     setChip("");
-    //     setHealth("");
-    //     setIntroduction("");
-    //     setFriendly(0);
-    //     setActivity(0);
-    //     setDependency(0);
-    //     setBark(0);
-    //     setHair(0);
-    //     setSelectedImages([]);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //   });
-    
-    localStorage.setItem("data", JSON.stringify(data));
-    console.log(data);
+    // // 비디오 파일들 추가
+    selectedVideoFiles.forEach((video) => {
+      formData.append("multipartFile", video);
+    });
+
+    // 다른 필드들 추가
+    formData.append("friendly", friendly);
+    formData.append("activity", activity);
+    formData.append("dependency", dependency);
+    formData.append("bark", bark);
+    formData.append("hair", hair);
+    formData.append("health", dogHealth);
+    formData.append("introduction", dogIntroduction);
+    formData.append("name", dogName);
+    formData.append("age", dogAge);
+    formData.append("regionCode", dogRegion);
+    formData.append("gender", dogGender);
+    formData.append("chipYn", dogChip);
+    formData.append("dogTypeCode", "CHIHUAHUA");
+    formData.append("title", "우리집꼬미");
+    console.log(formData);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/boards",
+        formData,
+        {
+          headers: {
+            message: "loginClaimUser",
+            "Content-Type": "multipart/form-data", // 이 부분 추가
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
-    <article className="container">
+    <>
       <h2>분양게시판 글 작성하기</h2>
-      <form onSubmit={onClick}>
-        <Div>
-          <ImageSection
-            selectedImages={selectedImages}
-            handleImageChange={handleImageChange}
-          />
-        </Div>
-
+      <form onSubmit={handleSubmit}>
+        <ImageSection
+          selectedImages={selectedImages}
+          selectedVideos={selectedVideos}
+          handleImageChange={handleImageChange}
+          handleVideoChange={handleVideoChange}
+          handleImageRemove={handleImageRemove}
+          handleVideoRemove={handleVideoRemove} // 이 부분 추가
+        />
         <S.FlexContainer>
           <S.Box>
             <PersonalitySection
-              friendly={friendly}
               setFriendly={setFriendly}
-              activity={activity}
               setActivity={setActivity}
-              dependency={dependency}
               setDependency={setDependency}
-              bark={bark}
               setBark={setBark}
-              hair={hair}
               setHair={setHair}
             />
           </S.Box>
 
           <S.Box>
             <DogInfoSection
-              name={name} // 추가
-              setName={setName} // 추가
-              age={age}
-              setAge={setAge}
-              region={region}
-              setRegion={setRegion}
-              setChip={setChip}
-              handleChipChange={handleChipChange} // 추가
-              gender={gender} // 추가
-              handleGenderChange={handleGenderChange} // 추가
+              setName={setDogName}
+              setAge={setDogAge}
+              setRegion={setDogRegion}
+              setGender={setDogGender}
+              setChip={setDogChip}
+              dogGender={dogGender}
+              dogChip={dogChip}
+              dogAge={dogAge}
+              dogName={dogName}
+              dogRegion={dogRegion}
             />
           </S.Box>
         </S.FlexContainer>
-        <S.Div>
-          강아지의 <S.Span>건강정보</S.Span>를 상세하게 작성해주세요.
-          <S.DogTextarea
-            name="health"
-            placeholder="강아지의 건강정보를 적어주세요."
-            value={health} // 추가
-            onChange={(e) => setHealth(e.target.value)} // 추가
-          />
-          강아지를 자유롭게 <S.Span>소개</S.Span>해주세요.
-          <S.DogTextarea
-            name="introduction"
-            placeholder="강아지를 소개해주세요"
-            value={introduction} // 추가
-            onChange={(e) => setIntroduction(e.target.value)} // 추가
-          />
-        </S.Div>
-
+        강아지의 <S.Span>건강정보</S.Span>를 상세하게 작성해주세요.
+        <S.DogTextarea value={dogHealth} onChange={handleHealthChange} />
+        강아지를 자유롭게 <S.Span>소개</S.Span>해주세요.
+        <S.DogTextarea
+          value={dogIntroduction}
+          onChange={handleIntroductionChange}
+        />
         <S.Button type="submit">등록하기</S.Button>
       </form>
-    </article>
+    </>
   );
 }
 
 export default AdoptBoardCreate;
-
