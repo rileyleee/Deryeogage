@@ -1,5 +1,6 @@
 package com.kkosunnae.deryeogage.domain.board;
 
+import com.kkosunnae.deryeogage.global.s3file.S3FileService;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import com.kkosunnae.deryeogage.global.util.Response;
 import io.swagger.annotations.Api;
@@ -8,7 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Api
@@ -20,25 +25,29 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    //글 작성 // Swagger테스트한다고 @requestBody 뺌
+    private final S3FileService s3FileService;
+
+    // 글 작성 // Swagger 하려면 @requestBody 삭제 필요
+    // 한 가지 주의할 점은, @RequestBody와 @RequestPart를
+    // 동시에 사용하려면 요청의 Content-Type이 multipart/form-data이어야 합니다.
     @PostMapping("/boards")
-    public Response<Object> saveBoard(@RequestHeader("Authorization") String authorizationHeader, @RequestBody BoardDto boardDto){
+    public Response<Object> saveBoard(@RequestHeader("Authorization") String authorizationHeader, BoardDto boardDto, @RequestPart("multipartFile") List<MultipartFile> multipartFile){
         String jwtToken = authorizationHeader.substring(7);
         log.info("헤더에서 가져온 토큰 정보: "+ jwtToken);
 
         Long userId = jwtUtil.getUserId(jwtToken);
-
-        log.info("글작성아이디 "+ userId);
-//        log.info("글작성닉네임 "+ userDto.getNickname());
-
         boardDto.setUserId(userId);
-//        boardDto.setUserNickname(userDto.getNickname());
 
         log.info("userId :", boardDto.getUserId());
 
-        boardService.save(boardDto);
-        return Response.success(null);
+        Integer boardId = boardService.save(boardDto);
 
+        // 원본 파일명과 S3에 저장된 파일명이 담긴 Map
+        Map<String, List> nameList = s3FileService.uploadFile(multipartFile);
+
+        // DB에 파일이름 저장
+        boardService.saveBoardFile(boardId, nameList);
+        return Response.success(boardId);
     }
 
 
@@ -81,9 +90,13 @@ public class BoardController {
 
     //글 상세조회
     @GetMapping("boards/{boardId}")
-    public Response<BoardDto> selectBoard(@PathVariable int boardId){
+    public Response<List<Object>> selectBoard(@PathVariable int boardId){
         BoardDto thisBoard = boardService.getBoard(boardId);
-        return Response.success(thisBoard);
+        Map<String, String> uploadedFiles = boardService.getBoardFiles(boardId);
+        List<Object> boardSet = new ArrayList<>();
+        boardSet.add(thisBoard);
+        boardSet.add(uploadedFiles);
+        return Response.success(boardSet);
     }
 
     //글 목록 조회
@@ -121,4 +134,6 @@ public class BoardController {
         return Response.success(null);
 
     }
+
+
 }

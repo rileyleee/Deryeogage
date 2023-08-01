@@ -62,14 +62,14 @@ public class BoardDto {
     }
 
 
-    public BoardEntity toEntity(UserRepository userRepository, DetailCodeRepository detailCodeEntity){
+    public BoardEntity toEntity(UserRepository userRepository, DetailCodeRepository detailCodeRepository){
         UserEntity user = userRepository.findById(this.userId)
            .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
 
-        DetailCodeEntity region = detailCodeEntity.findByValue(this.regionCode)
+        DetailCodeEntity region = detailCodeRepository.findByValue(this.regionCode)
                 .orElseThrow(() -> new NoSuchElementException("해당 지역이 존재하지 않습니다."));
 
-        DetailCodeEntity dogType = detailCodeEntity.findByValue(this.dogTypeCode)
+        DetailCodeEntity dogType = detailCodeRepository.findByValue(this.dogTypeCode)
                 .orElseThrow(() -> new NoSuchElementException("해당 견종이 존재하지 않습니다."));
 
 

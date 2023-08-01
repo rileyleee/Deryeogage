@@ -1,5 +1,6 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
+import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,17 +17,26 @@ public class ChatMessageEntity extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="user_id")
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
+    private UserEntity user;
+
+    private String nickName;
+
     private String message;
 
     @ManyToOne
     private ChatRoomEntity chatRoom;
 
+    @Column(name = "read_yn")
+    private boolean readYN;
+
     @Builder
-    public ChatMessageEntity(Long userId, String message, ChatRoomEntity chatRoom) {
-        this.userId = userId;
+    public ChatMessageEntity(UserEntity user, String nickName, String message, ChatRoomEntity chatRoom, boolean readYN) {
+        this.user = user;
+        this.nickName = nickName;
         this.message = message;
         this.chatRoom = chatRoom;
+        this.readYN = readYN;
     }
 }
