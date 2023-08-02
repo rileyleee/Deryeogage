@@ -6,12 +6,11 @@ import com.kkosunnae.deryeogage.global.util.Response;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -104,14 +103,15 @@ public class BoardController {
 
     //글 목록 조회
     @GetMapping("/list")
-    public Response<Page<BoardDto>> findBoards(Pageable pageable) {
-        Page<BoardDto> boardList = boardService.findAll(pageable);
-        return Response.success(boardList);
+    public Response <Map<Integer, List<Object>>> findBoards() {
+        Map<Integer, List<Object>> boardSetMap = boardService.findAll();
+        return Response.success(boardSetMap);
     }
+
 
     //글 목록 조회 추천
     @GetMapping("/recommendation")
-    public Response<List<BoardDto>>findRecommendedBoards(@RequestHeader("Authorization") String authorizationHeader) {
+    public Response<List<BoardDto>> findRecommendedBoards(@RequestHeader("Authorization") String authorizationHeader) {
         String jwtToken = authorizationHeader.substring(7);
         Long userId = jwtUtil.getUserId(jwtToken);
 

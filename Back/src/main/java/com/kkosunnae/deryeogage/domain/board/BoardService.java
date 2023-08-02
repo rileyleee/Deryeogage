@@ -7,8 +7,6 @@ import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -77,9 +75,20 @@ public class BoardService {
 
     //전체 게시글 목록 조회
     @Transactional
-    public Page<BoardDto> findAll(final Pageable pageable) {
-        Page<BoardEntity> boardPage = boardRepository.findAll(pageable);
-        return boardPage.map(BoardEntity::toDto);
+    public Map<Integer, List<Object>> findAll() {
+        List<BoardEntity> boardEntityList = boardRepository.findAll();
+        List<Object> boardSet = new ArrayList<>();
+        Map<Integer, List<Object>> boardSetMap = new HashMap<>();
+        for (BoardEntity boardEntity : boardEntityList) {
+
+            Integer thisBoardId = boardEntity.getId();
+            Map<String, String> uploadedFiles = this.getBoardFiles(thisBoardId);
+
+            boardSet.add(boardEntity.toDto());
+            boardSet.add(uploadedFiles);
+            boardSetMap.put(thisBoardId,boardSet);
+        }
+        return boardSetMap;
     }
 
     //전체 게시글 목록 조회 (추천)
@@ -87,7 +96,7 @@ public class BoardService {
     public List<BoardDto> findRecommendation(Long userId) {
         Optional<SurveyEntity> survey = surveyRepository.findByUserId(userId);
         String order = survey.get().getRanking();
-        int[] userPreferences={
+        int[] userPreferences = {
                 Character.getNumericValue(survey.get().getFriendly()),
                 Character.getNumericValue(survey.get().getActivity()),
                 Character.getNumericValue(survey.get().getDependency()),
@@ -97,20 +106,20 @@ public class BoardService {
         System.out.println(Arrays.toString(userPreferences));
 
         List<BoardEntity> boardEntityList = boardRepository.findAll();
-        List<BoardDto> boardDtoList=new ArrayList<>();
-        Map<Integer, int[]> boardMap=new HashMap<>();
-        for(BoardEntity boardEntity: boardEntityList){
-            int[] five={Character.getNumericValue(boardEntity.getFriendly()),
+        List<BoardDto> boardDtoList = new ArrayList<>();
+        Map<Integer, int[]> boardMap = new HashMap<>();
+        for (BoardEntity boardEntity : boardEntityList) {
+            int[] five = {Character.getNumericValue(boardEntity.getFriendly()),
                     Character.getNumericValue(boardEntity.getActivity()),
                     Character.getNumericValue(boardEntity.getDependency()),
                     Character.getNumericValue(boardEntity.getBark()),
                     Character.getNumericValue(boardEntity.getHair())};
-            boardMap.put(boardEntity.getId(),five);
+            boardMap.put(boardEntity.getId(), five);
         }
 
-        EuclideanSimilarityRecommendation euclideanSimilarityRecommendation =new EuclideanSimilarityRecommendation();
+        EuclideanSimilarityRecommendation euclideanSimilarityRecommendation = new EuclideanSimilarityRecommendation();
         List<Integer> result = euclideanSimilarityRecommendation.recommendDogs(userPreferences, boardMap, order);
-        for(Integer index : result){
+        for (Integer index : result) {
             boardDtoList.add(boardRepository.findById(index).get().toDto());
         }
         return boardDtoList;
@@ -171,7 +180,7 @@ public class BoardService {
 
         // 저장한 이름과 주소목록 담을 Map 선언
         Map<String, String> uploadedFiles = new HashMap<>();
-        
+
         // 1개 이상 이미지 또는 동영상을 등록해야 하기 때문에 찾아오지 못하면 잘못된 값이므로 에러 반환 맞음
         List<BoardFileEntity> boardFiles = boardFileRepository.findByBoardId(boardId)
                 .orElseThrow(() -> new RuntimeException("게시글에 등록된 파일이 없습니다." + boardId));
