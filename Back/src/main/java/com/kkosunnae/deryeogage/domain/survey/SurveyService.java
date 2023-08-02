@@ -26,7 +26,7 @@ public class SurveyService {
     }
 
     public int save(SurveyDto surveyDto) {
-        log.info("설문조사를 작성한 user ID : ", surveyDto.getUser());
+        log.info("설문조사를 작성한 user ID : ", surveyDto.getUserId());
         SurveyEntity survey = surveyRepository.save(surveyDto.toEntity(userRepository));
         return survey.getId();
     }
