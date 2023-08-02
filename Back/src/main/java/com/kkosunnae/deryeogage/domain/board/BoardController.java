@@ -31,9 +31,9 @@ public class BoardController {
     // 한 가지 주의할 점은, @RequestBody와 @RequestPart를
     // 동시에 사용하려면 요청의 Content-Type이 multipart/form-data이어야 합니다.
     @PostMapping("/boards")
-    public Response<Object> saveBoard(@RequestHeader("Authorization") String authorizationHeader, BoardDto boardDto, @RequestPart("multipartFile") List<MultipartFile> multipartFile){
+    public Response<Object> saveBoard(@RequestHeader("Authorization") String authorizationHeader, BoardDto boardDto, @RequestPart("multipartFile") List<MultipartFile> multipartFile) {
         String jwtToken = authorizationHeader.substring(7);
-        log.info("헤더에서 가져온 토큰 정보: "+ jwtToken);
+        log.info("헤더에서 가져온 토큰 정보: " + jwtToken);
 
         Long userId = jwtUtil.getUserId(jwtToken);
         boardDto.setUserId(userId);
@@ -53,17 +53,17 @@ public class BoardController {
 
     //글 수정
     @PutMapping("/boards/{boardId}")
-    public Response<Object> updateBoard(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId, @RequestBody BoardDto boardDto){
+    public Response<Object> updateBoard(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId, @RequestBody BoardDto boardDto) {
 
         String jwtToken = authorizationHeader.substring(7);
         Long requestUserId = jwtUtil.getUserId(jwtToken);
 
         BoardDto thisBoard = boardService.getBoard(boardId);
 
-        log.info("수정: 게시글 유저 정보 : "+thisBoard.getUserId());
-        log.info("요청 유저 정보 : "+requestUserId);
+        log.info("수정: 게시글 유저 정보 : " + thisBoard.getUserId());
+        log.info("요청 유저 정보 : " + requestUserId);
 
-        if(thisBoard.getUserId()!=requestUserId){
+        if (thisBoard.getUserId() != requestUserId) {
             return Response.fail(null);
         }
         boardDto.setUserId(requestUserId);
@@ -74,23 +74,25 @@ public class BoardController {
 
     //글 삭제
     @DeleteMapping("/boards/{boardId}")
-    public Response<Object> deleteBoard(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId){
+    public Response<Object> deleteBoard(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId) {
 
         String jwtToken = authorizationHeader.substring(7);
         Long requestUserId = jwtUtil.getUserId(jwtToken);
 
         BoardDto thisBoard = boardService.getBoard(boardId);
-        if(thisBoard.getUserId()!=requestUserId){
+        if (thisBoard.getUserId() != requestUserId) {
             return Response.fail(null);
         }
-
+        // 해당 게시글이 가진 모든 파일을 리스트로 가져와서 삭제 수행
+        s3FileService.deleteFile(boardService.getBoardFiles(boardId));
+        // 이후에 게시글 삭제
         boardService.deleteById(boardId);
         return Response.success(null);
-  }
+    }
 
     //글 상세조회
     @GetMapping("boards/{boardId}")
-    public Response<List<Object>> selectBoard(@PathVariable int boardId){
+    public Response<List<Object>> selectBoard(@PathVariable int boardId) {
         BoardDto thisBoard = boardService.getBoard(boardId);
         Map<String, String> uploadedFiles = boardService.getBoardFiles(boardId);
         List<Object> boardSet = new ArrayList<>();
@@ -107,10 +109,9 @@ public class BoardController {
     }
 
 
-
     //분양글 찜
     @PostMapping("/boards/{boardId}/like")
-    public Response<Object> boardLike(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId, JjimDto jjimDto){
+    public Response<Object> boardLike(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId, JjimDto jjimDto) {
 
         String jwtToken = authorizationHeader.substring(7);
         Long userId = jwtUtil.getUserId(jwtToken);
@@ -124,7 +125,7 @@ public class BoardController {
 
     //분양글 찜 취소
     @DeleteMapping("/boards/{boardId}/like")
-    public Response<Object> boardUnlike(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId){
+    public Response<Object> boardUnlike(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId) {
 
         String jwtToken = authorizationHeader.substring(7);
         Long userId = jwtUtil.getUserId(jwtToken);
@@ -132,8 +133,5 @@ public class BoardController {
         boardService.unlike(userId, boardId);
 
         return Response.success(null);
-
     }
-
-
 }

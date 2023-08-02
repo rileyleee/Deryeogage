@@ -138,9 +138,7 @@ public class BoardService {
         
         // 1개 이상 이미지 또는 동영상을 등록해야 하기 때문에 찾아오지 못하면 잘못된 값이므로 에러 반환 맞음
         List<BoardFileEntity> boardFiles = boardFileRepository.findByBoardId(boardId)
-                .orElseThrow(() -> new RuntimeException("Failed to fetch board files for board id: " + boardId));
-
-        log.info("리스트 갯수"+boardFiles.size());
+                .orElseThrow(() -> new RuntimeException("게시글에 등록된 파일이 없습니다." + boardId));
 
         // 해당 게시글의 파일이 저장된 S3상 파일별 주소목록 반환 (이미지 파일 등록 개수 하한 정하지 않은 경우 활용)
 //        List<BoardFileEntity> boardFiles = boardFileRepository.findByBoardId(boardId)
