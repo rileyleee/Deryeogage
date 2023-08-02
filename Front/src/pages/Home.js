@@ -1,10 +1,110 @@
-import React from "react";
-import axios from 'axios'
+import React, { useEffect } from "react";
+import axios from "axios";
 import styled from "styled-components";
 import { PiPawPrintFill } from "react-icons/pi";
-import {useRecoilState} from "recoil"
-import { SimulationExistAtom, SimulationStartAtom, SimulationNum } from "../recoil/SimulationAtom"
-import {useNavigate} from 'react-router-dom'
+import { useRecoilState } from "recoil";
+import {
+  SimulationExistAtom,
+  SimulationStartAtom,
+  SimulationNum,
+} from "../recoil/SimulationAtom";
+import { useNavigate } from "react-router-dom";
+
+function Home() {
+  const [existValue, setExistValue] = useRecoilState(SimulationExistAtom);
+  const navigate = useNavigate();
+
+  const handleLinkClick = async (event, page) => {
+    event.preventDefault();
+
+    // 로그인 여부를 확인하여 이동할 페이지 결정
+    if (localStorage.getItem("accessToken")) {
+      // 로그인되어 있는 경우 해당 페이지로 이동
+      if (page === "/simulations") {
+        try {
+          const url = "http://localhost:8080/simulations";
+          const token = localStorage.getItem("accessToken");
+          const response = await axios.get(url, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          });
+          console.log(response.data);
+          if (response.data !== "Start a new simulation") {
+            setExistValue(response.data);
+            localStorage.setItem("activatedNum", 5);
+          } else {
+            localStorage.setItem("activatedNum", 1);
+          }
+          navigate("/simulations");
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        navigate(page);
+      }
+    } else {
+      // 로그인되어 있지 않은 경우 로그인 페이지로 이동
+      navigate("/login");
+      // 로그인 후에 이동할 페이지 정보를 로컬 스토리지에 저장
+      localStorage.setItem("clickedPage", page);
+    }
+  };
+
+  // 컴포넌트가 렌더링될 때에 로그인 후에 이동할 페이지를 처리
+  React.useEffect(() => {
+    const clickedPage = localStorage.getItem("clickedPage");
+    if (localStorage.getItem("accessToken") && clickedPage) {
+      navigate(clickedPage);
+      localStorage.removeItem("clickedPage"); // 이동한 페이지 정보를 삭제
+    }
+  }, [navigate]);
+
+  return (
+    <HomeContainer>
+      <Main>
+        <Span>데려가개</Span>
+      </Main>
+      <Text>
+        데려가개는 강아지들의 <Span>행복한 미래</Span>를 최우선으로 성숙한
+        반려문화를 도모합니다. <br />
+      </Text>
+      <Text>
+        소중한 생명인 강아지와 오랜시간 함께할 <Span>인연</Span>을 만듭니다.
+      </Text>
+      <ContentContainer>
+        <Div>
+          <p>시뮬레이션을 통해 가상으로 강아지를 키워보세요!</p>
+          <StyledLink
+            onClick={(event) => handleLinkClick(event, "/simulations")}
+          >
+            <PiPawPrintFill /> 시뮬레이션하러 가기
+          </StyledLink>
+        </Div>
+        <Div>
+          <p>선호도 조사를 통해 나의 생활에 맞는 강아지를 찾아보세요!</p>
+          <StyledLink onClick={(event) => handleLinkClick(event, "/survey")}>
+            <PiPawPrintFill /> 선호도 조사하러 가기
+          </StyledLink>
+        </Div>
+        <Div>
+          <p>
+            입양 전 사전테스트를 통해 강아지를 키울 준비가 되었는지
+            확인해보세요!
+          </p>
+          <StyledLink onClick={(event) => handleLinkClick(event, "/checklist")}>
+            <PiPawPrintFill /> 입양 전 사전테스트하러 가기
+          </StyledLink>
+        </Div>
+      </ContentContainer>
+      <ImageWrapper>
+        <Image src="assets/main.png" />
+      </ImageWrapper>
+    </HomeContainer>
+  );
+}
+
+export default Home;
 
 const HomeContainer = styled.div`
   max-width: 1200px;
@@ -58,79 +158,5 @@ const StyledLink = styled.a`
   text-decoration: none;
   color: rgba(255, 145, 77, 1);
   margin: 1vw;
+  cursor: pointer; /* Add cursor: pointer style */
 `;
-
-function Home() {
-  // const userId = 2941475981; // 임의의 사용자 ID로 설정했습니다.
-  const [existValue, setExistValue] = useRecoilState(SimulationExistAtom)
-  // const [startValue, setStartValue] = useRecoilState(SimulationStartAtom)
-  // const [num, setNum] = useRecoilState(SimulationNum)
-  const navigate = useNavigate()
-  const handleSurveyLinkClick = async (event) => {
-    event.preventDefault();
-  
-    try {
-      const url = 'http://localhost:8080/simulations';
-      const Token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI5NDE0NzU5ODEsImlhdCI6MTY5MDg2MTYyNCwiZXhwIjoxNjkwOTQ4MDI0fQ.gwG8VXy4cnWArzap78NJfvvSQGxB61AUgvRkmMjpwuM'
-      const response = await axios.get(url, {
-        headers: {
-          'Authorization' : 'Bearer '+ Token, // 이곳에 실제 토큰 값을 넣으세요.
-          // 'Content-Type': 'application/json'
-        }
-      });
-      console.log(response.data);
-      if (response.data !== 'Start a new simulation') {
-        setExistValue(response.data)
-        localStorage.setItem('activatedNum', 5) // 시뮬레이션 게임 진행중이면 5 저장
-        // setNum(5) // 리코일에도 저장
-      } else {
-        // setStartValue(response.data)
-        localStorage.setItem('activatedNum', 1) // 시뮬레이션 게임 시작해야 하면 1 저장
-        // setNum(1)// 리코일에도 저장
-      }
-      navigate("/simulations")
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  console.log(existValue)
-  return (
-    <HomeContainer>
-      <Main>
-        <Span>데려가개</Span>
-      </Main>
-      <Text>
-        데려가개는 강아지들의 <Span>행복한 미래</Span>를 최우선으로 성숙한
-        반려문화를 도모합니다. <br />
-      </Text>
-      <Text>
-        소중한 생명인 강아지와 오랜시간 함께할 <Span>인연</Span>을 만듭니다.
-      </Text>
-      <ContentContainer>
-        <Div>
-          <p>시뮬레이션을 통해 가상으로 강아지를 키워보세요!</p>
-          <StyledLink href={"/simulations"} onClick={handleSurveyLinkClick}><PiPawPrintFill/> 시뮬레이션하러 가기</StyledLink>
-        </Div>
-        <Div>
-          <p>선호도 조사를 통해 나의 생활에 맞는 강아지를 찾아보세요!</p>
-          <StyledLink href={"/survey"}><PiPawPrintFill/> 선호도 조사하러 가기</StyledLink>
-        </Div>
-        <Div>
-          <p>
-            입양 전 사전테스트를 통해 강아지를 키울 준비가 되었는지
-            확인해보세요!
-          </p>
-          <StyledLink href={"/checklist"}>
-          <PiPawPrintFill/> 입양 전 사전테스트하러 가기
-          </StyledLink>
-        </Div>
-      </ContentContainer>
-      <ImageWrapper>
-        <Image src="assets/main.png" />
-      </ImageWrapper>
-    </HomeContainer>
-  );
-}
-
-export default Home;
-

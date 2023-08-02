@@ -44,7 +44,7 @@ const LoginHandeler = () => {
   }, []);
 
   const getNickname = async () => {
-    let token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem("accessToken");
     console.log(`토큰 : ${token}`);
     await axios({
       method: "GET",
