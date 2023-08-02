@@ -47,7 +47,7 @@ public class SurveyEntity {
     public SurveyDto toDto() {
         return SurveyDto.builder()
                 .id(this.id)
-                .user(this.user.getId())
+                .userId(this.user.getId())
                 .friendly(this.friendly)
                 .activity(this.activity)
                 .dependency(this.dependency)
