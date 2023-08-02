@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @Log4j2
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/surveys")
+@RequestMapping("/api/surveys")
 public class SurveyController {
 
     private final JwtUtil jwtUtil;
