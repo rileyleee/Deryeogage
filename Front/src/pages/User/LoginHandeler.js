@@ -13,12 +13,15 @@ const LoginHandeler = () => {
   // 인가코드 뽑아오기
   const code = new URL(window.location.href).searchParams.get("code");
   console.log(code);
+  
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+  
   // 인가코드 백으로 보내는 코드
   useEffect(() => {
     const kakaoLogin = async () => {
       await axios({
         method: "GET",
-        url: `http://localhost:8080/users/oauth?code=${code}`,
+        url: `${REACT_APP_API_URL}/users/oauth?code=${code}`,
         headers: {
           "Content-Type": "application/json;charset=utf-8", //json형태로 데이터를 보내겠다는뜻
           //"Access-Control-Allow-Origin": "*", //이건 cors 에러때문에 넣어둔것. 당신의 프로젝트에 맞게 지워도됨
@@ -44,11 +47,11 @@ const LoginHandeler = () => {
   }, []);
 
   const getNickname = async () => {
-    let token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem("accessToken");
     console.log(`토큰 : ${token}`);
     await axios({
       method: "GET",
-      url: "http://localhost:8080/users",
+      url: `${REACT_APP_API_URL}/users`,
       headers: {
         "Content-Type": "application/json;charset=utf-8",
         Authorization: `Bearer ${token}`,
