@@ -33,8 +33,11 @@ public class SurveyEntity {
 
     private Character bark;
 
+    @Column(length = 5)
+    private String order;
+
     @Builder
-    private SurveyEntity(Integer id, UserEntity user, Character friendly, Character activity, Character dependency, Character hair, Character bark) {
+    private SurveyEntity(Integer id, UserEntity user, Character friendly, Character activity, Character dependency, Character hair, Character bark, String order) {
         this.id = id;
         this.user = user;
         this.friendly = friendly;
@@ -42,6 +45,7 @@ public class SurveyEntity {
         this.dependency = dependency;
         this.hair = hair;
         this.bark = bark;
+        this.order = order;
     }
 
     public SurveyDto toDto() {
@@ -53,6 +57,7 @@ public class SurveyEntity {
                 .dependency(this.dependency)
                 .hair(this.hair)
                 .bark(this.bark)
+                .order(this.order)
                 .build();
     }
 
@@ -62,5 +67,6 @@ public class SurveyEntity {
         this.dependency = surveyDto.getDependency();
         this.hair = surveyDto.getHair();
         this.bark = surveyDto.getBark();
+        this.order = surveyDto.getOrder();
     }
 }
