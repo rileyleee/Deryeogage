@@ -44,7 +44,7 @@ public class PreTestEntity {
     public PreTestDto toDto() {
         return PreTestDto.builder()
                 .id(this.id)
-                .user(this.user.getId())
+                .userId(this.user.getId())
                 .responseDate(this.responseDate)
                 .promise(this.promise)
                 .score(this.score)
