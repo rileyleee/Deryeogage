@@ -4,37 +4,58 @@ import styled from "styled-components";
 import axios from "axios";
 
 function Survey() {
+  const [ranking, setRanking] = useState([0, 1, 2, 3, 4]);
   const [friendly, setFriendly] = useState(0);
   const [activity, setActivity] = useState(0);
   const [dependency, setDependency] = useState(0);
   const [bark, setBark] = useState(0);
   const [hair, setHair] = useState(0);
   const token = localStorage.getItem("accessToken");
-  
-  // 별점 기본값 설정
-  const handleSubmit = () => {
-    const data = {
-      friendly,
-      activity,
-      dependency,
-      bark,
-      hair,
-    };
 
-  // 설문 데이터를 서버로 보내는 axios POST 요청
-  axios
-    .post("http://localhost:8080/surveys", data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      console.log("설문 데이터가 성공적으로 제출되었습니다!");
-    })
-    .catch((error) => {
-      console.error("설문 데이터 제출 오류:", error);
-    });
-  }
+  const titles = ["친화력", "활동량", "의존성", "왈왈왈", "털빠짐"];
+  const selectors = [setFriendly, setActivity, setDependency, setBark, setHair];
+
+  const onDragStart = (e, index) => {
+    e.dataTransfer.setData("index", index);
+  };
+
+  const onDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const onDrop = (e, index) => {
+    const draggedIndex = e.dataTransfer.getData("index");
+    const newRanking = [...ranking];
+    const [removed] = newRanking.splice(draggedIndex, 1);
+    newRanking.splice(index, 0, removed);
+    setRanking(newRanking);
+  };
+
+  const handleSubmit = () => {
+    const rankingString = ranking.map(item => item + 1).join("");
+  console.log("현재 순서:", rankingString);
+    const data = {
+      friendly: friendly.toString(),
+      activity: activity.toString(),
+      dependency: dependency.toString(),
+      bark: bark.toString(),
+      hair: hair.toString(),
+      ranking: rankingString
+    };
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+    axios
+      .post(`${REACT_APP_API_URL}/surveys`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((response) => {
+        console.log("설문 데이터가 성공적으로 제출되었습니다!", response);
+      })
+      .catch((error) => {
+        console.error("설문 데이터 제출 오류:", error);
+      });
+  };
 
   return (
     <CenteredDiv>
@@ -47,13 +68,18 @@ function Survey() {
         <p>
           <Span>선호도 조사</Span>를 진행해주세요!
         </p>
-
         <SurveyContainer>
-          <SurveyPaw title="친화력" onSelect={setFriendly} />
-          <SurveyPaw title="활동량" onSelect={setActivity} />
-          <SurveyPaw title="의존성" onSelect={setDependency} />
-          <SurveyPaw title="왈왈왈" onSelect={setBark} />
-          <SurveyPaw title="털빠짐" onSelect={setHair} />
+          {ranking.map((item, index) => (
+            <div
+              key={index}
+              draggable
+              onDragStart={(e) => onDragStart(e, index)}
+              onDragOver={onDragOver}
+              onDrop={(e) => onDrop(e, index)}
+            >
+              <SurveyPaw title={titles[item]} onSelect={selectors[item]} />
+            </div>
+          ))}
         </SurveyContainer>
         <Button onClick={handleSubmit}>등록하기</Button>
       </Div>
@@ -61,7 +87,7 @@ function Survey() {
   );
 }
 
-export default Survey;
+export default Survey;  
 
 const Span = styled.span`
   color: rgba(255, 145, 77, 1);

@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// common
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -16,6 +18,7 @@ import Home from "./pages/Home";
 import AdoptBoard from "./pages/Adopt/AdoptBoard";
 import AdoptBoardCreate from "./pages/Adopt/AdoptBoardCreate";
 import AdoptBoardDetail from "./pages/Adopt/AdoptBoardDetail";
+import AdoptBoardUpdate from "./pages/Adopt/AdoptBoardUpdate";
 
 // Review
 import ReviewBoard from "./pages/Review/ReviewBoard";
@@ -24,16 +27,18 @@ import ReviewBoardDetail from "./pages/Review/ReviewBoardDetail";
 
 // Simulation
 import Simulation from "./pages/Check/Simulation";
-import CheckList from "./pages/Check/CheckList";
-import CheckListResult from "./pages/Check/CheckListResult";
+
 import Survey from "./pages/User/Survey";
 import Mission from "./pages/User/Misson";
-import NotFound from "./pages/NotFound/NotFound";
 
 // Check
+import CheckList from "./pages/Check/CheckList";
+import CheckListResult from "./pages/Check/CheckListResult";
+
+// NotFound
+import NotFound from "./pages/NotFound/NotFound";
 
 
-import React, { useEffect } from "react";
 
 function App() {
     useEffect(() => {
@@ -60,6 +65,7 @@ function App() {
             <Route path="/adopt" element={<AdoptBoard />} />
             <Route path="/adopt/create" element={<AdoptBoardCreate />} />
             <Route path="/adopt/:boardId" element={<AdoptBoardDetail />} />
+            <Route exact path="/adopt/edit/:boardId" component={AdoptBoardUpdate} />
 
             {/* 입양후기게시판 */}
             <Route path="/review" element={<ReviewBoard />} />

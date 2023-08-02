@@ -64,9 +64,9 @@ function AdoptBoardCreate1() {
     console.log(data);
 
     // HTTP POST 요청 보내기
-
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
     axios
-      .post("http://localhost:8080/boards", JSON.stringify(data), {
+      .post(`${REACT_APP_API_URL}/boards`, JSON.stringify(data), {
         headers: {
           "Content-Type": "application/json;charset=utf-8",
           Authorization: `Bearer ${token}`,
