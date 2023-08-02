@@ -19,15 +19,31 @@ export const GamePick2BGI = styled.button`
     border: none;
     /* background-color: bisque; */
     &.one {
-        background-image: url("assets/home/home1.png");
+        background-image: url("assets/home/home1.jpg");
         border: ${props => (props.isclicked ? '3px #FF914D solid' : 'none')};
     }
     &.two {
-        background-image: url("assets/home/home2.png");
+        background-image: url("assets/home/home2.jpg");
         border: ${props => (props.isclicked ? '3px #FF914D solid' : 'none')};
     }
     &.three {
-        background-image: url("assets/home/home3.png");
+        background-image: url("assets/home/home3.jpg");
+        border: ${props => (props.isclicked ? '3px #FF914D solid' : 'none')};
+    }
+    &.four {
+        background-image: url("assets/home/home4.jpg");
+        border: ${props => (props.isclicked ? '3px #FF914D solid' : 'none')};
+    }
+    &.five {
+        background-image: url("assets/home/home5.jpg");
+        border: ${props => (props.isclicked ? '3px #FF914D solid' : 'none')};
+    }
+    &.six {
+        background-image: url("assets/home/home6.jpg");
+        border: ${props => (props.isclicked ? '3px #FF914D solid' : 'none')};
+    }
+    &.seven {
+        background-image: url("assets/home/home7.jpg");
         border: ${props => (props.isclicked ? '3px #FF914D solid' : 'none')};
     }
 `

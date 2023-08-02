@@ -50,3 +50,18 @@ export const SimulationSit = atom({
     key: 'SimulationSit',
     default:0
 })
+
+export const SimulationWalkingCnt = atom({
+    key: 'SimulationWalkingCnt',
+    default:0
+})
+
+export const SimulationHours = atom({
+    key: 'SimulationHours',
+    default:0
+})
+
+export const SimulationMinutes = atom({
+    key: 'SimulationMinutes',
+    default:0
+})
