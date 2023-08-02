@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/simulations")
+@RequestMapping("/api/simulations")
 public class SimulationController {
     private final JwtUtil jwtUtil;
 

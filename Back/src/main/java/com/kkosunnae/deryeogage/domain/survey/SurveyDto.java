@@ -15,7 +15,7 @@ public class SurveyDto {
 
     private int id;
 
-    private long user;
+    private long userId;
 
     private char friendly;
 
@@ -27,19 +27,22 @@ public class SurveyDto {
 
     private char bark;
 
+    private String ranking;
+
     @Builder
-    public SurveyDto(int id, long user, char friendly, char activity, char dependency, char hair, char bark) {
+    public SurveyDto(int id, long userId, char friendly, char activity, char dependency, char hair, char bark, String ranking) {
         this.id = id;
-        this.user = user;
+        this.userId = userId;
         this.friendly = friendly;
         this.activity = activity;
         this.dependency = dependency;
         this.hair = hair;
         this.bark = bark;
+        this.ranking = ranking;
     }
 
     public SurveyEntity toEntity(UserRepository userRepository) {
-        UserEntity user = userRepository.findById(this.user)
+        UserEntity user = userRepository.findById(this.userId)
                 .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
 
         return SurveyEntity.builder()
@@ -50,6 +53,7 @@ public class SurveyDto {
                 .dependency(this.dependency)
                 .hair(this.hair)
                 .bark(this.bark)
+                .ranking(this.ranking)
                 .build();
     }
 }
