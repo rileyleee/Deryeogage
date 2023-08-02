@@ -27,10 +27,10 @@ public class SurveyDto {
 
     private char bark;
 
-    private String order;
+    private String ranking;
 
     @Builder
-    public SurveyDto(int id, long userId, char friendly, char activity, char dependency, char hair, char bark, String order) {
+    public SurveyDto(int id, long userId, char friendly, char activity, char dependency, char hair, char bark, String ranking) {
         this.id = id;
         this.userId = userId;
         this.friendly = friendly;
@@ -38,7 +38,7 @@ public class SurveyDto {
         this.dependency = dependency;
         this.hair = hair;
         this.bark = bark;
-        this.order = order;
+        this.ranking = ranking;
     }
 
     public SurveyEntity toEntity(UserRepository userRepository) {
@@ -53,7 +53,7 @@ public class SurveyDto {
                 .dependency(this.dependency)
                 .hair(this.hair)
                 .bark(this.bark)
-                .order(this.order)
+                .ranking(this.ranking)
                 .build();
     }
 }
