@@ -1,6 +1,8 @@
 package com.kkosunnae.deryeogage.domain.board;
 
 import com.kkosunnae.deryeogage.domain.common.DetailCodeRepository;
+import com.kkosunnae.deryeogage.domain.survey.SurveyEntity;
+import com.kkosunnae.deryeogage.domain.survey.SurveyRepository;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class BoardService {
     private final DetailCodeRepository detailCodeRepository;
     private final JjimRepository jjimRepository;
     private final BoardFileRepository boardFileRepository;
+    private final SurveyRepository surveyRepository;
 
     //게시글 작성
     @Transactional
@@ -77,6 +80,40 @@ public class BoardService {
     public Page<BoardDto> findAll(final Pageable pageable) {
         Page<BoardEntity> boardPage = boardRepository.findAll(pageable);
         return boardPage.map(BoardEntity::toDto);
+    }
+
+    //전체 게시글 목록 조회 (추천)
+    @Transactional
+    public List<BoardDto> findRecommendation(Long userId) {
+        Optional<SurveyEntity> survey = surveyRepository.findByUserId(userId);
+        String order = survey.get().getRanking();
+        int[] userPreferences={
+                Character.getNumericValue(survey.get().getFriendly()),
+                Character.getNumericValue(survey.get().getActivity()),
+                Character.getNumericValue(survey.get().getDependency()),
+                Character.getNumericValue(survey.get().getBark()),
+                Character.getNumericValue(survey.get().getHair())
+        };
+        System.out.println(Arrays.toString(userPreferences));
+
+        List<BoardEntity> boardEntityList = boardRepository.findAll();
+        List<BoardDto> boardDtoList=new ArrayList<>();
+        Map<Integer, int[]> boardMap=new HashMap<>();
+        for(BoardEntity boardEntity: boardEntityList){
+            int[] five={Character.getNumericValue(boardEntity.getFriendly()),
+                    Character.getNumericValue(boardEntity.getActivity()),
+                    Character.getNumericValue(boardEntity.getDependency()),
+                    Character.getNumericValue(boardEntity.getBark()),
+                    Character.getNumericValue(boardEntity.getHair())};
+            boardMap.put(boardEntity.getId(),five);
+        }
+
+        EuclideanSimilarityRecommendation euclideanSimilarityRecommendation =new EuclideanSimilarityRecommendation();
+        List<Integer> result = euclideanSimilarityRecommendation.recommendDogs(userPreferences, boardMap, order);
+        for(Integer index : result){
+            boardDtoList.add(boardRepository.findById(index).get().toDto());
+        }
+        return boardDtoList;
     }
 
     //게시글 찜

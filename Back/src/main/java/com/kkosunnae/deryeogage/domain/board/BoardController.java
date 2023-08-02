@@ -109,6 +109,16 @@ public class BoardController {
         return Response.success(boardList);
     }
 
+    //글 목록 조회 추천
+    @GetMapping("/recommendation")
+    public Response<List<BoardDto>>findRecommendedBoards(@RequestHeader("Authorization") String authorizationHeader) {
+        String jwtToken = authorizationHeader.substring(7);
+        Long userId = jwtUtil.getUserId(jwtToken);
+
+        List<BoardDto> boardList = boardService.findRecommendation(userId);
+        return Response.success(boardList);
+    }
+
 
     //분양글 찜
     @PostMapping("/{boardId}/like")
