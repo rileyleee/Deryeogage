@@ -37,8 +37,9 @@ function AdoptBoard() {
 
   // 강아지 정보를 서버로부터 가져오는 함수
   const fetchDogs = async () => {
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
     try {
-      const response = await axios.get("http://localhost:8080/boards/list");
+      const response = await axios.get(`${REACT_APP_API_URL}/boards/list`);
       console.log(response.data.data.content)
       setAdoptData({
       board: response.data.data.content,

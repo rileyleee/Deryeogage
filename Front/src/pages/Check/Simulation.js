@@ -30,7 +30,7 @@ function Simulation() {
     const currentPath = location.pathname;
     console.log(currentPath)
   
-    // 만약 현재 주소가 http://localhost:8080/simulations/2941475981이 아닌 경우에만 activatedNum을 5로 변경합니다.
+    // 만약 현재 주소가 ${REACT_APP_API_URL}/simulations/2941475981이 아닌 경우에만 activatedNum을 5로 변경합니다.
     if (currentPath !== "/simulations") {
       setActivatedNum(5);
     }

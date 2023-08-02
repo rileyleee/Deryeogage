@@ -19,9 +19,10 @@ function GameDogChip(props) {
   const [existValue, setExistValue] = useRecoilState(SimulationExistAtom)
 
   const handleSubmit = async () => {
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
     try {
         const response = await axios.post(
-            'http://localhost:8080/simulations/create',
+            `${REACT_APP_API_URL}/simulations/create`,
             {
               "petType": SimulationDogValue,
               "petName": SimulationNameValue,

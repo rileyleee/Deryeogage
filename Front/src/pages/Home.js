@@ -20,9 +20,10 @@ function Home() {
     // 로그인 여부를 확인하여 이동할 페이지 결정
     if (localStorage.getItem("accessToken")) {
       // 로그인되어 있는 경우 해당 페이지로 이동
+      const REACT_APP_API_URL = process.env.REACT_APP_API_URL
       if (page === "/simulations") {
         try {
-          const url = "http://localhost:8080/simulations";
+          const url = `${REACT_APP_API_URL}/simulations`;
           const token = localStorage.getItem("accessToken");
           const response = await axios.get(url, {
             headers: {

@@ -42,9 +42,9 @@ function Survey() {
       hair,
       ranking: rankingString
     };
-
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
     axios
-      .post("http://localhost:8080/survays", data, {
+      .post(`${REACT_APP_API_URL}/survays`, data, {
         headers: {
           Authorization: `Bearer ${token}`
         }

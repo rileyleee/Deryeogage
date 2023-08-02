@@ -118,9 +118,10 @@ function AdoptBoardCreate() {
     formData.append("chipYn", dogChip);
     formData.append("dogTypeCode", "CHIHUAHUA");
     formData.append("title", "우리집꼬미");
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
     try {
       const response = await axios.post(
-        "http://localhost:8080/boards",
+        `${REACT_APP_API_URL}/boards`,
         formData,
         {
           headers: {

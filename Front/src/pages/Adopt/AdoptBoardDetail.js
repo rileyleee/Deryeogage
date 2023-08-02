@@ -77,13 +77,13 @@ function AdoptBoardDetail() {
   const [adoptData, setAdoptData] = useState(null);
   const { boardId } = useParams();
   const navigate = useNavigate();
-  
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
   useEffect(() => {
     const fetchAdoptData = async () => {
       if (boardId) {
         try {
           const response = await axios.get(
-            `http://localhost:8080/boards/${boardId}`
+            `${REACT_APP_API_URL}/boards/${boardId}`
           );
           console.log(response);
           setAdoptData({
@@ -106,7 +106,7 @@ function AdoptBoardDetail() {
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      await axios.delete(`http://localhost:8080/boards/${boardId}`, {
+      await axios.delete(`${REACT_APP_API_URL}/boards/${boardId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
