@@ -35,16 +35,16 @@ function Survey() {
     const rankingString = ranking.map(item => item + 1).join("");
   console.log("현재 순서:", rankingString);
     const data = {
-      friendly,
-      activity,
-      dependency,
-      bark,
-      hair,
+      friendly: friendly.toString(),
+      activity: activity.toString(),
+      dependency: dependency.toString(),
+      bark: bark.toString(),
+      hair: hair.toString(),
       ranking: rankingString
     };
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL
     axios
-      .post(`${REACT_APP_API_URL}/survays`, data, {
+      .post(`${REACT_APP_API_URL}/surveys`, data, {
         headers: {
           Authorization: `Bearer ${token}`
         }
