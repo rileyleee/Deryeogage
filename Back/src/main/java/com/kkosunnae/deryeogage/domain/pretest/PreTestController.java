@@ -1,11 +1,13 @@
 package com.kkosunnae.deryeogage.domain.pretest;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/pretest")
 public class PreTestController {
 }

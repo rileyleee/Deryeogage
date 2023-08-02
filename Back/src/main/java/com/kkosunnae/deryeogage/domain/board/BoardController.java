@@ -19,6 +19,7 @@ import java.util.Map;
 @Api
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/boards")
 public class BoardController {
 
     private final JwtUtil jwtUtil;
@@ -30,7 +31,7 @@ public class BoardController {
     // 글 작성 // Swagger 하려면 @requestBody 삭제 필요
     // 한 가지 주의할 점은, @RequestBody와 @RequestPart를
     // 동시에 사용하려면 요청의 Content-Type이 multipart/form-data이어야 합니다.
-    @PostMapping("/boards")
+    @PostMapping
     public Response<Object> saveBoard(@RequestHeader("Authorization") String authorizationHeader, BoardDto boardDto, @RequestPart("multipartFile") List<MultipartFile> multipartFile) {
         String jwtToken = authorizationHeader.substring(7);
         log.info("헤더에서 가져온 토큰 정보: " + jwtToken);
@@ -52,7 +53,7 @@ public class BoardController {
 
 
     //글 수정
-    @PutMapping("/boards/{boardId}")
+    @PutMapping("/{boardId}")
     public Response<Object> updateBoard(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId, @RequestBody BoardDto boardDto) {
 
         String jwtToken = authorizationHeader.substring(7);
@@ -73,7 +74,7 @@ public class BoardController {
     }
 
     //글 삭제
-    @DeleteMapping("/boards/{boardId}")
+    @DeleteMapping("/{boardId}")
     public Response<Object> deleteBoard(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId) {
 
         String jwtToken = authorizationHeader.substring(7);
@@ -91,7 +92,7 @@ public class BoardController {
     }
 
     //글 상세조회
-    @GetMapping("boards/{boardId}")
+    @GetMapping("/{boardId}")
     public Response<List<Object>> selectBoard(@PathVariable int boardId) {
         BoardDto thisBoard = boardService.getBoard(boardId);
         Map<String, String> uploadedFiles = boardService.getBoardFiles(boardId);
@@ -102,7 +103,7 @@ public class BoardController {
     }
 
     //글 목록 조회
-    @GetMapping("/boards/list")
+    @GetMapping("/list")
     public Response<Page<BoardDto>> findBoards(Pageable pageable) {
         Page<BoardDto> boardList = boardService.findAll(pageable);
         return Response.success(boardList);
@@ -110,7 +111,7 @@ public class BoardController {
 
 
     //분양글 찜
-    @PostMapping("/boards/{boardId}/like")
+    @PostMapping("/{boardId}/like")
     public Response<Object> boardLike(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId, JjimDto jjimDto) {
 
         String jwtToken = authorizationHeader.substring(7);
@@ -124,7 +125,7 @@ public class BoardController {
     }
 
     //분양글 찜 취소
-    @DeleteMapping("/boards/{boardId}/like")
+    @DeleteMapping("/{boardId}/like")
     public Response<Object> boardUnlike(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId) {
 
         String jwtToken = authorizationHeader.substring(7);
