@@ -101,6 +101,8 @@ public class BoardController {
         return Response.success(boardSet);
     }
 
+
+
     //글 목록 조회
     @GetMapping("/list")
     public Response <Map<Integer, List<Object>>> findBoards() {
@@ -108,6 +110,14 @@ public class BoardController {
         return Response.success(boardSetMap);
     }
 
+    //내가 쓴 글 목록 조회(마이페이지)
+    @GetMapping("/list/user")
+    public Response <Map<Integer, List<Object>>> findMyBoards(@RequestHeader("Authorization") String authorizationHeader) {
+        String jwtToken = authorizationHeader.substring(7);
+        Long userId = jwtUtil.getUserId(jwtToken);
+        Map<Integer, List<Object>> boardSetMap = boardService.findMyBoards(userId);
+        return Response.success(boardSetMap);
+    }
 
     //글 목록 조회 추천
     @GetMapping("/recommendation")

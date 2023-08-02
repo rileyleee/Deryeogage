@@ -73,12 +73,34 @@ public class BoardService {
         return board.toDto();
     }
 
+
+    // 내가 작성한 게시글 조회
+    public Map<Integer, List<Object>> findMyBoards(Long userId) {
+        Map<Integer, List<Object>> boardSetMap = new HashMap<>();
+        List<Object> boardSet = new ArrayList<>();
+
+        List<BoardEntity> boardEntityList = boardRepository.findByUserId(userId);
+
+        for (BoardEntity boardEntity : boardEntityList) {
+
+            Integer thisBoardId = boardEntity.getId();
+            Map<String, String> uploadedFiles = this.getBoardFiles(thisBoardId);
+
+            boardSet.add(boardEntity.toDto());
+            boardSet.add(uploadedFiles);
+            boardSetMap.put(thisBoardId,boardSet);
+        }
+        return boardSetMap;
+    }
+
     //전체 게시글 목록 조회
     @Transactional
     public Map<Integer, List<Object>> findAll() {
-        List<BoardEntity> boardEntityList = boardRepository.findAll();
-        List<Object> boardSet = new ArrayList<>();
         Map<Integer, List<Object>> boardSetMap = new HashMap<>();
+        List<Object> boardSet = new ArrayList<>();
+
+        List<BoardEntity> boardEntityList = boardRepository.findAll();
+
         for (BoardEntity boardEntity : boardEntityList) {
 
             Integer thisBoardId = boardEntity.getId();
@@ -136,7 +158,7 @@ public class BoardService {
         else throw new IllegalArgumentException("이미 찜한 게시판입니다.");
     }
 
-    //게시글 찜취소
+    //게시글 찜 취소
     @Transactional
     public void unlike(Long userId, Integer boardId) {
         jjimRepository.deleteByUserIdAndBoardId(userId, boardId);
@@ -199,5 +221,6 @@ public class BoardService {
 
         return uploadedFiles;
     }
+
 
 }
