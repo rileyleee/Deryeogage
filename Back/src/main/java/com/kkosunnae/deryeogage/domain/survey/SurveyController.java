@@ -33,7 +33,7 @@ public class SurveyController {
 
         Long userId = jwtUtil.getUserId(jwtToken);
         surveyDto.setUserId(userId);
-        log.info("설문조사 dto 정보 : " + surveyDto.getActivity());
+
         surveyService.save(surveyDto);
         return Response.success(null);
     }
