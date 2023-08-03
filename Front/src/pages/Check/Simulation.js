@@ -11,8 +11,12 @@ import GameBasicScreen from "../../components/Check/GameBasicScreen";
 import GameTraining from "../../components/Check/GameTraining";
 import GameWalking from "../../components/Check/GameWalking"
 import GameMeal from "../../components/Check/GameMeal"
+import GamePoop from "../../components/Check/GamePoop"
+import GameTreat from "../../components/Check/GameTreat"
+import GameToy from "../../components/Check/GameToy"
 import {useRecoilValue, useRecoilState} from "recoil"
-import { SimulationNum, SimulationExistAtom, SimulationWalkingCnt, SimulationStartAtom } from "../../recoil/SimulationAtom"
+import { SimulationNum, SimulationExistAtom, SimulationWalkingCnt, SimulationStartAtom, SimulationHp
+ } from "../../recoil/SimulationAtom"
 import {useLocation} from "react-router-dom"
 
 function Simulation() {
@@ -41,7 +45,7 @@ function Simulation() {
     }
 
     // 위에서 로컬에 저장한 데이터를 가져와서 변수에 저장
-    const [hpPercentage, setHpPercentage] = useState(localStorage.getItem('hpPercentage'))
+    const [hpPercentage, setHpPercentage] = useRecoilState(SimulationHp)
     const [timeDifference, setTimeDifference] = useState(JSON.parse(localStorage.getItem('timeDifference')))
 
     // 시간 및 hp 계산
@@ -142,7 +146,10 @@ function Simulation() {
     5 : <GameBasicScreen existdata={SimulationExistValue} handleMove={handleMove} setHpPercentage={setHpPercentage} time={displayTime()} hp={hpPercentage} walkingIncreaseHp={walkingIncreaseHp}/>,
     6 : <GameTraining existdata={SimulationExistValue} handleMove={handleMove} time={displayTime()} hp={hpPercentage} decreaseHp={decreaseHp}/>,
     7 : <GameWalking handleMove={handleMove} />,
-    8 : <GameMeal handleMove={handleMove}/>
+    8 : <GameMeal handleMove={handleMove}/>,
+    9 : <GamePoop handleMove={handleMove}/>,
+    10 : <GameTreat handleMove={handleMove}/>,
+    11 : <GameToy handleMove={handleMove}/>
   }
 
   // activatedNum에 따라서 GameStartfirst의 테두리 색을 지정
@@ -155,6 +162,8 @@ function Simulation() {
     }
   }
   
+  
+
   return (
     <div className="container" id="Simulation">
       <GameText />

@@ -5,7 +5,7 @@ import * as S from "../../styled/Check/GameBasicScreen.style"
 import GameMenu from "./GameMenu"
 import GameBtn from "./GameBtn"
 import {useRecoilValue, useRecoilState} from "recoil"
-import { SimulationExistAtom, SimulationWalkingCnt, SimulationCost, requirementImagesState, nextImageState  } from "../../recoil/SimulationAtom"
+import { SimulationExistAtom, SimulationWalkingCnt, SimulationCost, requirementImagesState, nextImageState, SimulationHp  } from "../../recoil/SimulationAtom"
 
 
 function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
@@ -13,81 +13,107 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     const walkingCnt = useRecoilValue(SimulationWalkingCnt) // 산책 횟수
     const [cost, setCost] = useRecoilState(SimulationCost)
     // requirementImages Recoil 상태와 상태 업데이트 함수를 가져옴
-    const [requirementImages, setRequirementImages] = useRecoilState(requirementImagesState);
+    const [requirementImages, setRequirementImages] = useRecoilState(requirementImagesState); // 이미지 객체로 저장
     console.log(requirementImages)
-    const [nextImage, setNextImage] = useRecoilState(nextImageState);
+    const [nextImage, setNextImage] = useRecoilState(nextImageState); // 다음 이미지(배변용)
+    const [hpPercentage, setHpPercentage] = useRecoilState(SimulationHp)
     // 산책 돈 계산 코드
     const setHandleMove = (num) => {
         props.handleMove(num)
         if (num === 7) {
             setCost(cost-1000)
-            localStorage.setItem('cost', cost-1000)
+            // localStorage.setItem('cost', cost-1000)
+        } else if (num === 8) {
+            setCost(cost-2000)
+            setHpPercentage(parseInt(hpPercentage)+20)
+            // localStorage.setItem('cost', cost-2000)
+        } else if (num === 9) {
+            setCost(cost-500)
+            setHpPercentage(parseInt(hpPercentage)+5)
+        } else if (num === 10) {
+            setCost(cost-1000)
+            setHpPercentage(parseInt(hpPercentage)+10)
+        } else if (num === 11) {
+            setCost(cost-500)
+            setHpPercentage(parseInt(hpPercentage)+5)
         }
     }
     
-      const [showRandomImage, setShowRandomImage] = useState(null);
-      const [requirementNum, setRequirementNum] = useState(0);
-      const [isImageVisible, setIsImageVisible] = useState(false);
-    
-      useEffect(() => {
-        const currentHour = new Date().getHours();
-        let matchedImage = null;
-        let matchedNum = 0;
-    
-        const updatedImages = requirementImages.map((img) => {
-          const matchedTimeRange = img.timeRanges.find(
-            (range) => currentHour >= range.startTime && currentHour < range.endTime && range.check === 0
-          );
-          if (matchedTimeRange) {
-            matchedImage = img.image;
-            matchedNum = img.num;
-            // 이미지를 보여준 시간대의 check를 1로 변경
-            const updatedTimeRanges = img.timeRanges.map((range) =>
-              range.startTime === matchedTimeRange.startTime && range.endTime === matchedTimeRange.endTime
-                ? { ...range, check: 1 }
-                : range
-            );
-            return { ...img, timeRanges: updatedTimeRanges };
-          }
-          return img;
-        });
-        // requirementImages 상태를 업데이트
-        setRequirementImages(updatedImages);
+      const [showRandomImage, setShowRandomImage] = useState(null); // 어떤 이미지 보여줄건지
+      const [requirementNum, setRequirementNum] = useState(0); // 요구사항 컴포넌트 번호
+      const [isImageVisible, setIsImageVisible] = useState(false); // 이미지 보여줄건지 말건지
+      const [req4Count, setReq4Count] = useState(0); // "assets/things/requirement4.png"의 출현 횟수
+
+    useEffect(() => {
+    const currentHour = new Date().getHours();
+    let matchedImage = null;
+    let matchedNum = 0;
+
+    const updatedImages = requirementImages.map((img) => {
+        // 시간 범위 내에 들고, check=0인 이미지
+        const matchedTimeRange = img.timeRanges.find(
+        (range) => currentHour >= range.startTime && currentHour < range.endTime && range.check === 0
+        );
+        if (matchedTimeRange) {
+        matchedImage = img.image;
+        matchedNum = img.num;
+        const updatedTimeRanges = img.timeRanges.map((range) =>
+            range.startTime === matchedTimeRange.startTime && range.endTime === matchedTimeRange.endTime
+            ? { ...range, check: 1 } // check 1로 바꿔주기
+            : range
+        );
+        return { ...img, timeRanges: updatedTimeRanges }; // 새로 만든 객체 리턴
+        }
+        return img;
+    });
+
+    setRequirementImages(updatedImages);
+    if (matchedImage) {
         setShowRandomImage(matchedImage); // 현재 시간대에 해당하는 이미지 설정
         setRequirementNum(matchedNum);
         setIsImageVisible(!!matchedImage); // showRandomImage가 존재하면 이미지를 보이도록 설정
-    
-        // 이미지가 존재하면, 60초 후에 이미지를 사라지게 함
-        if (matchedImage) {
-          const timeoutId = setTimeout(() => {
-            setIsImageVisible(false);
-          }, 60 * 1000); // 60초 후에 실행
-    
-          // useEffect의 cleanup 함수에서 setTimeout을 clear함
-          return () => clearTimeout(timeoutId);
-        }
-      }, []);
+    }
+    // 만약 matchedImage가 없고, "assets/things/requirement4.png"의 출현 횟수가 8 미만이면
+    // 해당 이미지를 보여준다
+    else if (req4Count < 8 && Math.random() < 0.5) { // 50%의 확률로 이미지가 보이게 설정, 확률은 조정 가능
+        setShowRandomImage("assets/things/requirement4.png");
+        setRequirementNum(11);
+        setIsImageVisible(true);
+        setReq4Count(req4Count + 1); // 출현 횟수 증가
+    }
+
+    // 이미지가 존재하면, 60초 후에 이미지를 사라지게 함
+    if (matchedImage || req4Count < 8) {
+        const timeoutId = setTimeout(() => {
+        setIsImageVisible(false);
+        }, 10 * 1000); // 60초 후에 실행
+        return () => clearTimeout(timeoutId); // useEffect의 cleanup 함수에서 setTimeout을 clear함
+    }
+    }, []);
+
     
     
       const handleImageClick = () => {
         if (isImageVisible) {
-          setIsImageVisible(false);
+          setIsImageVisible(false)
           if (requirementImages[0].image === "assets/things/requirement1.png" && showRandomImage === "assets/things/requirement1.png") {
             console.log(requirementImages[0].image, showRandomImage)
             setNextImage("assets/things/requirement3.png");
           }
         }
     };
-    
+    console.log(requirementNum)
     useEffect(() => {
       if (nextImage) {
         console.log('Next image set, starting timer...');  // 로그 추가
         const timeoutId = setTimeout(() => {
           console.log('Timer finished, showing next image:', nextImage);  // 로그 추가
+          console.log(requirementNum)
+          setRequirementNum(9)
           setShowRandomImage(nextImage);  // nextImage에 해당하는 이미지 설정
           setIsImageVisible(true);  // 변경된 이미지를 보이도록 설정
           setNextImage(null);  // nextImage 상태를 초기화
-        }, 1 * 30 * 1000);  // 3분 후에 실행
+        }, 1 * 10 * 1000);  // 3분 후에 실행
     
         return () => clearTimeout(timeoutId);  // useEffect의 cleanup 함수에서 setTimeout을 clear함
       }

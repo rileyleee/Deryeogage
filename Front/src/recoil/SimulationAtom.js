@@ -71,6 +71,12 @@ export const SimulationCost = atom({
     default:300000
 })
 
+export const SimulationHp = atom({
+    key: 'SimulationHp',
+    default: localStorage.getItem('hpPercentage')
+})
+
+
 export const requirementImagesState = atom({
   key: 'requirementImagesState',
   default: [
@@ -86,9 +92,9 @@ export const requirementImagesState = atom({
       image: "assets/things/requirement2.png",
       timeRanges: [
         { startTime: 12, endTime: 13, check: 0 },
-        { startTime: 20, endTime: 21, check: 0 },
+        { startTime: 23, endTime: 24, check: 0 },
       ],
-      num: 9,
+      num: 10,
     },
   ],
 });
