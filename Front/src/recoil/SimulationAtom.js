@@ -65,3 +65,8 @@ export const SimulationMinutes = atom({
     key: 'SimulationMinutes',
     default:0
 })
+
+export const SimulationCost = atom({
+    key: 'SimulationCost',
+    default:300000
+})
