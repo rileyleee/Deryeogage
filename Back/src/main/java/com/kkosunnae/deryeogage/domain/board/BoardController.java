@@ -8,9 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -105,9 +103,9 @@ public class BoardController {
 
     //글 목록 조회
     @GetMapping("/list")
-    public Response <Map<Integer, List<Object>>> findBoards() {
-        Map<Integer, List<Object>> boardSetMap = boardService.findAll();
-        return Response.success(boardSetMap);
+    public Response <List<Object>> findBoards() {
+        List<Object> boardSet = boardService.findAll();
+        return Response.success(boardSet);
     }
 
     //내가 쓴 글 목록 조회(마이페이지)

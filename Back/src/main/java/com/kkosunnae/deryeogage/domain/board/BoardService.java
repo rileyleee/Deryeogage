@@ -95,8 +95,7 @@ public class BoardService {
 
     //전체 게시글 목록 조회
     @Transactional
-    public Map<Integer, List<Object>> findAll() {
-        Map<Integer, List<Object>> boardSetMap = new HashMap<>();
+    public List<Object> findAll() {
         List<Object> boardSet = new ArrayList<>();
 
         List<BoardEntity> boardEntityList = boardRepository.findAll();
@@ -108,9 +107,8 @@ public class BoardService {
 
             boardSet.add(boardEntity.toDto());
             boardSet.add(uploadedFiles);
-            boardSetMap.put(thisBoardId,boardSet);
         }
-        return boardSetMap;
+        return boardSet;
     }
 
     //전체 게시글 목록 조회 (추천)
