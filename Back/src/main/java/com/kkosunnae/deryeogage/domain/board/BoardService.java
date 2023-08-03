@@ -1,6 +1,5 @@
 package com.kkosunnae.deryeogage.domain.board;
 
-import com.kkosunnae.deryeogage.domain.common.DetailCodeRepository;
 import com.kkosunnae.deryeogage.domain.survey.SurveyEntity;
 import com.kkosunnae.deryeogage.domain.survey.SurveyRepository;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
@@ -21,7 +20,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
-    private final DetailCodeRepository detailCodeRepository;
+
     private final JjimRepository jjimRepository;
     private final BoardFileRepository boardFileRepository;
     private final SurveyRepository surveyRepository;
@@ -37,7 +36,7 @@ public class BoardService {
 
         log.info("user 닉네임게시글작성서비스: " + user.get().getNickname());
 
-        BoardEntity board = boardRepository.save(boardDto.toEntity(userRepository, detailCodeRepository));
+        BoardEntity board = boardRepository.save(boardDto.toEntity(userRepository));
         return board.getId();
     }
 

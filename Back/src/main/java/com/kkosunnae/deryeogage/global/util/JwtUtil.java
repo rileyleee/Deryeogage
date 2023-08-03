@@ -1,5 +1,6 @@
 package com.kkosunnae.deryeogage.global.util;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.jsonwebtoken.*;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 
@@ -40,14 +42,11 @@ public class JwtUtil {
                 .setExpiration(new Date(now.getTime()+tokenValidTime))
                 .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
-
-
         return token;
     }
 
     // 토큰에서 회원 ID 추출
     public Long getUserId(String token){
-
         // 유효성 검사
         try {
             validateToken(token);
@@ -60,6 +59,9 @@ public class JwtUtil {
 
         //토큰에서 payload 추출
         final String[] splitJwt = token.split("\\.");
+        if (splitJwt.length < 2) {
+            throw new IllegalArgumentException("잘못된 토큰 형식입니다.");
+        }
 
         //payload 디코딩
         final String payLoadStr = new String(decoder.decode(splitJwt[1].getBytes()));
@@ -69,7 +71,11 @@ public class JwtUtil {
         JsonObject jsonObject = parser.parse(payLoadStr).getAsJsonObject();
 
         //사용자의 id를 반환
-        return jsonObject.get("userId").getAsLong();
+        JsonElement userIdElement = jsonObject.get("userId");
+        if (userIdElement == null || userIdElement.isJsonNull()) {
+            throw new IllegalStateException("토큰에 userId가 없습니다.");
+        }
+        return userIdElement.getAsLong();
     }
 
     // 유효성 검사
