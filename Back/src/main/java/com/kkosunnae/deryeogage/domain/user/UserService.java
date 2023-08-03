@@ -5,7 +5,7 @@ import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -25,6 +26,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional(readOnly = true)
     public String getAccessToken(String code) {
         String accessToken = "";
         String refreshToken = "";
@@ -43,9 +45,9 @@ public class UserService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=5350906875f54e9bff0134a84d70e619"); //현재 프론트 서버
-            //sb.append("&redirect_uri=http://localhost:3000/users/oauth");
+            sb.append("&redirect_uri=http://localhost:3000/users/oauth");
             // 배포용 주소
-            sb.append("&redirect_uri=https://i9b307.p.ssafy.io/users/oauth");
+            // sb.append("&redirect_uri=https://i9b307.p.ssafy.io/users/oauth");
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -164,6 +166,7 @@ public class UserService {
     }
 
     // 로그인한 유저의 닉네임 가져오기
+    @Transactional(readOnly = true)
     public String getUserNickname(Long userId) {
 
         UserEntity loginedUser = userRepository.findById(userId)
