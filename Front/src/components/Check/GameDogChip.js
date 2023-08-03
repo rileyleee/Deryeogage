@@ -14,34 +14,37 @@ function GameDogChip(props) {
   const SimulationDogValue = useRecoilValue(SimulationDog)
   const SimulationNameValue = useRecoilValue(SimulationName)
   const SimulationBGIValue = useRecoilValue(SimulationBGI)
-  console.log(SimulationDogValue, SimulationNameValue, SimulationBGIValue)
-  const Token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI5NDE0NzU5ODEsImlhdCI6MTY5MDg2MTYyNCwiZXhwIjoxNjkwOTQ4MDI0fQ.gwG8VXy4cnWArzap78NJfvvSQGxB61AUgvRkmMjpwuM'
+  const Token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI5NDE0NzU5ODEsImlhdCI6MTY5MDk4NzU3NSwiZXhwIjoxNjkxMDczOTc1fQ.mRdAibfoYdUZdmtdFlTxkqXT4xQHl7jh_R2VBpMHFGg'
   const [existValue, setExistValue] = useRecoilState(SimulationExistAtom)
+  console.log(SimulationDogValue, SimulationNameValue, SimulationBGIValue)
 
-  const handleSubmit = async () => {
-    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
-    try {
-        const response = await axios.post(
+  const handleSubmit = async (event) => {
+    if (localStorage.getItem("accessToken")) {
+      const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+      try {
+          const Token = localStorage.getItem("accessToken");
+          const response = await axios.post(
             `${REACT_APP_API_URL}/simulations/create`,
-            {
-              "petType": SimulationDogValue,
-              "petName": SimulationNameValue,
-              "background": SimulationBGIValue
-            },
-            {
-              headers: {
-                'Authorization' : 'Bearer '+ Token, // 이곳에 실제 토큰 값을 넣으세요.
-                // 'Content-Type': 'application/json'
+              {
+                "petType": SimulationDogValue,
+                "petName": SimulationNameValue,
+                "background": SimulationBGIValue
+              },
+              {
+                headers: {
+                  Authorization : 'Bearer '+ Token, // 이곳에 실제 토큰 값을 넣으세요.
+                  // 'Content-Type': 'application/json'
+                }
               }
-            }
-        );
-
+          );
+        
         console.log(response.data);
         setExistValue(response.data)
     } catch (error) {
         console.error(error);
     }
-};
+  };
+  }
 
   const handleShowNum = buttonIndex => {
     setdogNumber(buttonIndex);
