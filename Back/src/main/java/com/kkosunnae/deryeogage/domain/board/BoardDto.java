@@ -1,7 +1,5 @@
 package com.kkosunnae.deryeogage.domain.board;
 
-import com.kkosunnae.deryeogage.domain.common.DetailCodeEntity;
-import com.kkosunnae.deryeogage.domain.common.DetailCodeRepository;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.*;
@@ -17,6 +15,8 @@ public class BoardDto {
     private int id;
     private long userId;
     private String regionCode;
+    private Double lat;
+    private Double lon;
     private String dogTypeCode;
     private String userNickname;
     private String title;
@@ -42,10 +42,12 @@ public class BoardDto {
         return gender;
     }
     @Builder
-    public BoardDto(int id, long userId, String regionCode, String dogTypeCode, String userNickname, String title, char friendly, char activity, char dependency, char bark, char hair, String name, boolean gender, byte age, boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
+    public BoardDto(int id, long userId, String regionCode, Double lat, Double lon, String dogTypeCode, String userNickname, String title, char friendly, char activity, char dependency, char bark, char hair, String name, boolean gender, byte age, boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
         this.id = id;
         this.userId = userId;
         this.regionCode = regionCode;
+        this.lat = lat;
+        this.lon = lon;
         this.dogTypeCode = dogTypeCode;
         this.userNickname = userNickname;
         this.title = title;
@@ -64,21 +66,17 @@ public class BoardDto {
     }
 
 
-    public BoardEntity toEntity(UserRepository userRepository, DetailCodeRepository detailCodeRepository){
+    public BoardEntity toEntity(UserRepository userRepository){
         UserEntity user = userRepository.findById(this.userId)
            .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
-
-        DetailCodeEntity region = detailCodeRepository.findByValue(this.regionCode)
-                .orElseThrow(() -> new NoSuchElementException("해당 지역이 존재하지 않습니다."));
-
-        DetailCodeEntity dogType = detailCodeRepository.findByValue(this.dogTypeCode)
-                .orElseThrow(() -> new NoSuchElementException("해당 견종이 존재하지 않습니다."));
 
 
         return BoardEntity.builder()
                 .user(user)
-                .regionCode(region)
-                .dogTypeCode(dogType)
+                .regionCode(regionCode)
+                .lat(lat)
+                .lon(lon)
+                .dogTypeCode(dogTypeCode)
                 .userNickname(userNickname)
                 .title(title)
                 .friendly(friendly)

@@ -2,7 +2,6 @@ package com.kkosunnae.deryeogage.domain.board;
 
 import com.kkosunnae.deryeogage.domain.adopt.AdoptEntity;
 import com.kkosunnae.deryeogage.domain.chat.ChatRoomEntity;
-import com.kkosunnae.deryeogage.domain.common.DetailCodeEntity;
 import com.kkosunnae.deryeogage.domain.cost.PostCostEntity;
 import com.kkosunnae.deryeogage.domain.cost.PreCostEntity;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
@@ -29,13 +28,18 @@ public class BoardEntity {
     @JoinColumn(name="user_id")
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="region_code")
-    private DetailCodeEntity regionCode;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="dog_type_code")
-    private DetailCodeEntity dogTypeCode;
+    @Column(name="region_code")
+    private String regionCode;
+
+    @Column
+    private Double lat;
+
+    @Column
+    private Double lon;
+
+    @Column(name="dog_type_code")
+    private String  dogTypeCode;
 
     @Column(length = 20)
     private String userNickname;
@@ -91,9 +95,11 @@ public class BoardEntity {
     private List<AdoptEntity> adopts = new ArrayList<>();
 
     @Builder
-    public BoardEntity(UserEntity user, DetailCodeEntity regionCode, DetailCodeEntity dogTypeCode, String userNickname, String title, Character friendly, Character activity, Character dependency, Character bark, Character hair, String name, Boolean gender, Byte age, Boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
+    public BoardEntity(UserEntity user, String regionCode, Double lat, Double lon , String dogTypeCode, String userNickname, String title, Character friendly, Character activity, Character dependency, Character bark, Character hair, String name, Boolean gender, Byte age, Boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
         this.user = user;
         this.regionCode = regionCode;
+        this.lat = lat;
+        this.lon = lon;
         this.dogTypeCode = dogTypeCode;
         this.userNickname = userNickname;
         this.title = title;
@@ -115,8 +121,10 @@ public class BoardEntity {
         return BoardDto.builder()
                 .id(this.id)
                 .userId(this.user.getId())
-                .regionCode(this.regionCode.getValue())
-                .dogTypeCode(this.dogTypeCode.getValue())
+                .regionCode(this.regionCode)
+                .lat(this.lat)
+                .lon(this.lon)
+                .dogTypeCode(this.dogTypeCode)
                 .userNickname(this.userNickname)
                 .title(this.title)
                 .friendly(this.friendly)

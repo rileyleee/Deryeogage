@@ -37,6 +37,7 @@ public class UserController {
             String accessToken = userService.getAccessToken(code);
             Long userId = userService.regist(accessToken);
 
+
             // access 토큰 프론트에 반환
             Map<String, Object> userJwt = new HashMap<>();
             userJwt.put("accessToken", jwtUtil.createToken("claimUser", userId));
