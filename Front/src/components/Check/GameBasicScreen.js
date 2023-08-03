@@ -1,17 +1,22 @@
 // 게임 시작 화면
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as S from "../../styled/Check/GameBasicScreen.style"
 import GameMenu from "./GameMenu"
 import GameBtn from "./GameBtn"
 import {useRecoilValue, useRecoilState} from "recoil"
-import { SimulationExistAtom, SimulationWalkingCnt, SimulationCost } from "../../recoil/SimulationAtom"
+import { SimulationExistAtom, SimulationWalkingCnt, SimulationCost, requirementImagesState, nextImageState  } from "../../recoil/SimulationAtom"
 
 
 function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     const existData = useRecoilValue(SimulationExistAtom) // 선택한 data
     const walkingCnt = useRecoilValue(SimulationWalkingCnt) // 산책 횟수
     const [cost, setCost] = useRecoilState(SimulationCost)
+    // requirementImages Recoil 상태와 상태 업데이트 함수를 가져옴
+    const [requirementImages, setRequirementImages] = useRecoilState(requirementImagesState);
+    console.log(requirementImages)
+    const [nextImage, setNextImage] = useRecoilState(nextImageState);
+    // 산책 돈 계산 코드
     const setHandleMove = (num) => {
         props.handleMove(num)
         if (num === 7) {
@@ -20,7 +25,74 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
         }
     }
     
-        
+      const [showRandomImage, setShowRandomImage] = useState(null);
+      const [requirementNum, setRequirementNum] = useState(0);
+      const [isImageVisible, setIsImageVisible] = useState(false);
+    
+      useEffect(() => {
+        const currentHour = new Date().getHours();
+        let matchedImage = null;
+        let matchedNum = 0;
+    
+        const updatedImages = requirementImages.map((img) => {
+          const matchedTimeRange = img.timeRanges.find(
+            (range) => currentHour >= range.startTime && currentHour < range.endTime && range.check === 0
+          );
+          if (matchedTimeRange) {
+            matchedImage = img.image;
+            matchedNum = img.num;
+            // 이미지를 보여준 시간대의 check를 1로 변경
+            const updatedTimeRanges = img.timeRanges.map((range) =>
+              range.startTime === matchedTimeRange.startTime && range.endTime === matchedTimeRange.endTime
+                ? { ...range, check: 1 }
+                : range
+            );
+            return { ...img, timeRanges: updatedTimeRanges };
+          }
+          return img;
+        });
+        // requirementImages 상태를 업데이트
+        setRequirementImages(updatedImages);
+        setShowRandomImage(matchedImage); // 현재 시간대에 해당하는 이미지 설정
+        setRequirementNum(matchedNum);
+        setIsImageVisible(!!matchedImage); // showRandomImage가 존재하면 이미지를 보이도록 설정
+    
+        // 이미지가 존재하면, 60초 후에 이미지를 사라지게 함
+        if (matchedImage) {
+          const timeoutId = setTimeout(() => {
+            setIsImageVisible(false);
+          }, 60 * 1000); // 60초 후에 실행
+    
+          // useEffect의 cleanup 함수에서 setTimeout을 clear함
+          return () => clearTimeout(timeoutId);
+        }
+      }, []);
+    
+    
+      const handleImageClick = () => {
+        if (isImageVisible) {
+          setIsImageVisible(false);
+          if (requirementImages[0].image === "assets/things/requirement1.png" && showRandomImage === "assets/things/requirement1.png") {
+            console.log(requirementImages[0].image, showRandomImage)
+            setNextImage("assets/things/requirement3.png");
+          }
+        }
+    };
+    
+    useEffect(() => {
+      if (nextImage) {
+        console.log('Next image set, starting timer...');  // 로그 추가
+        const timeoutId = setTimeout(() => {
+          console.log('Timer finished, showing next image:', nextImage);  // 로그 추가
+          setShowRandomImage(nextImage);  // nextImage에 해당하는 이미지 설정
+          setIsImageVisible(true);  // 변경된 이미지를 보이도록 설정
+          setNextImage(null);  // nextImage 상태를 초기화
+        }, 1 * 30 * 1000);  // 3분 후에 실행
+    
+        return () => clearTimeout(timeoutId);  // useEffect의 cleanup 함수에서 setTimeout을 clear함
+      }
+    }, [nextImage]);
+    
   return (
     <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-between"
     petType={existData.petType}
@@ -93,6 +165,14 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                 </div>
             </div>
         </div>
+        <div className='d-flex justify-content-center'>
+            <S.DogImg src={`assets/${existData.petType}/idle${existData.petType}.gif`} alt="" />
+            <S.DogBtn onClick={() => setHandleMove(requirementNum)}>
+      {isImageVisible && (
+        <S.Requirement src={showRandomImage} alt="" onClick={handleImageClick} />
+      )}
+    </S.DogBtn>
+        </div>
         <div className="d-flex justify-content-end">
             <S.GameBasicOver data-bs-toggle="modal" data-bs-target="#exampleModal1">중도포기하기</S.GameBasicOver>
         </div>
@@ -100,10 +180,10 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
+                        <h2>중도 포기는 불가합니다ㅠㅠ</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        중도 포기는 불가합니다.
                         <S.ModalIMG src="assets/crying.jpg" alt="crying" />
                     </div>
                 </div>

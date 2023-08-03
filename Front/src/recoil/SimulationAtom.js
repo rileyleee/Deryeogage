@@ -70,3 +70,30 @@ export const SimulationCost = atom({
     key: 'SimulationCost',
     default:300000
 })
+
+export const requirementImagesState = atom({
+  key: 'requirementImagesState',
+  default: [
+    {
+      image: "assets/things/requirement1.png",
+      timeRanges: [
+        { startTime: 8, endTime: 9, check: 0 },
+        { startTime: 17, endTime: 18, check: 0 },
+      ],
+      num: 8,
+    },
+    {
+      image: "assets/things/requirement2.png",
+      timeRanges: [
+        { startTime: 12, endTime: 13, check: 0 },
+        { startTime: 20, endTime: 21, check: 0 },
+      ],
+      num: 9,
+    },
+  ],
+});
+
+export const nextImageState = atom({
+    key: 'nextImageState',
+    default: null,
+  });

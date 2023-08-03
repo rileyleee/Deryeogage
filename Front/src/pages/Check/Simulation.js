@@ -10,7 +10,7 @@ import GameDogChip from "../../components/Check/GameDogChip";
 import GameBasicScreen from "../../components/Check/GameBasicScreen";
 import GameTraining from "../../components/Check/GameTraining";
 import GameWalking from "../../components/Check/GameWalking"
-import GameMenu from "../../components/Check/GameMenu"
+import GameMeal from "../../components/Check/GameMeal"
 import {useRecoilValue, useRecoilState} from "recoil"
 import { SimulationNum, SimulationExistAtom, SimulationWalkingCnt, SimulationStartAtom } from "../../recoil/SimulationAtom"
 import {useLocation} from "react-router-dom"
@@ -23,24 +23,22 @@ function Simulation() {
   // 다음, 이전 페이지로 이동하기 위한 변수
   // activatedNum이 변경될 때마다 localStorage를 업데이트 합니다.
     // 데이터 로컬스토리지에 등록
-    useEffect(() => {
-      // 첫 렌더링에만 실행되도록 합니다.
-      if(Object.keys(SimulationExistValue).length === 0) { // 데이터가 없으면,,,그니까 처음 시작 하는거면,,,
-          localStorage.setItem('hpPercentage', 100);
-          localStorage.setItem('timeDifference', JSON.stringify({ // 객체 데이터 등록할 때 무조건 stringify 활용
-              hours:0,
-              minutes:0
-          }));      
-          localStorage.setItem('cost', 300000);
-      } else {
-          localStorage.setItem('hpPercentage', SimulationExistValue.health);
-          localStorage.setItem('timeDifference', JSON.stringify({
-              hours:(Number(SimulationExistValue.lastTime.substr(11, 2)) - Number(SimulationExistValue.startTime.substr(11, 2)) + 24) % 24,
-              minutes:(Number(SimulationExistValue.lastTime.substr(14, 2)) - Number(SimulationExistValue.startTime.substr(14, 2)) + 60) % 60
-          }));
-          localStorage.setItem('cost', SimulationExistValue.cost);
-      }
-  }, []); // 빈 배열을 두 번째 인자로 전달하여, 컴포넌트 마운트 시에만 실행되도록 합니다.
+    if(Object.keys(SimulationExistValue).length === 0) { // 데이터가 없으면,,,그니까 처음 시작 하는거면,,,
+      localStorage.setItem('hpPercentage', 100);
+      localStorage.setItem('timeDifference', JSON.stringify({ // 객체 데이터 등록할 때 무조건 stringify 활용
+        hours:0,
+        minutes:0
+      }));      
+      localStorage.setItem('cost', 300000);
+    } else {
+      localStorage.setItem('hpPercentage', SimulationExistValue.health);
+
+      localStorage.setItem('timeDifference', JSON.stringify({
+        hours:(Number(SimulationExistValue.lastTime.substr(11, 2)) - Number(SimulationExistValue.startTime.substr(11, 2)) + 24) % 24,
+        minutes:(Number(SimulationExistValue.lastTime.substr(14, 2)) - Number(SimulationExistValue.startTime.substr(14, 2)) + 60) % 60
+      }));
+      localStorage.setItem('cost', SimulationExistValue.cost);
+    }
 
     // 위에서 로컬에 저장한 데이터를 가져와서 변수에 저장
     const [hpPercentage, setHpPercentage] = useState(localStorage.getItem('hpPercentage'))
@@ -144,7 +142,7 @@ function Simulation() {
     5 : <GameBasicScreen existdata={SimulationExistValue} handleMove={handleMove} setHpPercentage={setHpPercentage} time={displayTime()} hp={hpPercentage} walkingIncreaseHp={walkingIncreaseHp}/>,
     6 : <GameTraining existdata={SimulationExistValue} handleMove={handleMove} time={displayTime()} hp={hpPercentage} decreaseHp={decreaseHp}/>,
     7 : <GameWalking handleMove={handleMove} />,
-    // 8: <GameMenu time={displayTime()} hp={hpPercentage}/>
+    8 : <GameMeal handleMove={handleMove}/>
   }
 
   // activatedNum에 따라서 GameStartfirst의 테두리 색을 지정
