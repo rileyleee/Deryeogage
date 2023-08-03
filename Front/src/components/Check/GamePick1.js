@@ -11,8 +11,8 @@ function GamePick1(props) {
   const [dogValue, setDogValue] = useRecoilState(SimulationDog)
   const [nameValue, setNameValue] = useRecoilState(SimulationName)
   const [inputName, setInputName] = useState('')
-  console.log(dogValue)
-  console.log(nameValue)
+  // console.log(dogValue)
+  // console.log(nameValue)
 
   const handleButtonPick = buttonIndex => {
     setCurrentButton(buttonIndex);

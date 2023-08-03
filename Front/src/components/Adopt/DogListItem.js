@@ -1,13 +1,49 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import Card from "react-bootstrap/Card";
 
-function DogListItem({ dog }) {
+function DogListItem({ dog, media }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/adopt/${dog.id}`);
+  };
+
+  const isVideo = (media) => {
+    return (
+      media && (media.includes(".mp4") ||
+      media.includes(".avi") ||
+      media.includes(".mov"))
+    );
+  };
+
+  const renderMedia = (media) => {
+    if (isVideo(media)) {
+      return (
+        <div style={{ width: "100%", height: 0, paddingTop: "56.25%", position: "relative" }}>
+          <video
+            style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover" }}
+            src={media}
+            autoPlay
+            loop
+            muted
+          />
+        </div>
+      );
+    } else {
+      return <Card.Img variant="top" src={media} />;
+    }
+  };
+
   return (
-    <div>
-      <h2>{dog.name}</h2>
-      <p>나이: {dog.age}세</p>
-      <p>지역: {dog.regionCode}</p>
-      {/* 다른 강아지 정보들도 여기에 추가할 수 있습니다 */}
-    </div>
+    <Card style={{ width: "18rem" }} onClick={handleClick}>
+      {renderMedia(media)}
+      <Card.Body>
+        <Card.Title>{dog.title}</Card.Title>
+        <Card.Text>이름: {dog.name}</Card.Text>
+        <Card.Text>나이: {dog.age}세</Card.Text>
+      </Card.Body>
+    </Card>
   );
 }
 
