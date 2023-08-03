@@ -56,3 +56,11 @@ export const GameWalkingPtag = styled.p`
     line-height: 5vh;
     margin-left: 1vw;
 `
+
+export const GameWalkingBtn = styled.button`
+    width: 20vw;
+    height: 10vh;
+    border: 1px solid #FF914D;
+    background-color: white;
+    border-radius: 20px;
+`

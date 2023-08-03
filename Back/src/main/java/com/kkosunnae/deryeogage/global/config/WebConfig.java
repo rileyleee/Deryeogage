@@ -34,7 +34,9 @@ public class WebConfig implements WebMvcConfigurer {
                         "/webjars/**",
                         "/api/users/oauth",
                         "/api/boards/list",
+                        "/api/boards/**", //배제 인터셉터 세세하게 작성 필요
                         "/api/files/**");
+            
     }
 
     //CORS 에러를 해결하기 위해서 컨트롤러에서 세분화 하여 처리할 수도 있지만

@@ -1,8 +1,8 @@
-// 체크리스트(사전테스트) 페이지
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CheckBtn from "../../components/Check/CheckBtn";
+import axios from "axios";
 
 function CheckList() {
   const scores = {
@@ -32,7 +32,7 @@ function CheckList() {
     "14. 반려동물에게 필요한 운동과 놀이 시간을 제공할 의향과 능력은 어느 정도입니까?",
   ];
 
-  const [pledge, setPledge] = useState(localStorage.getItem("pledge") || "");
+  const [promise, setPromise] = useState(localStorage.getItem("promise") || "");
 
   const [answers, setAnswers] = useState(
     JSON.parse(localStorage.getItem("answers")) ||
@@ -41,23 +41,23 @@ function CheckList() {
 
   const handleChange = (question, value) => {
     if (question === "입양 서약서") {
-      setPledge(value);
+      setPromise(value);
     } else {
       setAnswers({ ...answers, [question]: value });
     }
   };
 
   const handleChangePledge = (e) => {
-    setPledge(e.target.value);
+    setPromise(e.target.value);
   };
 
   // localStorage에 answers를 저장
   useEffect(() => {
     localStorage.setItem("answers", JSON.stringify(answers));
-    localStorage.setItem("pledge", pledge);
-  }, [answers, pledge]);
+    localStorage.setItem("promise", promise);
+  }, [answers, promise]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const unanswered = questions.filter((q) => !answers[q]);
     if (unanswered.length > 0) {
       alert("모든 질문에 답변을 완료해주세요.");
@@ -66,8 +66,30 @@ function CheckList() {
         (sum, q) => sum + scores[answers[q]],
         0
       );
-      const totalScore = Math.round((rawTotalScore / 70) * 100); // 점수를 100점 기준으로 변환
-      navigate("/checklist/result", { state: { answers, totalScore, pledge } });
+      const score = Math.round((rawTotalScore / 70) * 100);
+
+
+      const token = localStorage.getItem("accessToken"); // 여기에 토큰을 입력하세요.
+      const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
+      axios
+        .post(
+          `${REACT_APP_API_URL}/pretests`,
+          { promise, score },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log("사전테스트 제출 완", response);
+          navigate("/checklist/result");
+        })
+        .catch((error) => {
+          console.log(promise, score);
+          console.error("사전테스트 제출 오류", error);
+        });
     }
   };
 
@@ -86,7 +108,7 @@ function CheckList() {
       <PledgeContainer>
         <h2>입양 서약서</h2>
         <PledgeTextarea
-          value={pledge}
+          value={promise}
           onChange={handleChangePledge}
           placeholder="입양 서약서를 작성해주세요."
         />
@@ -99,7 +121,6 @@ function CheckList() {
 }
 
 export default CheckList;
-
 
 const SubmitButton = styled.button`
   margin-top: 20px;

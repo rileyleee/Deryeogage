@@ -15,7 +15,7 @@ function GameWalking(props) { // 자식에서 부모로 데이터 보내기
     useEffect(() => {
       const handleSpacebarRelease = (event) => {
           if (event.code === "Space") {
-              setProgress(prev => (prev < 100 ? prev + 1 : 100)); // 100을 초과하지 않도록 합니다.
+              setProgress(prev => (prev < 100 ? prev + 10 : 100)); // 100을 초과하지 않도록 합니다.
           }
       }
   
@@ -28,10 +28,17 @@ function GameWalking(props) { // 자식에서 부모로 데이터 보내기
   return (
     <S.GameStartsecond className="col-10 second"
     petType={dogData}>
-        <S.GameBasicButton onClick={() => setHandleMove(5)}>집으로 돌아가기</S.GameBasicButton>
+        {/* <S.GameBasicButton onClick={() => setHandleMove(5)}>집으로 돌아가기</S.GameBasicButton> */}
         <div className="d-flex justify-content-center">
             <S.GameWalkingHp width={progress}>
                 <S.GameWalkingPtag>스페이스 바를 마구 누르세요..🏃‍♀️🏃‍♂️</S.GameWalkingPtag>
+                <div className="d-flex justify-content-center">
+                    {progress === 100 && (
+                        <S.GameWalkingBtn onClick={() => setHandleMove(5)}>
+                        🐶산책 완료🐶<br />집으로 돌아가기🏚
+                      </S.GameWalkingBtn>
+                    )}
+                </div>
             </S.GameWalkingHp>
         </div>
     </S.GameStartsecond>

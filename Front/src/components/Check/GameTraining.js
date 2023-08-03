@@ -9,7 +9,7 @@ import { SimulationNameCalling, SimulationWaiting, SimulationHouse, SimulationSi
 
 function GameTraining(props) { // 자식에서 부모로 데이터 보내기
     const existData = props.existdata // 받아온 데이터
-    console.log(existData)
+    // console.log(existData)
     const setHandleMove = (num) => {
         props.handleMove(num)
     }
@@ -19,6 +19,7 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
     const [sitScore, setSitScore] = useRecoilState(SimulationSit)
     const wordsToChange = ["idlefast", "run", "idle", "jump", "sit"]; // 변경할 단어들
     const [animation, setAnimation] = useState("idlefast");
+
     const increaseScore = (setter) => {
         setter((prevScore) => prevScore + 1)
     }
@@ -37,9 +38,12 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
     }, [animation]);
 
     const increaseScoreWithAnimation = (setter, animationName) => {
-        increaseScore(setter);
-        setAnimation(animationName);
-    }
+      props.decreaseHp(); // HP 감소
+      increaseScore(setter);
+      setAnimation(animationName);
+  }
+
+    
   return (
     <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-between"
     petType={existData.petType}
@@ -53,7 +57,7 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
             </div>
             <div className="d-flex flex-column justify-content-between align-items-end">
                 <div className="d-flex flex-column">
-                    <GameMenu borderColor="#6458F5" existData={existData}/>
+                    <GameMenu borderColor="#6458F5" existData={existData} time={props.time} hp={props.hp}/>
                 </div>
             </div>
         </div>

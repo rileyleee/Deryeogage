@@ -7,6 +7,7 @@ import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Getter
@@ -31,6 +32,7 @@ public class BoardDto {
     private String health;
     private String introduction;
     private LocalDateTime createdDate;
+    private List fileList;
 
 
     public boolean isChipYn() {
