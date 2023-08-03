@@ -10,14 +10,14 @@ import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
 public class S3Config {
-    @Value("${cloud.aws.credentials.access-key}")
-    private String accessKey;
+    //@Value("${cloud.aws.credentials.access-key}")
+    private String accessKey = System.getenv("cloud.aws.credentials.access-key");
 
-    @Value("${cloud.aws.credentials.secret-key}")
-    private String secretKey;
+    //@Value("${cloud.aws.credentials.secret-key}")
+    private String secretKey = System.getenv("cloud.aws.credentials.secret-key");
 
-    @Value("${cloud.aws.region.static}")
-    private String region;
+    //@Value("${cloud.aws.region.static}")
+    private String region = System.getenv("cloud.aws.region.static");
 
     @Bean
     public AmazonS3Client amazonS3Client() {

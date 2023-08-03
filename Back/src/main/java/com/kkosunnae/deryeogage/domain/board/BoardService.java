@@ -73,7 +73,7 @@ public class BoardService {
         return board.toDto();
     }
 
-
+    @Transactional(readOnly = true)
     // 내가 작성한 게시글 조회
     public List<BoardDto> findMyBoards(Long userId) {
         List<BoardDto> boardSetList = new ArrayList<>();
@@ -96,7 +96,7 @@ public class BoardService {
     }
 
     //전체 게시글 목록 조회
-    @Transactional
+    @Transactional(readOnly = true)
     public List<BoardDto> findAll() {
 
         List<BoardDto> boardSetList = new ArrayList<>();
@@ -121,7 +121,7 @@ public class BoardService {
     }
 
     //전체 게시글 목록 조회 (추천)
-    @Transactional
+    @Transactional(readOnly = true)
     public List<BoardDto> findRecommendation(Long userId) {
         Optional<SurveyEntity> survey = surveyRepository.findByUserId(userId);
         String order = survey.get().getRanking();
@@ -205,6 +205,7 @@ public class BoardService {
     }
 
     //게시글에 저장된 파일 조회
+    @Transactional
     public Map<String, String> getBoardFiles(int boardId) {
 
         // 저장한 이름과 주소목록 담을 Map 선언
@@ -229,7 +230,9 @@ public class BoardService {
         return uploadedFiles;
     }
 
+
     //게시글에 저장된 파일 주소만 조회
+    @Transactional
     public List<String> getBoardFileUrls(int boardId) {
 
         // 저장한 이름과 주소목록 담을 Map 선언
