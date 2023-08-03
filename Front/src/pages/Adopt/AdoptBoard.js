@@ -5,11 +5,11 @@ import { useNavigate } from "react-router-dom";
 import NotLogin from "../../components/Adopt/NotLogin";
 import NotSurvey from "../../components/Adopt/NotSurvey";
 import LoginSurvey from "../../components/Adopt/LoginSurvey";
-import DogListItem from './../../components/Adopt/DogListItem'; // 올바른 경로로 수정
+import DogListItem from "./../../components/Adopt/DogListItem"; // 올바른 경로로 수정
 
 function AdoptBoard() {
   const navigate = useNavigate();
-  const [adoptData, setAdoptData] = useState(null);
+  const [adoptData, setAdoptData] = useState([]);
 
   // 로그인 완료 했는지
   const insertedToken = localStorage.getItem("accessToken");
@@ -37,14 +37,13 @@ function AdoptBoard() {
 
   // 강아지 정보를 서버로부터 가져오는 함수
   const fetchDogs = async () => {
-    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     try {
-      const response = await axios.get(`${REACT_APP_API_URL}/boards/list`);
-      console.log(response.data.data.content)
-      setAdoptData({
-      board: response.data.data.content,
-    })
-  }catch (error) {
+      const response = await axios.get(`${REACT_APP_API_URL}/boards/list`, {
+      });
+      console.log(response);
+      setAdoptData(response.data.data.content); // 여기서 상태를 직접 설정
+    } catch (error) {
       console.error(error);
     }
   };
@@ -66,8 +65,8 @@ function AdoptBoard() {
 
       {/* 게시판 형식으로 강아지 정보들을 렌더링 */}
       {dogsArray.map((dog) => (
-        <DogListItem key={adoptData.id} dog={adoptData} />
-      ))} 
+        <DogListItem key={dog.id} dog={dog} />
+      ))}
     </div>
   );
 }
