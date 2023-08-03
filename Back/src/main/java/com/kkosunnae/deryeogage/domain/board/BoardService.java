@@ -75,40 +75,49 @@ public class BoardService {
 
 
     // 내가 작성한 게시글 조회
-    public Map<Integer, List<Object>> findMyBoards(Long userId) {
-        Map<Integer, List<Object>> boardSetMap = new HashMap<>();
-        List<Object> boardSet = new ArrayList<>();
+    public List<BoardDto> findMyBoards(Long userId) {
+        List<BoardDto> boardSetList = new ArrayList<>();
+        List<BoardEntity> myBoardLists = boardRepository.findByUserId(userId);
 
-        List<BoardEntity> boardEntityList = boardRepository.findByUserId(userId);
+        for (BoardEntity boardEntity : myBoardLists) {
 
-        for (BoardEntity boardEntity : boardEntityList) {
-
+            // 하나의 게시글 정보를 dto로 변환
+            BoardDto thisBoard = boardEntity.toDto();
+            // 하나의 게시글 ID를 가져오고
             Integer thisBoardId = boardEntity.getId();
-            Map<String, String> uploadedFiles = this.getBoardFiles(thisBoardId);
+            // 특정 게시글에 업로드된 파일을 꺼내기
+            List <String> uploadedFiles = this.getBoardFileUrls(thisBoardId);
+            // Dto에 담기
+            thisBoard.setFileList(uploadedFiles);
 
-            boardSet.add(boardEntity.toDto());
-            boardSet.add(uploadedFiles);
-            boardSetMap.put(thisBoardId,boardSet);
+            boardSetList.add(thisBoard);
         }
-        return boardSetMap;
+        return boardSetList;
     }
 
     //전체 게시글 목록 조회
     @Transactional
-    public List<Object> findAll() {
-        List<Object> boardSet = new ArrayList<>();
+    public List<BoardDto> findAll() {
 
+        List<BoardDto> boardSetList = new ArrayList<>();
+
+        // 모든 게시글 리스트 가져오기
         List<BoardEntity> boardEntityList = boardRepository.findAll();
-
+        // 모든 게시글을 돌면서
         for (BoardEntity boardEntity : boardEntityList) {
 
+            // 하나의 게시글 정보를 dto로 변환
+            BoardDto thisBoard = boardEntity.toDto();
+            // 하나의 게시글 ID를 가져오고
             Integer thisBoardId = boardEntity.getId();
-            Map<String, String> uploadedFiles = this.getBoardFiles(thisBoardId);
+            // 특정 게시글에 업로드된 파일을 꺼내기
+            List <String> uploadedFiles = this.getBoardFileUrls(thisBoardId);
+            // Dto에 담기
+            thisBoard.setFileList(uploadedFiles);
 
-            boardSet.add(boardEntity.toDto());
-            boardSet.add(uploadedFiles);
+            boardSetList.add(thisBoard);
         }
-        return boardSet;
+        return boardSetList;
     }
 
     //전체 게시글 목록 조회 (추천)
@@ -163,7 +172,7 @@ public class BoardService {
     }
 
 
-    //게시글에 저장된 파일 저장
+    //게시글에 업로드한 파일 저장
     public void saveBoardFile(Integer boardId, Map<String, List> nameList) {
 
         LocalDateTime uploadTime = LocalDateTime.now();
@@ -215,6 +224,31 @@ public class BoardService {
                     BoardFileEntity boardFileEntity = boardFiles.get(i);
                     BoardFileDto eachFileDto = boardFileEntity.toDto();
                     uploadedFiles.put(eachFileDto.getSavedName(), eachFileDto.getPath()); //저장된 이름과 경로 반환
+                });
+
+        return uploadedFiles;
+    }
+
+    //게시글에 저장된 파일 주소만 조회
+    public List<String> getBoardFileUrls(int boardId) {
+
+        // 저장한 이름과 주소목록 담을 Map 선언
+        List<String> uploadedFiles = new ArrayList<>();
+
+        // 1개 이상 이미지 또는 동영상을 등록해야 하기 때문에 찾아오지 못하면 잘못된 값이므로 에러 반환 맞음
+        List<BoardFileEntity> boardFiles = boardFileRepository.findByBoardId(boardId)
+                .orElseThrow(() -> new RuntimeException("게시글에 등록된 파일이 없습니다." + boardId));
+
+        // 해당 게시글의 파일이 저장된 S3상 파일별 주소목록 반환 (이미지 파일 등록 개수 하한 정하지 않은 경우 활용)
+//        List<BoardFileEntity> boardFiles = boardFileRepository.findByBoardId(boardId)
+//                .orElse(Collections.emptyList()); //등록된 파일 없으면 빈 리스트 반환
+
+        // 파일 엔티티 목록 반복문 돌면서 하나씩 프론트에 반환할 map에 넣기
+        IntStream.range(0, boardFiles.size())
+                .forEach(i -> {
+                    BoardFileEntity boardFileEntity = boardFiles.get(i);
+                    BoardFileDto eachFileDto = boardFileEntity.toDto();
+                    uploadedFiles.add(eachFileDto.getPath()); //저장된 이름과 경로 반환
                 });
 
         return uploadedFiles;
