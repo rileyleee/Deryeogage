@@ -67,7 +67,7 @@ function CheckList() {
         0
       );
       const score = Math.round((rawTotalScore / 70) * 100);
-      navigate("/checklist/result", { state: { answers, score, promise } });
+
 
       const token = localStorage.getItem("accessToken"); // 여기에 토큰을 입력하세요.
       const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -84,6 +84,7 @@ function CheckList() {
         )
         .then((response) => {
           console.log("사전테스트 제출 완", response);
+          navigate("/checklist/result");
         })
         .catch((error) => {
           console.log(promise, score);

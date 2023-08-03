@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ImageSection from "../../components/Adopt/ImageSection";
 import DogInfoSection from "../../components/Adopt/DogInfoSection";
@@ -7,7 +7,6 @@ import PersonalitySection from "../../components/Adopt/PersonalitySection";
 import * as S from "../../styled/Adopt/AdoptBoardCreate.style";
 
 function AdoptBoardCreate() {
-
   const navigate = useNavigate();
 
   // 이미지 등록 관련 코드
@@ -85,6 +84,10 @@ function AdoptBoardCreate() {
   const handleIntroductionChange = (event) => {
     setDogIntroduction(event.target.value);
   };
+
+  // 제목
+  const [title, setTitle] = useState("");
+
   // axios 요청 보내기
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -117,8 +120,9 @@ function AdoptBoardCreate() {
     formData.append("gender", dogGender);
     formData.append("chipYn", dogChip);
     formData.append("dogTypeCode", "CHIHUAHUA");
-    formData.append("title", "우리집꼬미");
-    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+    formData.append("title", title);
+
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     try {
       const response = await axios.post(
         `${REACT_APP_API_URL}/boards`,
@@ -131,18 +135,23 @@ function AdoptBoardCreate() {
           },
         }
       );
-      console.log("boardId: ", response.data.data)
-      const boardId = response.data.data;  // 이 부분이 수정되었습니다.
+      console.log("boardId: ", response.data.data);
+      const boardId = response.data.data; // 이 부분이 수정되었습니다.
       navigate(`/adopt/${boardId}`);
-      
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <>
       <h2>분양게시판 글 작성하기</h2>
       <form onSubmit={handleSubmit}>
+        <S.TitleInput
+          value={title}
+          placeholder="제목을 입력해주세요"
+          onChange={(e) => setTitle(e.target.value)}
+        />
         <ImageSection
           selectedImages={selectedImages}
           selectedVideos={selectedVideos}
