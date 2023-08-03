@@ -61,6 +61,7 @@ function Survey() {
       hair: hair.toString(),
       ranking: rankingString,
     };
+    
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     axios
       .post(`${REACT_APP_API_URL}/surveys`, data, {

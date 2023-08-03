@@ -19,19 +19,21 @@ function Header() {
         },
       });
       // 응답을 기반으로 체크리스트 제출 여부 판단
-      if (response.data.message === "성공적으로 요청되었습니다.") {
-        console.log(response.data.message)
+      if (response.data.status === "success") {
+        console.log(response.data.message);
         window.location.href = "/checklist/result";
-      } 
+      }
     } catch (error) {
-      if (error.response.data.message === "사전 테스트 결과 정보가 존재하지 않습니다.") {
+      if (
+        error.response.data.data ===
+        "사전 테스트 결과 정보가 존재하지 않습니다."
+      ) {
         console.log("체크리스트 확인 오류", error.response.data.message);
         window.location.href = "/checklist";
       }
-      
     }
   }, []);
-  
+
   return (
     <S.HeaderWrapper className="navbar navbar-expand-lg">
       <div className="container-fluid">
