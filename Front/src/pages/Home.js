@@ -20,7 +20,7 @@ function Home() {
     // 로그인 여부를 확인하여 이동할 페이지 결정
     if (localStorage.getItem("accessToken")) {
       // 로그인되어 있는 경우 해당 페이지로 이동
-      const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+      const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
       if (page === "/simulations") {
         try {
           const url = `${REACT_APP_API_URL}/simulations`;
@@ -40,6 +40,30 @@ function Home() {
           navigate("/simulations");
         } catch (error) {
           console.log(error);
+        }
+      } else if (page === "/checklist") {
+        // 체크리스트 페이지를 선택한 경우
+        try {
+          const url = `${REACT_APP_API_URL}/pretests`;
+          const token = localStorage.getItem("accessToken");
+          const response = await axios.get(url, {
+            headers: {
+              Authorization: "Bearer " + token,
+            },
+          });
+          console.log(response.data);
+          if (response.data.status === "success") {
+            console.log(response.data.message);
+            window.location.href = "/checklist/result";
+          }
+        } catch (error) {
+          if (
+            error.response.data.data ===
+            "사전 테스트 결과 정보가 존재하지 않습니다."
+          ) {
+            console.log("체크리스트 확인 오류", error.response.data.message);
+            window.location.href = "/checklist";
+          }
         }
       } else {
         navigate(page);
