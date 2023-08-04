@@ -3,6 +3,7 @@ package com.kkosunnae.deryeogage.domain.adopt;
 import com.kkosunnae.deryeogage.domain.board.BoardRepository;
 import com.kkosunnae.deryeogage.domain.mission.MissionEntity;
 import com.kkosunnae.deryeogage.domain.mission.MissionRepository;
+import com.kkosunnae.deryeogage.domain.mission.MissionService;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
