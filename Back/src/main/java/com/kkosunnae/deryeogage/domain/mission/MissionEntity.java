@@ -4,12 +4,14 @@ import com.kkosunnae.deryeogage.domain.adopt.AdoptEntity;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 @Entity
 @Getter
 @Table(name = "mission")
+@NoArgsConstructor
 public class MissionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
