@@ -11,4 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class MissionService {
+
+    private final MissionRepository missionRepository;
+
+    //입양확정 시 미션 최초 생성
+    public Integer save(MissionDto missionDto) {
+
+        MissionEntity mission = missionRepository.save(missionDto.toEntity(adoptRepository));
+        return mission.getId();
+    }
 }
