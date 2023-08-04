@@ -1,6 +1,7 @@
 package com.kkosunnae.deryeogage.domain.mission;
 
 import com.kkosunnae.deryeogage.domain.adopt.AdoptEntity;
+import com.kkosunnae.deryeogage.domain.adopt.AdoptRepository;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.*;
@@ -30,7 +31,7 @@ public class MissionDto {
         this.missionUrl4 = missionUrl4;
     }
 
-    public MissionEntity toEntity(UserRepository userRepository AdoptRepository adoptRepository){
+    public MissionEntity toEntity(UserRepository userRepository, AdoptRepository adoptRepository){
         UserEntity user = userRepository.findById(this.userId)
                 .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
         AdoptEntity adopt = adoptRepository.findById(this.adoptId)
