@@ -11,7 +11,6 @@ import java.util.NoSuchElementException;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 public class MissionDto {
     private Integer id;
     private int adoptId;
