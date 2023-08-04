@@ -3,6 +3,7 @@ package com.kkosunnae.deryeogage.domain.adopt;
 import com.kkosunnae.deryeogage.domain.board.BoardEntity;
 import com.kkosunnae.deryeogage.domain.mission.MissionDto;
 import com.kkosunnae.deryeogage.domain.mission.MissionEntity;
+import com.kkosunnae.deryeogage.domain.mission.MissionRepository;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -74,11 +75,11 @@ public class AdoptEntity {
                 .build();
     }
 
-    public void update(AdoptDto adoptDto){
+    public void update(AdoptDto adoptDto, MissionEntity missionEntity){
         this.status = adoptDto.getStatus();
         this.fromConfirmYn = adoptDto.getFromConfirmYn();
         this.toConfirmYn = adoptDto.getToConfirmYn();
         this.scheduledDate = adoptDto.getScheduledDate();
-        //this.missionId = adoptDto.getMissionId().;
+        this.mission = missionEntity;
     }
 }

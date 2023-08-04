@@ -43,14 +43,23 @@ public class AdoptDto {
     public AdoptEntity toEntity(UserRepository userRepository, BoardRepository boardRepository, MissionRepository missionRepository){
 
         UserEntity fromUser = userRepository.findById(this.fromUserId)
-                .orElseThrow(()-> new NoSuchElementException("해당 사용자가 존재하지 않습니다.");
-        BoardEntity board = BoardRepository.findById(this.boardId)
+                .orElseThrow(() -> new NoSuchElementException("해당 분양 사용자가 존재하지 않습니다."));
+        UserEntity toUser = userRepository.findById(this.toUserId)
+                .orElseThrow(()-> new NoSuchElementException("해당 입양 사용자가 존재하지 않습니다."));
+        BoardEntity board = boardRepository.findById(this.boardId)
                 .orElseThrow(()-> new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
-        MissionEntity mission = MissionRepository.findById(this.missionId)
+        MissionEntity mission = missionRepository.findById(this.missionId)
                 .orElseThrow(()-> new NoSuchElementException("해당 입양 미션 내역이 존재하지 않습니다."));
 
         return AdoptEntity.builder()
-
-
+                .board(board)
+                .fromUser(fromUser)
+                .toUser(toUser)
+                .status(status)
+                .fromConfirmYn(fromConfirmYn)
+                .toConfirmYn(toConfirmYn)
+                .scheduledDate(scheduledDate)
+                .mission(mission)
+                .build();
     }
 }
