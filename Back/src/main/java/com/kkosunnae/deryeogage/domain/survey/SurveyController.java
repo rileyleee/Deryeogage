@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class SurveyController {
 
     private final JwtUtil jwtUtil;
-
     private final SurveyService surveyService;
 
     @GetMapping
