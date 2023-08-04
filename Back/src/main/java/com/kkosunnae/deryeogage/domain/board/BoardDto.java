@@ -33,6 +33,7 @@ public class BoardDto {
     private String introduction;
     private LocalDateTime createdDate;
     private List fileList;
+    private boolean isWriter;
 
 
     public boolean isChipYn() {
@@ -41,6 +42,7 @@ public class BoardDto {
     public boolean isGender() {
         return gender;
     }
+
     @Builder
     public BoardDto(int id, long userId, String regionCode, Double lat, Double lon, String dogTypeCode, String userNickname, String title, char friendly, char activity, char dependency, char bark, char hair, String name, boolean gender, byte age, boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
         this.id = id;

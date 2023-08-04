@@ -4,6 +4,7 @@ import com.kkosunnae.deryeogage.global.s3file.S3FileService;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import com.kkosunnae.deryeogage.global.util.Response;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -90,10 +91,28 @@ public class BoardController {
         return Response.success(null);
     }
 
-    //글 상세조회
+    //글 상세조회 + 작성자 여부 boolean으로 반영
     @GetMapping("/{boardId}")
-    public Response<List<Object>> selectBoard(@PathVariable int boardId) {
+    public Response<List<Object>> selectBoard(@RequestHeader(value = "Authorization", required = false) String authorizationHeader, @PathVariable int boardId) {
+
         BoardDto thisBoard = boardService.getBoard(boardId);
+
+        // 요청한 사용자가 로그인 되어 있는 경우
+        if (authorizationHeader != null) {
+
+            String jwtToken = authorizationHeader.substring(7);
+            Long requestUser = jwtUtil.getUserId(jwtToken);
+
+            // 작성자 여부 파악하여 DTO에 담기
+            if (thisBoard.getUserId() == requestUser) {
+                thisBoard.setWriter(true);
+            } else {
+                thisBoard.setWriter(false);
+            }
+        } else {// 로그인하지 않은 경우
+            thisBoard.setWriter(false);
+        }
+
         Map<String, String> uploadedFiles = boardService.getBoardFiles(boardId);
         List<Object> boardSet = new ArrayList<>();
         boardSet.add(thisBoard);
@@ -102,17 +121,16 @@ public class BoardController {
     }
 
 
-
     //글 목록 조회
     @GetMapping("/list")
-    public Response <List<BoardDto>> findBoards() {
+    public Response<List<BoardDto>> findBoards() {
         List<BoardDto> boardSetList = boardService.findAll();
         return Response.success(boardSetList);
     }
 
     //내가 쓴 글 목록 조회(마이페이지)
     @GetMapping("/list/user")
-    public Response <List<BoardDto>> findMyBoards(@RequestHeader("Authorization") String authorizationHeader) {
+    public Response<List<BoardDto>> findMyBoards(@RequestHeader("Authorization") String authorizationHeader) {
         String jwtToken = authorizationHeader.substring(7);
         Long userId = jwtUtil.getUserId(jwtToken);
         List<BoardDto> boardSetMap = boardService.findMyBoards(userId);
