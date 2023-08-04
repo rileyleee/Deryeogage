@@ -23,20 +23,16 @@ public class SimulationDto {
     private LocalDateTime endTime;
     private Integer cost;
     private LocalDateTime lastTime;
-    private String petRequire;
-    private String petEmotion;
-    private Float train1;
-    private Float train2;
-    private Float train3;
-    private Float train4;
+    private String train;
     private Byte health;
     private Byte quizNum;
+    private String requirement;
     private String title;
     private boolean end;
     private boolean endCheck;
 
     @Builder
-    public SimulationDto(Integer id, Long user, String petType, String petName, String background, LocalDateTime startTime, LocalDateTime endTime, Integer cost, LocalDateTime lastTime, String petRequire, String petEmotion, Float train1, Float train2, Float train3, Float train4, Byte health, Byte quizNum, String title, boolean end, boolean endCheck) {
+    public SimulationDto(Integer id, Long user, String petType, String petName, String background, LocalDateTime startTime, LocalDateTime endTime, Integer cost, LocalDateTime lastTime, String train, Byte health, Byte quizNum, String requirement, String title, boolean end, boolean endCheck) {
         this.id = id;
         this.user = user;
         this.petType = petType;
@@ -46,14 +42,10 @@ public class SimulationDto {
         this.endTime = endTime;
         this.cost = cost;
         this.lastTime = lastTime;
-        this.petRequire = petRequire;
-        this.petEmotion = petEmotion;
-        this.train1 = train1;
-        this.train2 = train2;
-        this.train3 = train3;
-        this.train4 = train4;
+        this.train = train;
         this.health = health;
         this.quizNum = quizNum;
+        this.requirement = requirement;
         this.title = title;
         this.end = end;
         this.endCheck = endCheck;
@@ -72,14 +64,10 @@ public class SimulationDto {
                 .endTime(this.endTime)
                 .cost((cost != null) ? cost : 300000)
                 .lastTime(this.lastTime)
-                .petRequire(this.petRequire)
-                .petEmotion(this.petEmotion)
-                .train1((train1 != null) ? train1 : 0.0f)
-                .train2((train2 != null) ? train2 : 0.0f)
-                .train3((train3 != null) ? train3 : 0.0f)
-                .train4((train4 != null) ? train4 : 0.0f)
+                .train((train != null) ? train : "0000")
                 .health((health != null) ? health : 100)
                 .quizNum((quizNum != null) ? quizNum : 0)
+                .requirement((requirement != null) ? requirement : "0000")
                 .title(this.title)
                 .end(this.end)
                 .endCheck(this.endCheck)
