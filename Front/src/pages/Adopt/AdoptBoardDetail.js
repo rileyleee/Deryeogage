@@ -21,6 +21,16 @@ const Media = styled.div`
   }
 `;
 
+export const ChatButton = styled(Link)`
+  margin-top: 10px;
+  background-color: #ff914d;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+`;
+
 const MediaBox = styled.div`
   width: 100%;
   height: 500px; // 원하는 높이를 설정하세요.
@@ -64,7 +74,6 @@ export const Button = styled.button`
 `;
 
 export const EditButton = styled(Link)`
-
   background-color: #ff914d;
   color: white;
   padding: 5px 10px;
@@ -72,12 +81,11 @@ export const EditButton = styled(Link)`
   text-decoration: none;
 `;
 
-
 function AdoptBoardDetail() {
   const [adoptData, setAdoptData] = useState(null);
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     const fetchAdoptData = async () => {
       if (boardId) {
@@ -127,7 +135,7 @@ function AdoptBoardDetail() {
   return (
     <Container>
       {adoptData.board.title}
-
+      
       <FlexContainer>
         <Box>
           {/* 강아지 특성 정보를 표시하는 섹션 */}
@@ -175,9 +183,11 @@ function AdoptBoardDetail() {
       {adoptData.board.health}
       <Span>소개</Span>
       {adoptData.board.introduction}
-
+      {isLoggedIn() && <ChatButton to="/adopt/chat">채팅하기</ChatButton>}
       {isLoggedIn() && <Button onClick={handleDelete}>삭제</Button>}
-      {isLoggedIn() && <EditButton to={`/adopt/edit/${boardId}`}>편집</EditButton>}
+      {isLoggedIn() && (
+        <EditButton to={`/adopt/edit/${boardId}`}>편집</EditButton>
+      )}
     </Container>
   );
 }

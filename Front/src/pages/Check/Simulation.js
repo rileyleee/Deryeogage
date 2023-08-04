@@ -1,5 +1,6 @@
 // 게임 시작 화면
 import React, {  useState, useEffect } from 'react';
+import axios from 'axios';
 import GameText from '../../components/Check/GameText'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as S from "../../styled/Check/Simulation.style"
@@ -155,6 +156,9 @@ function Simulation() {
             return "#FF914D"; // 기본 색상
     }
   }
+
+
+
   
   return (
     <div className="container" id="Simulation">
@@ -177,4 +181,3 @@ function Simulation() {
   }
   
   export default Simulation;
-  

@@ -1,13 +1,18 @@
 // 선호도조사 강아지 발바닥 다섯개로 점수주는 컴포넌트
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // useEffect를 import
 import { PiPawPrintFill } from "react-icons/pi"; 
 import styled from 'styled-components';
 
 const ARRAY = [0, 1, 2, 3, 4];
 
-function SurveyPaw({ title, onSelect }) {
-  const [selectedIdx, setSelectedIdx] = useState(-1);
+function SurveyPaw({ title, onSelect, initial  }) {
+  const [selectedIdx, setSelectedIdx] = useState(initial - 1);
+
+  useEffect(() => {
+    setSelectedIdx(initial - 1);
+  }, [initial]);
+  
 
   const handleStarClick = index => {
     setSelectedIdx(index);

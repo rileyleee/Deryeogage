@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React, {  useState, useEffect } from 'react';
 import axios from "axios";
 import styled from "styled-components";
 import { PiPawPrintFill } from "react-icons/pi";
 import { useRecoilState } from "recoil";
 import {
   SimulationExistAtom,
-  SimulationStartAtom,
   SimulationNum,
 } from "../recoil/SimulationAtom";
 import { useNavigate } from "react-router-dom";
@@ -84,6 +83,81 @@ function Home() {
       localStorage.removeItem("clickedPage"); // 이동한 페이지 정보를 삭제
     }
   }, [navigate]);
+
+
+
+
+
+
+
+  //준 위치/날씨, 동 위치
+  //날씨
+   // 상태 변수 정의
+   const [state, setState] = useState({
+    temp: 0,
+    temp_max: 0,
+    temp_min: 0,
+    humidity: 0,
+    desc: '',
+    icon: '',
+    loading: true,
+    lat: null, // 위도
+    lon: null, // 경도
+  });
+
+  // 컴포넌트 생성 후 날씨 정보 조회
+  useEffect(() => {
+    // 위에서 만든 상태 변수에 값을 전달
+    const getLocation = () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(getWeather);
+      } else {
+        console.error('Geolocation is not supported by this browser.');
+      }
+    };
+
+    // 사용자의 위치를 기반으로 날씨 정보를 가져오는 함수
+    const getWeather = (position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const apiKey = process.env.REACT_APP_WEATHER_KEY;
+      const lang = 'kr'; // 한국어 설정
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&lang=${lang}`;
+
+      axios
+        .get(url)
+        .then((responseData) => {
+          const data = responseData.data;
+          setState({
+            temp: data.main.temp,
+            temp_max: data.main.temp_max,
+            temp_min: data.main.temp_min,
+            humidity: data.main.humidity,
+            desc: data.weather[0].description,
+            icon: data.weather[0].icon,
+            loading: false,
+            lat: lat,
+            lon:lon,
+          });
+        })
+        .catch((error) => console.log(error));
+    };
+
+    getLocation();
+  }, []);
+
+  const imgSrc = `https://openweathermap.com/img/w/${state.icon}.png`;
+  
+  localStorage.setItem('humidity', state.desc);
+  localStorage.setItem('imgSrc', imgSrc);
+  localStorage.setItem('lat', state.lat);
+  localStorage.setItem('lon', state.lon);
+
+
+
+
+
+
 
   return (
     <HomeContainer>

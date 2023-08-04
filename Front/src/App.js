@@ -37,6 +37,8 @@ import CheckListResult from "./pages/Check/CheckListResult";
 
 // NotFound
 import NotFound from "./pages/NotFound/NotFound";
+import SurveyResult from "./pages/User/SurveyResult";
+import ChatVideo from "./pages/ChatVideo/ChatVideo";
 
 
 
@@ -65,6 +67,7 @@ function App() {
             <Route path="/adopt" element={<AdoptBoard />} />
             <Route path="/adopt/create" element={<AdoptBoardCreate />} />
             <Route path="/adopt/:boardId" element={<AdoptBoardDetail />} />
+            <Route path="/adopt/chat" element={<ChatVideo />} />
             <Route exact path="/adopt/edit/:boardId" component={AdoptBoardUpdate} />
 
             {/* 입양후기게시판 */}
@@ -75,6 +78,7 @@ function App() {
             {/* 마이페이지 */}
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/survey" element={<Survey />} />
+            <Route path="/survey/result" element={<SurveyResult />} />
 
             {/* 시뮬레이션, 사전테스트 */}
             <Route path="/simulations" element={<Simulation />} />

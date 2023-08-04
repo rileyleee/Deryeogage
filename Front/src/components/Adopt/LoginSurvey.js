@@ -8,7 +8,7 @@ function LoginSurvey() {
   const token = localStorage.getItem("accessToken"); // Get user token
 
   useEffect(() => {
-    const REACT_APP_API_URL = "http://localhost:8080/api/boards/recommendation";
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     axios
       .get(REACT_APP_API_URL, {
         headers: {
