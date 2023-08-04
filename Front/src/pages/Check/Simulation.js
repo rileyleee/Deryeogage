@@ -11,26 +11,26 @@ import GameDogChip from "../../components/Check/GameDogChip";
 import GameBasicScreen from "../../components/Check/GameBasicScreen";
 import GameTraining from "../../components/Check/GameTraining";
 import GameWalking from "../../components/Check/GameWalking"
-import GameMenu from "../../components/Check/GameMenu"
+import GameMeal from "../../components/Check/GameMeal"
+import GamePoop from "../../components/Check/GamePoop"
+import GameTreat from "../../components/Check/GameTreat"
+import GameToy from "../../components/Check/GameToy"
 import {useRecoilValue, useRecoilState} from "recoil"
-import { SimulationNum, SimulationExistAtom, SimulationWalkingCnt, SimulationStartAtom } from "../../recoil/SimulationAtom"
+import { SimulationNum, SimulationExistAtom, SimulationWalkingCnt, SimulationStartAtom, SimulationHp
+ } from "../../recoil/SimulationAtom"
 import {useLocation} from "react-router-dom"
 
 function Simulation() {
   const location = useLocation()
-  // const SimulationNumValue = useRecoilValue(SimulationNum)
   const SimulationExistValue = useRecoilValue(SimulationExistAtom)
-  console.log(SimulationExistValue)
-  const simulationStart = useRecoilValue(SimulationStartAtom)
   // localStorage에서 값을 가져와서 초기 상태를 설정합니다.
   const [activatedNum, setActivatedNum] = useState(() => parseInt(localStorage.getItem('activatedNum'), 10)) 
   // 다음, 이전 페이지로 이동하기 위한 변수
-  // const hour = useRecoilValue(SimulationHours)
-  // const minute = useRecoilValue(SimulationMinutes)
   // activatedNum이 변경될 때마다 localStorage를 업데이트 합니다.
+    // 데이터 로컬스토리지에 등록
     if(Object.keys(SimulationExistValue).length === 0) { // 데이터가 없으면,,,그니까 처음 시작 하는거면,,,
       localStorage.setItem('hpPercentage', 100);
-      localStorage.setItem('timeDifference', JSON.stringify({
+      localStorage.setItem('timeDifference', JSON.stringify({ // 객체 데이터 등록할 때 무조건 stringify 활용
         hours:0,
         minutes:0
       }));      
@@ -45,11 +45,11 @@ function Simulation() {
       localStorage.setItem('cost', SimulationExistValue.cost);
     }
 
-    const [hpPercentage, setHpPercentage] = useState(localStorage.getItem('hpPercentage'))
+    // 위에서 로컬에 저장한 데이터를 가져와서 변수에 저장
+    const [hpPercentage, setHpPercentage] = useRecoilState(SimulationHp)
     const [timeDifference, setTimeDifference] = useState(JSON.parse(localStorage.getItem('timeDifference')))
-    console.log(hpPercentage)
-    console.log(timeDifference)
 
+    // 시간 및 hp 계산
     useEffect(() => {
       let hpTimer = 0;
       const timerId = setInterval(() => {
@@ -82,23 +82,26 @@ function Simulation() {
       return () => clearInterval(timerId); // 컴포넌트가 unmount될 때 타이머를 정리합니다.
   }, []); 
   
+  // 로컬 스토리지 값도 계속 업데이트
   useEffect(() => {
       localStorage.setItem('hpPercentage', hpPercentage); 
       localStorage.setItem('timeDifference', JSON.stringify(timeDifference)); // 값이 변했으니까 로컬에 다시 저장
   }, [hpPercentage, timeDifference]);
 
+  // 화면에 보여주는 값으로 변경해서 보여주기
   const displayTime = () => {
     console.log(timeDifference, timeDifference.hours)
       return `${timeDifference.hours.toString().padStart(2, '0')}:${timeDifference.minutes.toString().padStart(2, '0')}`;
   }
 
+  // HP 줄이기
   const decreaseHp = () => {
       // HP를 1 감소시킵니다. HP는 0 이하로 내려가지 않습니다.
       setHpPercentage((prevHp) => Math.max(prevHp - 1, 0));
   }
+
+  // 산책 나가면 hp 5추가해주고 산책 횟수 카운트
   const [walking, setWalking] = useRecoilState(SimulationWalkingCnt)
-  // console.log(walking)
-  
   const walkingIncreaseHp = (prev) => {
       if (prev < 3) {
           setHpPercentage(parseInt(hpPercentage)+5)
@@ -144,7 +147,10 @@ function Simulation() {
     5 : <GameBasicScreen existdata={SimulationExistValue} handleMove={handleMove} setHpPercentage={setHpPercentage} time={displayTime()} hp={hpPercentage} walkingIncreaseHp={walkingIncreaseHp}/>,
     6 : <GameTraining existdata={SimulationExistValue} handleMove={handleMove} time={displayTime()} hp={hpPercentage} decreaseHp={decreaseHp}/>,
     7 : <GameWalking handleMove={handleMove} />,
-    // 8: <GameMenu time={displayTime()} hp={hpPercentage}/>
+    8 : <GameMeal handleMove={handleMove}/>,
+    9 : <GamePoop handleMove={handleMove}/>,
+    10 : <GameTreat handleMove={handleMove}/>,
+    11 : <GameToy handleMove={handleMove}/>
   }
 
   // activatedNum에 따라서 GameStartfirst의 테두리 색을 지정
@@ -160,6 +166,8 @@ function Simulation() {
 
 
   
+  
+
   return (
     <div className="container" id="Simulation">
       <GameText />

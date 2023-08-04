@@ -8,21 +8,19 @@ import { SimulationDog, SimulationName } from "../../recoil/SimulationAtom"
 function GamePick1(props) {
   const {onNextPage, onPreviousPage} = props
   const [currentButton, setCurrentButton] = useState(null);
-  const [dogValue, setDogValue] = useRecoilState(SimulationDog)
-  const [nameValue, setNameValue] = useRecoilState(SimulationName)
-  const [inputName, setInputName] = useState('')
-  // console.log(dogValue)
-  // console.log(nameValue)
+  const [dogValue, setDogValue] = useRecoilState(SimulationDog) // 강아지 종류
+  const [nameValue, setNameValue] = useRecoilState(SimulationName) // 이름
+  const [inputName, setInputName] = useState('') // input 입력 값
 
   const handleButtonPick = buttonIndex => {
     setCurrentButton(buttonIndex);
-    setDogValue(buttonIndex)
+    setDogValue(buttonIndex) // 강아지 종류 저장
   };
   const handleNameChange = (event) => {
-    setInputName(event.target.value)
+    setInputName(event.target.value) // event로 inputName가져와서 저장
   }
   const handleNamePick = () => {
-    setNameValue(inputName)
+    setNameValue(inputName) // nameValue에 강아지 이름 저장
   }
 
     return (

@@ -2,17 +2,17 @@ import React, {useState, useEffect} from "react";
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as S from "../../styled/Check/GameMenu.style"
+import {useRecoilValue} from 'recoil'
+import {SimulationCost} from '../../recoil/SimulationAtom'
 
 function GameMenu(props) {
     const existData = props.existData
     const borderColor = props.borderColor || "#FF914D";
-    const [cost, setCost] = useState(() => localStorage.getItem('cost') || existData.cost);
-    console.log(cost)
-
+    const Cost = useRecoilValue(SimulationCost)
 
     useEffect(() => {
-        localStorage.setItem('cost', existData.cost);
-    }, [existData.cost]);
+        localStorage.setItem('cost', Cost);
+    }, [Cost]);
 
 
 
@@ -29,7 +29,7 @@ function GameMenu(props) {
             </S.GameBasicIcon>
             <div>
                 <p>{props.time}</p>
-                <p>{cost}원</p>
+                <p>{Cost}원</p>
                 <S.GameBasicHp borderColor={borderColor} hpPercentage={props.hp}>{props.hp}</S.GameBasicHp>
                 <p>{localStorage.getItem('humidity')}</p>
             </div>
