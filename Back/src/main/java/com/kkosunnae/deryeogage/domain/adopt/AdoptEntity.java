@@ -1,15 +1,20 @@
 package com.kkosunnae.deryeogage.domain.adopt;
 
 import com.kkosunnae.deryeogage.domain.board.BoardEntity;
+import com.kkosunnae.deryeogage.domain.mission.MissionDto;
 import com.kkosunnae.deryeogage.domain.mission.MissionEntity;
+import com.kkosunnae.deryeogage.domain.mission.MissionRepository;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "adopt")
 public class AdoptEntity {
     @Id
@@ -44,4 +49,37 @@ public class AdoptEntity {
     @OneToOne(mappedBy = "adopt")
     private MissionEntity mission;
 
+    @Builder
+    public AdoptEntity(BoardEntity board, UserEntity fromUser, UserEntity toUser, AdoptStatus status, Boolean fromConfirmYn, Boolean toConfirmYn, LocalDate scheduledDate, MissionEntity mission) {
+        this.board = board;
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+        this.status = status;
+        this.fromConfirmYn = fromConfirmYn;
+        this.toConfirmYn = toConfirmYn;
+        this.scheduledDate = scheduledDate;
+        this.mission = mission;
+    }
+
+    public AdoptDto toDto(){
+        return AdoptDto.builder()
+                .id(this.id)
+                .boardId(this.board.getId())
+                .fromUserId(this.fromUser.getId())
+                .toUserId(this.toUser.getId())
+                .status(this.status)
+                .fromConfirmYn(this.fromConfirmYn)
+                .toConfirmYn(this.toConfirmYn)
+                .scheduledDate(this.scheduledDate)
+                .missionId(this.mission.getId())
+                .build();
+    }
+
+    public void update(AdoptDto adoptDto, MissionEntity missionEntity){
+        this.status = adoptDto.getStatus();
+        this.fromConfirmYn = adoptDto.getFromConfirmYn();
+        this.toConfirmYn = adoptDto.getToConfirmYn();
+        this.scheduledDate = adoptDto.getScheduledDate();
+        this.mission = missionEntity;
+    }
 }
