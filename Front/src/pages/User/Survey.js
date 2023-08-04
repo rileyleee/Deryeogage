@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SurveyPaw from "../../components/SurveyPaw";
 import styled from "styled-components";
 import axios from "axios";
@@ -10,10 +10,29 @@ function Survey() {
   const [dependency, setDependency] = useState(0);
   const [bark, setBark] = useState(0);
   const [hair, setHair] = useState(0);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const token = localStorage.getItem("accessToken");
 
   const titles = ["친화력", "활동량", "의존성", "왈왈왈", "털빠짐"];
   const selectors = [setFriendly, setActivity, setDependency, setBark, setHair];
+
+  useEffect(() => {
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+    axios
+      .get(`${REACT_APP_API_URL}/surveys`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then((response) => {
+        if (response.data.length > 0) {
+          setHasSubmitted(true);
+        }
+      })
+      .catch((error) => {
+        console.error("설문 데이터 확인 오류:", error);
+      });
+  }, []);
 
   const onDragStart = (e, index) => {
     e.dataTransfer.setData("index", index);
@@ -32,28 +51,57 @@ function Survey() {
   };
 
   const handleSubmit = () => {
-    const rankingString = ranking.map(item => item + 1).join("");
-  console.log("현재 순서:", rankingString);
+    const rankingString = ranking.map((item) => item + 1).join("");
+    console.log("현재 순서:", rankingString);
     const data = {
       friendly: friendly.toString(),
       activity: activity.toString(),
       dependency: dependency.toString(),
       bark: bark.toString(),
       hair: hair.toString(),
-      ranking: rankingString
+      ranking: rankingString,
     };
-    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+    
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     axios
       .post(`${REACT_APP_API_URL}/surveys`, data, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
       .then((response) => {
         console.log("설문 데이터가 성공적으로 제출되었습니다!", response);
+        setHasSubmitted(true);
       })
       .catch((error) => {
         console.error("설문 데이터 제출 오류:", error);
+      });
+  };
+
+  const handleUpdate = () => {
+    const rankingString = ranking.map((item) => item + 1).join("");
+    console.log("현재 순서:", rankingString);
+    const data = {
+      friendly: friendly.toString(),
+      activity: activity.toString(),
+      dependency: dependency.toString(),
+      bark: bark.toString(),
+      hair: hair.toString(),
+      ranking: rankingString,
+    };
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+    axios
+      .put(`${REACT_APP_API_URL}/surveys`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log("설문 데이터가 성공적으로 수정되었습니다!", response);
+        setHasSubmitted(true);
+      })
+      .catch((error) => {
+        console.error("설문 데이터 수정 오류:", error);
       });
   };
 
@@ -81,13 +129,17 @@ function Survey() {
             </div>
           ))}
         </SurveyContainer>
-        <Button onClick={handleSubmit}>등록하기</Button>
+        {hasSubmitted ? (
+          <Button onClick={handleUpdate}>수정하기</Button>
+        ) : (
+          <Button onClick={handleSubmit}>등록하기</Button>
+        )}
       </Div>
     </CenteredDiv>
   );
 }
 
-export default Survey;  
+export default Survey;
 
 const Span = styled.span`
   color: rgba(255, 145, 77, 1);

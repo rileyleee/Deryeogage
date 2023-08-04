@@ -1,9 +1,9 @@
-// DogInfoSection.js
-
 import React from "react";
 import GenderRadio from "../../components/Radio/GenderRadio";
 import ChipRadio from "../../components/Radio/ChipRadio";
 import styled from "styled-components";
+import SearchAuto from "./SearchAuto";
+import { useState } from "react";
 
 function DogInfoSection({ setName, setAge, setRegion, setGender, setChip, dogGender, dogChip, dogRegion, dogName, dogAge  }) {
   return (
@@ -34,13 +34,7 @@ function DogInfoSection({ setName, setAge, setRegion, setGender, setChip, dogGen
         <P>
           현재 강아지가 살고있는 <Span>지역</Span>을 작성해주세요.
         </P>
-        <input
-          type="text"
-          name="region"
-          placeholder="지역"
-          value={dogRegion}
-          onChange={(e) => setRegion(e.target.value)}
-        />
+        <SearchAuto setRegion={setRegion} />
         <P>
           <Span>성별</Span>을 선택해주세요.
           <GenderRadio gender={dogGender} setGender={setGender}  />
@@ -57,7 +51,6 @@ function DogInfoSection({ setName, setAge, setRegion, setGender, setChip, dogGen
 export default DogInfoSection;
 
 export const DogInfo = styled.div`
-  /* 스타일을 추가하여 간격을 줍니다. */
   margin: 1vw 0;
   padding: 1vh;
   border: 1px #ff914d solid;
@@ -66,7 +59,6 @@ export const DogInfo = styled.div`
   text-align: center;
 `;
 export const Div = styled.div`
-  /* 스타일을 추가하여 간격을 줍니다. */
   margin: 1vw 0;
   padding: 1vh;
   font-size: 2vh;
@@ -79,4 +71,3 @@ export const P = styled.div`
   margin: 1vh;
   padding-top: 1vh;
 `;
-
