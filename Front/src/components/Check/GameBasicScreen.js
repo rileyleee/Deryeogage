@@ -9,33 +9,62 @@ import { SimulationExistAtom, SimulationWalkingCnt, SimulationCost, requirementI
 
 
 function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
-    const existData = useRecoilValue(SimulationExistAtom) // 선택한 data
-    const walkingCnt = useRecoilValue(SimulationWalkingCnt) // 산책 횟수
+    // const walkingCnt = useRecoilValue(SimulationWalkingCnt) // 산책 횟수
     const [cost, setCost] = useRecoilState(SimulationCost)
     // requirementImages Recoil 상태와 상태 업데이트 함수를 가져옴
     const [requirementImages, setRequirementImages] = useRecoilState(requirementImagesState); // 이미지 객체로 저장
-    console.log(requirementImages)
     const [nextImage, setNextImage] = useRecoilState(nextImageState); // 다음 이미지(배변용)
-    const [hpPercentage, setHpPercentage] = useRecoilState(SimulationHp)
-    // 산책 돈 계산 코드
+    const [simulationExistValue, setSimulationExistValue] = useRecoilState(SimulationExistAtom)
+    // const [hpPercentage, setHpPercentage] = useState(simulationExistValue.health)
+    console.log(simulationExistValue)
+      // 산책 횟수 카운트
+    const [walking, setWalking] = useRecoilState(SimulationWalkingCnt)
+    const walkingIncreaseHp = (prev) => {
+        if (prev < 3) {
+            setWalking(prev+1)
+            // console.log(walking)
+        }
+    }
+    const move = (hp, pay) => {
+        // HP를 1 감소시킵니다. HP는 0 이하로 내려가지 않습니다.
+        // setHpPercentage(prevHp => prevHp + hp)
+        // setCost((prevCost) => Math.max(prevCost - pay, 0))
+        setSimulationExistValue(prevState => ({
+            ...prevState,
+            health: simulationExistValue.health + hp,
+            cost: simulationExistValue.cost - pay
+          }));
+        // localStorage.setItem('hpPercentage', hpPercentage-1)
+    }
+
     const setHandleMove = (num) => {
         props.handleMove(num)
-        if (num === 7) {
-            setCost(cost-1000)
-            // localStorage.setItem('cost', cost-1000)
-        } else if (num === 8) {
-            setCost(cost-2000)
-            setHpPercentage(parseInt(hpPercentage)+20)
-            // localStorage.setItem('cost', cost-2000)
-        } else if (num === 9) {
-            setCost(cost-500)
-            setHpPercentage(parseInt(hpPercentage)+5)
-        } else if (num === 10) {
-            setCost(cost-1000)
-            setHpPercentage(parseInt(hpPercentage)+10)
-        } else if (num === 11) {
-            setCost(cost-500)
-            setHpPercentage(parseInt(hpPercentage)+5)
+        if (num === 7) { // 산책
+            move(5, 1000)
+            setSimulationExistValue(prevState => ({
+                ...prevState,
+                requirement: (parseInt(simulationExistValue.requirement)+10).toString().padStart(4, '0')
+              }));
+        } else if (num === 8) { // 식사
+            move(20, 2000)
+            setSimulationExistValue(prevState => ({
+                ...prevState,
+                requirement: (parseInt(simulationExistValue.requirement)+1000).toString().padStart(4, '0')
+              }));
+        } else if (num === 9) { // 배변
+            move(5, 500)
+        } else if (num === 10) { // 간식
+            move(10, 1000)
+            setSimulationExistValue(prevState => ({
+                ...prevState,
+                requirement: (parseInt(simulationExistValue.requirement)+100).toString().padStart(4, '0')
+              }));
+        } else if (num === 11) { // 장난감
+            move(5, 500)
+            setSimulationExistValue(prevState => ({
+                ...prevState,
+                requirement: (parseInt(simulationExistValue.requirement)+1).toString().padStart(4, '0')
+              }));
         }
     }
     
@@ -121,8 +150,8 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     
   return (
     <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-between"
-    petType={existData.petType}
-    background={existData.background}
+    petType={simulationExistValue.petType}
+    background={simulationExistValue.background}
     >
         <div className="d-flex justify-content-between">
             <div>
@@ -131,11 +160,11 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                 <br />
                 <GameBtn 
                     className="orange"
-                    data-bs-toggle={walkingCnt >= 3 ? "modal" : ""}
-                    data-bs-target={walkingCnt >= 3 ? "#exampleModal2" : ""}
+                    data-bs-toggle={walking >= 3 ? "modal" : ""}
+                    data-bs-target={walking >= 3 ? "#exampleModal2" : ""}
                     onClick={() => {
-                        if (walkingCnt < 3) {
-                        props.walkingIncreaseHp(walkingCnt); 
+                        if (walking < 3) {
+                        walkingIncreaseHp(walking); 
                         setHandleMove(7);
                         }
                     }}
@@ -159,11 +188,11 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                 </div>
             </div>
             <div>
-                <GameBtn className="orange" as="div">{existData.petName}네 집</GameBtn>
+                <GameBtn className="orange" as="div">{simulationExistValue.petName}네 집</GameBtn>
             </div>
             <div className="d-flex flex-column justify-content-between align-items-end">
                 <div className="d-flex flex-column">
-                    <GameMenu borderColor="#FF914D" existData={existData} time={props.time} hp={props.hp}/>
+                    <GameMenu borderColor="#FF914D" existData={simulationExistValue} time={props.time} hp={props.hp}/>
                     <div className="d-flex flex-column align-items-end">
                     <GameBtn className="orange" data-bs-toggle="modal" data-bs-target="#exampleModal">가격표 보기</GameBtn>
                     <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -192,7 +221,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
             </div>
         </div>
         <div className='d-flex justify-content-center'>
-            <S.DogImg src={`assets/${existData.petType}/idle${existData.petType}.gif`} alt="" />
+            <S.DogImg src={`assets/${simulationExistValue.petType}/idle${simulationExistValue.petType}.gif`} alt="" />
             <S.DogBtn onClick={() => setHandleMove(requirementNum)}>
       {isImageVisible && (
         <S.Requirement src={showRandomImage} alt="" onClick={handleImageClick} />

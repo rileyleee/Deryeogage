@@ -31,11 +31,23 @@ function Home() {
             },
           });
           console.log(response.data);
-          if (response.data !== "Start a new simulation") {
-            setExistValue(response.data);
-            localStorage.setItem("activatedNum", 5);
-          } else {
+          if (response.data === "Start a new simulation") {
             localStorage.setItem("activatedNum", 1);
+            // localStorage.setItem('hpPercentage', 100);
+            localStorage.setItem('timeDifference', JSON.stringify({ // 객체 데이터 등록할 때 무조건 stringify 활용
+              hours:0,
+              minutes:0
+            }));
+            // localStorage.setItem('cost', 300000); 
+          } else {
+            setExistValue(response.data); // SET하자마자 담기지 않아서 response.data로 해줌
+            localStorage.setItem("activatedNum", 5);
+            // localStorage.setItem('hpPercentage', response.data.health);
+            localStorage.setItem('timeDifference', JSON.stringify({
+              hours:(Number(response.data.lastTime.substr(11, 2)) - Number(response.data.startTime.substr(11, 2)) + 24) % 24,
+              minutes:(Number(response.data.lastTime.substr(14, 2)) - Number(response.data.startTime.substr(14, 2)) + 60) % 60
+            }));
+            // localStorage.setItem('cost', response.data.cost);
           }
           navigate("/simulations");
         } catch (error) {

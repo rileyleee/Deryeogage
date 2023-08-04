@@ -1,5 +1,5 @@
 // 게임 시작 화면
-import React, {  useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import GameText from '../../components/Check/GameText'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as S from "../../styled/Check/Simulation.style"
@@ -18,34 +18,18 @@ import {useRecoilValue, useRecoilState} from "recoil"
 import { SimulationNum, SimulationExistAtom, SimulationWalkingCnt, SimulationStartAtom, SimulationHp
  } from "../../recoil/SimulationAtom"
 import {useLocation} from "react-router-dom"
+import axios from 'axios';
 
 function Simulation() {
   const location = useLocation()
-  const SimulationExistValue = useRecoilValue(SimulationExistAtom)
   // localStorage에서 값을 가져와서 초기 상태를 설정합니다.
   const [activatedNum, setActivatedNum] = useState(() => parseInt(localStorage.getItem('activatedNum'), 10)) 
   // 다음, 이전 페이지로 이동하기 위한 변수
   // activatedNum이 변경될 때마다 localStorage를 업데이트 합니다.
     // 데이터 로컬스토리지에 등록
-    if(Object.keys(SimulationExistValue).length === 0) { // 데이터가 없으면,,,그니까 처음 시작 하는거면,,,
-      localStorage.setItem('hpPercentage', 100);
-      localStorage.setItem('timeDifference', JSON.stringify({ // 객체 데이터 등록할 때 무조건 stringify 활용
-        hours:0,
-        minutes:0
-      }));      
-      localStorage.setItem('cost', 300000);
-    } else {
-      localStorage.setItem('hpPercentage', SimulationExistValue.health);
-
-      localStorage.setItem('timeDifference', JSON.stringify({
-        hours:(Number(SimulationExistValue.lastTime.substr(11, 2)) - Number(SimulationExistValue.startTime.substr(11, 2)) + 24) % 24,
-        minutes:(Number(SimulationExistValue.lastTime.substr(14, 2)) - Number(SimulationExistValue.startTime.substr(14, 2)) + 60) % 60
-      }));
-      localStorage.setItem('cost', SimulationExistValue.cost);
-    }
-
-    // 위에서 로컬에 저장한 데이터를 가져와서 변수에 저장
-    const [hpPercentage, setHpPercentage] = useRecoilState(SimulationHp)
+    const [simulationExistValue, setSimulationExistValue] = useRecoilState(SimulationExistAtom)
+    console.log(simulationExistValue)
+    // const [hpPercentage, setHpPercentage] = useRecoilState(SimulationHp)
     const [timeDifference, setTimeDifference] = useState(JSON.parse(localStorage.getItem('timeDifference')))
 
     // 시간 및 hp 계산
@@ -72,9 +56,14 @@ function Simulation() {
           });
 
           hpTimer += 1;
-          if (hpTimer >= 10) { // 5분마다 HP 감소
-              setHpPercentage((prevHpPercentage) => prevHpPercentage > 0 ? prevHpPercentage - 1 : 0);
+          if (hpTimer >= 10) { // 10분마다 HP 감소
+              // setHpPercentage((prevHpPercentage) => prevHpPercentage > 0 ? prevHpPercentage - 1 : 0);
+              setSimulationExistValue(prevState => ({
+                ...prevState,
+                health: simulationExistValue.health > 0 ? simulationExistValue.health-1 : 0,
+              }));
               hpTimer = 0;
+              // localStorage.setItem('hpPercentage', simulationExistValue.health); 
           }
       }, 60000); // 1분에 한 번씩 실행됩니다.
 
@@ -83,9 +72,9 @@ function Simulation() {
   
   // 로컬 스토리지 값도 계속 업데이트
   useEffect(() => {
-      localStorage.setItem('hpPercentage', hpPercentage); 
+      // localStorage.setItem('hpPercentage', simulationExistValue.health); 
       localStorage.setItem('timeDifference', JSON.stringify(timeDifference)); // 값이 변했으니까 로컬에 다시 저장
-  }, [hpPercentage, timeDifference]);
+  }, [timeDifference]);
 
   // 화면에 보여주는 값으로 변경해서 보여주기
   const displayTime = () => {
@@ -93,22 +82,6 @@ function Simulation() {
       return `${timeDifference.hours.toString().padStart(2, '0')}:${timeDifference.minutes.toString().padStart(2, '0')}`;
   }
 
-  // HP 줄이기
-  const decreaseHp = () => {
-      // HP를 1 감소시킵니다. HP는 0 이하로 내려가지 않습니다.
-      setHpPercentage((prevHp) => Math.max(prevHp - 1, 0));
-  }
-
-  // 산책 나가면 hp 5추가해주고 산책 횟수 카운트
-  const [walking, setWalking] = useRecoilState(SimulationWalkingCnt)
-  const walkingIncreaseHp = (prev) => {
-      if (prev < 3) {
-          setHpPercentage(parseInt(hpPercentage)+5)
-          setWalking(prev+1)
-          // console.log(walking)
-      }
-  }
-  
   useEffect(() => {
     // 현재 주소를 가져옵니다.
     const currentPath = location.pathname;
@@ -120,6 +93,8 @@ function Simulation() {
     }
   }, [location]);
   
+
+  // 컴포넌트 이동
   useEffect(() => {
     localStorage.setItem('activatedNum', activatedNum);
   }, [activatedNum]);
@@ -143,8 +118,8 @@ function Simulation() {
     2 : <GamePick1 onNextPage={handleNextPage} onPreviousPage={handlePreviousPage} />,
     3 : <GamePick2 onNextPage={handleNextPage} onPreviousPage={handlePreviousPage} />,
     4 : <GameDogChip onNextPage={handleNextPage} onPreviousPage={handlePreviousPage} />,
-    5 : <GameBasicScreen existdata={SimulationExistValue} handleMove={handleMove} setHpPercentage={setHpPercentage} time={displayTime()} hp={hpPercentage} walkingIncreaseHp={walkingIncreaseHp}/>,
-    6 : <GameTraining existdata={SimulationExistValue} handleMove={handleMove} time={displayTime()} hp={hpPercentage} decreaseHp={decreaseHp}/>,
+    5 : <GameBasicScreen handleMove={handleMove} time={displayTime()} />,
+    6 : <GameTraining handleMove={handleMove} time={displayTime()} />,
     7 : <GameWalking handleMove={handleMove} />,
     8 : <GameMeal handleMove={handleMove}/>,
     9 : <GamePoop handleMove={handleMove}/>,
@@ -162,7 +137,38 @@ function Simulation() {
     }
   }
   
+//  5초마다 put 되도록
+
+// sendData 함수 및 의존성 배열 정의
+const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   
+  // sendData 함수 및 의존성 배열 정의
+  const sendData = useCallback(async () => {
+    try {
+      const Token = localStorage.getItem("accessToken");
+      if (Token) { // 로그인 했을 때만
+        const response = await axios.put(
+          `${REACT_APP_API_URL}/simulations/save`,
+          simulationExistValue,
+          {
+            headers: {
+              Authorization : 'Bearer '+ Token,
+            }
+          }
+        );
+        setSimulationExistValue(response.data);
+        console.log(simulationExistValue)
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [simulationExistValue, setSimulationExistValue, REACT_APP_API_URL]);
+  
+  // 컴포넌트가 마운트 될 때 10초마다 sendData 함수 호출
+  useEffect(() => {
+    const interval = setInterval(sendData, 10000);
+    return () => clearInterval(interval);
+  }, [sendData]);
 
   return (
     <div className="container" id="Simulation">
