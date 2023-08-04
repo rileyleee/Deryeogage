@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.NoSuchElementException;
 
 @Slf4j
+@Service
 @Transactional
 @RequiredArgsConstructor
-@Service
 public class SurveyService {
 
     private final SurveyRepository surveyRepository;

@@ -10,7 +10,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
-@Builder
 @Getter @Setter
 public class PreTestDto {
 

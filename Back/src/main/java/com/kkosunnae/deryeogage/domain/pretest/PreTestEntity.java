@@ -4,8 +4,6 @@ import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 

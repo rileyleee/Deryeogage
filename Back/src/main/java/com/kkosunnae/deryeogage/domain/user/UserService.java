@@ -5,7 +5,7 @@ import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -25,6 +26,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional(readOnly = true)
     public String getAccessToken(String code) {
         String accessToken = "";
         String refreshToken = "";
@@ -165,6 +167,7 @@ public class UserService {
     }
 
     // 로그인한 유저의 닉네임 가져오기
+    @Transactional(readOnly = true)
     public String getUserNickname(Long userId) {
 
         UserEntity loginedUser = userRepository.findById(userId)
