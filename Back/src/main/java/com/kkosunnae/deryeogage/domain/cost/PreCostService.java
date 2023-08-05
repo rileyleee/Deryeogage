@@ -60,7 +60,7 @@ public class PreCostService {
     }
 
     // 선 책임비 반환하기(반환요청 버튼 클릭 시 입양자 및 분양자 확정 처리 확인 후 반환)
-    public int normalReturn(Long userId, PreCostDto preCostDto) {
+    public void normalReturn(Long userId, PreCostDto preCostDto) {
 
         int boardId = preCostDto.getBoardId();
         // 입양자와 분양자 모두 확정처리 여부 확인하고
@@ -77,12 +77,11 @@ public class PreCostService {
         } else {
             throw new IllegalArgumentException("입양자와 분양자 모두가 확정처리해야 책임비를 반환할 수 있습니다.");
         }
-        return preCost.getId();
     }
 
 
     // 선 책임비 반환하기(게시글 삭제에 따른 반환 -> 후책임비도 반환 필요)
-    public int abnormalReturn(Long userId, PreCostDto preCostDto) {
+    public void abnormalReturn(Long userId, PreCostDto preCostDto) {
 
         //입양자의 후책임비도 반환하도록 메서드 호출하고
 
@@ -99,7 +98,5 @@ public class PreCostService {
 
         //분양게시글 삭제
         boardService.deleteById(boardId);
-
-        return preCost.getId();
     }
 }
