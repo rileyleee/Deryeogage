@@ -1,6 +1,5 @@
 package com.kkosunnae.deryeogage.domain.cost;
 
-import com.kkosunnae.deryeogage.domain.survey.SurveyDto;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import com.kkosunnae.deryeogage.global.util.Response;
 import io.swagger.annotations.Api;

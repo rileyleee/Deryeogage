@@ -22,7 +22,7 @@ public class AdoptService {
     private final BoardRepository boardRepository;
     private final AdoptRepository adoptRepository;
     private final MissionService missionService;
-
+    @Transactional(readOnly = true)
     //내 분양정보 목록 조회하기
     public List<AdoptDto> getFromAdopts(Long userId) {
         List<AdoptEntity> myFromAdoptEntity = adoptRepository.findByFromUserId(userId);
@@ -35,7 +35,7 @@ public class AdoptService {
         }
         return myFromAdoptDto;
     }
-
+    @Transactional(readOnly = true)
     //내 입양정보 목록 조회하기
     public List<AdoptDto> getToAdopts(Long userId) {
         List<AdoptEntity> myToAdoptEntity = adoptRepository.findByToUserId(userId);
@@ -81,7 +81,7 @@ public class AdoptService {
         adoptEntity.toUpdate(adoptDto);
     }
 
-    // 분양자 입양 확정 버큰 클릭 시 미션 생성하여 입양 정보 업데이트(분양자가 확정버튼 누를 때 실행되도록)
+    // 분양자 입양 확정 버튼 클릭 시 미션 생성하여 입양 정보 업데이트(분양자가 확정버튼 누를 때 실행되도록)
     public void addMission(AdoptDto adoptDto) {
 
         // 분양자 입양확정 처리
@@ -109,6 +109,7 @@ public class AdoptService {
 
 
     //분양자와 입양자 확정 여부 확인
+    @Transactional(readOnly = true)
     public boolean confirmCheck(Integer boardId) {
         AdoptEntity adoptEntity = adoptRepository.findByBoardId(boardId);
 
