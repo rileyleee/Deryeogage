@@ -1,5 +1,7 @@
 package com.kkosunnae.deryeogage.domain.cost;
 
+import com.kkosunnae.deryeogage.domain.adopt.AdoptDto;
+import com.kkosunnae.deryeogage.domain.adopt.AdoptRepository;
 import com.kkosunnae.deryeogage.domain.board.BoardRepository;
 import com.kkosunnae.deryeogage.domain.mission.MissionRepository;
 import com.kkosunnae.deryeogage.domain.mission.MissionService;
@@ -24,6 +26,7 @@ public class PostCostService {
     private final BoardRepository boardRepository;
     private final PostCostRepository postCostRepository;
     private final MissionService missionService;
+    private final AdoptRepository adoptRepository;
 
 
     // 후 책임비 납부하기
@@ -61,9 +64,10 @@ public class PostCostService {
     public void normalReturn(Long userId, PostCostDto postCostDto) {
 
         int boardId = postCostDto.getBoardId();
+        AdoptDto adoptDto = adoptRepository.findByBoardId(boardId).toDto();
 
         //미션 완료 여부 확인한 후
-        if (missionService.missionCheck) {
+        if (missionService.missionCheck(adoptDto.getMissionId())) {
             //반환처리
             postCostDto.setReturnYn(true);
             // 반환 날짜 담고
