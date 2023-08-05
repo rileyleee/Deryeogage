@@ -92,7 +92,7 @@ public class BoardController {
     }
 
     //글 상세조회 + 작성자 여부 boolean으로 반영
-    @GetMapping("/{boardId}")
+    @GetMapping("/each/{boardId}")
     public Response<List<Object>> selectBoard(@RequestHeader(value = "Authorization", required = false) String authorizationHeader, @PathVariable int boardId) {
 
         BoardDto thisBoard = boardService.getBoard(boardId);
