@@ -42,7 +42,7 @@ public class PreCostController {
     }
 
     // 입양 확정 후 선책임비 수정하기
-    @PutMapping
+    @PutMapping("/confirm")
     public Response<Object> normalReturn(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PreCostDto preCostDto) {
         String jwtToken = authorizationHeader.substring(7);
         Long userId = jwtUtil.getUserId(jwtToken);
