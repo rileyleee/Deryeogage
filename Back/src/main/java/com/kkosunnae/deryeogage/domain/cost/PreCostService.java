@@ -63,7 +63,7 @@ public class PreCostService {
 
         int boardId = preCostDto.getBoardId();
         // 입양자와 분양자 모두 확정처리 여부 확인하고
-        if (adoptService.confirmCheck(boardId) == true) {
+        if (adoptService.confirmCheck(boardId)) {
 
             // 반환처리하고
             preCostDto.setReturnYn(true);
