@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -86,10 +87,16 @@ public class PreCostService {
 
         int boardId = preCostDto.getBoardId();
 
-        //입양자의 후책임비도 반환하도록 메서드 호출하고
-        PostCostDto postCostDto = postCostRepository.findByBoardId(boardId).toDto();
-        Long toUserId = postCostDto.getUserId();
-        postCostService.abnormalReturn(toUserId, postCostDto);
+        //입양자의 후책임비도 반환하도록 메서드 호출하고...
+        PostCostEntity postCostEntity = postCostRepository.findByBoardId(boardId)
+                .orElseThrow(() -> new NoSuchElementException("동일한 게시물에 대해 납부한 후책임비 내역이 없습니다. boardId" + boardId));
+
+        PostCostDto postCostDto = postCostEntity.toDto();
+
+        if (postCostDto.getPayYn()) { //납부한 내역이 있다면 처리
+            Long toUserId = postCostDto.getUserId();
+            postCostService.abnormalReturn(toUserId, postCostDto);
+        }
 
         // 선책임비 반환처리하고
         preCostDto.setReturnYn(true);

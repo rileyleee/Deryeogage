@@ -3,11 +3,12 @@ package com.kkosunnae.deryeogage.domain.cost;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostCostRepository extends JpaRepository<PostCostEntity, Integer> {
-    PostCostEntity findByBoardId(int boardId);
+    Optional<PostCostEntity> findByBoardId(int boardId);
 
-    public List<PostCostEntity> findByUserId(Long userId);
+    Optional<List<PostCostEntity>>findByUserId(Long userId);
 
-    PostCostEntity findByUserIdAndBoardId(Long userId, int boardId);
+    Optional<PostCostEntity> findByUserIdAndBoardId(Long userId, int boardId);
 }
