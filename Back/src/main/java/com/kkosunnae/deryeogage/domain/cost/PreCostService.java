@@ -41,8 +41,7 @@ public class PreCostService {
     // 선책임비 1개 조회하기
     @Transactional(readOnly = true)
     public PreCostDto getPreCost(Long userId, int boardId) {
-        PreCostDto thisPreCost = preCostRepository.findByUserIdAndBoardId(userId, boardId).toDto();
-        return thisPreCost;
+        return preCostRepository.findByUserIdAndBoardId(userId, boardId).toDto();;
     }
 
     // 내가 납부한 선 책임비 조회하기(2개 이상인 경우)
