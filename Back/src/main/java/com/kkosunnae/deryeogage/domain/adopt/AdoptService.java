@@ -2,7 +2,6 @@ package com.kkosunnae.deryeogage.domain.adopt;
 
 import com.kkosunnae.deryeogage.domain.board.BoardRepository;
 import com.kkosunnae.deryeogage.domain.mission.MissionEntity;
-import com.kkosunnae.deryeogage.domain.mission.MissionRepository;
 import com.kkosunnae.deryeogage.domain.mission.MissionService;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -57,8 +56,36 @@ public class AdoptService {
         return thisAdopt.getId();
     }
 
-    // 입양확정 시 미션 생성하여 입양 정보 업데이트(분양자가 확정버튼 누를 때 실행되도록)
+    // 입양 정보 수정하기(약속 일정 수정 버튼 클릭 시 생성)
+    // 프론트에서 어떤 정보를 줄 수 있지..?
+    public void updateSchedule(AdoptDto adoptDto) {
+
+        // 입양 정보 찾기
+        AdoptEntity adoptEntity = adoptRepository.findById(adoptDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 입양정보가 존재하지 않습니다." + adoptDto.getId()));
+
+        // 입양정보에 미션 반영 수정
+        adoptEntity.scheduleUpdate(adoptDto);
+    }
+
+    // 입양자 입양 확정 버튼 클릭 시 입양내역 업데이트
+    public void updateToConfirm(AdoptDto adoptDto) {
+        // 입양자 입양 확정처리
+        adoptDto.setToConfirmYn(true);
+
+        // 입양 정보 찾기
+        AdoptEntity adoptEntity = adoptRepository.findById(adoptDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 입양정보가 존재하지 않습니다." + adoptDto.getId()));
+
+        // 입양정보 수정
+        adoptEntity.toUpdate(adoptDto);
+    }
+
+    // 분양자 입양 확정 버큰 클릭 시 미션 생성하여 입양 정보 업데이트(분양자가 확정버튼 누를 때 실행되도록)
     public void addMission(AdoptDto adoptDto) {
+
+        // 분양자 입양확정 처리
+        adoptDto.setFromConfirmYn(true);
 
         // 입양정보 상태 변경
         adoptDto.setStatus(AdoptStatus.ARRIVE);
@@ -80,16 +107,6 @@ public class AdoptService {
         adoptEntity.fromUpdate(adoptDto, missionEntity);
     }
 
-    // 입양 일정 변경 시 사용
-    public void updateSchedule(AdoptDto adoptDto) {
-
-        // 입양 정보 찾기
-        AdoptEntity adoptEntity = adoptRepository.findById(adoptDto.getId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 입양정보가 존재하지 않습니다." + adoptDto.getId()));
-
-        // 입양정보에 미션 반영 수정
-        adoptEntity.scheduleUpdate(adoptDto);
-    }
 
 
 }
