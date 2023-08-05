@@ -1,6 +1,7 @@
 package com.kkosunnae.deryeogage.domain.cost;
 
 import com.kkosunnae.deryeogage.domain.adopt.AdoptDto;
+import com.kkosunnae.deryeogage.domain.adopt.AdoptEntity;
 import com.kkosunnae.deryeogage.domain.adopt.AdoptRepository;
 import com.kkosunnae.deryeogage.domain.board.BoardRepository;
 import com.kkosunnae.deryeogage.domain.mission.MissionRepository;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @Slf4j
@@ -64,7 +66,11 @@ public class PostCostService {
     public void normalReturn(Long userId, PostCostDto postCostDto) {
 
         int boardId = postCostDto.getBoardId();
-        AdoptDto adoptDto = adoptRepository.findByBoardId(boardId).toDto();
+
+        AdoptEntity adoptEntity = adoptRepository.findByBoardId(boardId)
+                .orElseThrow(()-> new NoSuchElementException("해당 게시물의 입양내역이 없습니다. boardId: "+boardId));
+
+        AdoptDto adoptDto = adoptEntity.toDto();
 
         //미션 완료 여부 확인한 후
         if (missionService.missionCheck(adoptDto.getMissionId())) {
