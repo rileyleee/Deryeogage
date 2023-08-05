@@ -96,8 +96,6 @@ public class PostCostService {
     // 후 책임비 반환하기 -> 입양 일정 취소 및 게시글 삭제에 따른 반환
     public void abnormalReturn(Long userId, PostCostDto postCostDto) {
 
-        if
-
         // 후책임비 반환처리하고
         postCostDto.setReturnYn(true);
         // 후책임비 반환 날짜 담고
