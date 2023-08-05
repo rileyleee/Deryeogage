@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -22,28 +23,45 @@ public class AdoptService {
     private final BoardRepository boardRepository;
     private final AdoptRepository adoptRepository;
     private final MissionService missionService;
+
     @Transactional(readOnly = true)
     //내 분양정보 목록 조회하기
     public List<AdoptDto> getFromAdopts(Long userId) {
-        List<AdoptEntity> myFromAdoptEntity = adoptRepository.findByFromUserId(userId);
+        List<AdoptEntity> myFromAdoptEntity = adoptRepository.findByFromUserId(userId)
+                .orElseThrow(()-> new NoSuchElementException("분양자로서 등록된 입양내역이 없습니다. userId: "+ userId));
+
         List<AdoptDto> myFromAdoptDto = new ArrayList<>();
 
         for (AdoptEntity adoptEntity : myFromAdoptEntity) {
 
-            AdoptDto thisAdoptDto = adoptEntity.toDto();
-            myFromAdoptDto.add(thisAdoptDto);
+            if(adoptEntity.getMission() != null) { //미션이 생성된 때일 때
+                AdoptDto thisAdoptDto = adoptEntity.toDto();
+                myFromAdoptDto.add(thisAdoptDto);
+            } else { //미션이 생성되지 않았을 때
+                AdoptDto thisAdoptDto = adoptEntity.toDtoExceptMission();
+                myFromAdoptDto.add(thisAdoptDto);
+            }
         }
         return myFromAdoptDto;
     }
+
     @Transactional(readOnly = true)
     //내 입양정보 목록 조회하기
     public List<AdoptDto> getToAdopts(Long userId) {
-        List<AdoptEntity> myToAdoptEntity = adoptRepository.findByToUserId(userId);
+        List<AdoptEntity> myToAdoptEntity = adoptRepository.findByToUserId(userId)
+                .orElseThrow(()-> new NoSuchElementException("입양자로서 등록된 입양내역이 없습니다. userId: "+ userId));
+
         List<AdoptDto> myToAdoptDto = new ArrayList<>();
 
         for (AdoptEntity adoptEntity : myToAdoptEntity) {
-            AdoptDto thisAdoptDto = adoptEntity.toDto();
-            myToAdoptDto.add(thisAdoptDto);
+
+            if(adoptEntity.getMission() != null) { //미션이 생성된 때일 때
+                AdoptDto thisAdoptDto = adoptEntity.toDto();
+                myToAdoptDto.add(thisAdoptDto);
+            } else { //미션이 생성되지 않았을 때
+                AdoptDto thisAdoptDto = adoptEntity.toDtoExceptMission();
+                myToAdoptDto.add(thisAdoptDto);
+            }
         }
         return myToAdoptDto;
     }
@@ -51,7 +69,7 @@ public class AdoptService {
 
     // 입양 정보 등록하기(약속 일정 잡기 위해서 저장버튼을 누르면 생성)
     public Integer save(AdoptDto adoptDto) {
-        adoptDto.setStatus(AdoptStatus.DEPART); // 상태: 입양 중으로 저장
+        adoptDto.setStatus(AdoptStatus.depart); // 상태: 입양 중으로 저장
         AdoptEntity thisAdopt = adoptRepository.save(adoptDto.toEntity(userRepository, boardRepository));
         return thisAdopt.getId();
     }
@@ -88,7 +106,7 @@ public class AdoptService {
         adoptDto.setFromConfirmYn(true);
 
         // 입양정보 상태 변경
-        adoptDto.setStatus(AdoptStatus.ARRIVE);
+        adoptDto.setStatus(AdoptStatus.arrive);
 
         // 입양 정보 찾기
         AdoptEntity adoptEntity = adoptRepository.findById(adoptDto.getId())
@@ -111,7 +129,8 @@ public class AdoptService {
     //분양자와 입양자 확정 여부 확인
     @Transactional(readOnly = true)
     public boolean confirmCheck(Integer boardId) {
-        AdoptEntity adoptEntity = adoptRepository.findByBoardId(boardId);
+        AdoptEntity adoptEntity = adoptRepository.findByBoardId(boardId)
+                .orElseThrow(()-> new NoSuchElementException("해당 게시물의 입양내역이 없습니다. boardId: "+boardId));
 
         boolean fromConfirm = adoptEntity.getFromConfirmYn();
         boolean toConfirm = adoptEntity.getToConfirmYn();
