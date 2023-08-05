@@ -1,6 +1,8 @@
 package com.kkosunnae.deryeogage.domain.cost;
 
 import com.kkosunnae.deryeogage.domain.board.BoardRepository;
+import com.kkosunnae.deryeogage.domain.mission.MissionRepository;
+import com.kkosunnae.deryeogage.domain.mission.MissionService;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ public class PostCostService {
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final PostCostRepository postCostRepository;
+    private final MissionService missionService;
 
 
     // 후 책임비 납부하기
@@ -54,17 +57,28 @@ public class PostCostService {
     }
 
 
-
     // 후 책임비 반환하기 -> 미션 완료에 따른 반환
     public void normalReturn(Long userId, PostCostDto postCostDto) {
 
+        int boardId = postCostDto.getBoardId();
+
         //미션 완료 여부 확인한 후
+        if (missionService.missionCheck) {
+            //반환처리
+            postCostDto.setReturnYn(true);
+            // 반환 날짜 담고
+            postCostDto.setReturnDate(LocalDateTime.now());
 
+            PostCostEntity postCost = getPostCost(userId, boardId).toEntity(userRepository, boardRepository);
+            postCost.update(postCostDto);
+            postCostRepository.save(postCost); // DB에 반영
 
-        //반환처리
+        } else {
+            throw new IllegalArgumentException("미션을 완료해야 책임비를 반환할 수 있습니다.");
+        }
     }
-    
-    
+
+
     // 후 책임비 반환하기 -> 입양 일정 취소 및 게시글 삭제에 따른 반환
     public void abnormalReturn(Long userId, PostCostDto postCostDto) {
 
