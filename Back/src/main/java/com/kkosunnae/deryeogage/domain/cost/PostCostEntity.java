@@ -38,4 +38,33 @@ public class PostCostEntity {
 
     @Column(name = "return_date")
     private LocalDateTime returnDate;
+
+    public PostCostEntity(Integer id, UserEntity user, BoardEntity board, String cost, Boolean payYn, LocalDateTime payDate, Boolean returnYn, LocalDateTime returnDate) {
+        this.id = id;
+        this.user = user;
+        this.board = board;
+        this.cost = cost;
+        this.payYn = payYn;
+        this.payDate = payDate;
+        this.returnYn = returnYn;
+        this.returnDate = returnDate;
+    }
+
+    public PostCostDto toDto(){
+        return PostCostDto.builder()
+                .id(this.id)
+                .userId(this.user.getId())
+                .boardId(this.board.getId())
+                .cost(this.cost)
+                .payYn(this.payYn)
+                .payDate(this.payDate)
+                .returnYn(this.returnYn)
+                .returnDate(this.returnDate)
+                .build();
+    }
+
+    public void update(PostCostDto postCostDto) {
+        this.returnYn = postCostDto.getReturnYn();
+        this.returnDate = postCostDto.getReturnDate();
+    }
 }
