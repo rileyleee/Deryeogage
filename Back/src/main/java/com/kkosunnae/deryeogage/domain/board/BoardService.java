@@ -76,7 +76,8 @@ public class BoardService {
     // 내가 작성한 게시글 조회
     public List<BoardDto> findMyBoards(Long userId) {
         List<BoardDto> boardSetList = new ArrayList<>();
-        List<BoardEntity> myBoardLists = boardRepository.findByUserId(userId);
+        List<BoardEntity> myBoardLists = boardRepository.findByUserId(userId)
+                .orElseThrow(()-> new NoSuchElementException("해당 사용자가 작성한 게시물 목록이 존재하지 않습니다. userId"+userId));
 
         for (BoardEntity boardEntity : myBoardLists) {
 
