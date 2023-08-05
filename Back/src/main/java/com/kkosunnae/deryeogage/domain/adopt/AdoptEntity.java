@@ -1,9 +1,7 @@
 package com.kkosunnae.deryeogage.domain.adopt;
 
 import com.kkosunnae.deryeogage.domain.board.BoardEntity;
-import com.kkosunnae.deryeogage.domain.mission.MissionDto;
 import com.kkosunnae.deryeogage.domain.mission.MissionEntity;
-import com.kkosunnae.deryeogage.domain.mission.MissionRepository;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,7 +59,7 @@ public class AdoptEntity {
         this.mission = mission;
     }
 
-    public AdoptDto toDto(){
+    public AdoptDto toDto() {
         return AdoptDto.builder()
                 .id(this.id)
                 .boardId(this.board.getId())
@@ -75,11 +73,21 @@ public class AdoptEntity {
                 .build();
     }
 
-    public void update(AdoptDto adoptDto, MissionEntity missionEntity){
-        this.status = adoptDto.getStatus();
-        this.fromConfirmYn = adoptDto.getFromConfirmYn();
+    public void toUpdate(AdoptDto adoptDto) { // 입양자가 확정버튼 누를 때 실행
         this.toConfirmYn = adoptDto.getToConfirmYn();
-        this.scheduledDate = adoptDto.getScheduledDate();
+
+    }
+
+    // 입양자가 확정버튼 눌러야만 분양자에 확정버튼 활성화
+    public void fromUpdate(AdoptDto adoptDto, MissionEntity missionEntity) { // 분양자가 확정버튼 누를 때 실행
+        this.status = adoptDto.getStatus(); // 확정으로 변경
+        this.fromConfirmYn = adoptDto.getFromConfirmYn();
         this.mission = missionEntity;
     }
+
+    public void scheduleUpdate(AdoptDto adoptDto) { // 일정 변경 시 실행
+        this.scheduledDate = adoptDto.getScheduledDate();
+    }
+
+
 }
