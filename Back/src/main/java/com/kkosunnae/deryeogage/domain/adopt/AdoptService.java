@@ -108,7 +108,19 @@ public class AdoptService {
     }
 
 
+    //분양자와 입양자 확정 여부 확인
+    public boolean confirmCheck(Integer boardId) {
+        AdoptEntity adoptEntity = adoptRepository.findByBoardId(boardId);
 
+        boolean fromConfirm = adoptEntity.getFromConfirmYn();
+        boolean toConfirm = adoptEntity.getToConfirmYn();
+
+        if (fromConfirm && toConfirm) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 
