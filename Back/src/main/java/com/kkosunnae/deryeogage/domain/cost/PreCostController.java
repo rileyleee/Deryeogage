@@ -20,7 +20,7 @@ public class PreCostController {
     private final JwtUtil jwtUtil;
     private final PreCostService preCostService;
 
-    // 선 책임비 납부하기
+    // 선 책임비 납부하기(게시글 작성 시 납부)
     @PostMapping("/{boardId}")
     public Response<Object> payPreCost(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PreCostDto preCostDto, @PathVariable int boardId) {
         String jwtToken = authorizationHeader.substring(7);
@@ -41,7 +41,7 @@ public class PreCostController {
         return Response.success(myPreCosts);
     }
 
-    // 입양 확정 후 선책임비 수정하기
+    // 입양 확정 후 선 책임비 수정하기(반환)
     @PutMapping("/confirm")
     public Response<Object> normalReturn(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PreCostDto preCostDto) {
         String jwtToken = authorizationHeader.substring(7);
@@ -50,7 +50,7 @@ public class PreCostController {
         return Response.success(null);
     }
 
-    // 게시글 삭제 시 선책임비 수정하기
+    // 게시글 삭제 시 선 책임비 수정하기(반환)
     @PutMapping
     public Response<Object> abnormalReturn(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PreCostDto preCostDto) {
         String jwtToken = authorizationHeader.substring(7);
