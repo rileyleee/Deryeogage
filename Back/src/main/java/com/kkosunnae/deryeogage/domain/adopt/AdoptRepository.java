@@ -11,4 +11,7 @@ public interface AdoptRepository extends JpaRepository<AdoptEntity, Integer> {
     // 입양내역 가져오기
     List<AdoptEntity> findByToUserId(Long userId);
 
+    // 1건의 입양정보 가져오기
+    AdoptEntity findByBoardId(Integer boardId);
+
 }
