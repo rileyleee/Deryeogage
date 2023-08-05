@@ -19,6 +19,11 @@ public class MissionDto {
     private String missionUrl2;
     private String missionUrl3;
     private String missionUrl4;
+
+    public MissionDto(Long userId) {
+        this.userId = userId;
+    }
+
     @Builder
     public MissionDto(Integer id, int adoptId, Long userId, String missionUrl1, String missionUrl2, String missionUrl3, String missionUrl4) {
         this.id = id;
@@ -30,7 +35,7 @@ public class MissionDto {
         this.missionUrl4 = missionUrl4;
     }
 
-    public MissionEntity toEntity(UserRepository userRepository, AdoptRepository adoptRepository){
+    public MissionEntity toEntity(UserRepository userRepository, AdoptRepository adoptRepository) {
         UserEntity user = userRepository.findById(this.userId)
                 .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
         AdoptEntity adopt = adoptRepository.findById(this.adoptId)
