@@ -3,6 +3,7 @@ package com.kkosunnae.deryeogage.domain.adopt;
 import com.kkosunnae.deryeogage.domain.board.BoardRepository;
 import com.kkosunnae.deryeogage.domain.mission.MissionEntity;
 import com.kkosunnae.deryeogage.domain.mission.MissionRepository;
+import com.kkosunnae.deryeogage.domain.mission.MissionService;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,7 @@ public class AdoptService {
         Long missionUserId = adoptDto.getToUserId();
 
         // 입양자를 uesrId로 미션 데이터 하나 새로이 생성하고 반환
-        MissionEntity missionEntity= missionService.save(missionUserId);
+        MissionEntity missionEntity= missionService.save(missionUserId, adoptEntity.getId());
 
         // 미션 아이디 담기
         adoptDto.setMissionId(missionEntity.getId());
