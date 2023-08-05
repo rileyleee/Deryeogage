@@ -42,18 +42,24 @@ public class PreCostController {
         return Response.success(myPreCosts);
     }
 
-    // 선 책임비 수정하기
+    // 입양확정 후 선 책임비 수정하기
     @PutMapping
-    public Response<Object> updatePreCost(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PreCostDto preCostDto) {
+    public Response<Object> normalReturn(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PreCostDto preCostDto) {
         String jwtToken = authorizationHeader.substring(7);
         Long userId = jwtUtil.getUserId(jwtToken);
-        preCostService.update(userId, preCostDto);
+        preCostService.normalReturn(userId, preCostDto);
         return Response.success(null);
     }
-    
-    // 게시글 삭제 시
+
+    // 게시글 삭제 시 선책임비 수정하기
     // 반환요청 경우의 수
-    
-    
+    @PutMapping
+    public Response<Object> abnormalReturn(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PreCostDto preCostDto) {
+        String jwtToken = authorizationHeader.substring(7);
+        Long userId = jwtUtil.getUserId(jwtToken);
+        preCostService.abnormalReturn(userId, preCostDto);
+        return Response.success(null);
+    }
+
 
 }
