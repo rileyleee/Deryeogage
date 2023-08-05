@@ -22,8 +22,10 @@ public class PreCostService {
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final PreCostRepository preCostRepository;
+    private final PostCostRepository postCostRepository;
     private final AdoptService adoptService;
     private final BoardService boardService;
+    private final PostCostService postCostService;
 
 
     // 선 책임비 납부하기(납부버튼 클릭 시) -> 첫 생성 시기
@@ -82,14 +84,17 @@ public class PreCostService {
     // 선 책임비 반환하기(게시글 삭제에 따른 반환 -> 후책임비도 반환 필요)
     public void abnormalReturn(Long userId, PreCostDto preCostDto) {
 
+        int boardId = preCostDto.getBoardId();
+
         //입양자의 후책임비도 반환하도록 메서드 호출하고
+        PostCostDto postCostDto = postCostRepository.findByBoardId(boardId).toDto();
+        Long toUserId = postCostDto.getUserId();
+        postCostService.abnormalReturn(toUserId, postCostDto);
 
         // 선책임비 반환처리하고
         preCostDto.setReturnYn(true);
         // 선책임비 반환 날짜 담고
         preCostDto.setReturnDate(LocalDateTime.now());
-
-        int boardId = preCostDto.getBoardId();
 
         PreCostEntity preCost = getPreCost(userId, boardId).toEntity(userRepository, boardRepository);
         preCost.update(preCostDto);

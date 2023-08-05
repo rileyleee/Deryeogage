@@ -2,7 +2,9 @@ package com.kkosunnae.deryeogage.domain.cost;
 
 import com.kkosunnae.deryeogage.domain.board.BoardEntity;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name = "post_cost")
+@NoArgsConstructor
 public class PostCostEntity {
 
     @Id
@@ -38,7 +41,7 @@ public class PostCostEntity {
 
     @Column(name = "return_date")
     private LocalDateTime returnDate;
-
+    @Builder
     public PostCostEntity(Integer id, UserEntity user, BoardEntity board, String cost, Boolean payYn, LocalDateTime payDate, Boolean returnYn, LocalDateTime returnDate) {
         this.id = id;
         this.user = user;
