@@ -22,7 +22,7 @@ function ImageSection({
           <input
             type="file"
             multiple
-            accept="*"
+            accept="image/jpeg, image/png, image/gif, image/jpg"
             style={{ display: "none" }}
             id="img-upload"
             onChange={handleImageChange}
@@ -50,7 +50,7 @@ function ImageSection({
           <input
             type="file"
             multiple
-            accept="*"
+            accept="video/mp4"
             style={{ display: "none" }}
             id="video-upload"
             onChange={handleVideoChange}

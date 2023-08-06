@@ -15,6 +15,7 @@ import GamePoop from "../../components/Check/GamePoop"
 import GameTreat from "../../components/Check/GameTreat"
 import GameToy from "../../components/Check/GameToy"
 import GameDeath from "../../components/Check/GameDeath"
+import GameQuiz from "../../components/Check/GameQuiz"
 import {useRecoilValue, useRecoilState} from "recoil"
 import { SimulationNum, SimulationExistAtom, SimulationWalkingCnt, SimulationStartAtom, SimulationHp
  } from "../../recoil/SimulationAtom"
@@ -34,7 +35,7 @@ function Simulation() {
     const [timeDifference, setTimeDifference] = useState(JSON.parse(localStorage.getItem('timeDifference')))
     // 죽었야 안죽었냐
     const [isDead, setIsDead] = useState(false);
-    const [hpPercentage, setHpPercentage] = useState(null)
+    const [hpPercentage, setHpPercentage] = useState(null) // hp값을 계산해야 되니까 따로 빼놓는거임
     console.log(hpPercentage)
 
     useEffect(() => {
@@ -92,15 +93,11 @@ function Simulation() {
         hpTimer += 1;
         if (hpTimer >= 1) { // 1분마다 HP 감소
           setHpPercentage((prevHpPercentage) => {
-            const newHpPercentage = prevHpPercentage > 0 ? prevHpPercentage - 1 : 0;
-    
-            // 업데이트된 HP를 localStorage에 저장합니다.
-    
-            setSimulationExistValue(prevState => ({
+            const newHpPercentage = prevHpPercentage > 0 ? prevHpPercentage - 1 : 0; // 값이 바뀌면 hpPercentage도 업데이트
+            setSimulationExistValue(prevState => ({ // simulationExistValue값의 health도 업데이트
               ...prevState,
               health: newHpPercentage,
             }));
-            console.log(simulationExistValue)
             return newHpPercentage;
           });
           hpTimer = 0;
@@ -114,14 +111,14 @@ function Simulation() {
     // simulationExistValue 값이 설정되었을 때만 localStorage에 저장합니다.
     if (simulationExistValue) {
       if (simulationExistValue.health !== undefined) {
-        localStorage.setItem('hpPercentage', simulationExistValue.health);
+        localStorage.setItem('hpPercentage', simulationExistValue.health); // 값이 바뀌었으니 로컬값도 바꿔줘야지
       }
-      if (simulationExistValue.train !== undefined) {
-        localStorage.setItem('train', simulationExistValue.train);
-      }
-      if (simulationExistValue.requirement !== undefined) {
-        localStorage.setItem('requirement', simulationExistValue.requirement);
-      }
+      // if (simulationExistValue.train !== undefined) {
+      //   localStorage.setItem('train', simulationExistValue.train);
+      // }
+      // if (simulationExistValue.requirement !== undefined) {
+      //   localStorage.setItem('requirement', simulationExistValue.requirement);
+      // }
     }
     
     localStorage.setItem('timeDifference', JSON.stringify(timeDifference)); // 값이 변했으니까 로컬에 다시 저장
@@ -175,7 +172,8 @@ function Simulation() {
     8 : <GameMeal handleMove={handleMove}/>,
     9 : <GamePoop handleMove={handleMove}/>,
     10 : <GameTreat handleMove={handleMove}/>,
-    11 : <GameToy handleMove={handleMove}/>
+    11 : <GameToy handleMove={handleMove}/>,
+    12 : <GameQuiz handleMove={handleMove}/>
   }
 
   // activatedNum에 따라서 GameStartfirst의 테두리 색을 지정
@@ -187,6 +185,9 @@ function Simulation() {
             return "#FF914D"; // 기본 색상
     }
   }
+
+
+
   
 //  5초마다 put 되도록
 
@@ -265,4 +266,3 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   }
   
   export default Simulation;
-  

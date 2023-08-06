@@ -45,3 +45,4 @@ export const Requirement = styled.img`
     width: 7vw;
     height: 12vh;
 `
+

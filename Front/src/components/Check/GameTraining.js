@@ -28,7 +28,6 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
 
     
     useEffect(() => {
-        setTrain(localStorage.getItem('train'))
         if (localStorage.getItem('train')) {
             setTrain(localStorage.getItem('train'));
             setNameCallingScore(parseInt(localStorage.getItem('train').substr(0, 2)));
@@ -37,38 +36,19 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
             setSitScore(parseInt(localStorage.getItem('train').substr(6, 2)));
         }
         setHpPercentage(localStorage.getItem('hpPercentage'))
-        // if (storedHpPercentage) {
-        //     const hp = parseInt(storedHpPercentage);
-        //     setSimulationExistValue(prevState => ({
-        //         ...prevState,
-        //         health: hp,
-        //     }));
-        //     setHpPercentage(hp);
-        // }
     }, []);
-    
-    // useEffect(() => {
-    //     localStorage.setItem('train', trainvalue);
-    // }, [trainvalue]);
-    
+
     
     const decreaseHp = () => {
         setSimulationExistValue(prevState => {
             const newHp = Math.max(hpPercentage - 1, 0);
-            localStorage.setItem('hpPercentage', newHp)
+            setHpPercentage(newHp)
             return{
                 ...prevState,
                 health: newHp, // hpPercentage 대신 newHp 사용
             }
         });
     };
-    
-    
-    // useEffect(() => {
-    //     // 로컬 스토리지에 HP 저장
-    //     localStorage.setItem('hpPercentage', hpPercentage);
-    //     localStorage.setItem('train', trainvalue);
-    // }, [hpPercentage, trainvalue]); // hpPercentage가 변경될 때마다 실행됩니다.
     
 
     const increaseScore = (setter) => {
@@ -92,7 +72,6 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
         increaseScore(setter);
         setAnimation(animationName);
         decreaseHp();
-        setHpPercentage(simulationExistValue.health)
         let updatedTrainValue = trainvalue;
         switch (num) {
             case 1:
@@ -116,10 +95,13 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
             train: updatedTrainValue
         }));
         setTrain(updatedTrainValue);
-        localStorage.setItem('train', setSimulationExistValue.train)
     }
     
-
+    useEffect(() => {
+        // 로컬 스토리지에 HP 저장
+        localStorage.setItem('hpPercentage', simulationExistValue.health);
+        localStorage.setItem('train', simulationExistValue.train);
+    }, [simulationExistValue]); // hpPercentage가 변경될 때마다 실행됩니다.
     
   return (
     <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-between"

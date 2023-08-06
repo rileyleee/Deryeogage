@@ -38,13 +38,13 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     const move = (hp, pay) => {
         setSimulationExistValue(prevState => {
             const newHealth = parseInt(prevState.health) + hp;
-            const newCost = Math.max(parseInt(prevState.cost) - pay, 0);
+            const newCost = Math.max(parseInt(prevState.cost) - pay, 0); // 
             
             // 새로운 상태를 로컬 스토리지에 저장
             // setHpPercentage(newHealth)
             // setCost(newCost)
-            localStorage.setItem('hpPercentage', newHealth);
-            localStorage.setItem('cost', newCost);
+            // localStorage.setItem('hpPercentage', newHealth);
+            // localStorage.setItem('cost', newCost);
             return {
                 ...prevState,
                 health: newHealth,
@@ -98,6 +98,11 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
               localStorage.setItem('requirement', simulationExistValue.requirement);
         }
     }
+    useEffect(() => {
+        localStorage.setItem('hpPercentage', simulationExistValue.health);
+        localStorage.setItem('cost', simulationExistValue.cost);
+        }
+      , [simulationExistValue]);
 
       const [showRandomImage, setShowRandomImage] = useState(null); // 어떤 이미지 보여줄건지
       const [requirementNum, setRequirementNum] = useState(0); // 요구사항 컴포넌트 번호
@@ -191,14 +196,13 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                 <br />
                 <GameBtn 
                     className="orange"
-                    data-bs-toggle={walking >= 3 ? "modal" : ""}
-                    data-bs-target={walking >= 3 ? "#exampleModal2" : ""}
+                    data-bs-toggle={walking >= 3 ? "modal" : (simulationExistValue.cost === "0" ? "modal" : "")}
+                    data-bs-target={walking >= 3 ? "#exampleModal2" : (simulationExistValue.cost === "0" ? "#exampleModal3" : "")}
                     onClick={() => {
                         if (walking < 3) {
                         setHandleMove(7);
                         }
                     }}
-                    // disabled={walkingCnt >= 3}
                     >
                     산책하러 가기
                 </GameBtn>
@@ -212,6 +216,19 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                             <div class="modal-body">
                                 하루에 산책은 3번만 가능합니다🐶
                                 <S.ModalIMG src="assets/walking.jpg" alt="walking" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">산책 횟수 제한</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                돈이 없습니다!!
                             </div>
                         </div>
                     </div>
@@ -245,18 +262,39 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                             </div>
                         </div>
                     </div>
-                    <GameBtn className="orange">돈 벌러 가기</GameBtn>
+                    <GameBtn onClick={() => setHandleMove(12)} className="orange">돈 벌러 가기</GameBtn>
                     </div>
                 </div>
             </div>
         </div>
         <div className='d-flex justify-content-center'>
             <S.DogImg src={`assets/${simulationExistValue.petType}/idle${simulationExistValue.petType}.gif`} alt="" />
-            <S.DogBtn onClick={() => setHandleMove(requirementNum)}>
-      {isImageVisible && (
-        <S.Requirement src={showRandomImage} alt="" onClick={handleImageClick} />
-      )}
-    </S.DogBtn>
+            <S.DogBtn 
+                onClick={() => {
+                    if (simulationExistValue.cost !== "0") {
+                        setHandleMove(requirementNum);
+                    }
+                }}
+                data-bs-toggle={simulationExistValue.cost === "0" ? "modal" : ""}
+                data-bs-target={simulationExistValue.cost === "0" ? "#exampleModal4" : ""}
+            >
+                {isImageVisible && (
+                    <S.Requirement src={showRandomImage} alt="" onClick={handleImageClick} />
+                )}
+            </S.DogBtn>
+                    <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">돈이 부족합니다😥</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        퀴즈를 통해 돈을 벌어보세요🎉
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
         <div className="d-flex justify-content-end">
             <S.GameBasicOver data-bs-toggle="modal" data-bs-target="#exampleModal1">중도포기하기</S.GameBasicOver>
@@ -265,10 +303,11 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2>중도 포기는 불가합니다ㅠㅠ</h2>
+                        <h2>❌중도 포기는 불가합니다❌</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <h3>당신의 소중한 가족을 버리실건가요?</h3>
                         <S.ModalIMG src="assets/crying.jpg" alt="crying" />
                     </div>
                 </div>

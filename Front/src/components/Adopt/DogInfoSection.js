@@ -5,7 +5,18 @@ import styled from "styled-components";
 import SearchAuto from "./SearchAuto";
 import { useState } from "react";
 
-function DogInfoSection({ setName, setAge, setRegion, setGender, setChip, dogGender, dogChip, dogRegion, dogName, dogAge  }) {
+function DogInfoSection({
+  setName,
+  setAge,
+  setRegion,
+  setGender,
+  setChip,
+  dogGender,
+  dogChip,
+  dogRegion,
+  dogName,
+  dogAge,
+}) {
   return (
     <Div>
       강아지의 <Span>기본정보</Span>를 작성해주세요.
@@ -34,10 +45,10 @@ function DogInfoSection({ setName, setAge, setRegion, setGender, setChip, dogGen
         <P>
           현재 강아지가 살고있는 <Span>지역</Span>을 작성해주세요.
         </P>
-        <SearchAuto setRegion={setRegion} />
+        <SearchAuto region={dogRegion} setRegion={setRegion} />
         <P>
           <Span>성별</Span>을 선택해주세요.
-          <GenderRadio gender={dogGender} setGender={setGender}  />
+          <GenderRadio gender={dogGender} setGender={setGender} />
         </P>
         <P>
           <Span>칩 등록 여부</Span>를 선택해주세요.
