@@ -4,14 +4,12 @@ import com.kkosunnae.deryeogage.global.s3file.S3FileService;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import com.kkosunnae.deryeogage.global.util.Response;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -172,5 +170,17 @@ public class BoardController {
         boardService.unlike(userId, boardId);
 
         return Response.success(null);
+    }
+
+    //내가 찜한 분양글 목록 조회
+    @GetMapping("/like")
+    public Response<Object> getboardLike(@RequestHeader("Authorization") String authorizationHeader) {
+
+        String jwtToken = authorizationHeader.substring(7);
+        Long userId = jwtUtil.getUserId(jwtToken);
+
+        List<JjimDto> jjimDtoList = boardService.myLikes(userId);
+
+        return Response.success(jjimDtoList);
     }
 }

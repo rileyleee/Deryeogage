@@ -33,6 +33,7 @@ public class JjimEntity {
 
     public JjimDto toDto(){
         return JjimDto.builder()
+                .id(id)
                 .boardId(this.board.getId())
                 .userId((this.user.getId()))
                 .build();
