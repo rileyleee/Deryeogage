@@ -1,5 +1,6 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
+import com.kkosunnae.deryeogage.domain.board.BoardService;
 import com.kkosunnae.deryeogage.domain.user.UserService;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +22,12 @@ import java.util.List;
 @RequiredArgsConstructor
     @RequestMapping("/api/chat")
 public class ChatController {
-    private final JwtUtil jwtUtil;
 
+    private final JwtUtil jwtUtil;
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
     private final SimpMessagingTemplate messagingTemplate;
     private final UserService userService;
-
     private final BoardService boardService;
 
 
