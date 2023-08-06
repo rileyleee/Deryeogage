@@ -34,7 +34,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "/webjars/**",
                         "/api/users/oauth",
                         "/api/boards/list",
-                        "/api/boards/each/**");
+                        "/api/boards/each/**"); //추천 url도 담아야 해?
+
             
     }
 

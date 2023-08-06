@@ -46,8 +46,9 @@ public class ChatRoomEntity extends BaseTime{
         this.roomName = roomName;
     }
 
-    public Integer update(ChatRoomRequestDto requestDto) {
-        this.roomName = requestDto.getRoomName();
-        return this.id;
+    public LocalDateTime update(LocalDateTime scheduledDate) {
+        this.scheduledDate = scheduledDate;
+        System.out.println(this.scheduledDate);
+        return this.scheduledDate;
     }
 }

@@ -136,6 +136,7 @@ public class BoardController {
     }
 
     //글 목록 조회 추천
+//글 목록 조회 추천
     @GetMapping("/recommendation")
     public Response<List<BoardDto>> findRecommendedBoards(@RequestHeader("Authorization") String authorizationHeader) {
         String jwtToken = authorizationHeader.substring(7);

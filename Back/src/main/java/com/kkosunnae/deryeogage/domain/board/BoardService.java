@@ -150,7 +150,10 @@ public class BoardService {
         EuclideanSimilarityRecommendation euclideanSimilarityRecommendation = new EuclideanSimilarityRecommendation();
         List<Integer> result = euclideanSimilarityRecommendation.recommendDogs(userPreferences, boardMap, order);
         for (Integer index : result) {
-            boardDtoList.add(boardRepository.findById(index).get().toDto());
+            BoardDto boardDto = boardRepository.findById(index).get().toDto();
+            List <String> uploadedFiles = this.getBoardFileUrls(boardDto.getId());
+            boardDto.setFileList(uploadedFiles);
+            boardDtoList.add(boardDto);
         }
         return boardDtoList;
     }
