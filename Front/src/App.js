@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useEffect } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // common
 import Header from "./components/Header";
@@ -18,7 +18,6 @@ import Home from "./pages/Home";
 import AdoptBoard from "./pages/Adopt/AdoptBoard";
 import AdoptBoardCreate from "./pages/Adopt/AdoptBoardCreate";
 import AdoptBoardDetail from "./pages/Adopt/AdoptBoardDetail";
-import AdoptBoardUpdate from "./pages/Adopt/AdoptBoardUpdate";
 
 // Review
 import ReviewBoard from "./pages/Review/ReviewBoard";
@@ -38,14 +37,13 @@ import CheckListResult from "./pages/Check/CheckListResult";
 // NotFound
 import NotFound from "./pages/NotFound/NotFound";
 import SurveyResult from "./pages/User/SurveyResult";
+import ChatRoomsList from "./pages/ChatVideo/ChatRoomsList";
 import ChatVideo from "./pages/ChatVideo/ChatVideo";
 
-
-
 function App() {
-    useEffect(() => {
-      localStorage.setItem('activatedNum', 5); // SomePage에 들어왔을 때 activatedNum을 5로 설정
-    }, []);
+  useEffect(() => {
+    localStorage.setItem("activatedNum", 5); // SomePage에 들어왔을 때 activatedNum을 5로 설정
+  }, []);
 
   return (
     <>
@@ -67,8 +65,10 @@ function App() {
             <Route path="/adopt" element={<AdoptBoard />} />
             <Route path="/adopt/create" element={<AdoptBoardCreate />} />
             <Route path="/adopt/:boardId" element={<AdoptBoardDetail />} />
-            <Route path="/adopt/chat" element={<ChatVideo />} />
-            <Route exact path="/adopt/edit/:boardId" component={AdoptBoardUpdate} />
+            <Route path="/adopt/:boardId" element={<AdoptBoardDetail />} />
+            <Route path="/adopt/chatlist" element={<ChatRoomsList />} />
+            <Route path="/adopt/chatroom/:roomId" element={<ChatVideo />} />
+            <Route path="/adopt/edit/:boardId" element={<AdoptBoardCreate />} />
 
             {/* 입양후기게시판 */}
             <Route path="/review" element={<ReviewBoard />} />
@@ -78,7 +78,7 @@ function App() {
             {/* 마이페이지 */}
             <Route path="/profile/:id" element={<Profile />} />
             <Route path="/survey" element={<Survey />} />
-            <Route path="/survey/result" element={<SurveyResult />} />
+            {/* <Route path="/survey/result" element={<SurveyResult />} /> */}
 
             {/* 시뮬레이션, 사전테스트 */}
             <Route path="/simulations" element={<Simulation />} />
