@@ -15,27 +15,44 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     const [requirementImages, setRequirementImages] = useRecoilState(requirementImagesState); // 이미지 객체로 저장
     const [nextImage, setNextImage] = useRecoilState(nextImageState); // 다음 이미지(배변용)
     const [simulationExistValue, setSimulationExistValue] = useRecoilState(SimulationExistAtom)
-    // const [hpPercentage, setHpPercentage] = useState(simulationExistValue.health)
+    const [hpPercentage, setHpPercentage] = useState(simulationExistValue.health)
+    const [requirement, setRequirement] = useState(simulationExistValue.requirement)
+    // const [petname, setPetname] = useState('')
+    // const [background, setBackground] = useState(0)
+    // const [petType, setPetType] = useState(0)
+
     console.log(simulationExistValue)
       // 산책 횟수 카운트
-    const [walking, setWalking] = useRecoilState(SimulationWalkingCnt)
-    const walkingIncreaseHp = (prev) => {
-        if (prev < 3) {
-            setWalking(prev+1)
-            // console.log(walking)
-        }
-    }
+    const walking = simulationExistValue.requirement
+    ? simulationExistValue.requirement.substr(2, 1)
+    : 0;
+    useEffect(() => {
+        // 처음 로드할 때 localStorage에서 hpPercentage를 가져와서 상태를 설정합니다.
+        setRequirement(localStorage.getItem('requirement'));
+        setHpPercentage(localStorage.getItem('hpPercentage'))
+        setCost(localStorage.getItem('cost'))
+        // setPetname(localStorage.getItem('petname'))
+        // setBackground(localStorage.getItem('background'))
+        // setPetType(localStorage.getItem('petType'))
+      }, []);
     const move = (hp, pay) => {
-        // HP를 1 감소시킵니다. HP는 0 이하로 내려가지 않습니다.
-        // setHpPercentage(prevHp => prevHp + hp)
-        // setCost((prevCost) => Math.max(prevCost - pay, 0))
-        setSimulationExistValue(prevState => ({
-            ...prevState,
-            health: simulationExistValue.health + hp,
-            cost: simulationExistValue.cost - pay
-          }));
-        // localStorage.setItem('hpPercentage', hpPercentage-1)
-    }
+        setSimulationExistValue(prevState => {
+            const newHealth = parseInt(prevState.health) + hp;
+            const newCost = Math.max(parseInt(prevState.cost) - pay, 0);
+            
+            // 새로운 상태를 로컬 스토리지에 저장
+            // setHpPercentage(newHealth)
+            // setCost(newCost)
+            localStorage.setItem('hpPercentage', newHealth);
+            localStorage.setItem('cost', newCost);
+            return {
+                ...prevState,
+                health: newHealth,
+                cost: newCost
+            };
+        });
+    };
+    
 
     const setHandleMove = (num) => {
         props.handleMove(num)
@@ -45,29 +62,43 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                 ...prevState,
                 requirement: (parseInt(simulationExistValue.requirement)+10).toString().padStart(4, '0')
               }));
+            setHpPercentage(simulationExistValue.health)
+            setCost(simulationExistValue.cost)
+              localStorage.setItem('requirement', simulationExistValue.requirement);
         } else if (num === 8) { // 식사
             move(20, 2000)
             setSimulationExistValue(prevState => ({
                 ...prevState,
                 requirement: (parseInt(simulationExistValue.requirement)+1000).toString().padStart(4, '0')
               }));
+              setHpPercentage(simulationExistValue.health)
+              setCost(simulationExistValue.cost)
+              localStorage.setItem('requirement', simulationExistValue.requirement);
         } else if (num === 9) { // 배변
             move(5, 500)
+            setHpPercentage(simulationExistValue.health)
+            setCost(simulationExistValue.cost)
         } else if (num === 10) { // 간식
             move(10, 1000)
             setSimulationExistValue(prevState => ({
                 ...prevState,
                 requirement: (parseInt(simulationExistValue.requirement)+100).toString().padStart(4, '0')
               }));
+              setHpPercentage(simulationExistValue.health)
+              setCost(simulationExistValue.cost)
+              localStorage.setItem('requirement', simulationExistValue.requirement);
         } else if (num === 11) { // 장난감
             move(5, 500)
             setSimulationExistValue(prevState => ({
                 ...prevState,
                 requirement: (parseInt(simulationExistValue.requirement)+1).toString().padStart(4, '0')
               }));
+              setHpPercentage(simulationExistValue.health)
+              setCost(simulationExistValue.cost)
+              localStorage.setItem('requirement', simulationExistValue.requirement);
         }
     }
-    
+
       const [showRandomImage, setShowRandomImage] = useState(null); // 어떤 이미지 보여줄건지
       const [requirementNum, setRequirementNum] = useState(0); // 요구사항 컴포넌트 번호
       const [isImageVisible, setIsImageVisible] = useState(false); // 이미지 보여줄건지 말건지
@@ -164,7 +195,6 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                     data-bs-target={walking >= 3 ? "#exampleModal2" : ""}
                     onClick={() => {
                         if (walking < 3) {
-                        walkingIncreaseHp(walking); 
                         setHandleMove(7);
                         }
                     }}
@@ -192,7 +222,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
             </div>
             <div className="d-flex flex-column justify-content-between align-items-end">
                 <div className="d-flex flex-column">
-                    <GameMenu borderColor="#FF914D" existData={simulationExistValue} time={props.time} hp={props.hp}/>
+                    <GameMenu borderColor="#FF914D" time={props.time}/>
                     <div className="d-flex flex-column align-items-end">
                     <GameBtn className="orange" data-bs-toggle="modal" data-bs-target="#exampleModal">가격표 보기</GameBtn>
                     <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

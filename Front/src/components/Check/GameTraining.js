@@ -5,7 +5,7 @@ import * as S from "../../styled/Check/GameTraining.style"
 import GameMenu from "./GameMenu"
 import GameBtn from "./GameBtn"
 import {useRecoilState} from "recoil"
-import { SimulationNameCalling, SimulationWaiting, SimulationHouse, SimulationSit, SimulationExistAtom } from "../../recoil/SimulationAtom"
+import { SimulationExistAtom } from "../../recoil/SimulationAtom"
 
 function GameTraining(props) { // 자식에서 부모로 데이터 보내기
     const [simulationExistValue, setSimulationExistValue] = useRecoilState(SimulationExistAtom)
@@ -13,30 +13,63 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
         props.handleMove(num)
     }
     // 훈련 횟수
-    const [nameCallingScore, setNameCallingScore] = useRecoilState(SimulationNameCalling)
-    const [waitingScore, setWaitingScore] = useRecoilState(SimulationWaiting)
-    const [houseScore, setHouseScore] = useRecoilState(SimulationHouse)
-    const [sitScore, setSitScore] = useRecoilState(SimulationSit)
+    const [trainvalue, setTrain] = useState(simulationExistValue.train)
+    const [nameCallingScore, setNameCallingScore] = useState(simulationExistValue.train ? parseInt(simulationExistValue.train.substr(0, 2)) : 0)
+    const [waitingScore, setWaitingScore] = useState(simulationExistValue.train ? parseInt(simulationExistValue.train.substr(2, 2)) : 0)
+    const [houseScore, setHouseScore] = useState(simulationExistValue.train ? parseInt(simulationExistValue.train.substr(4, 2)) : 0)
+    const [sitScore, setSitScore] = useState(simulationExistValue.train ? parseInt(simulationExistValue.train.substr(6, 2)) : 0)
     // 훈련에 따른 이미지 변경을 위한 변수
     const [animation, setAnimation] = useState("idlefast");
-
+    const [hpPercentage, setHpPercentage] = useState(simulationExistValue.health)
     const MAX_NAME_CALLING_SCORE = 10; // 이름 부르기 훈련의 최대 점수
     const MAX_WAITING_SCORE = 20; // 기다려 훈련의 최대 점수
     const MAX_HOUSE_SCORE = 20; // 하우스 훈련의 최대 점수
     const MAX_SIT_SCORE = 30; // 앉아 훈련의 최대 점수
 
-    // hpPercentage state를 추가하고 초기값으로 existData.health를 설정합니다.
-    // const [hpPercentage, setHpPercentage] = useState(simulationExistValue.health);
-
+    
+    useEffect(() => {
+        setTrain(localStorage.getItem('train'))
+        if (localStorage.getItem('train')) {
+            setTrain(localStorage.getItem('train'));
+            setNameCallingScore(parseInt(localStorage.getItem('train').substr(0, 2)));
+            setWaitingScore(parseInt(localStorage.getItem('train').substr(2, 2)));
+            setHouseScore(parseInt(localStorage.getItem('train').substr(4, 2)));
+            setSitScore(parseInt(localStorage.getItem('train').substr(6, 2)));
+        }
+        setHpPercentage(localStorage.getItem('hpPercentage'))
+        // if (storedHpPercentage) {
+        //     const hp = parseInt(storedHpPercentage);
+        //     setSimulationExistValue(prevState => ({
+        //         ...prevState,
+        //         health: hp,
+        //     }));
+        //     setHpPercentage(hp);
+        // }
+    }, []);
+    
+    // useEffect(() => {
+    //     localStorage.setItem('train', trainvalue);
+    // }, [trainvalue]);
+    
+    
     const decreaseHp = () => {
-        // HP를 1 감소시킵니다. HP는 0 이하로 내려가지 않습니다.
-        // setHpPercentage((prevHp) => Math.max(prevHp - 1, 0));
-        setSimulationExistValue(prevState => ({
-            ...prevState,
-            health: simulationExistValue.health > 0 ? simulationExistValue.health-1 : 0,
-          }));
-        // localStorage.setItem('hpPercentage', hpPercentage-1)
-    }
+        setSimulationExistValue(prevState => {
+            const newHp = Math.max(hpPercentage - 1, 0);
+            localStorage.setItem('hpPercentage', newHp)
+            return{
+                ...prevState,
+                health: newHp, // hpPercentage 대신 newHp 사용
+            }
+        });
+    };
+    
+    
+    // useEffect(() => {
+    //     // 로컬 스토리지에 HP 저장
+    //     localStorage.setItem('hpPercentage', hpPercentage);
+    //     localStorage.setItem('train', trainvalue);
+    // }, [hpPercentage, trainvalue]); // hpPercentage가 변경될 때마다 실행됩니다.
+    
 
     const increaseScore = (setter) => {
         setter((prevScore) => prevScore + 1)
@@ -56,34 +89,36 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
     }, [animation]);
 
     const increaseScoreWithAnimation = (setter, animationName, num) => {
-      increaseScore(setter);
-      setAnimation(animationName);
-      if (num === 1) {
-        decreaseHp(); // HP 감소
+        increaseScore(setter);
+        setAnimation(animationName);
+        decreaseHp();
+        setHpPercentage(simulationExistValue.health)
+        let updatedTrainValue = trainvalue;
+        switch (num) {
+            case 1:
+                updatedTrainValue = (parseInt(updatedTrainValue) + 1000000).toString().padStart(8, '0');
+                break;
+            case 2:
+                updatedTrainValue = (parseInt(updatedTrainValue) + 10000).toString().padStart(8, '0');
+                break;
+            case 3:
+                updatedTrainValue = (parseInt(updatedTrainValue) + 100).toString().padStart(8, '0');
+                break;
+            case 4:
+                updatedTrainValue = (parseInt(updatedTrainValue) + 1).toString().padStart(8, '0');
+                break;
+            default:
+                break;
+        }
+    
         setSimulationExistValue(prevState => ({
             ...prevState,
-            train: (parseInt(simulationExistValue.train)+1000000).toString().padStart(8, '0')
-          }));
-      } else if (num === 2) {
-        decreaseHp(); // HP 감소
-        setSimulationExistValue(prevState => ({
-            ...prevState,
-            train: (parseInt(simulationExistValue.train)+10000).toString().padStart(8, '0')
-          }));
-      } else if (num === 3) {
-        decreaseHp(); // HP 감소
-        setSimulationExistValue(prevState => ({
-            ...prevState,
-            train: (parseInt(simulationExistValue.train)+100).toString().padStart(8, '0')
-          }));
-      } else if (num === 4) {
-        decreaseHp(); // HP 감소
-        setSimulationExistValue(prevState => ({
-            ...prevState,
-            train: (parseInt(simulationExistValue.train)+1).toString().padStart(8, '0')
-          }));
-      }
-  }
+            train: updatedTrainValue
+        }));
+        setTrain(updatedTrainValue);
+        localStorage.setItem('train', setSimulationExistValue.train)
+    }
+    
 
     
   return (
@@ -99,7 +134,7 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
             </div>
             <div className="d-flex flex-column justify-content-between align-items-end">
                 <div className="d-flex flex-column">
-                    <GameMenu borderColor="#6458F5" existData={simulationExistValue} time={props.time} hp={props.hp}/>
+                    <GameMenu borderColor="#6458F5" time={props.time}/>
                 </div>
             </div>
         </div>

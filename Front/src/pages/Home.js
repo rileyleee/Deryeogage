@@ -13,10 +13,29 @@ import { useNavigate } from "react-router-dom";
 function Home() {
   const [existValue, setExistValue] = useRecoilState(SimulationExistAtom);
   const navigate = useNavigate();
-
+  useEffect(() => {
+    if (existValue !== null) {
+      console.log(existValue)
+      localStorage.setItem('petType', existValue.petType)
+        localStorage.setItem('background', existValue.background)
+        localStorage.setItem('cost', existValue.cost)
+        localStorage.setItem('petName', existValue.petName)
+        localStorage.setItem('end', existValue.end)
+        localStorage.setItem('endCheck', existValue.endCheck)
+        localStorage.setItem('endTime', existValue.endTime)
+        localStorage.setItem('id', existValue.id)
+        localStorage.setItem('lastTime', existValue.lastTime)
+        localStorage.setItem('quizNum', existValue.quizNum)
+        localStorage.setItem('requirement', existValue.requirement)
+        localStorage.setItem('startTime', existValue.startTime)
+        localStorage.setItem('title', existValue.title)
+        localStorage.setItem('train', existValue.train)
+        localStorage.setItem('user', existValue.user)
+        localStorage.setItem('hpPercentage', existValue.health)
+    }
+  }, [existValue]);
   const handleLinkClick = async (event, page) => {
     event.preventDefault();
-
     // 로그인 여부를 확인하여 이동할 페이지 결정
     if (localStorage.getItem("accessToken")) {
       // 로그인되어 있는 경우 해당 페이지로 이동
@@ -33,21 +52,59 @@ function Home() {
           console.log(response.data);
           if (response.data === "Start a new simulation") {
             localStorage.setItem("activatedNum", 1);
-            // localStorage.setItem('hpPercentage', 100);
+            localStorage.setItem('hpPercentage', 100);
             localStorage.setItem('timeDifference', JSON.stringify({ // 객체 데이터 등록할 때 무조건 stringify 활용
               hours:0,
               minutes:0
             }));
-            // localStorage.setItem('cost', 300000); 
           } else {
             setExistValue(response.data); // SET하자마자 담기지 않아서 response.data로 해줌
+            console.log(existValue)
+            console.log(response.data)
             localStorage.setItem("activatedNum", 5);
             // localStorage.setItem('hpPercentage', response.data.health);
-            localStorage.setItem('timeDifference', JSON.stringify({
-              hours:(Number(response.data.lastTime.substr(11, 2)) - Number(response.data.startTime.substr(11, 2)) + 24) % 24,
-              minutes:(Number(response.data.lastTime.substr(14, 2)) - Number(response.data.startTime.substr(14, 2)) + 60) % 60
+            const startTimeHours = Number(response.data.startTime.substr(11, 2));
+            const startTimeMinutes = Number(response.data.startTime.substr(14, 2));
+            const lastTimeHours = Number(response.data.lastTime.substr(11, 2));
+            const lastTimeMinutes = Number(response.data.lastTime.substr(14, 2));
+            console.log(startTimeHours, startTimeMinutes, lastTimeHours, lastTimeMinutes)
+
+            let diffHours = lastTimeHours - startTimeHours;
+            let diffMinutes = lastTimeMinutes - startTimeMinutes;
+            
+            if (diffMinutes < 0) {
+              diffHours--;
+              diffMinutes += 60;
+            }
+
+            if (diffHours < 0) {
+              diffHours += 24;
+            }
+            // 접속하지 않는 동안 hp 줄이기 위해
+            const now = new Date()
+            const currentHours = now.getHours()
+            const currentMinutes = now.getMinutes()
+            let hpHours = currentHours - lastTimeHours
+            let hpMinutes = currentMinutes - lastTimeMinutes
+            if (hpMinutes < 0) {
+              hpHours--;
+              hpMinutes += 60;
+            }
+
+            if (hpHours < 0) {
+              hpHours += 24;
+            }
+            console.log(diffHours, diffMinutes)
+            console.log(existValue)
+            setExistValue(prevState => ({
+              ...prevState,
+              health: prevState.health > 0 ? prevState.health - (hpHours*60 + hpMinutes) : 0,
             }));
-            // localStorage.setItem('cost', response.data.cost);
+            console.log(hpHours, hpMinutes)
+            localStorage.setItem('timeDifference', JSON.stringify({
+              hours: diffHours,
+              minutes: diffMinutes
+            }));
           }
           navigate("/simulations");
         } catch (error) {
@@ -87,6 +144,10 @@ function Home() {
       localStorage.setItem("clickedPage", page);
     }
   };
+  // 이 부분에 useEffect를 추가합니다.  그래야 업데이트가 잘된다.
+  useEffect(() => {
+    console.log(existValue);
+  }, [existValue]);
 
   // 컴포넌트가 렌더링될 때에 로그인 후에 이동할 페이지를 처리
   React.useEffect(() => {

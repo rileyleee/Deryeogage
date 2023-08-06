@@ -37,6 +37,23 @@ function GameDogChip(props) {
               }
           );
         setExistValue(response.data) // SimulationExistAtom에 데이터 저장
+        localStorage.setItem('petType', response.data.petType)
+        localStorage.setItem('background', response.data.background)
+        localStorage.setItem('cost', 300000)
+        localStorage.setItem('petName', response.data.petName)
+        localStorage.setItem('end', response.data.end)
+        localStorage.setItem('endCheck', response.data.endCheck)
+        localStorage.setItem('endTime', response.data.endTime)
+        localStorage.setItem('id', response.data.id)
+        localStorage.setItem('lastTime', response.data.lastTime)
+        localStorage.setItem('quizNum', response.data.quizNum)
+        localStorage.setItem('requirement', response.data.requirement)
+        localStorage.setItem('startTime', response.data.startTime)
+        localStorage.setItem('title', response.data.title)
+        localStorage.setItem('train', response.data.train)
+        localStorage.setItem('user', response.data.user)
+        localStorage.setItem('hpPercentage', response.data.health)
+        onNextPage()
     } catch (error) {
         console.error(error);
     }
@@ -59,7 +76,7 @@ function GameDogChip(props) {
       <S.GameDogChipNum show={dogNumber}>강아지 등록 번호 : {RandomNumber()}</S.GameDogChipNum>
       <div className='d-flex justify-content-between'>
         <S.GamePick1Btn className='btn' type="submit" onClick={onPreviousPage}>이전으로</S.GamePick1Btn>
-        <S.GamePick1Btn className='btn' type="submit" onClick={() => {handleSubmit(); onNextPage();}}>다음으로</S.GamePick1Btn>
+        <S.GamePick1Btn className='btn' type="submit" onClick={() => {handleSubmit();}}>다음으로</S.GamePick1Btn>
       </div>
     </S.GameStartsecond>
   );
