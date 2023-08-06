@@ -6,6 +6,7 @@ import DogInfoSection from "../../components/Adopt/DogInfoSection";
 import PersonalitySection from "../../components/Adopt/PersonalitySection";
 
 import * as S from "../../styled/Adopt/AdoptBoardCreate.style";
+
 import Precost from "./../../components/Adopt/Precosts";
 
 function AdoptBoardCreate() {
@@ -42,11 +43,13 @@ function AdoptBoardCreate() {
           // 다른 상태 설정
           // 0번 인덱스에서의 데이터 처리
           setTitle(dogData.title);
-          setDogName(dogData.dogName);
-          setDogAge(dogData.dogAge);
-          setDogRegion(dogData.regionCode);
-          setDogRegion(dogData.regionCode.lat);
-          setDogRegion(dogData.regionCode.lng);
+          setDogName(dogData.name);
+          setDogAge(dogData.age);
+          setRegion({
+            address: dogData.regionCode,
+            lat: dogData.lat,
+            lng: dogData.lng,
+          });
           setDogGender(
             dogData.dogGender === "true" || dogData.dogGender === true
           );
@@ -56,8 +59,8 @@ function AdoptBoardCreate() {
           setDependency(dogData.dependency);
           setBark(dogData.bark);
           setHair(dogData.hair);
-          setDogHealth(dogData.dogHealth);
-          setDogIntroduction(dogData.dogIntroduction);
+          setDogHealth(dogData.health);
+          setDogIntroduction(dogData.introduction);
 
           // 1번 인덱스에서의 이미지와 비디오 URL 처리
           const images = [];
@@ -70,8 +73,11 @@ function AdoptBoardCreate() {
               images.push(url);
             }
           }
+          
           setSelectedImages(images);
           setSelectedVideos(videos);
+
+          
         });
     }
   }, [boardId]);
@@ -80,6 +86,10 @@ function AdoptBoardCreate() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImageFiles, setSelectedImageFiles] = useState([]);
   const handleImageChange = (event) => {
+    if (isEditing) {
+      alert("수정하기 상태에서 이미지를 추가할 수 없습니다.");
+      return;
+    }
     const files = event.target.files;
     const selectedImagesArray = [...selectedImages];
     const selectedImageFilesArray = [...selectedImageFiles];
@@ -96,6 +106,10 @@ function AdoptBoardCreate() {
   const [selectedVideos, setSelectedVideos] = useState([]);
   const [selectedVideoFiles, setSelectedVideoFiles] = useState([]);
   const handleVideoChange = (event) => {
+    if (isEditing) {
+      alert("수정하기 상태에서 비디오를 추가할 수 없습니다.");
+      return;
+    }
     const files = event.target.files;
     const selectedVideosArray = [...selectedVideos];
     const selectedVideoFilesArray = [...selectedVideoFiles];
@@ -110,6 +124,10 @@ function AdoptBoardCreate() {
 
   // 이미지 삭제 관련 코드
   const handleImageRemove = (indexToRemove) => {
+    if (isEditing) {
+      alert("수정하기 상태에서 이미지를 삭제할 수 없습니다.");
+      return;
+    }
     setSelectedImages(
       selectedImages.filter((_, index) => index !== indexToRemove)
     );
@@ -120,6 +138,10 @@ function AdoptBoardCreate() {
 
   // 비디오 삭제 관련 코드
   const handleVideoRemove = (indexToRemove) => {
+    if (isEditing) {
+      alert("수정하기 상태에서 비디오를 삭제할 수 없습니다.");
+      return;
+    }
     setSelectedVideos(
       selectedVideos.filter((_, index) => index !== indexToRemove)
     );
@@ -138,7 +160,8 @@ function AdoptBoardCreate() {
   // DogInfoSection에서 관리할 state들 추가
   const [dogName, setDogName] = useState("");
   const [dogAge, setDogAge] = useState(0);
-  const [dogRegion, setDogRegion] = useState("");
+  const [dogRegion, setRegion] = useState({ address: "", lat: 0, lng: 0 });
+
   const [dogGender, setDogGender] = useState(false);
   const [dogChip, setDogChip] = useState(false);
 
@@ -185,7 +208,6 @@ function AdoptBoardCreate() {
     formData.append("name", dogName);
     formData.append("age", dogAge);
     formData.append("regionCode", dogRegion.address);
-    console.log(dogRegion.address);
     formData.append("lat", dogRegion.lat);
     formData.append("lon", dogRegion.lng);
     formData.append("gender", dogGender);
@@ -204,6 +226,7 @@ function AdoptBoardCreate() {
         alert("게시글이 수정되었습니다.");
         navigate(`/adopt/${boardId}`);
       } else {
+        
         const response = await axios.post(
           `${REACT_APP_API_URL}/boards`,
           formData,
@@ -240,11 +263,12 @@ function AdoptBoardCreate() {
           handleVideoChange={handleVideoChange}
           handleImageRemove={handleImageRemove}
           handleVideoRemove={handleVideoRemove} // 이 부분 추가
+          isEditing={isEditing} // 이 부분 추가
         />
         <S.FlexContainer>
           <S.Box>
             <PersonalitySection
-              friendly={friendly} // 값을 전달
+              friendly={friendly}
               activity={activity}
               dependency={dependency}
               bark={bark}
@@ -259,14 +283,14 @@ function AdoptBoardCreate() {
 
           <S.Box>
             <DogInfoSection
-              dogName={dogName} // 값을 전달
+              dogName={dogName}
               dogAge={dogAge}
               dogRegion={dogRegion}
               dogGender={dogGender}
               dogChip={dogChip}
               setName={setDogName}
               setAge={setDogAge}
-              setRegion={setDogRegion}
+              setRegion={setRegion}
               setGender={setDogGender}
               setChip={setDogChip}
             />

@@ -6,12 +6,14 @@ import ChatRoomDetail from "./ChatRoomDetail";
 import Reservation from "../../components/Adopt/Reservation";
 import { useLocation } from "react-router-dom";
 import axios from "axios"; // axios import
+import Postcost from "../../components/Adopt/Postcost";
 
 function ChatVideo() {
   const location = useLocation();
   const { boardId } = location.state.data;
   const { roomId } = useParams(); // URL에서 roomId 값을 얻음
   const [showReservationModal, setShowReservationModal] = useState(false);
+  const [isPostCost, setIsPostCost] = useState(false);
   const modalRef = useRef();
 
   const [isAuthor, setIsAuthor] = useState(false); // 작성자 여부 상태 추가
@@ -40,36 +42,90 @@ function ChatVideo() {
     fetchAuthorId();
   }, [boardId, userId]); // boardId와 userId가 변경되면 다시 실행
 
-  const handleModalClick = (e) => {
-    if (modalRef.current && modalRef.current.contains(e.target)) return; // 모달 내부 클릭이면 반환
-    setShowReservationModal(false); // 모달 외부 클릭이면 모달 닫기
+  // 현재 보여주는 모달 컴포넌트의 상태 (reservation 또는 postCost)
+  const [currentModalContent, setCurrentModalContent] = useState("reservation");
+
+  // 예약 확정하기 버튼 클릭 시 처리 로직
+  const handleReservationConfirmation = () => {
+    setCurrentModalContent("postCost"); // PostCost 컴포넌트로 변환
   };
-  console.log(boardId);
+
+  // 책임비를 보내는 함수
+  const sendPostCost = () => {
+    const token = localStorage.getItem("accessToken");
+    const data = {
+      boardId: boardId
+    };
+
+    axios
+      .post(`${process.env.REACT_APP_API_URL}/api/postcosts`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("Cost sent successfully:", response.data);
+        setIsPostCost(false); // 책임비 전송 후 예약 화면으로 돌아감
+      })
+      .catch((error) => {
+        console.error("Failed to send cost:", error);
+      });
+  };
+
+  const handleModalClick = (e) => {
+    if (modalRef.current && modalRef.current.contains(e.target)) return;
+    setShowReservationModal(false);
+  };
+
+  const handleFinalReservation = async (scheduledDate) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const data = { scheduledDate }; // 필요한 데이터 형식에 맞게 scheduledDate를 객체로 변환합니다.
+
+      await axios.put(
+        `${process.env.REACT_APP_API_URL}/chat/room/${roomId}/schedule`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json", // JSON 형식으로 보냅니다.
+          },
+        }
+      );
+
+      console.log("Date sent successfully");
+      setShowReservationModal(false); // axios 요청 성공 후 모달 닫기
+    } catch (error) {
+      console.error("Failed to send date:", error);
+    }
+  };
 
   return (
     <StyledContainer>
-      {showReservationModal && (
-        <>
-          <ModalBackground onClick={handleModalClick} /> {/* 배경 블러 처리 */}
-          <Modal>
-            <ModalContent ref={modalRef}>
-              {" "}
-              {/* 모달 내부 참조 추가 */}
+    {showReservationModal && (
+      <>
+        <ModalBackground onClick={handleModalClick} />
+        <Modal>
+          <ModalContent ref={modalRef}>
+            {isPostCost ? (
+              <Postcost
+                sendPostCost={sendPostCost}
+                goBack={() => setIsPostCost(false)} // 추가된 goBack prop
+              />
+            ) : (
               <Reservation
-                roomId={roomId}
-                boardId={boardId}
-                closeModal={() => setShowReservationModal(false)}
-              />{" "}
-              {/* closeModal prop 추가 */}
-            </ModalContent>
-          </Modal>
+                goToPostCost={() => setIsPostCost(true)} // 추가된 goToPostCost prop
+              />
+            )}
+          </ModalContent>
+        </Modal>
         </>
       )}
       {!isAuthor && ( // 작성자가 아닐 경우에만 버튼 표시
         <>
-          <ModalButton onClick={() => setShowReservationModal(true)}>
-            예약하기
-          </ModalButton>
+          <ModalButton onClick={() => setShowReservationModal(true)}>예약하기</ModalButton>
+          {/* ... 나머지 코드 */}
         </>
       )}
       <StyledDogDetail>

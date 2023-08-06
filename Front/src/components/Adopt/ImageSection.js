@@ -11,6 +11,7 @@ function ImageSection({
   handleVideoChange,
   handleImageRemove,
   handleVideoRemove,
+  isEditing
 }) {
   return (
     <div>
@@ -26,6 +27,7 @@ function ImageSection({
             style={{ display: "none" }}
             id="img-upload"
             onChange={handleImageChange}
+            disabled={isEditing}
           />
         </S.ImageContainer>
 
@@ -38,6 +40,7 @@ function ImageSection({
                 src={imageURL}
                 alt={`이미지 미리보기 ${index + 1}`}
                 onClick={() => handleImageRemove(index)} // 이 부분 추가
+                disabled={isEditing}
               />
             </S.ImageContainer>
           ))}
@@ -54,6 +57,7 @@ function ImageSection({
             style={{ display: "none" }}
             id="video-upload"
             onChange={handleVideoChange}
+            disabled={isEditing}
           />
         </S.ImageContainer>
 
@@ -69,6 +73,7 @@ function ImageSection({
                 loop
                 muted
                 onClick={() => handleVideoRemove(index)} // 이 부분 추가
+                disabled={isEditing}
               />
             </S.ImageContainer>
           ))}
