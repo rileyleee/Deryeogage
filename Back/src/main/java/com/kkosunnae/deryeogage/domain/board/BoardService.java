@@ -52,7 +52,6 @@ public class BoardService {
             boardDto.setUserNickname(user.get().getNickname());
             boardDto.setCreatedDate(LocalDateTime.now());
             board.update(boardDto);
-            boardRepository.save(board);
             return board.getId();
         } else {
             throw new IllegalArgumentException("해당 유저가 존재하지 않습니다. user id: " + boardDto.getUserId());
@@ -280,6 +279,4 @@ public class BoardService {
 
         return uploadedFiles;
     }
-
-
 }
