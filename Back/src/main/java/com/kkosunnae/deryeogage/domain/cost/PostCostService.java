@@ -44,7 +44,9 @@ public class PostCostService {
     // 후 책임비 1개 조회하기
     @Transactional(readOnly = true)
     public PostCostDto getPostCost(Long userId, int boardId) {
-        return postCostRepository.findByUserIdAndBoardId(userId, boardId).toDto();
+        PostCostEntity postCostEntity = postCostRepository.findByUserIdAndBoardId(userId, boardId)
+                .orElseThrow(()-> new NoSuchElementException("해당 입양자가 납부한 후책임비가 없습니다. userId" + userId));
+        return postCostEntity.toDto();
     }
 
     // 내가 납부한 모든 후책임비 조회하기
@@ -52,7 +54,9 @@ public class PostCostService {
     public List<PostCostDto> getPostCosts(Long userId) {
         List<PostCostDto> myPostCosts = new ArrayList<>();
 
-        List<PostCostEntity> postCostsList = postCostRepository.findByUserId(userId);
+        List<PostCostEntity> postCostsList = postCostRepository.findByUserId(userId)
+                .orElseThrow(()-> new NoSuchElementException("해당 입양자가 납부한 후책임비가 없습니다. userId" + userId));
+
         for (PostCostEntity postCostEntity : postCostsList) {
 
             PostCostDto postCost = postCostEntity.toDto();
