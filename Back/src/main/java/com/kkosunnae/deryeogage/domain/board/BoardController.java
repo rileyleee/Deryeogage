@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Api
@@ -25,6 +26,8 @@ public class BoardController {
     private final BoardService boardService;
 
     private final S3FileService s3FileService;
+
+    private final BoardFileRepository boardFileRepository;
 
     // 글 작성 // Swagger 하려면 @requestBody 삭제 필요
     // 한 가지 주의할 점은, @RequestBody와 @RequestPart를
@@ -52,7 +55,7 @@ public class BoardController {
 
     //글 수정
     @PutMapping("/{boardId}")
-    public Response<Object> updateBoard(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId, @RequestBody BoardDto boardDto) {
+    public Response<Object> updateBoard(@RequestHeader("Authorization") String authorizationHeader, BoardDto boardDto, @PathVariable int boardId, @RequestPart("multipartFile") List<MultipartFile> multipartFile) {
 
         String jwtToken = authorizationHeader.substring(7);
         Long requestUserId = jwtUtil.getUserId(jwtToken);
@@ -68,6 +71,24 @@ public class BoardController {
         boardDto.setUserId(requestUserId);
 
         boardService.update(boardId, boardDto);
+
+        // 해당 게시글에 등록된 파일 리스트 모두 삭제
+        List<BoardFileEntity> boardFileEntityList = boardFileRepository.findByBoardId(boardId)
+                .orElseThrow(()-> new NoSuchElementException("해당 게시물에 등록된 파일이 없습니다. boardId: "+ boardId));
+
+        for(BoardFileEntity boardFileEntity : boardFileEntityList){
+            boardFileRepository.delete(boardFileEntity);
+        }
+
+        // 해당 게시글이 가진 모든 파일을 리스트로 가져와서 삭제 수행
+        s3FileService.deleteFile(boardService.getBoardFiles(boardId));
+
+        // 원본 파일명과 S3에 저장된 파일명이 담긴 Map
+        Map<String, List> nameList = s3FileService.uploadFile(multipartFile);
+
+        // DB에 파일이름 저장
+        boardService.saveBoardFile(boardId, nameList);
+
         return Response.success(null);
     }
 
@@ -173,7 +194,7 @@ public class BoardController {
         return Response.success(null);
     }
 
-    //내가 찜한 분양글 목록 조회
+    //내가 찜한 목록 조회
     @GetMapping("/like")
     public Response<Object> getboardLike(@RequestHeader("Authorization") String authorizationHeader) {
 
