@@ -1,5 +1,8 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
+import com.kkosunnae.deryeogage.domain.board.BoardDto;
+import com.kkosunnae.deryeogage.domain.board.BoardRepository;
+import com.kkosunnae.deryeogage.domain.board.BoardService;
 import com.kkosunnae.deryeogage.domain.user.UserService;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +14,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -24,12 +28,42 @@ public class ChatController {
     private final SimpMessagingTemplate messagingTemplate;
     private final UserService userService;
 
+    private final BoardService boardService;
+
+
+
+    //스케쥴 잡기
+    @PutMapping("/room/{roomId}")
+    public ResponseEntity<Integer> updateScheduledDate(@PathVariable Integer roomId, @RequestBody LocalDateTime scheduledDate) {
+        // 서비스를 호출하여 채팅방의 scheduledDate를 업데이트하고 업데이트된 채팅방의 ID를 반환받는다.
+        LocalDateTime localDateTime = chatRoomService.updateScheduledDate(roomId, scheduledDate);
+        System.out.println(localDateTime);
+        return new ResponseEntity<>(roomId, HttpStatus.OK);
+    }
+
+
+
 
     //새 채팅방 생성
-    @PostMapping("/room")
-    public ResponseEntity<Integer> createRoom(@RequestBody ChatRoomRequestDto requestDto) {
-        Integer id = chatRoomService.save(requestDto);
-        return new ResponseEntity<>(id, HttpStatus.CREATED);
+    @PostMapping("/room/{boardId}")
+    public ResponseEntity<ChatRoomResponseDto> createRoom(@RequestHeader("Authorization") String authorizationHeader, @PathVariable Integer boardId) {
+        String jwtToken = authorizationHeader.substring(7);
+        Long userId2 = jwtUtil.getUserId(jwtToken);
+        Long userId1 = boardService.getBoard(boardId).getUserId();
+        String boardName = boardService.getBoard(boardId).getName();
+
+        ChatRoomRequestDto chatRoomRequestDto = new ChatRoomRequestDto(userId1,userId2,boardId,boardName);
+
+        // 이미 있는 채팅방 확인
+        ChatRoomResponseDto existingChatRoom = chatRoomService.findChatRoomByUsersAndBoardId(userId1, userId2, boardId);
+
+        if (existingChatRoom != null) {
+            // 이미 있는 채팅방이 있다면 반환
+            return new ResponseEntity<>(existingChatRoom, HttpStatus.OK);
+        }
+
+        ChatRoomResponseDto chatRoomResponseDto = chatRoomService.save(chatRoomRequestDto);
+        return new ResponseEntity<>(chatRoomResponseDto, HttpStatus.CREATED);
     }
 
     //사용자가 속한 전체 채팅방 목록 출력

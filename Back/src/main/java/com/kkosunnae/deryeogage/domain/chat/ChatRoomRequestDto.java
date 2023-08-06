@@ -23,7 +23,10 @@ public class ChatRoomRequestDto {
     private LocalDateTime scheduledDate;
 
     @Builder
-    public ChatRoomRequestDto(String roomName) {
+    public ChatRoomRequestDto(Long user1, Long user2, Integer boardId, String roomName) {
+        this.user1 = user1;
+        this.user2 = user2;
+        this.boardId = boardId;
         this.roomName = roomName;
     }
 
