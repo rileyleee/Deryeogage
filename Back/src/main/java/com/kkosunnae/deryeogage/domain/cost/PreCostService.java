@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -43,7 +44,9 @@ public class PreCostService {
     // 선책임비 1개 조회하기
     @Transactional(readOnly = true)
     public PreCostDto getPreCost(Long userId, int boardId) {
-        return preCostRepository.findByUserIdAndBoardId(userId, boardId).toDto();
+        PreCostEntity preCostEntity = preCostRepository.findByUserIdAndBoardId(userId, boardId)
+                .orElseThrow(()-> new NoSuchElementException("해당 분양자의 책임비 납부내역이 없습니다. userId: "+ userId));
+        return preCostEntity.toDto();
     }
 
     // 내가 납부한 선 책임비 조회하기(2개 이상인 경우)
@@ -51,12 +54,14 @@ public class PreCostService {
     public List<PreCostDto> getPreCosts(Long userId) {
         List<PreCostDto> myPreCosts = new ArrayList<>();
 
-        List<PreCostEntity> preCostsList = preCostRepository.findByUserId(userId);
-        for (PreCostEntity preCostEntity : preCostsList) {
+        List<PreCostEntity> preCostsList = preCostRepository.findByUserId(userId)
+                .orElseThrow(()-> new NoSuchElementException("해당 분양자의 책임비 납부내역이 없습니다. userId: "+ userId));
 
+        for (PreCostEntity preCostEntity : preCostsList) {
             PreCostDto preCost = preCostEntity.toDto();
             myPreCosts.add(preCost);
         }
+
         return myPreCosts;
     }
 
