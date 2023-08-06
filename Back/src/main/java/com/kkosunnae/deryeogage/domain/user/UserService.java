@@ -43,9 +43,8 @@ public class UserService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=5350906875f54e9bff0134a84d70e619"); //현재 프론트 서버
-            sb.append("&redirect_uri=http://localhost:3000/users/oauth");
-            // 배포용 주소
-            // sb.append("&redirect_uri=https://i9b307.p.ssafy.io/users/oauth");
+            //sb.append("&redirect_uri=http://localhost:3000/users/oauth");
+            sb.append("&redirect_uri=https://i9b307.p.ssafy.io/users/oauth");
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
