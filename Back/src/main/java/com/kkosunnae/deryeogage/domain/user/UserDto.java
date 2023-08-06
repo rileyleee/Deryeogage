@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 public class UserDto {
 
     private Long id;
@@ -16,6 +17,7 @@ public class UserDto {
     private String ageRange;
     private String imageUrl;
     private LocalDateTime createdDate;
+
 
     public UserEntity toEntity(){
         return UserEntity.builder()

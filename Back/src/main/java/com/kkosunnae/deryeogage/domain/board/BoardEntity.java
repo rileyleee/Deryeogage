@@ -142,7 +142,6 @@ public class BoardEntity {
                 .build();
     }
     public void update(BoardDto boardDto) {
-        this.userNickname = boardDto.getUserNickname();
         this.title = boardDto.getTitle();
         this.friendly = boardDto.getFriendly();
         this.activity = boardDto.getActivity();
