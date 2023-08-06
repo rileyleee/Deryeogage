@@ -4,8 +4,10 @@ import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+@Transactional
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/simulations")

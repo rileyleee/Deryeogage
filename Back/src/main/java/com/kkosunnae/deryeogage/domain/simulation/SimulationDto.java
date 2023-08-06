@@ -64,7 +64,7 @@ public class SimulationDto {
                 .endTime(this.endTime)
                 .cost((cost != null) ? cost : 300000)
                 .lastTime(this.lastTime)
-                .train((train != null) ? train : "0000")
+                .train((train != null) ? train : "00000000")
                 .health((health != null) ? health : 100)
                 .quizNum((quizNum != null) ? quizNum : 0)
                 .requirement((requirement != null) ? requirement : "0000")
