@@ -20,11 +20,11 @@ public class ChatRoomService {
 
 
     @Transactional
-    public LocalDateTime updateScheduledDate(Integer roomId, LocalDateTime scheduledDate) {
+    public LocalDateTime updateScheduledDate(Integer roomId, ChatRoomRequestDto chatRoomRequestDto) {
         ChatRoomEntity chatRoomEntity = chatRoomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("채팅방이 존재하지 않습니다."));
 
-        return chatRoomEntity.update(scheduledDate);
+        return chatRoomEntity.update(chatRoomRequestDto);
     }
 
     @Transactional
@@ -44,14 +44,25 @@ public class ChatRoomService {
     public List<ChatRoomResponseDto> findAll(Long userId) {
         List<ChatRoomEntity> chatRooms = chatRoomRepository.findAllByUser1_IdOrUser2_Id(userId, userId);
         return chatRooms.stream()
-                .map(chatRoom -> new ChatRoomResponseDto(chatRoom))
+                .map(chatRoom -> {
+                    ChatRoomResponseDto dto = new ChatRoomResponseDto(chatRoom);
+                    if(chatRoom.getUser2() != null && chatRoom.getUser2().getId().equals(userId)) {
+                        dto.setSchedule(true);
+                    }
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
+
     @Transactional
-    public ChatRoomResponseDto findById(final Integer id) {
+    public ChatRoomResponseDto findById(Long userId, final Integer id) {
         ChatRoomEntity entity = this.chatRoomRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 ChatRoom이 존재하지 않습니다. id = " + id));
-        return new ChatRoomResponseDto(entity);
+        ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(entity);
+        if(entity.getUser2() != null && entity.getUser2().getId().equals(userId)) {
+            chatRoomResponseDto.setSchedule(true);
+        }
+        return chatRoomResponseDto;
     }
 
 

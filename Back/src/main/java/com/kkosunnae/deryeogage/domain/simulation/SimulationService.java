@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class SimulationService {
     }
 
     public SimulationDto saveSimulation(SimulationDto simulationDto){
+        simulationDto.setLastTime(LocalDateTime.now());
         SimulationEntity simulationEntity=simulationDto.toEntity(userRepository);
         SimulationDto savedSimulationDto = simulationRepository.save(simulationEntity).toDto();
         return savedSimulationDto;

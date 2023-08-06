@@ -1,8 +1,5 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
-import com.kkosunnae.deryeogage.domain.board.BoardDto;
-import com.kkosunnae.deryeogage.domain.board.BoardRepository;
-import com.kkosunnae.deryeogage.domain.board.BoardService;
 import com.kkosunnae.deryeogage.domain.user.UserService;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +11,15 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Transactional
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/chat")
+    @RequestMapping("/api/chat")
 public class ChatController {
     private final JwtUtil jwtUtil;
 
@@ -32,14 +32,16 @@ public class ChatController {
 
 
 
-    //스케쥴 잡기
-    @PutMapping("/room/{roomId}")
-    public ResponseEntity<Integer> updateScheduledDate(@PathVariable Integer roomId, @RequestBody LocalDateTime scheduledDate) {
-        // 서비스를 호출하여 채팅방의 scheduledDate를 업데이트하고 업데이트된 채팅방의 ID를 반환받는다.
-        LocalDateTime localDateTime = chatRoomService.updateScheduledDate(roomId, scheduledDate);
-        System.out.println(localDateTime);
+    //스케쥴 잡기, 수정, 삭제
+    @PutMapping("/room/{roomId}/schedule")
+    public ResponseEntity<Integer> updateScheduledDate(@PathVariable Integer roomId, @RequestBody ChatRoomRequestDto chatRoomRequestDto) {
+        chatRoomService.updateScheduledDate(roomId, chatRoomRequestDto);
+
         return new ResponseEntity<>(roomId, HttpStatus.OK);
     }
+
+
+
 
 
 
@@ -83,9 +85,9 @@ public class ChatController {
         String jwtToken = authorizationHeader.substring(7);
         Long userId = jwtUtil.getUserId(jwtToken);
 
-        chatMessageService.markMessagesAsRead(id, userId);
+        //chatMessageService.markMessagesAsRead(id, userId);
 
-        ChatRoomResponseDto dto = chatRoomService.findById(id);
+        ChatRoomResponseDto dto = chatRoomService.findById(userId, id);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
