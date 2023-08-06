@@ -1,10 +1,33 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 function LoginSurvey() {
+  const [dogs, setDogs] = useState([]); // Create a new state to hold the dog data
+  const token = localStorage.getItem("accessToken"); // Get user token
+
+  useEffect(() => {
+    const REACT_APP_API_URL = "http://localhost:8080/api/boards/recommendation";
+    axios
+      .get(REACT_APP_API_URL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setDogs(response.data); // Set the dog data from the response
+      })
+      .catch((error) => {
+        console.error("Error fetching dog data:", error);
+      });
+  }, []);
   return (
     <div>
-      <p><Span>{localStorage.getItem("nickname")}</Span>님의 선호도조사를 기반으로 강아지를 추천해드려요!</p>
+      <p>
+        <Span>{localStorage.getItem("nickname")}</Span>님의 선호도조사를
+        기반으로 강아지를 추천해드려요!
+      </p>
 
       {/* 캐러셀로 강아지 추천 해줄거임 */}
       <Carousel>
@@ -33,33 +56,22 @@ function LoginSurvey() {
           </div>
 
           <div className="carousel-inner">
-            <div className="carousel-item active">
-              <ImageContainer>
-                <img
-                  src="assets/kkomi1.jpg"
-                  className="d-block w-100"
-                  alt="..."
-                />
-              </ImageContainer>
-            </div>
-            <div className="carousel-item">
-              <ImageContainer>
-                <img
-                  src="assets/kkomi2.jpg"
-                  className="d-block w-100"
-                  alt="..."
-                />
-              </ImageContainer>
-            </div>
-            <div className="carousel-item">
-              <ImageContainer>
-                <img
-                  src="assets/kkomi3.jpg"
-                  className="d-block w-100"
-                  alt="..."
-                />
-              </ImageContainer>
-            </div>
+            {dogs.map((dog, index) => (
+              <div className={`carousel-item ${index === 0 ? "active" : ""}`}>
+                <ImageContainer>
+                  <img
+                    src={dog.imageURL} // Replace with your image URL property
+                    className="d-block w-100"
+                    alt={dog.name} // Replace with your alt text property
+                  />
+                </ImageContainer>
+                <div className="carousel-caption d-none d-md-block">
+                  <h5>{dog.name}</h5> {/* Replace with your title property */}
+                  <p>{dog.description}</p>{" "}
+                  {/* Replace with your description property */}
+                </div>
+              </div>
+            ))}
           </div>
           <button
             className="carousel-control-prev"
@@ -67,7 +79,10 @@ function LoginSurvey() {
             data-bs-target="#carouselExampleIndicators"
             data-bs-slide="prev"
           >
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span
+              className="carousel-control-prev-icon"
+              aria-hidden="true"
+            ></span>
             <span className="visually-hidden">Previous</span>
           </button>
           <button
@@ -76,7 +91,10 @@ function LoginSurvey() {
             data-bs-target="#carouselExampleIndicators"
             data-bs-slide="next"
           >
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+            <span
+              className="carousel-control-next-icon"
+              aria-hidden="true"
+            ></span>
             <span className="visually-hidden">Next</span>
           </button>
         </div>
@@ -113,9 +131,6 @@ export const Image = styled.img`
   height: 100%; /* 이미지를 컨테이너의 높이에 맞게 자동 조절 */
   object-fit: cover;
 `;
-
-
-
 
 export const InnerText = styled.div`
   display: flex;

@@ -80,6 +80,7 @@ public class S3FileService {
             String extension = fileName.substring(fileName.lastIndexOf("."));
             // 이미지 파일과 동영상 파일만 허용하도록 제한
             if (!extension.equalsIgnoreCase(".jpg")
+                    && !extension.equalsIgnoreCase(".jpeg")
                     && !extension.equalsIgnoreCase(".png")
                     && !extension.equalsIgnoreCase(".gif")
                     && !extension.equalsIgnoreCase(".mp4")) {
