@@ -6,6 +6,7 @@ import DogInfoSection from "../../components/Adopt/DogInfoSection";
 import PersonalitySection from "../../components/Adopt/PersonalitySection";
 
 import * as S from "../../styled/Adopt/AdoptBoardCreate.style";
+
 import Precost from "./../../components/Adopt/Precosts";
 
 function AdoptBoardCreate() {
@@ -38,7 +39,7 @@ function AdoptBoardCreate() {
           const dogData = data[0];
           const mediaData = data[1];
 
-          console.log(data, dogData, mediaData);
+          console.log("useEffect에서 콘솔찍음", data, dogData, mediaData);
           // 다른 상태 설정
           // 0번 인덱스에서의 데이터 처리
           setTitle(dogData.title);
@@ -47,8 +48,10 @@ function AdoptBoardCreate() {
           setDogRegion(dogData.regionCode);
           setDogRegion(dogData.regionCode.lat);
           setDogRegion(dogData.regionCode.lng);
-          setDogGender(dogData.dogGender);
-          setDogChip(dogData.dogChip);
+          setDogGender(
+            dogData.dogGender === "true" || dogData.dogGender === true
+          );
+          setDogChip(dogData.dogChip === "true" || dogData.dogChip === true);
           setFriendly(dogData.friendly);
           setActivity(dogData.activity);
           setDependency(dogData.dependency);
@@ -183,6 +186,7 @@ function AdoptBoardCreate() {
     formData.append("name", dogName);
     formData.append("age", dogAge);
     formData.append("regionCode", dogRegion.address);
+    console.log(dogRegion.address);
     formData.append("lat", dogRegion.lat);
     formData.append("lon", dogRegion.lng);
     formData.append("gender", dogGender);
@@ -241,7 +245,7 @@ function AdoptBoardCreate() {
         <S.FlexContainer>
           <S.Box>
             <PersonalitySection
-              friendly={friendly} // 값을 전달
+              friendly={friendly}
               activity={activity}
               dependency={dependency}
               bark={bark}
@@ -256,7 +260,7 @@ function AdoptBoardCreate() {
 
           <S.Box>
             <DogInfoSection
-              dogName={dogName} // 값을 전달
+              dogName={dogName}
               dogAge={dogAge}
               dogRegion={dogRegion}
               dogGender={dogGender}
