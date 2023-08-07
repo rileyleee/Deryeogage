@@ -39,16 +39,28 @@ public class ChatRoomEntity extends BaseTime{
     private List<ChatMessageEntity> chatMessageList;
 
     @Builder
-    public ChatRoomEntity(Integer boardId, UserEntity user1, UserEntity user2, String roomName) {
+    public ChatRoomEntity(Integer id, Integer boardId, UserEntity user1, UserEntity user2, String roomName, LocalDate scheduledDate) {
+        this.id = id;
         this.boardId = boardId;
         this.user1 = user1;
         this.user2 = user2;
         this.roomName = roomName;
+        this.scheduledDate = scheduledDate;
     }
 
     public LocalDate update(ChatRoomRequestDto chatRoomRequestDto) {
         this.scheduledDate = chatRoomRequestDto.getScheduledDate();
         System.out.println(this.scheduledDate);
         return this.scheduledDate;
+    }
+
+    public ChatRoomDto toDto(){
+        return ChatRoomDto.builder()
+                .id(this.id)
+                .user1(this.user1.getId())
+                .user2(this.user2.getId())
+                .boardId(this.boardId)
+                .scheduledDate(this.scheduledDate)
+                .build();
     }
 }

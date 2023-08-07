@@ -1,6 +1,5 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
-import com.kkosunnae.deryeogage.domain.adopt.AdoptService;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -18,7 +18,7 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
-    private final AdoptService adoptService;
+
 
 
     @Transactional
@@ -67,8 +67,6 @@ public class ChatRoomService {
         return chatRoomResponseDto;
     }
 
-
-
     /** ChatRoom 생성 */
     @Transactional
     public ChatRoomResponseDto save(ChatRoomRequestDto chatRoomRequestDto) {
@@ -93,5 +91,13 @@ public class ChatRoomService {
             return true;
         }
 
+    }
+    //채팅방 정보 전달
+    public ChatRoomDto getRoomInfo(Integer id) {
+        log.info("chat 서비스 roomId"+id);
+        ChatRoomEntity chatRoomEntity = chatRoomRepository.findById(id)
+                .orElseThrow(()-> new NoSuchElementException("해당 채팅 방이 존재하지 않습니다."));
+        ChatRoomDto chatRoomInfo = chatRoomEntity.toDto();
+        return chatRoomInfo;
     }
 }

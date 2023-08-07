@@ -4,6 +4,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, Integer> {
     /** ChatRoom 조회 - 두 사용자와 게시판 ID로 정확한 매치 찾기 */
@@ -27,4 +28,8 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, Intege
 
     /** ChatRoom 목록조회 - 조건정렬순, RoomName 검색, 포함 일치 */
     List<ChatRoomEntity> findAllByRoomNameContaining(String roomName, Sort sort);
+
+    /** ChatRoom id 일치 */
+    Optional<ChatRoomEntity> findById(Integer id);
+
 }

@@ -4,6 +4,7 @@ import com.kkosunnae.deryeogage.domain.board.BoardService;
 import com.kkosunnae.deryeogage.domain.user.UserService;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.Header;
@@ -16,6 +17,7 @@ import com.kkosunnae.deryeogage.global.util.Response;
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Slf4j
 @Transactional
 @RestController
 @RequiredArgsConstructor
@@ -45,6 +47,14 @@ public class ChatController {
     public Response<Object> getExist(@PathVariable Integer roomId){
        boolean exist = chatRoomService.getExist(roomId);
         return Response.success(exist);
+    }
+
+    // chatRoom 정보 조회
+    @GetMapping("/room/info/{id}")
+    public Response<Object> getRoomInfo(@PathVariable Integer id){
+        log.info("chat 컨트롤러 roomId"+id);
+        ChatRoomDto chatRoomInfo = chatRoomService.getRoomInfo(id);
+        return Response.success(chatRoomInfo);
     }
 
 
