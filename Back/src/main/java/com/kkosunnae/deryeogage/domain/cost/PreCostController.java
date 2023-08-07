@@ -50,9 +50,9 @@ public class PreCostController {
         return Response.success(null);
     }
 
-    // 게시글 삭제 버튼 클릭 후 오류 발생 시 선 책임비 수정하기(반환) -> 게시글 삭제까지
+    // 게시글 삭제 버튼 클릭 후 returnYn이 null이면 선 책임비 수정하기(반환) -> 게시글 삭제까지
     @PutMapping
-    public Response<Object> abnormalReturn(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PreCostDto preCostDto) {
+    public Response<Object> abnormalReturn(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PreCostDto preCostDto) { //보드ID 유일함
         String jwtToken = authorizationHeader.substring(7);
         Long userId = jwtUtil.getUserId(jwtToken);
         preCostService.abnormalReturn(userId, preCostDto);

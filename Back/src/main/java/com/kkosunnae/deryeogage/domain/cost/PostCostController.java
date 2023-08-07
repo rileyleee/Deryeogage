@@ -51,11 +51,11 @@ public class PostCostController {
     }
 
     // 후 책임비 수정하기(입양 일정 취소에 따른 반환) -> 일정 취소 버튼 클릭 시
-    @PutMapping
-    public Response<Object> abnormalReturn(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PostCostDto postCostDto) {
-        String jwtToken = authorizationHeader.substring(7);
-        Long userId = jwtUtil.getUserId(jwtToken);
-        postCostService.abnormalReturn(userId, postCostDto);
-        return Response.success(null);
-    }
+//    @PutMapping
+//    public Response<Object> abnormalReturn(@RequestHeader("Authorization") String authorizationHeader, @RequestBody PostCostDto postCostDto) {
+//        String jwtToken = authorizationHeader.substring(7);
+//        Long userId = jwtUtil.getUserId(jwtToken);
+//        postCostService.scheduleReturn(userId, postCostDto);
+//        return Response.success(null);
+//    }
 }

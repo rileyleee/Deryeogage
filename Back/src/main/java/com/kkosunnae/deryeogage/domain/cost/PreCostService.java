@@ -98,18 +98,11 @@ public class PreCostService {
         PostCostDto postCostDto = postCostEntity.toDto();
 
         if (postCostDto.getPayYn()) { //납부한 내역이 있다면 처리
-            Long toUserId = postCostDto.getUserId();
-            postCostService.abnormalReturn(toUserId, postCostDto);
+            postCostService.abnormalReturn(postCostDto);
         }
-
-        // 선책임비 반환처리하고
-        preCostDto.setReturnYn(true);
-        // 선책임비 반환 날짜 담고
-        preCostDto.setReturnDate(LocalDateTime.now());
-
-        PreCostEntity preCost = getPreCost(userId, boardId).toEntity(userRepository, boardRepository);
-        preCost.update(preCostDto);
-        preCostRepository.save(preCost);
+        
+        // 책임비 row 삭제하기
+        preCostRepository.deleteById(preCostDto.getId());
 
         //분양게시글 삭제
         boardService.deleteById(boardId);

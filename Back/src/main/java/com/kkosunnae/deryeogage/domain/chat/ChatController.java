@@ -21,8 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
     @RequestMapping("/api/chat")
 public class ChatController {
-    private final JwtUtil jwtUtil;
 
+    private final JwtUtil jwtUtil;
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
     private final SimpMessagingTemplate messagingTemplate;
