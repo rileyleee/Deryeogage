@@ -49,11 +49,4 @@ public class PostCostController {
         postCostService.normalReturn(userId, postCostDto);
         return Response.success(null);
     }
-
-    // 후 책임비 수정하기(입양 일정 취소에 따른 삭제) -> scheduleDate == null 일 때
-    @PutMapping
-    public Response<Object> abnormalReturn(Integer boardId) {
-        postCostService.scheduleReturn(boardId);
-        return Response.success(null);
-    }
 }
