@@ -98,8 +98,8 @@ public class AdoptEntity {
         this.mission = missionEntity;
     }
 
-    public void scheduleUpdate(AdoptDto adoptDto) { // 일정 변경 시 실행
-        this.scheduledDate = adoptDto.getScheduledDate();
+    public void scheduleUpdate(LocalDate scheduledDate) { // 일정 변경 시 실행
+        this.scheduledDate = scheduledDate;
     }
 
 

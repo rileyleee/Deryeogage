@@ -41,15 +41,11 @@ public class ChatController {
 
 
     //스케줄 존재여부 확인
-    @GetMapping("/room/{roomid}/schedule")
+    @GetMapping("/room/{roomId}/schedule")
     public Response<Object> getExist(@PathVariable Integer roomId){
        boolean exist = chatRoomService.getExist(roomId);
         return Response.success(exist);
     }
-
-
-
-
 
 
     //새 채팅방 생성

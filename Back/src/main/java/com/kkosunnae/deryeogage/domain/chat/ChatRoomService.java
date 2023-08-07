@@ -83,7 +83,7 @@ public class ChatRoomService {
                 () -> new IllegalArgumentException("해당 ChatRoom이 존재하지 않습니다. id = " + id));
         this.chatRoomRepository.delete(entity);
     }
-    /**예약 일정 있는지 여부 **/
+    /**예약 일정 있는지 여부 확인: 달력 불러오고 난 직후에 확인해서 boolean 값을 리턴 받고 일정 등록하고 boolean 값에 따라 입양 정보 등록/수정 호출**/
     public boolean getExist(Integer roomId) {
         ChatRoomEntity entity = this.chatRoomRepository.findById(roomId).orElseThrow(
                 () -> new IllegalArgumentException("해당 ChatRoom이 존재하지 않습니다. roomId = " + roomId));
