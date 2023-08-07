@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -33,7 +33,7 @@ public class ChatRoomEntity extends BaseTime{
     private String roomName;
 
     @Column(name="scheduled_date")
-    private LocalDateTime scheduledDate;
+    private LocalDate scheduledDate;
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
     private List<ChatMessageEntity> chatMessageList;
@@ -46,8 +46,9 @@ public class ChatRoomEntity extends BaseTime{
         this.roomName = roomName;
     }
 
-    public Integer update(ChatRoomRequestDto requestDto) {
-        this.roomName = requestDto.getRoomName();
-        return this.id;
+    public LocalDate update(ChatRoomRequestDto chatRoomRequestDto) {
+        this.scheduledDate = chatRoomRequestDto.getScheduledDate();
+        System.out.println(this.scheduledDate);
+        return this.scheduledDate;
     }
 }
