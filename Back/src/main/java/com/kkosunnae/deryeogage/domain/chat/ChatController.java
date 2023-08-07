@@ -11,10 +11,9 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+import com.kkosunnae.deryeogage.global.util.Response;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Transactional
@@ -41,9 +40,12 @@ public class ChatController {
     }
 
 
-
-
-
+    //스케줄 존재여부 확인
+    @GetMapping("/room/{roomId}/schedule")
+    public Response<Object> getExist(@PathVariable Integer roomId){
+       boolean exist = chatRoomService.getExist(roomId);
+        return Response.success(exist);
+    }
 
 
     //새 채팅방 생성

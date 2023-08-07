@@ -15,4 +15,7 @@ public interface AdoptRepository extends JpaRepository<AdoptEntity, Integer> {
     // 1건의 입양정보 가져오기
     Optional<AdoptEntity> findByBoardId(Integer boardId);
 
+    // 게시글 정보와 입양 상태를 기준으로 입양정보 가져오기
+    Optional<AdoptEntity> findByBoardIdAndStatus(Integer boardId, AdoptStatus status);
+
 }

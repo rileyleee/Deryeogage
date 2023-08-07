@@ -40,6 +40,14 @@ public class AdoptDto {
         this.missionId = missionId;
     }
 
+    public AdoptDto(Long fromUserId, Long toUserId, Integer boardId, LocalDate scheduledDate, AdoptStatus adoptStatus) {
+        this.boardId = boardId;
+        this.fromUserId = fromUserId;
+        this.toUserId = toUserId;
+        this.status = adoptStatus;
+        this.scheduledDate = scheduledDate;
+    }
+
     public AdoptEntity toEntity(UserRepository userRepository, BoardRepository boardRepository) {
         //     public AdoptEntity toEntity(UserRepository userRepository, BoardRepository boardRepository, MissionRepository missionRepository){
 
