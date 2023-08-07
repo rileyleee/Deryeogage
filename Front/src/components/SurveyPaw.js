@@ -1,15 +1,19 @@
 // 선호도조사 강아지 발바닥 다섯개로 점수주는 컴포넌트
 
-import React, { useState } from 'react';
-import { PiPawPrintFill } from "react-icons/pi"; 
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react"; // useEffect를 import
+import { PiPawPrintFill } from "react-icons/pi";
+import styled from "styled-components";
 
 const ARRAY = [0, 1, 2, 3, 4];
 
-function SurveyPaw({ title, onSelect }) {
-  const [selectedIdx, setSelectedIdx] = useState(-1);
+function SurveyPaw({ title, value, onSelect, initial }) {
+  const [selectedIdx, setSelectedIdx] = useState(initial - 1);
 
-  const handleStarClick = index => {
+  useEffect(() => {
+    setSelectedIdx(initial - 1);
+  }, [initial]);
+
+  const handleStarClick = (index) => {
     setSelectedIdx(index);
     onSelect(index + 1); // 선택한 정보를 1~5 점으로 전달
   };
@@ -24,7 +28,7 @@ function SurveyPaw({ title, onSelect }) {
               key={idx}
               size="40"
               onClick={() => handleStarClick(idx)}
-              className={selectedIdx >= idx ? 'orangePaw' : ''}
+              className={selectedIdx >= idx ? "orangePaw" : ""}
             />
           ))}
         </p>
@@ -39,12 +43,10 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   padding-top: 15px;
-
 `;
 
 const Span = styled.span`
   margin: 1vw;
-
 `;
 
 const Paws = styled.div`
@@ -57,6 +59,6 @@ const Paws = styled.div`
   }
 
   .orangePaw {
-    color: #FF914D;
+    color: #ff914d;
   }
 `;

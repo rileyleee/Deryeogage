@@ -10,16 +10,15 @@ import { SimulationExistAtom } from "../../recoil/SimulationAtom"
 
 function GameDogChip(props) {
   const {onNextPage, onPreviousPage} = props
-  const [dogNumber, setdogNumber] = useState(false);
-  const SimulationDogValue = useRecoilValue(SimulationDog)
-  const SimulationNameValue = useRecoilValue(SimulationName)
-  const SimulationBGIValue = useRecoilValue(SimulationBGI)
-  const Token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjI5NDE0NzU5ODEsImlhdCI6MTY5MDk4NzU3NSwiZXhwIjoxNjkxMDczOTc1fQ.mRdAibfoYdUZdmtdFlTxkqXT4xQHl7jh_R2VBpMHFGg'
+  const [dogNumber, setdogNumber] = useState(false); // 칩 번호
+  const SimulationDogValue = useRecoilValue(SimulationDog) // 강쥐
+  const SimulationNameValue = useRecoilValue(SimulationName) // 이름
+  const SimulationBGIValue = useRecoilValue(SimulationBGI) // 배경
   const [existValue, setExistValue] = useRecoilState(SimulationExistAtom)
   console.log(SimulationDogValue, SimulationNameValue, SimulationBGIValue)
 
   const handleSubmit = async (event) => {
-    if (localStorage.getItem("accessToken")) {
+    if (localStorage.getItem("accessToken")) { // 로그인 했을 때만
       const REACT_APP_API_URL = process.env.REACT_APP_API_URL
       try {
           const Token = localStorage.getItem("accessToken");
@@ -37,9 +36,24 @@ function GameDogChip(props) {
                 }
               }
           );
-        
-        console.log(response.data);
-        setExistValue(response.data)
+        setExistValue(response.data) // SimulationExistAtom에 데이터 저장
+        localStorage.setItem('petType', response.data.petType)
+        localStorage.setItem('background', response.data.background)
+        localStorage.setItem('cost', 300000)
+        localStorage.setItem('petName', response.data.petName)
+        localStorage.setItem('end', response.data.end)
+        localStorage.setItem('endCheck', response.data.endCheck)
+        localStorage.setItem('endTime', response.data.endTime)
+        localStorage.setItem('id', response.data.id)
+        localStorage.setItem('lastTime', response.data.lastTime)
+        localStorage.setItem('quizNum', response.data.quizNum)
+        localStorage.setItem('requirement', response.data.requirement)
+        localStorage.setItem('startTime', response.data.startTime)
+        localStorage.setItem('title', response.data.title)
+        localStorage.setItem('train', response.data.train)
+        localStorage.setItem('user', response.data.user)
+        localStorage.setItem('hpPercentage', response.data.health)
+        onNextPage()
     } catch (error) {
         console.error(error);
     }
@@ -62,7 +76,7 @@ function GameDogChip(props) {
       <S.GameDogChipNum show={dogNumber}>강아지 등록 번호 : {RandomNumber()}</S.GameDogChipNum>
       <div className='d-flex justify-content-between'>
         <S.GamePick1Btn className='btn' type="submit" onClick={onPreviousPage}>이전으로</S.GamePick1Btn>
-        <S.GamePick1Btn className='btn' type="submit" onClick={() => {handleSubmit(); onNextPage();}}>다음으로</S.GamePick1Btn>
+        <S.GamePick1Btn className='btn' type="submit" onClick={() => {handleSubmit();}}>다음으로</S.GamePick1Btn>
       </div>
     </S.GameStartsecond>
   );

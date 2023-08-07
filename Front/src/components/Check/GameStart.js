@@ -1,7 +1,6 @@
 // 게임 시작 화면
-import React, {useEffect} from "react";
+import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import '../../styled/Check/GameStart.css'
 import * as S from "../../styled/Check/GameStart.style"
 
 function GameStart(props) {

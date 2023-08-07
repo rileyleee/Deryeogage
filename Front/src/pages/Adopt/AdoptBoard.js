@@ -10,17 +10,9 @@ import DogListItem from "./../../components/Adopt/DogListItem";
 function AdoptBoard() {
   const navigate = useNavigate();
   const [adoptData, setAdoptData] = useState([]);
+  const [hasSurvey, setHasSurvey] = useState(false);
 
   const insertedToken = localStorage.getItem("accessToken");
-  const hasCompletedSurvey = localStorage.getItem("surveyData");
-
-  useEffect(() => {
-    const clickedPage = localStorage.getItem("clickedPage");
-    if (insertedToken && clickedPage) {
-      navigate(clickedPage);
-      localStorage.removeItem("clickedPage");
-    }
-  }, [navigate, insertedToken]);
 
   const onClick = () => {
     if (!insertedToken) {
@@ -34,32 +26,49 @@ function AdoptBoard() {
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     try {
       const response = await axios.get(`${REACT_APP_API_URL}/boards/list`);
-      console.log(response);
-      setAdoptData(response.data.data); // Changed to match your data structure
+      setAdoptData(response.data.data);
     } catch (error) {
       console.error(error);
     }
   };
 
+  const checkSurvey = async () => {
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+    try {
+      const response = await axios.get(`${REACT_APP_API_URL}/surveys`, {
+        headers: {
+          Authorization: `Bearer ${insertedToken}`,
+        },
+      });
+      if (response.data.length > 0) {
+        setHasSurvey(true);
+      }
+    } catch (error) {
+      setHasSurvey(true);
+    } 
+  };
+  
   const dogsArray = Array.isArray(adoptData) ? adoptData : [];
 
   useEffect(() => {
     fetchDogs();
+    checkSurvey();
   }, []);
 
   return (
     <div>
-      <h1>AdoptBoard</h1>
-      {insertedToken && hasCompletedSurvey ? <LoginSurvey /> : null}
-      {insertedToken && !hasCompletedSurvey ? <NotSurvey /> : null}
-      {!insertedToken ? <NotLogin /> : null}
+        <>
+          <h1>AdoptBoard</h1>
+          {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
+          {insertedToken && hasSurvey ? <NotSurvey /> : null}
+          {!insertedToken ? <NotLogin /> : null}
 
-      <Button onClick={onClick}>글 작성하기</Button>
+          <Button onClick={onClick}>글 작성하기</Button>
 
-      {dogsArray.map((dog) => (
-        <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} /> 
-        // 'media' prop is added to pass the media url to DogListItem component.
-      ))}
+          {dogsArray.map((dog) => (
+            <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} /> 
+          ))}
+        </>
     </div>
   );
 }

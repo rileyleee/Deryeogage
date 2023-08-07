@@ -69,6 +69,7 @@ function CheckListResult() {
         },
       });
       localStorage.removeItem("answers");
+      localStorage.removeItem("promise");
       navigate("/checklist"); // 삭제 후 체크리스트 페이지로 이동
     } catch (error) {
       console.error("There was an error!", error);
