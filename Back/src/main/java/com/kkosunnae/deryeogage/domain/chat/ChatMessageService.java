@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class ChatMessageService {
 
     private final ChatRoomRepository chatRoomRepository;
@@ -38,7 +39,7 @@ public class ChatMessageService {
                 .map(ChatMessageResponseDto::new)
                 .collect(Collectors.toList());
     }
-    @Transactional
+
     public ChatMessageResponseDto findById(final Integer chatMessageId) {
         ChatMessageEntity chatMessageEntity = this.chatMessageRepository.findById(chatMessageId).orElseThrow(
                 () -> new IllegalArgumentException("해당 ChatMessage가 존재하지 않습니다. chatMessageId = " + chatMessageId));
@@ -46,7 +47,6 @@ public class ChatMessageService {
     }
 
     /** ChatMessage 생성 */
-    @Transactional
     public Integer save(final Integer chatRoomId, final ChatMessageRequestDto requestDto) {
         ChatRoomEntity chatRoomEntity = this.chatRoomRepository.findById(chatRoomId).orElseThrow(
                 () -> new IllegalArgumentException("해당 ChatRoom이 존재하지 않습니다. chatRoomId = " + chatRoomId));
@@ -55,7 +55,6 @@ public class ChatMessageService {
     }
 
     /** ChatMessage 삭제 */
-    @Transactional
     public void delete(final Integer chatMessageId) {
         ChatMessageEntity chatMessageEntity = this.chatMessageRepository.findById(chatMessageId).orElseThrow(
                 () -> new IllegalArgumentException("해당 ChatMessage가 존재하지 않습니다. chatMessageId = " + chatMessageId));

@@ -1,5 +1,6 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
+import com.kkosunnae.deryeogage.domain.board.BoardService;
 import com.kkosunnae.deryeogage.domain.user.UserService;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -10,26 +11,63 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+import com.kkosunnae.deryeogage.global.util.Response;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/chat")
+    @RequestMapping("/api/chat")
 public class ChatController {
-    private final JwtUtil jwtUtil;
 
+    private final JwtUtil jwtUtil;
     private final ChatRoomService chatRoomService;
     private final ChatMessageService chatMessageService;
     private final SimpMessagingTemplate messagingTemplate;
     private final UserService userService;
+    private final BoardService boardService;
+
+
+
+    //스케쥴 잡기, 수정, 삭제
+    @PutMapping("/room/{roomId}/schedule")
+    public ResponseEntity<Integer> updateScheduledDate(@PathVariable Integer roomId, @RequestBody ChatRoomRequestDto chatRoomRequestDto) {
+        chatRoomService.updateScheduledDate(roomId, chatRoomRequestDto);
+
+        return new ResponseEntity<>(roomId, HttpStatus.OK);
+    }
+
+
+    //스케줄 존재여부 확인
+    @GetMapping("/room/{roomId}/schedule")
+    public Response<Object> getExist(@PathVariable Integer roomId){
+       boolean exist = chatRoomService.getExist(roomId);
+        return Response.success(exist);
+    }
 
 
     //새 채팅방 생성
-    @PostMapping("/room")
-    public ResponseEntity<Integer> createRoom(@RequestBody ChatRoomRequestDto requestDto) {
-        Integer id = chatRoomService.save(requestDto);
-        return new ResponseEntity<>(id, HttpStatus.CREATED);
+    @PostMapping("/room/{boardId}")
+    public ResponseEntity<ChatRoomResponseDto> createRoom(@RequestHeader("Authorization") String authorizationHeader, @PathVariable Integer boardId) {
+        String jwtToken = authorizationHeader.substring(7);
+        Long userId2 = jwtUtil.getUserId(jwtToken);
+        Long userId1 = boardService.getBoard(boardId).getUserId();
+        String boardName = boardService.getBoard(boardId).getName();
+
+        ChatRoomRequestDto chatRoomRequestDto = new ChatRoomRequestDto(userId1,userId2,boardId,boardName);
+
+        // 이미 있는 채팅방 확인
+        ChatRoomResponseDto existingChatRoom = chatRoomService.findChatRoomByUsersAndBoardId(userId1, userId2, boardId);
+
+        if (existingChatRoom != null) {
+            // 이미 있는 채팅방이 있다면 반환
+            return new ResponseEntity<>(existingChatRoom, HttpStatus.OK);
+        }
+
+        ChatRoomResponseDto chatRoomResponseDto = chatRoomService.save(chatRoomRequestDto);
+        return new ResponseEntity<>(chatRoomResponseDto, HttpStatus.CREATED);
     }
 
     //사용자가 속한 전체 채팅방 목록 출력
@@ -49,9 +87,9 @@ public class ChatController {
         String jwtToken = authorizationHeader.substring(7);
         Long userId = jwtUtil.getUserId(jwtToken);
 
-        chatMessageService.markMessagesAsRead(id, userId);
+        //chatMessageService.markMessagesAsRead(id, userId);
 
-        ChatRoomResponseDto dto = chatRoomService.findById(id);
+        ChatRoomResponseDto dto = chatRoomService.findById(userId, id);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 

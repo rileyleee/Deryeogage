@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Api
@@ -26,6 +26,8 @@ public class BoardController {
     private final BoardService boardService;
 
     private final S3FileService s3FileService;
+
+    private final BoardFileRepository boardFileRepository;
 
     // 글 작성 // Swagger 하려면 @requestBody 삭제 필요
     // 한 가지 주의할 점은, @RequestBody와 @RequestPart를
@@ -53,7 +55,7 @@ public class BoardController {
 
     //글 수정
     @PutMapping("/{boardId}")
-    public Response<Object> updateBoard(@RequestHeader("Authorization") String authorizationHeader, @PathVariable int boardId, @RequestBody BoardDto boardDto) {
+    public Response<Object> updateBoard(@RequestHeader("Authorization") String authorizationHeader, BoardDto boardDto, @PathVariable int boardId, @RequestPart("multipartFile") List<MultipartFile> multipartFile) {
 
         String jwtToken = authorizationHeader.substring(7);
         Long requestUserId = jwtUtil.getUserId(jwtToken);
@@ -69,6 +71,24 @@ public class BoardController {
         boardDto.setUserId(requestUserId);
 
         boardService.update(boardId, boardDto);
+
+        // 해당 게시글에 등록된 파일 리스트 모두 삭제
+        List<BoardFileEntity> boardFileEntityList = boardFileRepository.findByBoardId(boardId)
+                .orElseThrow(()-> new NoSuchElementException("해당 게시물에 등록된 파일이 없습니다. boardId: "+ boardId));
+
+        for(BoardFileEntity boardFileEntity : boardFileEntityList){
+            boardFileRepository.delete(boardFileEntity);
+        }
+
+        // 해당 게시글이 가진 모든 파일을 리스트로 가져와서 삭제 수행
+        s3FileService.deleteFile(boardService.getBoardFiles(boardId));
+
+        // 원본 파일명과 S3에 저장된 파일명이 담긴 Map
+        Map<String, List> nameList = s3FileService.uploadFile(multipartFile);
+
+        // DB에 파일이름 저장
+        boardService.saveBoardFile(boardId, nameList);
+
         return Response.success(null);
     }
 
@@ -90,10 +110,28 @@ public class BoardController {
         return Response.success(null);
     }
 
-    //글 상세조회
-    @GetMapping("/{boardId}")
-    public Response<List<Object>> selectBoard(@PathVariable int boardId) {
+    //글 상세조회 + 작성자 여부 boolean으로 반영
+    @GetMapping("/each/{boardId}")
+    public Response<List<Object>> selectBoard(@RequestHeader(value = "Authorization", required = false) String authorizationHeader, @PathVariable int boardId) {
+
         BoardDto thisBoard = boardService.getBoard(boardId);
+
+        // 요청한 사용자가 로그인 되어 있는 경우
+        if (authorizationHeader != null) {
+
+            String jwtToken = authorizationHeader.substring(7);
+            Long requestUser = jwtUtil.getUserId(jwtToken);
+
+            // 작성자 여부 파악하여 DTO에 담기
+            if (thisBoard.getUserId() == requestUser) {
+                thisBoard.setWriter(true);
+            } else {
+                thisBoard.setWriter(false);
+            }
+        } else {// 로그인하지 않은 경우
+            thisBoard.setWriter(false);
+        }
+
         Map<String, String> uploadedFiles = boardService.getBoardFiles(boardId);
         List<Object> boardSet = new ArrayList<>();
         boardSet.add(thisBoard);
@@ -102,17 +140,16 @@ public class BoardController {
     }
 
 
-
     //글 목록 조회
     @GetMapping("/list")
-    public Response <List<BoardDto>> findBoards() {
+    public Response<List<BoardDto>> findBoards() {
         List<BoardDto> boardSetList = boardService.findAll();
         return Response.success(boardSetList);
     }
 
     //내가 쓴 글 목록 조회(마이페이지)
     @GetMapping("/list/user")
-    public Response <List<BoardDto>> findMyBoards(@RequestHeader("Authorization") String authorizationHeader) {
+    public Response<List<BoardDto>> findMyBoards(@RequestHeader("Authorization") String authorizationHeader) {
         String jwtToken = authorizationHeader.substring(7);
         Long userId = jwtUtil.getUserId(jwtToken);
         List<BoardDto> boardSetMap = boardService.findMyBoards(userId);
@@ -154,5 +191,17 @@ public class BoardController {
         boardService.unlike(userId, boardId);
 
         return Response.success(null);
+    }
+
+    //내가 찜한 목록 조회
+    @GetMapping("/like")
+    public Response<Object> getboardLike(@RequestHeader("Authorization") String authorizationHeader) {
+
+        String jwtToken = authorizationHeader.substring(7);
+        Long userId = jwtUtil.getUserId(jwtToken);
+
+        List<JjimDto> jjimDtoList = boardService.myLikes(userId);
+
+        return Response.success(jjimDtoList);
     }
 }

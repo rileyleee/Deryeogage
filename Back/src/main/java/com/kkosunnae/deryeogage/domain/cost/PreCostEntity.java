@@ -2,13 +2,16 @@ package com.kkosunnae.deryeogage.domain.cost;
 
 import com.kkosunnae.deryeogage.domain.board.BoardEntity;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "pre_cost")
 public class PreCostEntity {
     @Id
@@ -37,5 +40,35 @@ public class PreCostEntity {
 
     @Column(name="return_date")
     private LocalDateTime returnDate;
+
+    @Builder
+    public PreCostEntity(Integer id, UserEntity user, BoardEntity board, String cost, Boolean payYn, LocalDateTime payDate, Boolean returnYn, LocalDateTime returnDate) {
+        this.id = id;
+        this.user = user;
+        this.board = board;
+        this.cost = cost;
+        this.payYn = payYn;
+        this.payDate = payDate;
+        this.returnYn = returnYn;
+        this.returnDate = returnDate;
+    }
+
+    public PreCostDto toDto(){
+        return PreCostDto.builder()
+                .id(this.id)
+                .userId(this.user.getId())
+                .boardId(this.board.getId())
+                .cost(this.cost)
+                .payYn(this.payYn)
+                .payDate(this.payDate)
+                .returnYn(this.returnYn)
+                .returnDate(this.returnDate)
+                .build();
+    }
+
+    public void update(PreCostDto preCostDto){
+        this.returnYn = preCostDto.getReturnYn();
+        this.returnDate = preCostDto.getReturnDate();
+    }
 }
 

@@ -15,6 +15,7 @@ import com.kkosunnae.deryeogage.domain.simulation.SimulationEntity;
 import com.kkosunnae.deryeogage.domain.survey.SurveyEntity;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "user")
+@NoArgsConstructor
 public class UserEntity {
     @Id
     private Long id;
@@ -85,16 +87,6 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private List<MissionEntity> missions = new ArrayList<>();
 
-    protected UserEntity() {
-    }
-
-//    @Builder
-//    protected UserEntity(Long id, String nickname, String ageRange, LocalDateTime createdDate) {
-//        this.id = id;
-//        this.nickname = nickname;
-//        this.ageRange = ageRange;
-//        this.createdDate = createdDate;
-//    }
 
     @Builder
     protected UserEntity(Long id, String nickname, String ageRange, String imageUrl, LocalDateTime createdDate) {
@@ -104,4 +96,18 @@ public class UserEntity {
         this.imageUrl = imageUrl;
         this.createdDate = createdDate;
     }
+
+    public UserDto toDto(){
+        return UserDto.builder()
+                .id(this.id)
+                .nickname(this.nickname)
+                .ageRange(this.ageRange)
+                .imageUrl(this.imageUrl)
+                .createdDate(this.createdDate)
+                .build();
+    }
+    public void update(String path){
+        this.imageUrl = path;
+    }
+
 }
