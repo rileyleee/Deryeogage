@@ -1,7 +1,5 @@
 package com.kkosunnae.deryeogage.domain.adopt;
 
-import com.kkosunnae.deryeogage.domain.board.BoardService;
-import com.kkosunnae.deryeogage.domain.user.UserService;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import com.kkosunnae.deryeogage.global.util.Response;
 import io.swagger.annotations.Api;
@@ -20,8 +18,6 @@ import java.util.List;
 public class AdoptController {
 
     private final JwtUtil jwtUtil;
-    private final UserService userService;
-    private final BoardService boardService;
     private final AdoptService adoptService;
 
 
@@ -59,7 +55,7 @@ public class AdoptController {
     // 프론트에서 보내줘야 할 값 Long fromUserId, Long toUserId, Integer boardId, LocalDate scheduledDate
     // 입양 내역 등록 => 프론트에서 전달받은 값이 false이면! (Chat Controller에서 특정 채팅방 상세로 정보 가져올 듯)
     @PostMapping
-    public Response<Object> saveAdopt(@RequestHeader("Authorization") String authorizationHeader, @RequestBody AdoptDto adoptDto) {
+    public Response<Object> saveAdopt(@RequestBody AdoptDto adoptDto) {
 
         Integer adoptId = adoptService.save(adoptDto);
         return Response.success(adoptId);
