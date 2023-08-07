@@ -19,10 +19,10 @@ function Survey() {
   const [surveyData, setSurveyData] = useState(null); // surveyData 상태를 추가합니다.
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
   const token = localStorage.getItem("accessToken");
 
   const titles = ["친화력", "활동량", "의존성", "왈왈왈", "털빠짐"];
+  const egtitles = ['friendly', 'activity', 'dependency', 'bark', 'hair']
   const selectors = [setFriendly, setActivity, setDependency, setBark, setHair];
 
   // axios get 요청
@@ -40,6 +40,7 @@ function Survey() {
           console.log(response.data.data);
           const surveyData = response.data.data;
           setSurveyData(surveyData); // 응답 데이터를 상태로 저장합니다.
+          console.log(surveyData)
           setHasSubmitted(true);
           setRanking(
             surveyData.ranking.split("").map((num) => parseInt(num) - 1)
@@ -191,13 +192,13 @@ function Survey() {
             >
               <SurveyPaw
                 title={titles[item]}
-                initial={parseInt(
-                  surveyData ? surveyData[`${titles[item].toLowerCase()}`] : 0
-                )}
-                onSelect={(value) => {
-                  selectors[item](value);
-                }}
-              />
+                initial={
+                  surveyData ? parseInt(surveyData[`${egtitles[item]}`]) : 0
+                  }
+                  onSelect={(value) => {
+                    selectors[item](value);
+                  }}
+                  />
             </div>
           ))}
         </SurveyContainer>

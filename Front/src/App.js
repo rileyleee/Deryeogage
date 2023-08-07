@@ -26,8 +26,10 @@ import ReviewBoardDetail from "./pages/Review/ReviewBoardDetail";
 
 // Simulation
 import Simulation from "./pages/Check/Simulation";
-
+import NoSimulation from "./pages/Check/NoSimulation"
 import Survey from "./pages/User/Survey";
+
+import SimulationEnd from "./pages/Check/SimulationEnd"
 
 // Check
 import CheckList from "./pages/Check/CheckList";
@@ -80,6 +82,8 @@ function App() {
 
             {/* 시뮬레이션, 사전테스트 */}
             <Route path="/simulations" element={<Simulation />} />
+            <Route path="/simulations/end" element={<SimulationEnd />} />
+            <Route path="/nosimulations" element={<NoSimulation />} />
             <Route path="/checklist" element={<CheckList />} />
             <Route path="/checklist/result" element={<CheckListResult />} />
 
