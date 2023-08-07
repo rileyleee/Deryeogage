@@ -91,7 +91,7 @@ function Header() {
             </li>
             {isLoggedIn ? ( // 토큰이 있으면 마이페이지 버튼을 보여줌
               <li className="nav-item">
-                <a className="nav-link" href="/profile/:id">
+                <a className="nav-link" href="/profile">
                   마이페이지
                 </a>
               </li>

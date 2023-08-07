@@ -8,7 +8,7 @@ import { SimulationBGI } from "../../recoil/SimulationAtom"
 function GamePick2(props) {
   const {onNextPage, onPreviousPage} = props
   const [currentButton, setCurrentButton] = useState(null);
-  const [BGIValue, setBGIValue] = useRecoilState(SimulationBGI)
+  const [BGIValue, setBGIValue] = useRecoilState(SimulationBGI) // 선택한 배경 번호 저장
 
   const handleButtonPick = buttonIndex => {
     setCurrentButton(buttonIndex);

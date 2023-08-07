@@ -1,17 +1,13 @@
 import React, {useState, useEffect} from "react";
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as S from "../../styled/Check/GameMenu.style"
+import {useRecoilValue, useRecoilState} from 'recoil'
+import { SimulationExistAtom, SimulationCost  } from "../../recoil/SimulationAtom"
 
 function GameMenu(props) {
-    const existData = props.existData
+    const existData = useRecoilValue(SimulationExistAtom)
     const borderColor = props.borderColor || "#FF914D";
-    const [cost, setCost] = useState(() => localStorage.getItem('cost') || existData.cost);
-    console.log(cost)
-
-
-    useEffect(() => {
-        localStorage.setItem('cost', existData.cost);
-    }, [existData.cost]);
 
     return (
         <S.GameBasicMenu className="d-flex" borderColor={borderColor}>
@@ -19,13 +15,15 @@ function GameMenu(props) {
                 <p>⏰</p>
                 <p>💸</p>
                 <p>💖</p>
-                <p>🌞</p>
+                {/* <p>{state.icon}</p> */}
+                <img src={localStorage.getItem('imgSrc')} style={{ width: '30px', height: '30px' }} />
+
             </S.GameBasicIcon>
             <div>
                 <p>{props.time}</p>
-                <p>{cost}원</p>
-                <S.GameBasicHp borderColor={borderColor} hpPercentage={props.hp}>{props.hp}</S.GameBasicHp>
-                <p>날씨 맑음</p>
+                <p>{existData.cost}원</p>
+                <S.GameBasicHp borderColor={borderColor} hpPercentage={existData.health}>{existData.health}</S.GameBasicHp>
+                <p>{localStorage.getItem('humidity')}</p>
             </div>
         </S.GameBasicMenu>
     );

@@ -3,6 +3,11 @@ import SurveyPaw from "../../components/SurveyPaw";
 import styled from "styled-components";
 
 function PersonalitySection({
+  friendly,
+  activity,
+  dependency,
+  bark,
+  hair,
   setFriendly,
   setActivity,
   setDependency,
@@ -13,11 +18,11 @@ function PersonalitySection({
     <Div>
       강아지의 <Span>성격</Span>과 <Span>특성</Span>을 선택해주세요.
       <DogCheck>
-        <SurveyPaw title="친화력" onSelect={setFriendly} />
-        <SurveyPaw title="활동량" onSelect={setActivity} />
-        <SurveyPaw title="의존성" onSelect={setDependency} />
-        <SurveyPaw title="왈왈왈" onSelect={setBark} />
-        <SurveyPaw title="털빠짐" onSelect={setHair} />
+        <SurveyPaw title="친화력" value={friendly} onSelect={setFriendly} />
+        <SurveyPaw title="활동량" value={activity} onSelect={setActivity} />
+        <SurveyPaw title="의존성" value={dependency} onSelect={setDependency} />
+        <SurveyPaw title="왈왈왈" value={bark} onSelect={setBark} />
+        <SurveyPaw title="털빠짐" value={hair} onSelect={setHair} />
         <Text>
           강아지의 성격과 특성을 선택하면 <br /> 입양자의 선호도조사 결과에 따른
           강아지의 추천이 가능하게 됩니다.
