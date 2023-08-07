@@ -89,3 +89,4 @@ public class AdoptController {
 
     // 게시글 삭제 시 입양정보 테이블 같이 삭제 되므로 기능 불필요
 }
+
