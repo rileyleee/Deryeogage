@@ -33,6 +33,7 @@ function ChatRoomDetail() {
         },
       })
       .then((response) => {
+        console.log(response)
         const data = response.data;
         setRoomInfo(
           data.roomName +

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components"; // styled-components를 사용한 스타일링
-import Mission from "../../pages/User/Misson";
+import MissionList from "./MissionList";
 
 function AdoptTo() {
   const [adopts, setAdopts] = useState([]);
@@ -13,6 +13,7 @@ function AdoptTo() {
   const closeModal = () => {
     setShowMissionModal(false); // 모달을 숨김
   };
+
   useEffect(() => {
     const fetchAdopts = async () => {
       const token = localStorage.getItem("accessToken");
@@ -70,8 +71,10 @@ function AdoptTo() {
       )}
       {showMissionModal && (
         <MissionModal>
-          <Mission />
-          <CloseButton onClick={closeModal}>닫기</CloseButton>
+          <MissionContent>
+            <MissionList />
+            <CloseButton onClick={closeModal}>닫기</CloseButton>
+          </MissionContent>
         </MissionModal>
       )}
     </div>
@@ -115,4 +118,13 @@ const CloseButton = styled.button`
   &:hover {
     background-color: #da190b;
   }
+`;
+
+const MissionContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
