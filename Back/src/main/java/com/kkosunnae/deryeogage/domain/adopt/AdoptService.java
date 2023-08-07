@@ -1,6 +1,7 @@
 package com.kkosunnae.deryeogage.domain.adopt;
 
 import com.kkosunnae.deryeogage.domain.board.BoardRepository;
+import com.kkosunnae.deryeogage.domain.cost.PostCostService;
 import com.kkosunnae.deryeogage.domain.mission.MissionEntity;
 import com.kkosunnae.deryeogage.domain.mission.MissionService;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
@@ -24,18 +25,19 @@ public class AdoptService {
     private final BoardRepository boardRepository;
     private final AdoptRepository adoptRepository;
     private final MissionService missionService;
+    private final PostCostService postCostService;
 
     @Transactional(readOnly = true)
     //내 분양정보 목록 조회하기
     public List<AdoptDto> getFromAdopts(Long userId) {
         List<AdoptEntity> myFromAdoptEntity = adoptRepository.findByFromUserId(userId)
-                .orElseThrow(()-> new NoSuchElementException("분양자로서 등록된 입양내역이 없습니다. userId: "+ userId));
+                .orElseThrow(() -> new NoSuchElementException("분양자로서 등록된 입양내역이 없습니다. userId: " + userId));
 
         List<AdoptDto> myFromAdoptDto = new ArrayList<>();
 
         for (AdoptEntity adoptEntity : myFromAdoptEntity) {
 
-            if(adoptEntity.getMission() != null) { //미션이 생성된 때일 때
+            if (adoptEntity.getMission() != null) { //미션이 생성된 때일 때
                 AdoptDto thisAdoptDto = adoptEntity.toDto();
                 myFromAdoptDto.add(thisAdoptDto);
             } else { //미션이 생성되지 않았을 때
@@ -50,13 +52,13 @@ public class AdoptService {
     //내 입양정보 목록 조회하기
     public List<AdoptDto> getToAdopts(Long userId) {
         List<AdoptEntity> myToAdoptEntity = adoptRepository.findByToUserId(userId)
-                .orElseThrow(()-> new NoSuchElementException("입양자로서 등록된 입양내역이 없습니다. userId: "+ userId));
+                .orElseThrow(() -> new NoSuchElementException("입양자로서 등록된 입양내역이 없습니다. userId: " + userId));
 
         List<AdoptDto> myToAdoptDto = new ArrayList<>();
 
         for (AdoptEntity adoptEntity : myToAdoptEntity) {
 
-            if(adoptEntity.getMission() != null) { //미션이 생성된 때일 때
+            if (adoptEntity.getMission() != null) { //미션이 생성된 때일 때
                 AdoptDto thisAdoptDto = adoptEntity.toDto();
                 myToAdoptDto.add(thisAdoptDto);
             } else { //미션이 생성되지 않았을 때
@@ -75,12 +77,17 @@ public class AdoptService {
         return thisAdopt.getId();
     }
 
+    // 입양 일정 수정
     public Integer update(Integer boardId, LocalDate scheduledDate) {
         // 입양 정보 찾기
         AdoptEntity adoptEntity = adoptRepository.findByBoardIdAndStatus(boardId, AdoptStatus.depart)
                 .orElseThrow(() -> new IllegalArgumentException("게시글 입양정보 중 진행 중인 내역이 존재하지 않습니다." + boardId));
 
-        adoptEntity.scheduleUpdate(scheduledDate);
+        if (scheduledDate == null) {
+            postCostService.scheduleReturn(boardId);
+        } else {
+            adoptEntity.scheduleUpdate(scheduledDate);
+        }
         return adoptEntity.getId();
     }
 
@@ -98,7 +105,6 @@ public class AdoptService {
     }
 
 
-
     // 분양자 입양 확정 버튼 클릭 시 미션 생성하여 입양 정보 업데이트(분양자가 확정버튼 누를 때 실행되도록)
     public void addMission(AdoptDto adoptDto) {
 
@@ -113,7 +119,7 @@ public class AdoptService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 입양정보가 존재하지 않습니다." + adoptDto.getId()));
 
 
-        log.info("adoptDto.getToUserId()"+adoptDto.getToUserId());
+        log.info("adoptDto.getToUserId()" + adoptDto.getToUserId());
         // 입양자 -> 미션 작성 필요
         Long missionUserId = adoptDto.getToUserId();
 
@@ -132,7 +138,7 @@ public class AdoptService {
     @Transactional(readOnly = true)
     public boolean confirmCheck(Integer boardId) {
         AdoptEntity adoptEntity = adoptRepository.findByBoardId(boardId)
-                .orElseThrow(()-> new NoSuchElementException("해당 게시물의 입양내역이 없습니다. boardId: "+boardId));
+                .orElseThrow(() -> new NoSuchElementException("해당 게시물의 입양내역이 없습니다. boardId: " + boardId));
 
         boolean fromConfirm = adoptEntity.getFromConfirmYn();
         boolean toConfirm = adoptEntity.getToConfirmYn();

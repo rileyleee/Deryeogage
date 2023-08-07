@@ -4,7 +4,6 @@ import com.kkosunnae.deryeogage.domain.adopt.AdoptDto;
 import com.kkosunnae.deryeogage.domain.adopt.AdoptEntity;
 import com.kkosunnae.deryeogage.domain.adopt.AdoptRepository;
 import com.kkosunnae.deryeogage.domain.board.BoardRepository;
-import com.kkosunnae.deryeogage.domain.mission.MissionRepository;
 import com.kkosunnae.deryeogage.domain.mission.MissionService;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +44,7 @@ public class PostCostService {
     @Transactional(readOnly = true)
     public PostCostDto getPostCost(Long userId, int boardId) {
         PostCostEntity postCostEntity = postCostRepository.findByUserIdAndBoardId(userId, boardId)
-                .orElseThrow(()-> new NoSuchElementException("해당 입양자가 납부한 후책임비가 없습니다. userId" + userId));
+                .orElseThrow(() -> new NoSuchElementException("해당 입양자가 납부한 후책임비가 없습니다. userId" + userId));
         return postCostEntity.toDto();
     }
 
@@ -55,7 +54,7 @@ public class PostCostService {
         List<PostCostDto> myPostCosts = new ArrayList<>();
 
         List<PostCostEntity> postCostsList = postCostRepository.findByUserId(userId)
-                .orElseThrow(()-> new NoSuchElementException("해당 입양자가 납부한 후책임비가 없습니다. userId" + userId));
+                .orElseThrow(() -> new NoSuchElementException("해당 입양자가 납부한 후책임비가 없습니다. userId" + userId));
 
         for (PostCostEntity postCostEntity : postCostsList) {
 
@@ -72,7 +71,7 @@ public class PostCostService {
         int boardId = postCostDto.getBoardId();
 
         AdoptEntity adoptEntity = adoptRepository.findByBoardId(boardId)
-                .orElseThrow(()-> new NoSuchElementException("해당 게시물의 입양내역이 없습니다. boardId: "+boardId));
+                .orElseThrow(() -> new NoSuchElementException("해당 게시물의 입양내역이 없습니다. boardId: " + boardId));
 
         AdoptDto adoptDto = adoptEntity.toDto();
 
@@ -93,18 +92,17 @@ public class PostCostService {
     }
 
 
-    // 후 책임비 반환하기 -> 입양 일정 취소 및 게시글 삭제에 따른 반환
-    public void abnormalReturn(Long userId, PostCostDto postCostDto) {
+    // 후 책임비 반환하기 -> 입양 일정 취소에 따른 반환
+    public void scheduleReturn(Integer boardId) {
 
-        // 후책임비 반환처리하고
-        postCostDto.setReturnYn(true);
-        // 후책임비 반환 날짜 담고
-        postCostDto.setReturnDate(LocalDateTime.now());
+        // 후 책임비 row 삭제
+        postCostRepository.deleteByBoardId(boardId);
+    }
 
-        int boardId = postCostDto.getBoardId();
+    // 후 책임비 반환하기 -> 게시글 삭제에 따른 반환
+    public void abnormalReturn(PostCostDto postCostDto) {
 
-        PostCostEntity postCost = getPostCost(userId, boardId).toEntity(userRepository, boardRepository);
-        postCost.update(postCostDto);
-        postCostRepository.save(postCost);
+        // 후 책임비 row 삭제
+        postCostRepository.deleteById(postCostDto.getId());
     }
 }

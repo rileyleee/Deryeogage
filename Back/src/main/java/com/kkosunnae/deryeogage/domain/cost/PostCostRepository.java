@@ -11,4 +11,6 @@ public interface PostCostRepository extends JpaRepository<PostCostEntity, Intege
     Optional<List<PostCostEntity>>findByUserId(Long userId);
 
     Optional<PostCostEntity> findByUserIdAndBoardId(Long userId, int boardId);
+
+    void deleteByBoardId(Integer boardId);
 }
