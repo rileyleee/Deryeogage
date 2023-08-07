@@ -1,7 +1,5 @@
 package com.kkosunnae.deryeogage.domain.adopt;
 
-import com.kkosunnae.deryeogage.domain.board.BoardService;
-import com.kkosunnae.deryeogage.domain.user.UserService;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import com.kkosunnae.deryeogage.global.util.Response;
 import io.swagger.annotations.Api;
@@ -9,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Api
@@ -19,8 +18,6 @@ import java.util.List;
 public class AdoptController {
 
     private final JwtUtil jwtUtil;
-    private final UserService userService;
-    private final BoardService boardService;
     private final AdoptService adoptService;
 
 
@@ -49,18 +46,45 @@ public class AdoptController {
         return Response.success(myToAdopts);
     }
 
+    /**
+     * 입양 내역 존재 여부 확인 => 챗룸에서 예약일정 있는지 여부 확인
+     * true면 등록 수행 (Post)
+     * false면 수정 수행 (Put)
+     */
+
+    // 프론트에서 보내줘야 할 값 Long fromUserId, Long toUserId, Integer boardId, LocalDate scheduledDate
+    // 입양 내역 등록 => 프론트에서 전달받은 값이 false이면! (Chat Controller에서 특정 채팅방 상세로 정보 가져올 듯)
+    @PostMapping
+    public Response<Object> saveAdopt(@RequestBody AdoptDto adoptDto) {
+
+        Integer adoptId = adoptService.save(adoptDto);
+        return Response.success(adoptId);
+    }
+
+    // 입양 내역 일정 수정 => 프론트에서 전달받은 값이 true이면!
+    @PutMapping
+    public Response<Object> updateAdopt(@RequestBody AdoptDto adoptDto){
+        Integer boardId = adoptDto.getBoardId();
+        LocalDate scheduledDate = adoptDto.getScheduledDate();
+        Integer adoptId = adoptService.update(boardId, scheduledDate);
+        return Response.success(adoptId);
+    }
 
 
-    /* 입양 약속 일정 생성 시 입양 정보 생성(보류)
-     다른 요청에 의해 동반되어 실행되기 때문에 service만 생성(준용이 약속 일정 코드에 서비스 호출하면 필요없음)*/
+    // 입양 내역 일정 외 수정(입양자 입양 확정)
+    @PutMapping("/toconfirm")
+    public Response<Object> toConfirm(@RequestBody AdoptDto adoptDto){
+        adoptService.updateToConfirm(adoptDto);
+        return Response.success(null);
+    }
 
-//    @PostMapping
-//    public Response<Object> saveAdopt(AdoptDto adoptDto){
-//
-//        Integer adoptId = adoptService.save(adoptDto);
-//
-//        return Response.success(adoptId);
-//    }
+
+    // 분양 내역 일정 외 수정(분양자 분양 확정)
+    @PutMapping("/fromconfirm")
+    public Response<Object> fromConfirm(@RequestBody AdoptDto adoptDto){
+        adoptService.addMission(adoptDto);
+        return Response.success(null);
+    }
 
 
     // 게시글 삭제 시 입양정보 테이블 같이 삭제 되므로 기능 불필요
