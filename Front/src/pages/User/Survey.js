@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import SurveyPaw from "../../components/SurveyPaw";
 import styled from "styled-components";
 import axios from "axios";
@@ -7,6 +8,8 @@ import Modal from "react-modal"; // import react-modal
 Modal.setAppElement("#root");
 
 function Survey() {
+  const navigate = useNavigate();
+
   const [ranking, setRanking] = useState([0, 1, 2, 3, 4]);
   const [friendly, setFriendly] = useState(0);
   const [activity, setActivity] = useState(0);
@@ -81,6 +84,7 @@ function Survey() {
       .then((response) => {
         console.log("설문 데이터가 성공적으로 제출되었습니다!", response);
         setSurveyData(data); // 제출한 설문 데이터를 상태로 업데이트합니다.
+        navigate("/adopt");
       })
       .catch((error) => {
         console.error("설문 데이터 제출 오류:", error);
@@ -112,6 +116,7 @@ function Survey() {
       .then((response) => {
         console.log("설문 데이터가 성공적으로 수정되었습니다!", response);
         setSurveyData(data); // 수정한 설문 데이터를 상태로 업데이트합니다.
+        navigate("/adopt");
       })
       .catch((error) => {
         console.error("설문 데이터 수정 오류:", error);

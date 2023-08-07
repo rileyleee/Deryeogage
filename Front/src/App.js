@@ -37,7 +37,6 @@ import CheckListResult from "./pages/Check/CheckListResult";
 
 // NotFound
 import NotFound from "./pages/NotFound/NotFound";
-import SurveyResult from "./pages/User/SurveyResult";
 import ChatRoomsList from "./pages/ChatVideo/ChatRoomsList";
 import ChatVideo from "./pages/ChatVideo/ChatVideo";
 
@@ -77,7 +76,7 @@ function App() {
             <Route path="/review/:boardId" element={<ReviewBoardDetail />} />
 
             {/* 마이페이지 */}
-            <Route path="/profile/:id" element={<Profile />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/survey" element={<Survey />} />
             {/* <Route path="/survey/result" element={<SurveyResult />} /> */}
 

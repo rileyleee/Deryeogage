@@ -1,13 +1,15 @@
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // useEffect 추가
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios"; // axios import
 import Postcost from "./Postcost";
 
 function Reservation({ roomId, boardId, closeModal }) {
-  const [startDate, setStartDate] = useState(new Date());
-  const [showPostCost, setShowPostCost] = useState(false); // Postcost 컴포넌트를 보여줄지 결정하는 상태
+// 예약 정보를 저장할 상태 추가
+const [reservationInfo, setReservationInfo] = useState(null);
+const [startDate, setStartDate] = useState(new Date());
+const [showPostCost, setShowPostCost] = useState(false);
 
   const handleConfirmClick = () => {
     setShowPostCost(true); // 예약 확정하기 버튼을 클릭하면 Postcost 컴포넌트를 보여준다.
@@ -15,8 +17,10 @@ function Reservation({ roomId, boardId, closeModal }) {
 
   const handlePostCostClick = async () => {
     const token = localStorage.getItem("accessToken");
+    // const scheduledDate = startDate.toISOString().split('T')[0];
     const scheduledDate = startDate.toISOString();
     const data = { scheduledDate };
+    console.log(scheduledDate)
 
     try {
       await axios.put(`${process.env.REACT_APP_API_URL}/chat/room/${roomId}/schedule`, data, {
@@ -29,12 +33,35 @@ function Reservation({ roomId, boardId, closeModal }) {
       setShowPostCost(false);
       closeModal();
     } catch (error) {
+      console.l(error)
       console.error("Failed to send date:", error);
     }
   };
 
+  // roomId가 변경될 때마다 GET 요청을 수행하는 useEffect 추가
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+    axios
+      .get(`${REACT_APP_API_URL}/chat/${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response)
+        // 응답을 받아서 상태에 저장
+        // setReservationInfo(response.data);
+      })
+      .catch((error) => {
+        console.error("Failed to get reservation info:", error);
+      });
+  }, [roomId]); // roomId가 변경될 때마다 요청
+
   return (
     <ReservationContainer>
+      {/* 예약 정보를 화면에 표시 (선택사항) */}
+      {reservationInfo && <div>예약 정보: {reservationInfo.someField}</div>}
       {showPostCost ? (
         <Postcost roomId={roomId} boardId={boardId} goToReservation={handlePostCostClick} />
       ) : (

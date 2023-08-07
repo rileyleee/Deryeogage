@@ -18,12 +18,10 @@ function LoginSurvey() {
       .then((response) => {
         if (Array.isArray(response.data.data)) {
           setDogs(response.data.data);
-        } else {
-          console.error("Received non-array response data");
         }
       })
       .catch((error) => {
-        console.error("Error fetching dog data:", error);
+        
       });
   }, []);
 
@@ -33,67 +31,70 @@ function LoginSurvey() {
         <Span>{localStorage.getItem("nickname")}</Span>님의 선호도조사를
         기반으로 강아지를 추천해드려요!
       </p>
+      {dogs.length < 5 ? (
+        <p>게시글이 부족합니다.</p>
+      ) : (
+        <Carousel>
+          <div id="carouselExampleIndicators" className="carousel slide">
+            <div className="carousel-indicators">
+              {dogs.map((dog, index) => (
+                <button
+                  type="button"
+                  data-bs-target="#carouselExampleIndicators"
+                  data-bs-slide-to={index}
+                  className={index === 0 ? "active" : ""}
+                  aria-current="true"
+                  aria-label={`Slide ${index + 1}`}
+                ></button>
+              ))}
+            </div>
 
-      <Carousel>
-        <div id="carouselExampleIndicators" className="carousel slide">
-          <div className="carousel-indicators">
-            {dogs.map((dog, index) => (
-              <button
-                type="button"
-                data-bs-target="#carouselExampleIndicators"
-                data-bs-slide-to={index}
-                className={index === 0 ? "active" : ""}
-                aria-current="true"
-                aria-label={`Slide ${index + 1}`}
-              ></button>
-            ))}
+            <div className="carousel-inner">
+              {dogs.map((dog, index) => (
+                <div className={`carousel-item ${index === 0 ? "active" : ""}`}>
+                  <ImageAndCaptionContainer>
+                    <ImageContainer>
+                      <img
+                        src={dog.fileList[0]}
+                        className="d-block w-100"
+                        alt={dog.name}
+                      />
+                    </ImageContainer>
+                    <CaptionContainer className="bg-dark text-white">
+                      <h5>{dog.name}</h5>
+                      <p>{dog.introduction}</p>
+                    </CaptionContainer>
+                  </ImageAndCaptionContainer>
+                </div>
+              ))}
+            </div>
+            <button
+              className="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="prev"
+            >
+              <span
+                className="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span className="visually-hidden">Previous</span>
+            </button>
+            <button
+              className="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="next"
+            >
+              <span
+                className="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span className="visually-hidden">Next</span>
+            </button>
           </div>
-
-          <div className="carousel-inner">
-            {dogs.map((dog, index) => (
-              <div className={`carousel-item ${index === 0 ? "active" : ""}`}>
-                <ImageAndCaptionContainer>
-                  <ImageContainer>
-                    <img
-                      src={dog.fileList[0]} 
-                      className="d-block w-100"
-                      alt={dog.name} 
-                    />
-                  </ImageContainer>
-                  <CaptionContainer className="bg-dark text-white">
-                    <h5>{dog.name}</h5> 
-                    <p>{dog.introduction}</p> 
-                  </CaptionContainer>
-                </ImageAndCaptionContainer>
-              </div>
-            ))}
-          </div>
-          <button
-            className="carousel-control-prev"
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="prev"
-          >
-            <span
-              className="carousel-control-prev-icon"
-              aria-hidden="true"
-            ></span>
-            <span className="visually-hidden">Previous</span>
-          </button>
-          <button
-            className="carousel-control-next"
-            type="button"
-            data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="next"
-          >
-            <span
-              className="carousel-control-next-icon"
-              aria-hidden="true"
-            ></span>
-            <span className="visually-hidden">Next</span>
-          </button>
-        </div>
-      </Carousel>
+        </Carousel>
+      )}
     </div>
   );
 }
@@ -122,8 +123,8 @@ export const ImageAndCaptionContainer = styled.div`
 `;
 
 export const ImageContainer = styled.div`
-  width: 50%; 
-  height: 500px; 
+  width: 50%;
+  height: 500px;
   overflow: hidden;
 `;
 

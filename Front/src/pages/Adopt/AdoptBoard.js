@@ -11,7 +11,6 @@ function AdoptBoard() {
   const navigate = useNavigate();
   const [adoptData, setAdoptData] = useState([]);
   const [hasSurvey, setHasSurvey] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const insertedToken = localStorage.getItem("accessToken");
 
@@ -45,12 +44,10 @@ function AdoptBoard() {
         setHasSurvey(true);
       }
     } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false); 
-    }
+      setHasSurvey(true);
+    } 
   };
-
+  
   const dogsArray = Array.isArray(adoptData) ? adoptData : [];
 
   useEffect(() => {
@@ -60,9 +57,6 @@ function AdoptBoard() {
 
   return (
     <div>
-      {isLoading ? (
-        <p>Loading...</p> 
-      ) : (
         <>
           <h1>AdoptBoard</h1>
           {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
@@ -75,7 +69,6 @@ function AdoptBoard() {
             <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} /> 
           ))}
         </>
-      )}
     </div>
   );
 }

@@ -16,7 +16,10 @@ function AdoptBoardCreate() {
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const [currentBoardId, setCurrentBoardId] = useState(null);
 
+  // 요청 중인지 확인하는 상태 추가
+  const [isSubmitting, setIsSubmitting] = useState(false);
   // 책임비 모달 관련
+
   const [showPrecost, setShowPrecost] = useState(false);
 
   const handlePrecostOpen = (boardId) => {
@@ -73,11 +76,9 @@ function AdoptBoardCreate() {
               images.push(url);
             }
           }
-          
+
           setSelectedImages(images);
           setSelectedVideos(videos);
-
-          
         });
     }
   }, [boardId]);
@@ -86,10 +87,7 @@ function AdoptBoardCreate() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImageFiles, setSelectedImageFiles] = useState([]);
   const handleImageChange = (event) => {
-    if (isEditing) {
-      alert("수정하기 상태에서 이미지를 추가할 수 없습니다.");
-      return;
-    }
+    // 수정 상태에서의 제한 제거
     const files = event.target.files;
     const selectedImagesArray = [...selectedImages];
     const selectedImageFilesArray = [...selectedImageFiles];
@@ -99,17 +97,14 @@ function AdoptBoardCreate() {
     }
     setSelectedImages(selectedImagesArray);
     setSelectedImageFiles(selectedImageFilesArray);
-    event.target.value = null; // 이 부분 추가
+    event.target.value = null;
   };
 
   // 동영상 등록 관련 코드
   const [selectedVideos, setSelectedVideos] = useState([]);
   const [selectedVideoFiles, setSelectedVideoFiles] = useState([]);
   const handleVideoChange = (event) => {
-    if (isEditing) {
-      alert("수정하기 상태에서 비디오를 추가할 수 없습니다.");
-      return;
-    }
+    // 수정 상태에서의 제한 제거
     const files = event.target.files;
     const selectedVideosArray = [...selectedVideos];
     const selectedVideoFilesArray = [...selectedVideoFiles];
@@ -119,15 +114,12 @@ function AdoptBoardCreate() {
     }
     setSelectedVideos(selectedVideosArray);
     setSelectedVideoFiles(selectedVideoFilesArray);
-    event.target.value = null; // 이 부분 추가
+    event.target.value = null;
   };
 
   // 이미지 삭제 관련 코드
   const handleImageRemove = (indexToRemove) => {
-    if (isEditing) {
-      alert("수정하기 상태에서 이미지를 삭제할 수 없습니다.");
-      return;
-    }
+    // 수정 상태에서의 제한 제거
     setSelectedImages(
       selectedImages.filter((_, index) => index !== indexToRemove)
     );
@@ -138,10 +130,7 @@ function AdoptBoardCreate() {
 
   // 비디오 삭제 관련 코드
   const handleVideoRemove = (indexToRemove) => {
-    if (isEditing) {
-      alert("수정하기 상태에서 비디오를 삭제할 수 없습니다.");
-      return;
-    }
+    // 수정 상태에서의 제한 제거
     setSelectedVideos(
       selectedVideos.filter((_, index) => index !== indexToRemove)
     );
@@ -182,20 +171,39 @@ function AdoptBoardCreate() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
     const token = localStorage.getItem("accessToken");
 
     // FormData 객체 생성
     const formData = new FormData();
+
+    if (isEditing) {
+      // 수정 상태에서 기존의 이미지와 동영상 URL 추가
+      selectedImages.forEach((imageUrl) => {
+        formData.append("existingImages", imageUrl);
+      });
+      selectedVideos.forEach((videoUrl) => {
+        formData.append("existingVideos", videoUrl);
+      });
+    }
 
     // 이미지 파일들 추가
     selectedImageFiles.forEach((image) => {
       formData.append("multipartFile", image);
     });
 
-    // // 비디오 파일들 추가
+    // 비디오 파일들 추가
     selectedVideoFiles.forEach((video) => {
       formData.append("multipartFile", video);
     });
+
+    // 이미지나 비디오가 선택되지 않았을 경우 빈 파일 추가
+    if (selectedImageFiles.length === 0 && selectedVideoFiles.length === 0) {
+      formData.append("multipartFile", new Blob(), "");
+    }
 
     // 다른 필드들 추가
     formData.append("friendly", friendly);
@@ -217,6 +225,11 @@ function AdoptBoardCreate() {
 
     try {
       if (isEditing) {
+        // FormData 객체의 내용을 콘솔로 출력하기 위한 코드
+        for (var pair of formData.entries()) {
+          console.log(pair[0] + ": " + pair[1]);
+        }
+
         await axios.put(`${REACT_APP_API_URL}/boards/${boardId}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data", // 이 부분 추가
@@ -225,8 +238,9 @@ function AdoptBoardCreate() {
         });
         alert("게시글이 수정되었습니다.");
         navigate(`/adopt/${boardId}`);
+        // 요청 성공 후
+        setIsSubmitting(false); // 요청 상태 초기화
       } else {
-        
         const response = await axios.post(
           `${REACT_APP_API_URL}/boards`,
           formData,
@@ -244,6 +258,7 @@ function AdoptBoardCreate() {
       }
     } catch (error) {
       console.error(error);
+      setIsSubmitting(false); // 요청 실패시에도 상태 초기화
     }
   };
 
