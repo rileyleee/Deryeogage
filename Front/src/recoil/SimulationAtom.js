@@ -103,7 +103,20 @@ export const nextImageState = atom({
     default: null,
   });
 
-  export const Requirement = atom({
+export const Requirement = atom({
     key: 'Requirement',
     default: "0000",
   });
+
+export const GameTitle = atom({
+    key: 'GameTitle',
+    default: {
+        0: '도살자',
+        1: '생초보 양육자',
+        20: '새싹 양육자',
+        40: '중급 양육자',
+        60: '프로 양육러',
+        85: '강아지 그 자체🐶'
+    }
+})
+

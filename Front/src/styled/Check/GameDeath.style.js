@@ -21,3 +21,13 @@ export const GameBasicButton = styled.button`
     font-weight: bold;
     text-align: center
 `
+
+export const GameResulth3 = styled.p`
+    font-size: 3vw;
+    color: red;
+    margin-top: 2vh;
+`
+
+export const GameResultli = styled.li`
+    font-size: 1vw;
+`

@@ -48,7 +48,16 @@ function Home() {
               Authorization: "Bearer " + token,
             },
           });
-          console.log(response.data);
+          const now = new Date()
+          const currentHours = now.getHours()
+          const currentMinutes = now.getMinutes()
+          console.log(currentHours)
+          if (currentHours >= 0 && currentHours < 8) {
+            navigate("/nosimulations"); // NoSimulation 페이지로 이동
+          } else if (response.data.end === "true") {
+            navigate("/simulations/end")
+          }
+          else {
           if (response.data === "Start a new simulation") {
             localStorage.setItem("activatedNum", 1);
             localStorage.setItem('hpPercentage', 100);
@@ -61,12 +70,12 @@ function Home() {
             console.log(existValue)
             console.log(response.data)
             localStorage.setItem("activatedNum", 5);
+
             const startTimeHours = Number(response.data.startTime.substr(11, 2));
             const startTimeMinutes = Number(response.data.startTime.substr(14, 2));
             const lastTimeHours = Number(response.data.lastTime.substr(11, 2));
             const lastTimeMinutes = Number(response.data.lastTime.substr(14, 2));
-            console.log(startTimeHours, startTimeMinutes, lastTimeHours, lastTimeMinutes)
-
+            
             let diffHours = lastTimeHours - startTimeHours;
             let diffMinutes = lastTimeMinutes - startTimeMinutes;
             
@@ -78,10 +87,8 @@ function Home() {
             if (diffHours < 0) {
               diffHours += 24;
             }
-            // 접속하지 않는 동안 hp 줄이기 위해
-            const now = new Date()
-            const currentHours = now.getHours()
-            const currentMinutes = now.getMinutes()
+            // // 게임에 접속하지 않는동안 체력을 닳게 하기 위해
+            // 게임 접속하지 않은 시간 계산 결과
             let hpHours = currentHours - lastTimeHours
             let hpMinutes = currentMinutes - lastTimeMinutes
             if (hpMinutes < 0) {
@@ -92,19 +99,37 @@ function Home() {
             if (hpHours < 0) {
               hpHours += 24;
             }
-            console.log(diffHours, diffMinutes)
-            console.log(existValue)
+            // 
+            let Hours = diffHours + hpHours
+            let Minutes = diffMinutes + hpMinutes
+            if (Minutes >= 60) {
+              Hours += 1
+              Minutes -= 60
+            }
+            // 오전 12시 ~ 오전 8시 사이의 시간을 계산
+            let recoveryHours = 0;
+            for (let hour = lastTimeHours; hour !== currentHours; hour = (hour + 1) % 24) {
+                if (hour >= 0 && hour < 8) recoveryHours++;
+            }
+
+            // 체력 회복 및 감소 계산
+            const totalHpMinutes = (hpHours - recoveryHours) * 60 + hpMinutes;
+            const totalRecoveryMinutes = recoveryHours * 60;
             setExistValue(prevState => ({
               ...prevState,
-              health: prevState.health > 0 ? prevState.health - (hpHours*60 + hpMinutes) : 0,
+              health: Math.max(
+                0,
+                prevState.health - totalHpMinutes + totalRecoveryMinutes
+            ),
             }));
             console.log(hpHours, hpMinutes)
             localStorage.setItem('timeDifference', JSON.stringify({
-              hours: diffHours,
-              minutes: diffMinutes
+              hours: Hours,
+              minutes: Minutes
             }));
           }
           navigate("/simulations");
+        }
         } catch (error) {
           console.log(error);
         }
@@ -218,7 +243,7 @@ function Home() {
     getLocation();
   }, []);
 
-  const imgSrc = `https://openweathermap.com/img/w/${state.icon}.png`;
+  const imgSrc = `https://openweathermap.org/img/wn/${state.icon}@2x.png`;
   
   localStorage.setItem('humidity', state.desc);
   localStorage.setItem('imgSrc', imgSrc);
