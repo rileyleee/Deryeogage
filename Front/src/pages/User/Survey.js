@@ -155,9 +155,9 @@ function Survey() {
         {hasSubmitted && (
           <>
           <div>{nickname}님은 이미 설문을 제출했습니다.</div>
-          <Button onClick={toggleResults}>
+          {/* <Button onClick={toggleResults}>
             {modalIsOpen ? "숨기기" : "제출한 내역 확인하기"}
-          </Button>
+          </Button> */}
           </>
         )}
 
