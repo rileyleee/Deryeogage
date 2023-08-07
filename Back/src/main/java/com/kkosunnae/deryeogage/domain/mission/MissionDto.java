@@ -20,11 +20,15 @@ public class MissionDto {
     private String missionUrl3;
     private String missionUrl4;
 
+    public MissionDto() {
+    }
+
     public MissionDto(Long userId) {
         this.userId = userId;
     }
 
     @Builder
+
     public MissionDto(Integer id, int adoptId, Long userId, String missionUrl1, String missionUrl2, String missionUrl3, String missionUrl4) {
         this.id = id;
         this.adoptId = adoptId;

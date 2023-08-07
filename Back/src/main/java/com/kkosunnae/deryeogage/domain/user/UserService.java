@@ -10,6 +10,8 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -45,10 +47,8 @@ public class UserService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=5350906875f54e9bff0134a84d70e619"); //현재 프론트 서버
-            // 로컬용 주소
-            sb.append("&redirect_uri=http://localhost:3000/users/oauth");
-            // 배포용 주소
-            //sb.append("&redirect_uri=https://i9b307.p.ssafy.io/users/oauth");
+            //sb.append("&redirect_uri=http://localhost:3000/users/oauth");
+            sb.append("&redirect_uri=https://i9b307.p.ssafy.io/users/oauth");
             sb.append("&code=" + code);
             bw.write(sb.toString());
             bw.flush();
@@ -166,7 +166,7 @@ public class UserService {
         return userInfo.getId();
     }
 
-    // 로그인한 유저의 닉네임 가져오기
+    // 로그인한 사용자의 닉네임 가져오기
     @Transactional(readOnly = true)
     public String getUserNickname(Long userId) {
 
@@ -175,5 +175,44 @@ public class UserService {
 
         String nickname = loginedUser.getNickname();
         return nickname;
+    }
+
+    // 로그인한 사용자의 프로필 사진 등록
+    public String savePicture(Long userId, Map<String, List> nameList) {
+
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다. userId" + userId));
+
+        List<String> savedPaths = nameList.get("path");
+        String path = savedPaths.get(0);
+        userEntity.update(path);
+        return path;
+    }
+
+    // 로그인한 사용자의 프로필 사진 조회
+    @Transactional(readOnly = true)
+    public String getPicture(Long userId) {
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다. userId" + userId));
+
+        UserDto userDto = userEntity.toDto();
+
+        String path = userDto.getImageUrl();
+
+        return path;
+    }
+
+
+    // 로그인한 사용자의 프로필 사진 수정
+    public String updatePicture(Long userId, Map<String, List> nameList) {
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다. userId" + userId));
+
+        List<String> updatedPaths = nameList.get("path");
+        String newPath = updatedPaths.get(0);
+        userEntity.update(newPath);
+
+        userRepository.save(userEntity);  // 변경 사항을 데이터베이스에 저장
+        return newPath;
     }
 }

@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
 @Getter
@@ -20,10 +20,13 @@ public class ChatRoomRequestDto {
 
     private Long user2;
 
-    private LocalDateTime scheduledDate;
+    private LocalDate scheduledDate;
 
     @Builder
-    public ChatRoomRequestDto(String roomName) {
+    public ChatRoomRequestDto(Long user1, Long user2, Integer boardId, String roomName) {
+        this.user1 = user1;
+        this.user2 = user2;
+        this.boardId = boardId;
         this.roomName = roomName;
     }
 

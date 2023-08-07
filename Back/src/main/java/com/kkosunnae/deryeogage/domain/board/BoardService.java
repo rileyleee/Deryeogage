@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.IntStream;
@@ -51,7 +52,6 @@ public class BoardService {
             boardDto.setUserNickname(user.get().getNickname());
             boardDto.setCreatedDate(LocalDateTime.now());
             board.update(boardDto);
-            boardRepository.save(board);
             return board.getId();
         } else {
             throw new IllegalArgumentException("해당 유저가 존재하지 않습니다. user id: " + boardDto.getUserId());
@@ -76,7 +76,8 @@ public class BoardService {
     // 내가 작성한 게시글 조회
     public List<BoardDto> findMyBoards(Long userId) {
         List<BoardDto> boardSetList = new ArrayList<>();
-        List<BoardEntity> myBoardLists = boardRepository.findByUserId(userId);
+        List<BoardEntity> myBoardLists = boardRepository.findByUserId(userId)
+                .orElseThrow(() -> new NoSuchElementException("해당 사용자가 작성한 게시물 목록이 존재하지 않습니다. userId" + userId));
 
         for (BoardEntity boardEntity : myBoardLists) {
 
@@ -85,7 +86,7 @@ public class BoardService {
             // 하나의 게시글 ID를 가져오고
             Integer thisBoardId = boardEntity.getId();
             // 특정 게시글에 업로드된 파일을 꺼내기
-            List <String> uploadedFiles = this.getBoardFileUrls(thisBoardId);
+            List<String> uploadedFiles = this.getBoardFileUrls(thisBoardId);
             // Dto에 담기
             thisBoard.setFileList(uploadedFiles);
 
@@ -110,7 +111,7 @@ public class BoardService {
             // 하나의 게시글 ID를 가져오고
             Integer thisBoardId = boardEntity.getId();
             // 특정 게시글에 업로드된 파일을 꺼내기
-            List <String> uploadedFiles = this.getBoardFileUrls(thisBoardId);
+            List<String> uploadedFiles = this.getBoardFileUrls(thisBoardId);
             // Dto에 담기
             thisBoard.setFileList(uploadedFiles);
 
@@ -148,7 +149,10 @@ public class BoardService {
         EuclideanSimilarityRecommendation euclideanSimilarityRecommendation = new EuclideanSimilarityRecommendation();
         List<Integer> result = euclideanSimilarityRecommendation.recommendDogs(userPreferences, boardMap, order);
         for (Integer index : result) {
-            boardDtoList.add(boardRepository.findById(index).get().toDto());
+            BoardDto boardDto = boardRepository.findById(index).get().toDto();
+            List <String> uploadedFiles = this.getBoardFileUrls(boardDto.getId());
+            boardDto.setFileList(uploadedFiles);
+            boardDtoList.add(boardDto);
         }
         return boardDtoList;
     }
@@ -170,6 +174,26 @@ public class BoardService {
         jjimRepository.deleteByUserIdAndBoardId(userId, boardId);
     }
 
+
+    //내가 찜한 목록 조회
+    public List<JjimDto> myLikes(Long userId) {
+        List<JjimEntity> jjimEntityList = null;
+        try {
+            jjimEntityList = jjimRepository.findByUserId(userId)
+                    .orElseThrow(() -> new NoSuchElementException("해당 사용자가 찜한 분양글이 없습니다. userId: " + userId));
+        } catch (NoSuchElementException e) {
+            return new ArrayList<>(); // 찜한 분양글이 없는 경우 빈 리스트 반환
+        }
+
+        List<JjimDto> jjimDtoList = new ArrayList<>();
+
+        for (JjimEntity jjimEntity : jjimEntityList) {
+            JjimDto jjimDto = jjimEntity.toDto();
+            jjimDtoList.add(jjimDto);
+        }
+
+        return jjimDtoList;
+    }
 
     //게시글에 업로드한 파일 저장
     public void saveBoardFile(Integer boardId, Map<String, List> nameList) {
@@ -255,6 +279,4 @@ public class BoardService {
 
         return uploadedFiles;
     }
-
-
 }

@@ -73,6 +73,19 @@ public class AdoptEntity {
                 .build();
     }
 
+    public AdoptDto toDtoExceptMission() {
+        return AdoptDto.builder()
+                .id(this.id)
+                .boardId(this.board.getId())
+                .fromUserId(this.fromUser.getId())
+                .toUserId(this.toUser.getId())
+                .status(this.status)
+                .fromConfirmYn(this.fromConfirmYn)
+                .toConfirmYn(this.toConfirmYn)
+                .scheduledDate(this.scheduledDate)
+                .build();
+    }
+
     public void toUpdate(AdoptDto adoptDto) { // 입양자가 확정버튼 누를 때 실행
         this.toConfirmYn = adoptDto.getToConfirmYn();
 
@@ -85,8 +98,8 @@ public class AdoptEntity {
         this.mission = missionEntity;
     }
 
-    public void scheduleUpdate(AdoptDto adoptDto) { // 일정 변경 시 실행
-        this.scheduledDate = adoptDto.getScheduledDate();
+    public void scheduleUpdate(LocalDate scheduledDate) { // 일정 변경 시 실행
+        this.scheduledDate = scheduledDate;
     }
 
 

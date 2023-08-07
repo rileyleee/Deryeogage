@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -43,7 +45,9 @@ public class PreCostService {
     // 선책임비 1개 조회하기
     @Transactional(readOnly = true)
     public PreCostDto getPreCost(Long userId, int boardId) {
-        return preCostRepository.findByUserIdAndBoardId(userId, boardId).toDto();
+        PreCostEntity preCostEntity = preCostRepository.findByUserIdAndBoardId(userId, boardId)
+                .orElseThrow(() -> new NoSuchElementException("해당 분양자의 책임비 납부내역이 없습니다. userId: " + userId));
+        return preCostEntity.toDto();
     }
 
     // 내가 납부한 선 책임비 조회하기(2개 이상인 경우)
@@ -51,12 +55,14 @@ public class PreCostService {
     public List<PreCostDto> getPreCosts(Long userId) {
         List<PreCostDto> myPreCosts = new ArrayList<>();
 
-        List<PreCostEntity> preCostsList = preCostRepository.findByUserId(userId);
-        for (PreCostEntity preCostEntity : preCostsList) {
+        List<PreCostEntity> preCostsList = preCostRepository.findByUserId(userId)
+                .orElseThrow(() -> new NoSuchElementException("해당 분양자의 책임비 납부내역이 없습니다. userId: " + userId));
 
+        for (PreCostEntity preCostEntity : preCostsList) {
             PreCostDto preCost = preCostEntity.toDto();
             myPreCosts.add(preCost);
         }
+
         return myPreCosts;
     }
 
@@ -86,19 +92,21 @@ public class PreCostService {
 
         int boardId = preCostDto.getBoardId();
 
-        //입양자의 후책임비도 반환하도록 메서드 호출하고
-        PostCostDto postCostDto = postCostRepository.findByBoardId(boardId).toDto();
-        Long toUserId = postCostDto.getUserId();
-        postCostService.abnormalReturn(toUserId, postCostDto);
+        PreCostEntity entity = preCostRepository.findByUserIdAndBoardId(userId, boardId)
+                .orElseThrow(()-> new NoSuchElementException("해당 게시물의 선책임비가 없습니다."));
 
-        // 선책임비 반환처리하고
-        preCostDto.setReturnYn(true);
-        // 선책임비 반환 날짜 담고
-        preCostDto.setReturnDate(LocalDateTime.now());
+        Integer id = entity.getId();
 
-        PreCostEntity preCost = getPreCost(userId, boardId).toEntity(userRepository, boardRepository);
-        preCost.update(preCostDto);
-        preCostRepository.save(preCost);
+        Optional<PostCostEntity> postCostOptional = postCostRepository.findByBoardId(boardId);
+
+        if (postCostOptional.isPresent()) {
+            PostCostEntity postCostEntity = postCostOptional.get();
+            PostCostDto postCostDto = postCostEntity.toDto();
+            postCostService.abnormalReturn(postCostDto);
+        }
+
+        // 책임비 row 삭제하기
+        preCostRepository.deleteById(id);
 
         //분양게시글 삭제
         boardService.deleteById(boardId);

@@ -34,7 +34,8 @@ public class WebConfig implements WebMvcConfigurer {
                         "/webjars/**",
                         "/api/users/oauth",
                         "/api/boards/list",
-                        "/api/boards/each/**"); //추천 알고리즘은 추가해야 하는가
+                        "/api/boards/each/**"); //추천 알고리즘은 어떻게 처리하지
+
             
     }
 
@@ -43,7 +44,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000","http://127.0.0.1:5500/","https://i9b307.p.ssafy.io/") // 프론트엔드 서버의 도메인을 명시
+                .allowedOrigins("http://localhost:3000","http://127.0.0.1:5500","https://i9b307.p.ssafy.io") // 프론트엔드 서버의 도메인을 명시
                 .allowedMethods("GET", "POST", "PATCH", "DELETE", "PUT", "OPTIONS")
                 .allowCredentials(true) // 인증 정보 포함 여부 (withCredentials: true일 때 필요)
                 .maxAge(3600); // 캐시 지속 시간 설정 (선택 사항)
