@@ -1,11 +1,13 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
+import com.kkosunnae.deryeogage.domain.adopt.AdoptService;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,10 +19,11 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
+    private final AdoptService adoptService;
 
 
     @Transactional
-    public LocalDateTime updateScheduledDate(Integer roomId, ChatRoomRequestDto chatRoomRequestDto) {
+    public LocalDate updateScheduledDate(Integer roomId, ChatRoomRequestDto chatRoomRequestDto) {
         ChatRoomEntity chatRoomEntity = chatRoomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("채팅방이 존재하지 않습니다."));
 
@@ -79,5 +82,17 @@ public class ChatRoomService {
         ChatRoomEntity entity = this.chatRoomRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 ChatRoom이 존재하지 않습니다. id = " + id));
         this.chatRoomRepository.delete(entity);
+    }
+    /**예약 일정 있는지 여부 **/
+    public boolean getExist(Integer roomId) {
+        ChatRoomEntity entity = this.chatRoomRepository.findById(roomId).orElseThrow(
+                () -> new IllegalArgumentException("해당 ChatRoom이 존재하지 않습니다. roomId = " + roomId));
+
+        if(entity.getScheduledDate()==null){ // 일정이 없으면
+            return false;
+        }else{ // 일정이 있으면
+            return true;
+        }
+
     }
 }
