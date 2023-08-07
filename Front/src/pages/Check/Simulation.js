@@ -16,6 +16,7 @@ import GameTreat from "../../components/Check/GameTreat"
 import GameToy from "../../components/Check/GameToy"
 import GameDeath from "../../components/Check/GameDeath"
 import GameQuiz from "../../components/Check/GameQuiz"
+import GameEmergency from "../../components/Check/GameEmergency"
 import {useRecoilValue, useRecoilState} from "recoil"
 import { useNavigate } from "react-router-dom";
 import { SimulationNum, SimulationExistAtom, SimulationWalkingCnt, SimulationStartAtom, SimulationHp
@@ -165,8 +166,9 @@ function Simulation() {
     9 : <GamePoop handleMove={handleMove}/>,
     10 : <GameTreat handleMove={handleMove}/>,
     11 : <GameToy handleMove={handleMove}/>,
-    12 : <GameQuiz handleMove={handleMove}/>
-  }
+    12 : <GameQuiz handleMove={handleMove}/>,
+    13 : <GameEmergency handleMove={handleMove}/>
+    }
 
   // activatedNum에 따라서 GameStartfirst의 테두리 색을 지정
   const getBorderColor = (num) => {
