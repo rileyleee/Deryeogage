@@ -78,9 +78,13 @@ public class PreCostService {
             // 반환 날짜 담고
             preCostDto.setReturnDate(LocalDateTime.now());
 
-            PreCostEntity preCost = getPreCost(userId, boardId).toEntity(userRepository, boardRepository);
+            // 기존 PretCostEntity를 조회하여 업데이트
+            PreCostEntity preCost = preCostRepository.findByUserIdAndBoardId(userId, boardId)
+                    .orElseThrow(() -> new NoSuchElementException("해당 사용자와 게시물에 대한 책임비 정보가 없습니다."));
+
             preCost.update(preCostDto);
             preCostRepository.save(preCost); // DB에 반영
+
         } else {
             throw new IllegalArgumentException("입양자와 분양자 모두가 확정처리해야 책임비를 반환할 수 있습니다.");
         }

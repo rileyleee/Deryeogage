@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface MissionRepository extends JpaRepository<MissionEntity, Integer> {
 
     Optional<MissionEntity> findById(Integer missionId);
+
+    Optional<MissionEntity> findByAdoptId(Integer AdoptId);
 }
