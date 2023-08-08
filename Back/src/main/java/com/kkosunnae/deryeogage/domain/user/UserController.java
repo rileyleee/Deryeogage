@@ -94,7 +94,7 @@ public class UserController {
     /** 입양게시판 및 채팅 화면에서 타인 닉네임 클릭 시
      * 게시판 및 채팅 entity에 담겨 있는 사용자 id를 활용 **/
     @GetMapping("/profile")
-    public Response<Object> getProfile(@RequestHeader("Authorization") String authorizationHeader, @RequestBody Long userId){
+    public Response<Object> getProfile(@RequestBody Long userId){
         ProfileResponseDto profileResponse = userService.getProfile(userId);
         return Response.success(profileResponse);
     }
