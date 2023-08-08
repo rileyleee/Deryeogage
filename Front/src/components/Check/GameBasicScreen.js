@@ -40,11 +40,6 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
             const newHealth = parseInt(prevState.health) + hp;
             const newCost = Math.max(parseInt(prevState.cost) - pay, 0); // 
             
-            // 새로운 상태를 로컬 스토리지에 저장
-            // setHpPercentage(newHealth)
-            // setCost(newCost)
-            // localStorage.setItem('hpPercentage', newHealth);
-            // localStorage.setItem('cost', newCost);
             return {
                 ...prevState,
                 health: newHealth,
@@ -108,6 +103,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
       const [requirementNum, setRequirementNum] = useState(0); // 요구사항 컴포넌트 번호
       const [isImageVisible, setIsImageVisible] = useState(false); // 이미지 보여줄건지 말건지
       const [req4Count, setReq4Count] = useState(0); // "assets/things/requirement4.png"의 출현 횟수
+      const [emergency, setEmergency] = useState(0) // 응급상황 횟수
 
     useEffect(() => {
     const currentHour = new Date().getHours();
