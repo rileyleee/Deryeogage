@@ -47,6 +47,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:3000","http://127.0.0.1:5500","https://i9b307.p.ssafy.io") // 프론트엔드 서버의 도메인을 명시
                 .allowedMethods("GET", "POST", "PATCH", "DELETE", "PUT", "OPTIONS")
                 .allowCredentials(true) // 인증 정보 포함 여부 (withCredentials: true일 때 필요)
+                .allowedHeaders("*")
                 .maxAge(3600); // 캐시 지속 시간 설정 (선택 사항)
     }
 }
