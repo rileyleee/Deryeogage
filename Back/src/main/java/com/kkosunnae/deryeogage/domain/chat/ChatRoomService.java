@@ -56,14 +56,41 @@ public class ChatRoomService {
                 .collect(Collectors.toList());
     }
 
+
+
+
+//    @Transactional
+//    public ChatRoomResponseDto findById(Long userId, final Integer id) {
+//        ChatRoomEntity entity = this.chatRoomRepository.findById(id).orElseThrow(
+//                () -> new IllegalArgumentException("해당 ChatRoom이 존재하지 않습니다. id = " + id));
+//        ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(entity);
+//        if(entity.getUser2() != null && entity.getUser2().getId().equals(userId)) {
+//            chatRoomResponseDto.setSchedule(true);
+//            chatRoomResponseDto.setMyNickName(userRepository.findById(userId).get().getNickname());
+//            if(entity.getUser1().getId()==userId){
+//                chatRoomResponseDto.setYourNickName(entity.getUser2().getNickname());
+//            }
+//            else{
+//                chatRoomResponseDto.setYourNickName(entity.getUser1().getNickname());
+//            }
+//        }
+//        return chatRoomResponseDto;
+//    }
     @Transactional
     public ChatRoomResponseDto findById(Long userId, final Integer id) {
         ChatRoomEntity entity = this.chatRoomRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 ChatRoom이 존재하지 않습니다. id = " + id));
         ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(entity);
+        // 현재 사용자가 입양자면 날짜잡기가 가능하게
         if(entity.getUser2() != null && entity.getUser2().getId().equals(userId)) {
             chatRoomResponseDto.setSchedule(true);
         }
+
+        String myNickName = userRepository.findById(userId).get().getNickname();
+        String yourNickName = (entity.getUser1().getId()==userId) ? entity.getUser2().getNickname() : entity.getUser1().getNickname();
+        chatRoomResponseDto.setMyNickName(myNickName);
+        chatRoomResponseDto.setYourNickName(yourNickName);
+
         return chatRoomResponseDto;
     }
 

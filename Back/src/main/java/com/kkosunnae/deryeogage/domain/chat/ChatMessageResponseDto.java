@@ -1,10 +1,12 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.format.DateTimeFormatter;
 
 @Getter
+@Setter
 public class ChatMessageResponseDto {
     private Integer id;
     private Long userId;
@@ -12,6 +14,8 @@ public class ChatMessageResponseDto {
     private String message;
     private String createdDate;
     private String updatedDate;
+
+
     private boolean readYN;
 
     public ChatMessageResponseDto(ChatMessageEntity entity) {
@@ -26,6 +30,5 @@ public class ChatMessageResponseDto {
             this.updatedDate = entity.getUpdatedDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss"));
         }
         this.readYN = entity.isReadYN();
-
     }
 }

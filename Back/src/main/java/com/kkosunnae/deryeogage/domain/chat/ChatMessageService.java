@@ -47,11 +47,11 @@ public class ChatMessageService {
     }
 
     /** ChatMessage 생성 */
-    public Integer save(final Integer chatRoomId, final ChatMessageRequestDto requestDto) {
+    public ChatMessageResponseDto save(final Integer chatRoomId, final ChatMessageRequestDto requestDto) {
         ChatRoomEntity chatRoomEntity = this.chatRoomRepository.findById(chatRoomId).orElseThrow(
                 () -> new IllegalArgumentException("해당 ChatRoom이 존재하지 않습니다. chatRoomId = " + chatRoomId));
         requestDto.setChatRoom(chatRoomEntity);
-        return this.chatMessageRepository.save(requestDto.toEntity(userRepository)).getId();
+        return new ChatMessageResponseDto(this.chatMessageRepository.save(requestDto.toEntity(userRepository)));
     }
 
     /** ChatMessage 삭제 */
