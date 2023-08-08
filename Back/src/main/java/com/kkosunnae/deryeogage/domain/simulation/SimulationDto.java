@@ -67,7 +67,7 @@ public class SimulationDto {
                 .train((train != null) ? train : "00000000")
                 .health((health != null) ? health : 100)
                 .quizNum((quizNum != null) ? quizNum : 0)
-                .requirement((requirement != null) ? requirement : "0000")
+                .requirement((requirement != null) ? requirement : "00000")
                 .title(this.title)
                 .end(this.end)
                 .endCheck(this.endCheck)

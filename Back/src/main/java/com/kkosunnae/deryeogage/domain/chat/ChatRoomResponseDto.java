@@ -15,6 +15,9 @@ public class ChatRoomResponseDto {
 
     private Boolean schedule;
 
+    private String myNickName;
+    private String yourNickName;
+
     public ChatRoomResponseDto(ChatRoomEntity entity) {
         this.id = entity.getId();
         this.roomName = entity.getRoomName();

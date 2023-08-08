@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -45,7 +46,7 @@ public class PreCostService {
     @Transactional(readOnly = true)
     public PreCostDto getPreCost(Long userId, int boardId) {
         PreCostEntity preCostEntity = preCostRepository.findByUserIdAndBoardId(userId, boardId)
-                .orElseThrow(()-> new NoSuchElementException("해당 분양자의 책임비 납부내역이 없습니다. userId: "+ userId));
+                .orElseThrow(() -> new NoSuchElementException("해당 분양자의 책임비 납부내역이 없습니다. userId: " + userId));
         return preCostEntity.toDto();
     }
 
@@ -55,7 +56,7 @@ public class PreCostService {
         List<PreCostDto> myPreCosts = new ArrayList<>();
 
         List<PreCostEntity> preCostsList = preCostRepository.findByUserId(userId)
-                .orElseThrow(()-> new NoSuchElementException("해당 분양자의 책임비 납부내역이 없습니다. userId: "+ userId));
+                .orElseThrow(() -> new NoSuchElementException("해당 분양자의 책임비 납부내역이 없습니다. userId: " + userId));
 
         for (PreCostEntity preCostEntity : preCostsList) {
             PreCostDto preCost = preCostEntity.toDto();
@@ -77,9 +78,13 @@ public class PreCostService {
             // 반환 날짜 담고
             preCostDto.setReturnDate(LocalDateTime.now());
 
-            PreCostEntity preCost = getPreCost(userId, boardId).toEntity(userRepository, boardRepository);
+            // 기존 PretCostEntity를 조회하여 업데이트
+            PreCostEntity preCost = preCostRepository.findByUserIdAndBoardId(userId, boardId)
+                    .orElseThrow(() -> new NoSuchElementException("해당 사용자와 게시물에 대한 책임비 정보가 없습니다."));
+
             preCost.update(preCostDto);
             preCostRepository.save(preCost); // DB에 반영
+
         } else {
             throw new IllegalArgumentException("입양자와 분양자 모두가 확정처리해야 책임비를 반환할 수 있습니다.");
         }
@@ -91,18 +96,21 @@ public class PreCostService {
 
         int boardId = preCostDto.getBoardId();
 
-        //입양자의 후책임비도 반환하도록 메서드 호출하고...
-        PostCostEntity postCostEntity = postCostRepository.findByBoardId(boardId)
-                .orElseThrow(() -> new NoSuchElementException("동일한 게시물에 대해 납부한 후책임비 내역이 없습니다. boardId" + boardId));
+        PreCostEntity entity = preCostRepository.findByUserIdAndBoardId(userId, boardId)
+                .orElseThrow(()-> new NoSuchElementException("해당 게시물의 선책임비가 없습니다."));
 
-        PostCostDto postCostDto = postCostEntity.toDto();
+        Integer id = entity.getId();
 
-        if (postCostDto.getPayYn()) { //납부한 내역이 있다면 처리
+        Optional<PostCostEntity> postCostOptional = postCostRepository.findByBoardId(boardId);
+
+        if (postCostOptional.isPresent()) {
+            PostCostEntity postCostEntity = postCostOptional.get();
+            PostCostDto postCostDto = postCostEntity.toDto();
             postCostService.abnormalReturn(postCostDto);
         }
-        
+
         // 책임비 row 삭제하기
-        preCostRepository.deleteById(preCostDto.getId());
+        preCostRepository.deleteById(id);
 
         //분양게시글 삭제
         boardService.deleteById(boardId);
