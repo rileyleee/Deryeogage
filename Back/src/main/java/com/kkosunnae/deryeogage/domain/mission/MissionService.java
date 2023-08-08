@@ -54,6 +54,17 @@ public class MissionService {
     // 한 개의 입양 내역 중 각각의 미션 단계에 대한 파일 등록
     public String registOne(MissionDto missionDto, int urlId, Map<String, List> nameList) {
 
+        Integer missionId = missionDto.getId();
+
+        MissionEntity eachMission = missionRepository.findById(missionId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 미션이 존재하지 않습니다. missionId: " + missionId));
+
+        // 기존 URL 값 가져오기
+        missionDto.setMissionUrl1(eachMission.getMissionUrl1());
+        missionDto.setMissionUrl2(eachMission.getMissionUrl2());
+        missionDto.setMissionUrl3(eachMission.getMissionUrl3());
+        missionDto.setMissionUrl4(eachMission.getMissionUrl4());
+
         List<String> savedPaths = nameList.get("path");
         switch (urlId) {
             case 1:
@@ -72,12 +83,7 @@ public class MissionService {
                 throw new IllegalArgumentException("존재하지 않는 미션 단계입니다.: " + urlId);
         }
 
-        Integer missionId = missionDto.getId();
-
-        MissionEntity eachMission = missionRepository.findById(missionId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 미션이 존재하지 않습니다. missionId: " + missionId));
-
-        missionRepository.save(eachMission);
+        eachMission.update(missionDto);
 
         return savedPaths.get(0);
     }
@@ -85,6 +91,19 @@ public class MissionService {
     // 한 개의 입양 내역 중 각각의 미션 단계에 대한 파일 삭제
 
     public void deleteOne(MissionDto missionDto, int urlId) {
+        log.info(missionDto.toString());
+
+        Integer missionId = missionDto.getId();
+        log.info("missionId" + missionId);
+
+        MissionEntity eachMission = missionRepository.findById(missionId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 미션이 존재하지 않습니다. missionId: " + missionId));
+
+        // 기존 URL 값 가져오기
+        missionDto.setMissionUrl1(eachMission.getMissionUrl1());
+        missionDto.setMissionUrl2(eachMission.getMissionUrl2());
+        missionDto.setMissionUrl3(eachMission.getMissionUrl3());
+        missionDto.setMissionUrl4(eachMission.getMissionUrl4());
 
         // DB 삭제
         switch (urlId) {
@@ -104,11 +123,8 @@ public class MissionService {
                 throw new IllegalArgumentException("존재하지 않는 미션 단계입니다.: " + urlId);
         }
 
-        Integer missionId = missionDto.getId();
-        MissionEntity eachMission = missionRepository.findById(missionId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 미션이 존재하지 않습니다. missionId: " + missionId));
 
-        missionRepository.save(eachMission);
+        eachMission.update(missionDto);
 
         //3S 삭제는 아직
     }
