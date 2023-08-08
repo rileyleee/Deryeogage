@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import DogDetail from "./DogDetail";
 import ChatRoomDetail from "./ChatRoomDetail";
 import Reservation from "../../components/Adopt/Reservation";
+import { useLocation } from "react-router-dom";
 import axios from "axios"; // axios import
+import VideoRoom from "./openvidu/VideoRoom";
 
 function ChatVideo() {
   const location = useLocation();
@@ -14,8 +16,10 @@ function ChatVideo() {
   const modalRef = useRef();
 
   const [isAuthor, setIsAuthor] = useState(false); // 작성자 여부 상태 추가
-  const [isReserved, setIsReserved] = useState(false); // 예약 완료 상태 추가
-  const userId = localStorage.getItem("nickname"); // 현재 로그인된 사용자 nickname 가져오기
+  const userId = localStorage.getItem("userId"); // 현재 로그인된 사용자 ID 가져오기
+  const nickname = localStorage.getItem("nickname"); // 현재 로그인된 사용자 ID 가져오기
+
+  const [showVideoRoom, setShowVideoRoom] = useState(false); //화상 채팅 열기 클릭시 이벤트 처리 위함
 
   useEffect(() => {
     // 글 작성자의 ID를 가져옵니다.
@@ -31,8 +35,7 @@ function ChatVideo() {
             },
           }
         );
-        console.log(response)
-        const authorId = response.data.data[0].userNickname; // 글 작성자의 ID를 가져옵니다. (데이터 구조에 따라 변경 필요)
+        const authorId = response.data.data[0].userId; // 글 작성자의 ID를 가져옵니다. (데이터 구조에 따라 변경 필요)
         setIsAuthor(authorId === userId); // 글 작성자와 현재 사용자의 ID가 같은지 비교하여 상태 업데이트
       } catch (error) {
         console.error(error);
@@ -42,15 +45,11 @@ function ChatVideo() {
     fetchAuthorId();
   }, [boardId, userId]); // boardId와 userId가 변경되면 다시 실행
 
-
   const handleModalClick = (e) => {
     if (modalRef.current && modalRef.current.contains(e.target)) return; // 모달 내부 클릭이면 반환
     setShowReservationModal(false); // 모달 외부 클릭이면 모달 닫기
   };
-
-  const handleReservationComplete = () => {
-    setIsReserved(true);
-  };
+  console.log(boardId);
 
   return (
     <StyledContainer>
@@ -65,8 +64,8 @@ function ChatVideo() {
                 roomId={roomId}
                 boardId={boardId}
                 closeModal={() => setShowReservationModal(false)}
-                onReservationComplete={handleReservationComplete} // 예약 완료 콜백 추가
-              />
+              />{" "}
+              {/* closeModal prop 추가 */}
             </ModalContent>
           </Modal>
         </>
@@ -74,12 +73,13 @@ function ChatVideo() {
       {!isAuthor && ( // 작성자가 아닐 경우에만 버튼 표시
         <>
           <ModalButton onClick={() => setShowReservationModal(true)}>
-            {isReserved ? "예약 수정하기" : "예약하기"} {/* 버튼 텍스트 변경 */}
+            예약하기
           </ModalButton>
         </>
       )}
       <StyledDogDetail>
-        <DogDetail boardId={boardId} />
+        {!showVideoRoom && <DogDetail boardId={boardId}  setShowVideoRoom={setShowVideoRoom} />}
+        {showVideoRoom && <VideoRoom roomId={roomId} nickname={nickname} setShowVideoRoom={setShowVideoRoom}/>}
       </StyledDogDetail>
       <StyledChatRoom>
         <ChatRoomDetail />
