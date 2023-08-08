@@ -26,7 +26,6 @@ public class MissionDto {
     public MissionDto(Long userId) {
         this.userId = userId;
     }
-
     @Builder
 
     public MissionDto(Integer id, int adoptId, Long userId, String missionUrl1, String missionUrl2, String missionUrl3, String missionUrl4) {

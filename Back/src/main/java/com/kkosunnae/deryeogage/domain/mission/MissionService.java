@@ -91,8 +91,10 @@ public class MissionService {
     // 한 개의 입양 내역 중 각각의 미션 단계에 대한 파일 삭제
 
     public void deleteOne(MissionDto missionDto, int urlId) {
+        log.info(missionDto.toString());
 
         Integer missionId = missionDto.getId();
+        log.info("missionId" + missionId);
 
         MissionEntity eachMission = missionRepository.findById(missionId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 미션이 존재하지 않습니다. missionId: " + missionId));
@@ -120,7 +122,6 @@ public class MissionService {
             default:
                 throw new IllegalArgumentException("존재하지 않는 미션 단계입니다.: " + urlId);
         }
-
 
 
         eachMission.update(missionDto);
