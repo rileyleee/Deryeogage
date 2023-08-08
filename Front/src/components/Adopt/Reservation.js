@@ -5,7 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import Postcost from "./Postcost";
 
-function Reservation({ roomId, boardId, closeModal }) {
+function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
   const [reservationScheduled, setReservationScheduled] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [scheduledDate, setScheduledDate] = useState(null);
@@ -44,6 +44,7 @@ function Reservation({ roomId, boardId, closeModal }) {
       console.log("Date sent successfully");
       setShowPostCost(false);
       closeModal();
+      onReservationComplete(); // 예약 완료 콜백 호출
     } catch (error) {
       console.log(error);
       console.error("Failed to send date:", error);

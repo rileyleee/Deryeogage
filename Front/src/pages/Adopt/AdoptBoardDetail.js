@@ -133,7 +133,7 @@ function AdoptBoardDetail() {
         const filteredData = response.data.data.filter(
           (item) => item.boardId === parseInt(boardId)
         );
-        setPrecostsData(filteredData[0].returnYn);  // Set the filtered data to the state
+        setPrecostsData(filteredData[0].returnYn); // Set the filtered data to the state
         console.log("Filtered Precosts Data:", filteredData);
       } catch (error) {
         console.error("Failed to fetch Precosts data:", error);
@@ -200,7 +200,7 @@ function AdoptBoardDetail() {
           {isFavorited ? "찜 해제하기" : "찜하기"}
         </FavoriteButton>
       )}
-      {canChat() && (
+      {isWriter() && (
         <ChatButton to="/adopt/chatlist">채팅방 목록보기</ChatButton>
       )}
       {canChat() && <Button onClick={handleChat}>채팅하기</Button>}

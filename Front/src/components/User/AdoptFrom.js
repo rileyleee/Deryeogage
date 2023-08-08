@@ -6,6 +6,8 @@ function AdoptFrom() {
   const [adopts, setAdopts] = useState([]);
   const [confirmedAdopts, setConfirmedAdopts] = useState({});
 
+
+
   const handleConfirmAdoption = async (adoptId, toUserId) => {
     const token = localStorage.getItem("accessToken");
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;

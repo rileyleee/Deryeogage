@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import DogDetail from "./DogDetail";
 import ChatRoomDetail from "./ChatRoomDetail";
 import Reservation from "../../components/Adopt/Reservation";
-import { useLocation } from "react-router-dom";
 import axios from "axios"; // axios import
 
 function ChatVideo() {
@@ -15,7 +14,9 @@ function ChatVideo() {
   const modalRef = useRef();
 
   const [isAuthor, setIsAuthor] = useState(false); // 작성자 여부 상태 추가
-  const userId = localStorage.getItem("userId"); // 현재 로그인된 사용자 ID 가져오기
+  const [isReserved, setIsReserved] = useState(false); // 예약 완료 상태 추가
+  const userId = localStorage.getItem("nickname"); // 현재 로그인된 사용자 nickname 가져오기
+
   useEffect(() => {
     // 글 작성자의 ID를 가져옵니다.
     // 이 부분은 실제 구현 방식에 따라 다를 수 있으며, 글 작성자의 ID를 어떻게 가져올지에 따라 변경됩니다.
@@ -30,7 +31,8 @@ function ChatVideo() {
             },
           }
         );
-        const authorId = response.data.data[0].userId; // 글 작성자의 ID를 가져옵니다. (데이터 구조에 따라 변경 필요)
+        console.log(response)
+        const authorId = response.data.data[0].userNickname; // 글 작성자의 ID를 가져옵니다. (데이터 구조에 따라 변경 필요)
         setIsAuthor(authorId === userId); // 글 작성자와 현재 사용자의 ID가 같은지 비교하여 상태 업데이트
       } catch (error) {
         console.error(error);
@@ -40,11 +42,15 @@ function ChatVideo() {
     fetchAuthorId();
   }, [boardId, userId]); // boardId와 userId가 변경되면 다시 실행
 
+
   const handleModalClick = (e) => {
     if (modalRef.current && modalRef.current.contains(e.target)) return; // 모달 내부 클릭이면 반환
     setShowReservationModal(false); // 모달 외부 클릭이면 모달 닫기
   };
-  console.log(boardId);
+
+  const handleReservationComplete = () => {
+    setIsReserved(true);
+  };
 
   return (
     <StyledContainer>
@@ -59,8 +65,8 @@ function ChatVideo() {
                 roomId={roomId}
                 boardId={boardId}
                 closeModal={() => setShowReservationModal(false)}
-              />{" "}
-              {/* closeModal prop 추가 */}
+                onReservationComplete={handleReservationComplete} // 예약 완료 콜백 추가
+              />
             </ModalContent>
           </Modal>
         </>
@@ -68,7 +74,7 @@ function ChatVideo() {
       {!isAuthor && ( // 작성자가 아닐 경우에만 버튼 표시
         <>
           <ModalButton onClick={() => setShowReservationModal(true)}>
-            예약하기
+            {isReserved ? "예약 수정하기" : "예약하기"} {/* 버튼 텍스트 변경 */}
           </ModalButton>
         </>
       )}
