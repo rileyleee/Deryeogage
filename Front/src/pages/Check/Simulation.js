@@ -23,6 +23,7 @@ import { SimulationNum, SimulationExistAtom, SimulationWalkingCnt, SimulationSta
  } from "../../recoil/SimulationAtom"
 import {useLocation} from "react-router-dom"
 import axios from 'axios';
+import GameTherapy from '../../components/Check/GameTherapy';
 
 function Simulation() {
   const location = useLocation()
@@ -167,7 +168,8 @@ function Simulation() {
     10 : <GameTreat handleMove={handleMove}/>,
     11 : <GameToy handleMove={handleMove}/>,
     12 : <GameQuiz handleMove={handleMove}/>,
-    13 : <GameEmergency handleMove={handleMove}/>
+    13 : <GameEmergency handleMove={handleMove}/>,
+    14 : <GameTherapy handleMove={handleMove}/>
     }
 
   // activatedNum에 따라서 GameStartfirst의 테두리 색을 지정

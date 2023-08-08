@@ -8,7 +8,8 @@ function AdoptTo() {
   const [adopts, setAdopts] = useState([]);
   const [showMissionModal, setShowMissionModal] = useState(false);
   const [selectedMissionId, setSelectedMissionId] = useState(null);
-  console.log("adopts", adopts)
+  console.log("=================adopts: ", adopts)
+
   const handleMissionClick = (missionId) => {
     setShowMissionModal(true);
     setSelectedMissionId(missionId);
@@ -38,19 +39,21 @@ function AdoptTo() {
     }
   };
 
-  const handleResponsibilityFeeReturn = async (adopts) => {
+  const handleResponsibilityFeeReturn = async (boardId) => {
+
     const token = localStorage.getItem("accessToken");
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     try {
       await axios.put(
         `${REACT_APP_API_URL}/postcosts/missioncomplete`,
-        { boardId: adopts }, // 요청 본문에 필요한 데이터를 넣으세요.
+        { boardId: boardId }, // 요청 본문에 필요한 데이터를 넣으세요.
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
+      console.log(adopts)
       fetchAdopts(); // 입양 목록을 다시 불러오기
     } catch (error) {
       console.error("Failed to return responsibility fee:", error);
@@ -76,6 +79,8 @@ function AdoptTo() {
           },
         }
       );
+      console.log("====================adoptTo:", response.data.data)
+      
       const adoptsWithBoardInfo = await Promise.all(
         response.data.data.map(async (adopt) => {
           const matchingBoard = boardResponse.data.data.find(
@@ -134,13 +139,13 @@ function AdoptTo() {
             <Link to={`/board/${adopt.boardId}`}>
               <Title>{adopt.boardInfo?.title}</Title>
             </Link>
-            <ConfirmButton onClick={() => handleConfirmAdoption(adopt.id)}>
+            <ConfirmButton onClick={() => handleConfirmAdoption(adopt.boardId)}>
               입양 확정하기
             </ConfirmButton>
             {adopt.status === "arrive" && (
               adopt.completedMissions === 4 ? (
                 <ResponsibilityButton
-                  onClick={() => handleResponsibilityFeeReturn(adopt.missionId)}
+                  onClick={() => handleResponsibilityFeeReturn(adopt.boardId)}
                 >
                   책임비 반환하기
                 </ResponsibilityButton>

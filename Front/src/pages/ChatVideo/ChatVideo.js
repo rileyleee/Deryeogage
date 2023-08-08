@@ -10,7 +10,7 @@ import VideoRoom from "./openvidu/VideoRoom";
 
 function ChatVideo() {
   const location = useLocation();
-  const { boardId } = location.state.data;
+  const { boardId } = location.state?.data || {};
   const { roomId } = useParams(); // URL에서 roomId 값을 얻음
   const [showReservationModal, setShowReservationModal] = useState(false);
   const modalRef = useRef();
