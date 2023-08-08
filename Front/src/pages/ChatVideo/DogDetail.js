@@ -86,6 +86,12 @@ function DogDetail(props) {
           {adoptData.board.health}
           <Span>소개</Span>
           {adoptData.board.introduction}
+          <FixedButton onClick={() => {
+            // 화상 채팅을 시작하면 showVideoRoom을 true로 설정
+            props.setShowVideoRoom(true);
+          }}>
+            화상채팅 열기
+          </FixedButton>
         </Container>
       ) : (
         <p>Loading...</p>
@@ -174,4 +180,21 @@ export const EditButton = styled(Link)`
   padding: 5px 10px;
   border-radius: 5px;
   text-decoration: none;
+`;
+
+const FixedButton = styled.button`
+// position: absolute;
+  right: 20px;
+  bottom: 20px;
+  padding: 10px 20px;
+  background-color: #007BFF;  // 버튼의 배경 색상입니다. 원하는 색으로 변경하세요.
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0056b3; // 호버 시의 배경 색상입니다.
+  }
 `;

@@ -62,33 +62,16 @@ function Header() {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/review">
-                입양후기
+              <a className="nav-link" aria-current="page" href="/checklist">
+              체크리스트
               </a>
             </li>
-            <li className="nav-item dropdown">
-              <S.ButtonWrapper
-                className="nav-link dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                진단하기
-              </S.ButtonWrapper>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="/simulations">
-                    시뮬레이션
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" onClick={checkUserCheckList}>
-                    체크리스트
-                  </a>
-                </li>
-                {/* 변경된 부분 */}
-              </ul>
+            <li className="nav-item">
+              <a className="nav-link" aria-current="page" href="/simulations">
+              시뮬레이션
+              </a>
             </li>
+
             {isLoggedIn ? ( // 토큰이 있으면 마이페이지 버튼을 보여줌
               <li className="nav-item">
                 <a className="nav-link" href="/profile">

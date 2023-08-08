@@ -5,47 +5,17 @@ import { Carousel } from "react-bootstrap";
 
 import styled from "styled-components";
 import ResultPaw from "./../../components/ResultPaw";
-import ReturnPrecosts from "../../components/Adopt/ReturnPreconsts";
 
 function AdoptBoardDetail() {
   const [precostsData, setPrecostsData] = useState(null);
-
-  const [showModal, setShowModal] = useState(false);
   const [adoptData, setAdoptData] = useState(null);
   const { boardId } = useParams();
   const navigate = useNavigate();
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
-  const handleReturnPrecosts = async () => {
-    try {
-      const token = localStorage.getItem("accessToken");
-      const response = await axios.put(
-        `${REACT_APP_API_URL}/precosts`,
-        { boardId: parseInt(boardId) },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.status === 200) {
-        console.log("환급받기 성공");
-        navigate("/adopt");
-      } else {
-        console.log("환급받기 실패");
-      }
-    } catch (error) {
-      console.error("환급받기 중 에러 발생:", error);
-    }
-    setShowModal(false); // 요청 후 모달 창을 닫습니다.
-  };
-
   // 사용자가 이 게시글을 찜했는지 여부를 저장하는 상태
   const [isFavorited, setIsFavorited] = useState(false);
 
-  const handleDeleteClick = () => {
-    setShowModal(true);
-  };
   // 찜하기 버튼을 누르면 실행되는 함수
   const handleFavorite = async () => {
     try {
@@ -131,9 +101,10 @@ function AdoptBoardDetail() {
           },
         });
         const filteredData = response.data.data.filter(
-          (item) => item.boardId === parseInt(boardId)
+          (item) => (item.boardId === parseInt(boardId)),
+          
         );
-        setPrecostsData(filteredData[0].returnYn); // Set the filtered data to the state
+        setPrecostsData(filteredData); // Set the filtered data to the state
         console.log("Filtered Precosts Data:", filteredData);
       } catch (error) {
         console.error("Failed to fetch Precosts data:", error);
@@ -148,6 +119,22 @@ function AdoptBoardDetail() {
   if (!adoptData) {
     return null; // or a loading component
   }
+
+  const handleDelete = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      await axios.delete(`${REACT_APP_API_URL}/boards/${boardId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // 삭제가 성공적으로 이루어지면, 사용자를 다른 페이지로 리다이렉트하거나 필요한 다른 작업을 수행합니다.
+      navigate("/adopt");
+    } catch (error) {
+      console.error(error);
+      // 필요에 따라 에러를 처리합니다.
+    }
+  };
 
   // 채팅 버튼이 보여져야 하는지 확인하는 함수
   const canChat = () => {
@@ -200,7 +187,7 @@ function AdoptBoardDetail() {
           {isFavorited ? "찜 해제하기" : "찜하기"}
         </FavoriteButton>
       )}
-      {isWriter() && (
+      {canChat() && (
         <ChatButton to="/adopt/chatlist">채팅방 목록보기</ChatButton>
       )}
       {canChat() && <Button onClick={handleChat}>채팅하기</Button>}
@@ -255,17 +242,7 @@ function AdoptBoardDetail() {
         <div>{adoptData.board.introduction}</div>
       </IntroductionBox>
 
-      {precostsData === null && isWriter() && (
-        <Button onClick={handleDeleteClick}>삭제</Button>
-      )}
-      {showModal && (
-        <ModalContainer>
-          <ModalContent>
-            <ReturnPrecosts onReturn={handleReturnPrecosts} />
-          </ModalContent>
-        </ModalContainer>
-      )}
-
+      {isWriter() && <Button onClick={handleDelete}>삭제</Button>}
       {isWriter() && (
         <Link to={`/adopt/edit/${boardId}`}>
           <button>수정하기</button>
@@ -380,23 +357,4 @@ export const IntroductionBox = styled.div`
   border-radius: 30px;
   display: flex;
   flex-direction: column; // 수직 방향으로 내용을 정렬합니다.
-`;
-
-const ModalContainer = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ModalContent = styled.div`
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;

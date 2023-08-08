@@ -1,88 +1,101 @@
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
-import React, { useState, useEffect } from "react"; // useEffect 추가
+import React, { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios"; // axios import
+import axios from "axios";
 import Postcost from "./Postcost";
 
-function Reservation({ roomId, boardId, closeModal }) {
-// 예약 정보를 저장할 상태 추가
-const [reservationInfo, setReservationInfo] = useState(null);
-const [startDate, setStartDate] = useState(new Date());
-const [showPostCost, setShowPostCost] = useState(false);
+function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
+  const [reservationScheduled, setReservationScheduled] = useState(null);
+  const [startDate, setStartDate] = useState(new Date());
+  const [scheduledDate, setScheduledDate] = useState(null);
+  const [showPostCost, setShowPostCost] = useState(false);
+  const [boardInfo, setBoardInfo] = useState({
+    boardId: null,
+    user1: null,
+    user2: null
+  });
 
   const handleConfirmClick = () => {
-    setShowPostCost(true); // 예약 확정하기 버튼을 클릭하면 Postcost 컴포넌트를 보여준다.
+    setShowPostCost(true);
   };
 
   const handlePostCostClick = async () => {
     const token = localStorage.getItem("accessToken");
-    // const scheduledDate = startDate.toISOString().split('T')[0];
     const scheduledDate = startDate.toISOString();
-    const data = { scheduledDate };
-    console.log(scheduledDate)
+    const data = {
+      boardId: boardInfo.boardId,
+      scheduledDate,
+      fromUserId: boardInfo.user1,
+      toUserId: boardInfo.user2,
+    };
 
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL}/chat/room/${roomId}/schedule`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/adopts`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log("Date sent successfully");
       setShowPostCost(false);
       closeModal();
+      onReservationComplete(); // 예약 완료 콜백 호출
     } catch (error) {
-      console.l(error)
+      console.log(error);
       console.error("Failed to send date:", error);
     }
   };
 
-  // roomId가 변경될 때마다 GET 요청을 수행하는 useEffect 추가
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
-    const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     axios
-      .get(`${REACT_APP_API_URL}/chat/${roomId}`, {
+      .get(`${REACT_APP_API_URL}/chat/room/info/${roomId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((response) => {
-        console.log(response)
-        // 응답을 받아서 상태에 저장
-        // setReservationInfo(response.data);
+        const { boardId, scheduledDate, user1, user2 } = response.data.data;
+        setScheduledDate(new Date(scheduledDate));
+        setReservationScheduled(!!scheduledDate);
+        setBoardInfo({ boardId, user1, user2 });
+        console.log(response);
       })
       .catch((error) => {
         console.error("Failed to get reservation info:", error);
       });
-  }, [roomId]); // roomId가 변경될 때마다 요청
+  }, [roomId]);
 
   return (
     <ReservationContainer>
-      {/* 예약 정보를 화면에 표시 (선택사항) */}
-      {reservationInfo && <div>예약 정보: {reservationInfo.someField}</div>}
       {showPostCost ? (
         <Postcost roomId={roomId} boardId={boardId} goToReservation={handlePostCostClick} />
       ) : (
         <>
           <h2>예약하기</h2>
+          {scheduledDate ? (
+            <p>예약된 날짜: {scheduledDate.toLocaleDateString()}</p>
+          ) : null}
           <div>
-            <DatePicker
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              dateFormat="yyyy-MM-dd"
-              inline
-            />
+            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy-MM-dd" inline />
           </div>
-          <SelectedDate>선택한 날짜: {startDate.toLocaleDateString()}</SelectedDate>
-          <ConfirmButton onClick={handleConfirmClick}>예약 확정하기</ConfirmButton>
+          <SelectedDate>
+            선택한 날짜: {startDate.toLocaleDateString()}
+          </SelectedDate>
+          <ConfirmButton onClick={handleConfirmClick}>
+            {reservationScheduled ? "수정하기" : "예약 등록하기"}
+          </ConfirmButton>
         </>
       )}
     </ReservationContainer>
   );
 }
-
 
 export default Reservation;
 

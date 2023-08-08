@@ -28,7 +28,7 @@ import ReviewBoardDetail from "./pages/Review/ReviewBoardDetail";
 import Simulation from "./pages/Check/Simulation";
 import NoSimulation from "./pages/Check/NoSimulation"
 import Survey from "./pages/User/Survey";
-import Mission from "./pages/User/Misson";
+
 import SimulationEnd from "./pages/Check/SimulationEnd"
 
 // Check
@@ -88,7 +88,6 @@ function App() {
             <Route path="/checklist/result" element={<CheckListResult />} />
 
             {/* 미션페이지 */}
-            <Route path="/mission" element={<Mission />} />
             <Route path="/mission/:" element={<CheckList />} />
 
             {/* 입양후기게시판 */}
