@@ -11,3 +11,13 @@ export const GameStartfirst = styled.div`
         height: 80vh;
     }
 `
+export const CenterButton = styled.button`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20vw;
+  height: 15vh;
+  background-color: white;
+  border: 2px #FF914D solid;
+`;

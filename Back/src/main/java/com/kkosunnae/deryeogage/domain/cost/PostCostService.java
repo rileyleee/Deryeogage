@@ -1,9 +1,10 @@
 package com.kkosunnae.deryeogage.domain.cost;
 
-import com.kkosunnae.deryeogage.domain.adopt.AdoptDto;
 import com.kkosunnae.deryeogage.domain.adopt.AdoptEntity;
 import com.kkosunnae.deryeogage.domain.adopt.AdoptRepository;
 import com.kkosunnae.deryeogage.domain.board.BoardRepository;
+import com.kkosunnae.deryeogage.domain.mission.MissionEntity;
+import com.kkosunnae.deryeogage.domain.mission.MissionRepository;
 import com.kkosunnae.deryeogage.domain.mission.MissionService;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class PostCostService {
     private final PostCostRepository postCostRepository;
     private final MissionService missionService;
     private final AdoptRepository adoptRepository;
+    private final MissionRepository missionRepository;
 
 
     // 후 책임비 납부하기
@@ -73,16 +75,22 @@ public class PostCostService {
         AdoptEntity adoptEntity = adoptRepository.findByBoardId(boardId)
                 .orElseThrow(() -> new NoSuchElementException("해당 게시물의 입양내역이 없습니다. boardId: " + boardId));
 
-        AdoptDto adoptDto = adoptEntity.toDto();
+        MissionEntity missionEntity = missionRepository.findByAdoptId(adoptEntity.getId())
+                .orElseThrow(()-> new NoSuchElementException("해당 입양 내역의 아이디와 일치하는 미션 내역이 없습니다.adoptId: " + adoptEntity.getId()));
+
+        Integer missionId = missionEntity.getId();
 
         //미션 완료 여부 확인한 후
-        if (missionService.missionCheck(adoptDto.getMissionId())) {
+        if (missionService.missionCheck(missionId)) {
             //반환처리
             postCostDto.setReturnYn(true);
             // 반환 날짜 담고
             postCostDto.setReturnDate(LocalDateTime.now());
 
-            PostCostEntity postCost = getPostCost(userId, boardId).toEntity(userRepository, boardRepository);
+            // 기존 PostCostEntity를 조회하여 업데이트
+            PostCostEntity postCost = postCostRepository.findByUserIdAndBoardId(userId, boardId)
+                    .orElseThrow(() -> new NoSuchElementException("해당 사용자와 게시물에 대한 책임비 정보가 없습니다."));
+
             postCost.update(postCostDto);
             postCostRepository.save(postCost); // DB에 반영
 

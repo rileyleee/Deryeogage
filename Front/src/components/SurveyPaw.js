@@ -6,11 +6,16 @@ import styled from "styled-components";
 
 const ARRAY = [0, 1, 2, 3, 4];
 
-function SurveyPaw({ title, value, onSelect, initial }) {
+function SurveyPaw({ title, onSelect, initial }) {
   const [selectedIdx, setSelectedIdx] = useState(initial - 1);
+  console.log(selectedIdx)
+  console.log(initial)
+  console.log(title)
+  console.log(onSelect)
 
   useEffect(() => {
     setSelectedIdx(initial - 1);
+    console.log(selectedIdx)
   }, [initial]);
 
   const handleStarClick = (index) => {
@@ -31,6 +36,7 @@ function SurveyPaw({ title, value, onSelect, initial }) {
               className={selectedIdx >= idx ? "orangePaw" : ""}
             />
           ))}
+          
         </p>
       </Paws>
     </Wrap>

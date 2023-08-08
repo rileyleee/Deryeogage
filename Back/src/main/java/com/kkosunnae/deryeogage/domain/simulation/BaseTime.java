@@ -18,7 +18,11 @@ public abstract class BaseTime {
     @Column(name = "start_time",updatable = false)
     private LocalDateTime startTime;
 
-    @LastModifiedDate
-    @Column(name = "end_time",updatable = true)
+    @CreatedDate
+    @Column(name = "end_time",updatable = false)
     private LocalDateTime endTime;
+
+    @LastModifiedDate
+    @Column(name = "last_time",updatable = true)
+    private LocalDateTime lastTime;
 }

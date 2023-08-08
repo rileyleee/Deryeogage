@@ -16,7 +16,9 @@ import GameTreat from "../../components/Check/GameTreat"
 import GameToy from "../../components/Check/GameToy"
 import GameDeath from "../../components/Check/GameDeath"
 import GameQuiz from "../../components/Check/GameQuiz"
+import GameEmergency from "../../components/Check/GameEmergency"
 import {useRecoilValue, useRecoilState} from "recoil"
+import { useNavigate } from "react-router-dom";
 import { SimulationNum, SimulationExistAtom, SimulationWalkingCnt, SimulationStartAtom, SimulationHp
  } from "../../recoil/SimulationAtom"
 import {useLocation} from "react-router-dom"
@@ -37,6 +39,8 @@ function Simulation() {
     const [isDead, setIsDead] = useState(false);
     const [hpPercentage, setHpPercentage] = useState(null) // hp값을 계산해야 되니까 따로 빼놓는거임
     console.log(hpPercentage)
+    const navigate = useNavigate();
+    const [isButtonVisible, setButtonVisible] = useState(false);
 
     useEffect(() => {
       // 처음 로드할 때 localStorage에서 hpPercentage를 가져와서 상태를 설정합니다.
@@ -78,11 +82,6 @@ function Simulation() {
           if (newHours >= 24) {
             newHours -= 24;
           }
-          // // 업데이트된 시간을 localStorage에 저장합니다.
-          // localStorage.setItem('timeDifference', JSON.stringify({
-          //   hours: newHours,
-          //   minutes: newMinutes
-          // }));
     
           return {
             hours: newHours, 
@@ -91,7 +90,7 @@ function Simulation() {
         });
     
         hpTimer += 1;
-        if (hpTimer >= 1) { // 1분마다 HP 감소
+        if (hpTimer >= 10) { // 1분마다 HP 감소
           setHpPercentage((prevHpPercentage) => {
             const newHpPercentage = prevHpPercentage > 0 ? prevHpPercentage - 1 : 0; // 값이 바뀌면 hpPercentage도 업데이트
             setSimulationExistValue(prevState => ({ // simulationExistValue값의 health도 업데이트
@@ -113,12 +112,6 @@ function Simulation() {
       if (simulationExistValue.health !== undefined) {
         localStorage.setItem('hpPercentage', simulationExistValue.health); // 값이 바뀌었으니 로컬값도 바꿔줘야지
       }
-      // if (simulationExistValue.train !== undefined) {
-      //   localStorage.setItem('train', simulationExistValue.train);
-      // }
-      // if (simulationExistValue.requirement !== undefined) {
-      //   localStorage.setItem('requirement', simulationExistValue.requirement);
-      // }
     }
     
     localStorage.setItem('timeDifference', JSON.stringify(timeDifference)); // 값이 변했으니까 로컬에 다시 저장
@@ -173,8 +166,9 @@ function Simulation() {
     9 : <GamePoop handleMove={handleMove}/>,
     10 : <GameTreat handleMove={handleMove}/>,
     11 : <GameToy handleMove={handleMove}/>,
-    12 : <GameQuiz handleMove={handleMove}/>
-  }
+    12 : <GameQuiz handleMove={handleMove}/>,
+    13 : <GameEmergency handleMove={handleMove}/>
+    }
 
   // activatedNum에 따라서 GameStartfirst의 테두리 색을 지정
   const getBorderColor = (num) => {
@@ -186,7 +180,9 @@ function Simulation() {
     }
   }
 
-
+  const handleClick = () => {
+    navigate("/simulations/end")
+  }
 
   
 //  5초마다 put 되도록
@@ -230,23 +226,34 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     }
   }, [simulationExistValue.health]);
   // 24시간이 되면 end를 true로!
+  useEffect(() => {
+    if (!localStorage.getItem('endTime')) {
+      return; // endTime이 없으면 종료
+    }
   
-//   useEffect(() => {
-//     // 시간이 문자열 형태로 오므로 이를 비교 가능한 형태로 변환합니다.
-//     const currentTime = `${timeDifference.hours.toString().padStart(2, '0')}:${timeDifference.minutes.toString().padStart(2, '0')}`;
-//     const endTime = `${Number(simulationExistValue.endTime.substr(11, 2))}:${Number(simulationExistValue.endTime.substr(14, 2))}`;
-//     // 현재 시간과 종료 시간이 같은지 비교합니다.
-//     if (currentTime === endTime) {
-//         // 만약 같다면 simulationExistValue의 end를 true로 설정합니다.
-//         setSimulationExistValue(prevState => ({
-//             ...prevState,
-//             end: true,
-//         }));
-//     }
-// }, [timeDifference, simulationExistValue.endTime, setSimulationExistValue]);
+    const endTime = new Date(localStorage.getItem('endTime'));
+    const now = new Date();
+    console.log(endTime, now)
+  
+    // 24시간 차이 계산
+    const differenceInMilliseconds = endTime - now;
+    const differenceInHours = differenceInMilliseconds / 1000 / 60 / 60;
+  
+    // 만약 24시간 차이가 있다면 simulationExistValue의 end를 true로 설정
+    if (differenceInHours <= 0) {
+      setSimulationExistValue(prevState => ({
+        ...prevState,
+        end: true,
+      }));
+      setButtonVisible(true)
+      localStorage.setItem('end', "true")
+      
+    }
+  }, [timeDifference, simulationExistValue.endTime, setSimulationExistValue]);
+  
 
   return (
-    <div className="container" id="Simulation">
+    <div className="container" id="Simulation" style={{ position: 'relative' }}>
       <GameText />
       <div className="row">
           <div className="col-1"></div>
@@ -255,6 +262,10 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
               <div className="row">
                 <div className="col-1"></div>
                   {isDead ? <GameDeath /> : gamePages[activatedNum]}
+                  {isButtonVisible && <S.CenterButton onClick={handleClick}>
+                    <h3 style={{fontSize: 'bold'}}>게임 종료</h3>
+                    <p>{'>'} 결과 보러가기 {'<'}</p>
+                    </S.CenterButton>}
                 <div className="col-1"></div>
               </div>
             </div>

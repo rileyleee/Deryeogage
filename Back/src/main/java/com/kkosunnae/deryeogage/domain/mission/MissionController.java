@@ -41,13 +41,11 @@ public class MissionController {
     }
 
     // 한 개의 입양내역 중 상세 미션 수행 삭제 -> 사진 삭제
-    @DeleteMapping("/{missionId}/{urlId}")
-    public Response<Object> registOne(MissionDto missionDto, @PathVariable int urlId){
-
+    @PutMapping("/{missionId}/{urlId}")
+    public Response<Object> deleteOne(@RequestBody MissionDto missionDto, @PathVariable int urlId){
         missionService.deleteOne(missionDto, urlId);
 
         return Response.success(null);
     }
-
     // 미션 자체의 CUD는 입양내역 CRUD에 의해 부수적으로 발생하는 것임에 따라 controller에서 만들지 않음
 }

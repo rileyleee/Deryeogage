@@ -1,3 +1,4 @@
+
 package com.kkosunnae.deryeogage.global.util;
 
 import com.google.gson.JsonElement;
@@ -83,8 +84,8 @@ public class JwtUtil {
         SecretKey secretKey = Keys.hmacShaKeyFor(SK.getBytes(StandardCharsets.UTF_8));
 
         try {
-         Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
-         return true;
+            Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+            return true;
         } catch (ExpiredJwtException e) {
             throw new RuntimeException("Expired JWT token: 토큰 만료");
         } catch (UnsupportedJwtException e) {

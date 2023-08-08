@@ -1,55 +1,124 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import styled from "styled-components"; // styled-components를 사용한 스타일링
-import Mission from "../../pages/User/Misson";
+import styled from "styled-components";
+import MissionList from "./MissionList";
+import { Link } from "react-router-dom";
 
 function AdoptTo() {
   const [adopts, setAdopts] = useState([]);
-  const [showMissionModal, setShowMissionModal] = useState(false); // 모달의 상태를 관리
-  const handleMissionClick = () => {
-    setShowMissionModal(true); // 모달을 보이게 함
+  const [showMissionModal, setShowMissionModal] = useState(false);
+  const [selectedMissionId, setSelectedMissionId] = useState(null);
+  console.log("adopts", adopts)
+  const handleMissionClick = (missionId) => {
+    setShowMissionModal(true);
+    setSelectedMissionId(missionId);
+    console.log(missionId)
   };
 
   const closeModal = () => {
-    setShowMissionModal(false); // 모달을 숨김
+    setShowMissionModal(false);
   };
-  useEffect(() => {
-    const fetchAdopts = async () => {
-      const token = localStorage.getItem("accessToken");
-      const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
-      try {
-        const response = await axios.get(`${REACT_APP_API_URL}/adopts/to`, {
+  const handleConfirmAdoption = async (adoptId) => {
+    const token = localStorage.getItem("accessToken");
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+    try {
+      await axios.put(
+        `${REACT_APP_API_URL}/adopts/toconfirm`,
+        { id: adoptId },
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-        console.log("입양내역:", response);
-        const adoptRequests = response.data.data.map(async (adopt) => {
-          const boardResponse = await axios.get(
-            `${REACT_APP_API_URL}/boards/list`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
+        }
+      );
+      fetchAdopts(); // 입양 목록을 다시 불러오기
+    } catch (error) {
+      console.error("Failed to confirm adoption:", error);
+    }
+  };
+
+  const handleResponsibilityFeeReturn = async (adopts) => {
+    const token = localStorage.getItem("accessToken");
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+    try {
+      await axios.put(
+        `${REACT_APP_API_URL}/postcosts/missioncomplete`,
+        { boardId: adopts }, // 요청 본문에 필요한 데이터를 넣으세요.
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchAdopts(); // 입양 목록을 다시 불러오기
+    } catch (error) {
+      console.error("Failed to return responsibility fee:", error);
+    }
+  };
+
+  const fetchAdopts = async () => {
+    const token = localStorage.getItem("accessToken");
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
+    try {
+      const response = await axios.get(`${REACT_APP_API_URL}/adopts/to`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const boardResponse = await axios.get(
+        `${REACT_APP_API_URL}/boards/list`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const adoptsWithBoardInfo = await Promise.all(
+        response.data.data.map(async (adopt) => {
+          const matchingBoard = boardResponse.data.data.find(
+            (board) => board.id === adopt.boardId
           );
-          console.log(boardResponse);
+    
+          let completedMissions = 0;
+          if (adopt.missionId !== null) { // missionId가 null이 아닌 경우에만 요청
+            // 미션 정보를 가져옴
+            const missionResponse = await axios.get(
+              `${REACT_APP_API_URL}/missions/${adopt.missionId}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+    
+            // 완료된 미션 수를 계산
+            completedMissions = [
+              missionResponse.data.data.missionUrl1,
+              missionResponse.data.data.missionUrl2,
+              missionResponse.data.data.missionUrl3,
+              missionResponse.data.data.missionUrl4,
+            ].filter((url) => url !== null).length; // null이 아닌 갯수를 세서 완료된 미션의 수를 계산
+          }
+    
           return {
             ...adopt,
-            boardInfo: boardResponse.data.data[0],
-            imageUrl: Object.values(boardResponse.data.data[1])[0],
+            boardInfo: matchingBoard,
+            imageUrl: matchingBoard?.fileList[0],
+            completedMissions, // 완료된 미션 수
           };
-        });
+        })
+      );
 
-        // 여러 개의 비동기 요청을 병렬로 처리
-        const adoptsWithBoardInfo = await Promise.all(adoptRequests);
-        setAdopts(adoptsWithBoardInfo);
-      } catch (error) {
-        console.error("An error occurred while fetching the data:", error);
-      }
-    };
+      setAdopts(adoptsWithBoardInfo);
+    } catch (error) {
+      console.error("An error occurred while fetching the data:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchAdopts();
   }, []);
 
@@ -60,18 +129,38 @@ function AdoptTo() {
         <p>입양 내역이 없습니다.</p>
       ) : (
         adopts.map((adopt, index) => (
-          <div key={index}>
-            {/* 기존 정보 출력... */}
-            <MissionButton onClick={handleMissionClick}>
-              입양 미션하기
-            </MissionButton>
-          </div>
+          <AdoptToCard key={index}>
+            <Image src={adopt.imageUrl} alt="board" />
+            <Link to={`/board/${adopt.boardId}`}>
+              <Title>{adopt.boardInfo?.title}</Title>
+            </Link>
+            <ConfirmButton onClick={() => handleConfirmAdoption(adopt.id)}>
+              입양 확정하기
+            </ConfirmButton>
+            {adopt.status === "arrive" && (
+              adopt.completedMissions === 4 ? (
+                <ResponsibilityButton
+                  onClick={() => handleResponsibilityFeeReturn(adopt.missionId)}
+                >
+                  책임비 반환하기
+                </ResponsibilityButton>
+              ) : (
+                <MissionButton
+                  onClick={() => handleMissionClick(adopt.missionId)}
+                >
+                  입양 미션하기 ({adopt.completedMissions}/4)
+                </MissionButton>
+              )
+            )}
+          </AdoptToCard>
         ))
       )}
       {showMissionModal && (
         <MissionModal>
-          <Mission />
-          <CloseButton onClick={closeModal}>닫기</CloseButton>
+          <MissionContent>
+            <MissionList missionId={selectedMissionId} />
+            <CloseButton onClick={closeModal}>닫기</CloseButton>
+          </MissionContent>
         </MissionModal>
       )}
     </div>
@@ -115,4 +204,46 @@ const CloseButton = styled.button`
   &:hover {
     background-color: #da190b;
   }
+`;
+
+const MissionContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ConfirmButton = styled.button`
+  background-color: #ff5722;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    background-color: #e64a19;
+  }
+`;
+
+const AdoptToCard = styled.div`
+  display: flex;
+  align-items: center; // 세로 정렬
+  margin: 10px 0;
+`;
+
+const Image = styled.img`
+  width: 100px;
+  height: 100px;
+  object-fit: cover; // 이미지 비율 유지
+  margin-right: 20px; // 우측 여백
+`;
+const Title = styled.h3`
+  text-decoration: none; // 밑줄 표시
+  cursor: pointer; // 포인터 마우스 커서
+`;
+
+const ResponsibilityButton = styled.button`
+  // 여기에 필요한 스타일을 적용하세요.
 `;
