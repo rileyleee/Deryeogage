@@ -1,5 +1,5 @@
 // 게임 시작 화면
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as S from "../../styled/Check/GameBasicScreen.style"
 import GameMenu from "./GameMenu"
@@ -31,15 +31,14 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
         setRequirement(localStorage.getItem('requirement'));
         setHpPercentage(localStorage.getItem('hpPercentage'))
         setCost(localStorage.getItem('cost'))
-        // setPetname(localStorage.getItem('petname'))
-        // setBackground(localStorage.getItem('background'))
-        // setPetType(localStorage.getItem('petType'))
       }, []);
-    const move = (hp, pay) => {
+
+      const move = (hp, pay) => {
         setSimulationExistValue(prevState => {
-            const newHealth = parseInt(prevState.health) + hp;
-            const newCost = Math.max(parseInt(prevState.cost) - pay, 0); // 
-            
+            let newHealth = parseInt(prevState.health) + hp;
+            newHealth = Math.min(newHealth, 100); // health가 100을 넘지 않도록 함
+            const newCost = Math.max(parseInt(prevState.cost) - pay, 0);
+    
             return {
                 ...prevState,
                 health: newHealth,
@@ -55,20 +54,20 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
             move(5, 1000)
             setSimulationExistValue(prevState => ({
                 ...prevState,
-                requirement: (parseInt(simulationExistValue.requirement)+10).toString().padStart(4, '0')
+                requirement: (parseInt(simulationExistValue.requirement)+10).toString().padStart(5, '0')
               }));
             setHpPercentage(simulationExistValue.health)
             setCost(simulationExistValue.cost)
-              localStorage.setItem('requirement', simulationExistValue.requirement);
+            //   localStorage.setItem('requirement', simulationExistValue.requirement);
         } else if (num === 8) { // 식사
             move(20, 2000)
             setSimulationExistValue(prevState => ({
                 ...prevState,
-                requirement: (parseInt(simulationExistValue.requirement)+1000).toString().padStart(4, '0')
+                requirement: (parseInt(simulationExistValue.requirement)+1000).toString().padStart(5, '0')
               }));
               setHpPercentage(simulationExistValue.health)
               setCost(simulationExistValue.cost)
-              localStorage.setItem('requirement', simulationExistValue.requirement);
+            //   localStorage.setItem('requirement', simulationExistValue.requirement);
         } else if (num === 9) { // 배변
             move(5, 500)
             setHpPercentage(simulationExistValue.health)
@@ -77,83 +76,134 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
             move(10, 1000)
             setSimulationExistValue(prevState => ({
                 ...prevState,
-                requirement: (parseInt(simulationExistValue.requirement)+100).toString().padStart(4, '0')
+                requirement: (parseInt(simulationExistValue.requirement)+100).toString().padStart(5, '0')
               }));
               setHpPercentage(simulationExistValue.health)
               setCost(simulationExistValue.cost)
-              localStorage.setItem('requirement', simulationExistValue.requirement);
+              
+            //   localStorage.setItem('requirement', simulationExistValue.requirement);
         } else if (num === 11) { // 장난감
-            move(5, 500)
+            move(5, 300000)
             setSimulationExistValue(prevState => ({
                 ...prevState,
-                requirement: (parseInt(simulationExistValue.requirement)+1).toString().padStart(4, '0')
+                requirement: (parseInt(simulationExistValue.requirement)+1).toString().padStart(5, '0')
               }));
               setHpPercentage(simulationExistValue.health)
               setCost(simulationExistValue.cost)
-              localStorage.setItem('requirement', simulationExistValue.requirement);
+              setReq4Count(req4Count + 1)
+            //   localStorage.setItem('requirement', simulationExistValue.requirement);
+        } else if (num === 13) { // 응급상황
+            move(0, 100000)
+            setSimulationExistValue(prevState => ({
+                ...prevState,
+                requirement: (parseInt(simulationExistValue.requirement)+10000).toString().padStart(5, '0')
+              }));
+              setCost(simulationExistValue.cost)
+              setEmergency(emergency+1)
+            //   localStorage.setItem('requirement', simulationExistValue.requirement);
         }
     }
     useEffect(() => {
         localStorage.setItem('hpPercentage', simulationExistValue.health);
         localStorage.setItem('cost', simulationExistValue.cost);
+        localStorage.setItem('requirement', simulationExistValue.requirement);
         }
       , [simulationExistValue]);
 
       const [showRandomImage, setShowRandomImage] = useState(null); // 어떤 이미지 보여줄건지
       const [requirementNum, setRequirementNum] = useState(0); // 요구사항 컴포넌트 번호
       const [isImageVisible, setIsImageVisible] = useState(false); // 이미지 보여줄건지 말건지
-      const [req4Count, setReq4Count] = useState(0); // "assets/things/requirement4.png"의 출현 횟수
-      const [emergency, setEmergency] = useState(0) // 응급상황 횟수
+      const [req4Count, setReq4Count] = useState(parseInt(simulationExistValue.requirement.substr(4, 1))); // "assets/things/requirement4.png"의 출현 횟수
+      const [emergency, setEmergency] = useState(parseInt(simulationExistValue.requirement.substr(0, 1))) // 응급상황 횟수
+      console.log(emergency, req4Count, requirementNum)
+    
 
-    useEffect(() => {
-    const currentHour = new Date().getHours();
-    let matchedImage = null;
-    let matchedNum = 0;
-
-    const updatedImages = requirementImages.map((img) => {
-        // 시간 범위 내에 들고, check=0인 이미지
-        const matchedTimeRange = img.timeRanges.find(
-        (range) => currentHour >= range.startTime && currentHour < range.endTime && range.check === 0
-        );
-        if (matchedTimeRange) {
-        matchedImage = img.image;
-        matchedNum = img.num;
-        const updatedTimeRanges = img.timeRanges.map((range) =>
-            range.startTime === matchedTimeRange.startTime && range.endTime === matchedTimeRange.endTime
-            ? { ...range, check: 1 } // check 1로 바꿔주기
-            : range
-        );
-        return { ...img, timeRanges: updatedTimeRanges }; // 새로 만든 객체 리턴
+      const getPayValue = (requirementNum) => {
+        switch (requirementNum) {
+          case 7: return 1000;
+          case 8: return 2000;
+          case 9: return 500;
+          case 10: return 1000;
+          case 11: return 300000;
+          case 13: return 100000;
+          default: return 0;
         }
-        return img;
-    });
+      }
 
-    setRequirementImages(updatedImages);
-    if (matchedImage) {
-        setShowRandomImage(matchedImage); // 현재 시간대에 해당하는 이미지 설정
-        setRequirementNum(matchedNum);
-        setIsImageVisible(!!matchedImage); // showRandomImage가 존재하면 이미지를 보이도록 설정
-    }
-    // 만약 matchedImage가 없고, "assets/things/requirement4.png"의 출현 횟수가 8 미만이면
-    // 해당 이미지를 보여준다
-    else if (req4Count < 8 && Math.random() < 0.5) { // 50%의 확률로 이미지가 보이게 설정, 확률은 조정 가능
-        setShowRandomImage("assets/things/requirement4.png");
-        setRequirementNum(11);
-        setIsImageVisible(true);
-        setReq4Count(req4Count + 1); // 출현 횟수 증가
-    }
-
-    // 이미지가 존재하면, 60초 후에 이미지를 사라지게 함
-    if (matchedImage || req4Count < 8) {
-        const timeoutId = setTimeout(() => {
-        setIsImageVisible(false);
-        }, 10 * 1000); // 60초 후에 실행
-        return () => clearTimeout(timeoutId); // useEffect의 cleanup 함수에서 setTimeout을 clear함
-    }
-    }, []);
-
+    const currentPayValue = getPayValue(requirementNum);
+    console.log(currentPayValue)
     
+    // 60초동안 클릭 안하면 -30을 위한
+    const requirementNumRef = useRef(0);
+    useEffect(() => {
+        requirementNumRef.current = requirementNum; // 매번 업데이트 될 때마다 현재 값을 ref에 저장
+      }, [requirementNum]);
     
+    useEffect(() => {
+        const currentHour = new Date().getHours();
+        let matchedImage = null;
+        let matchedNum = 0;
+      
+        const updatedImages = requirementImages.map((img) => {
+          // 시간 범위 내에 들고, check=0인 이미지
+          const matchedTimeRange = img.timeRanges.find(
+            (range) => currentHour >= range.startTime && currentHour < range.endTime && range.check === 0
+          );
+          if (matchedTimeRange) {
+            matchedImage = img.image;
+            matchedNum = img.num;
+            const updatedTimeRanges = img.timeRanges.map((range) =>
+              range.startTime === matchedTimeRange.startTime && range.endTime === matchedTimeRange.endTime
+                ? { ...range, check: 1 } // check 1로 바꿔주기
+                : range
+            );
+            return { ...img, timeRanges: updatedTimeRanges }; // 새로 만든 객체 리턴
+          }
+          return img;
+        });
+      
+        setRequirementImages(updatedImages);
+        if (matchedImage) {
+          setShowRandomImage(matchedImage); // 현재 시간대에 해당하는 이미지 설정
+          setRequirementNum(matchedNum);
+          setIsImageVisible(!!matchedImage); // showRandomImage가 존재하면 이미지를 보이도록 설정
+        }
+        // 만약 matchedImage가 없고, "assets/things/requirement4.png"의 출현 횟수가 8 미만이면
+        // 해당 이미지를 보여준다
+        else if (req4Count < 8 && Math.random() < 0.5) { // 50%의 확률로 이미지가 보이게 설정, 확률은 조정 가능
+          setShowRandomImage("assets/things/requirement4.png");
+          setRequirementNum(11);
+          setIsImageVisible(true);
+        }
+        else if (emergency < 2 && Math.random() < 0.5) {
+          setShowRandomImage("assets/things/sick.png");
+          setRequirementNum(13);
+          setIsImageVisible(true);
+        }
+      
+        // 이미지가 존재하면, 60초 후에 이미지를 사라지게 함
+        if (matchedImage || req4Count < 8 || emergency < 2) {
+            const timeoutId = setTimeout(() => {
+              console.log(requirementNumRef.current) // ref의 현재 값을 출력
+              if (requirementNumRef.current === 13) {
+                  console.log("작동 되니?");
+                setSimulationExistValue(prevState => {
+                  let newHealth = Math.max(parseInt(prevState.health) - 30, 0);
+                  return {
+                    ...prevState,
+                    health: newHealth,
+                    requirement: (parseInt(simulationExistValue.requirement)+10000).toString().padStart(5, '0')
+                  };
+                });
+              }
+              setIsImageVisible(false);
+            }, 60 * 1000);
+        
+            return () => clearTimeout(timeoutId); // useEffect의 cleanup 함수에서 setTimeout을 clear함
+          }
+        }, []);
+      
+    // 배변
       const handleImageClick = () => {
         if (isImageVisible) {
           setIsImageVisible(false)
@@ -174,7 +224,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
           setShowRandomImage(nextImage);  // nextImage에 해당하는 이미지 설정
           setIsImageVisible(true);  // 변경된 이미지를 보이도록 설정
           setNextImage(null);  // nextImage 상태를 초기화
-        }, 1 * 10 * 1000);  // 3분 후에 실행
+        }, 3 * 60 * 1000);  // 3분 후에 실행
     
         return () => clearTimeout(timeoutId);  // useEffect의 cleanup 함수에서 setTimeout을 clear함
       }
@@ -192,14 +242,17 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                 <br />
                 <GameBtn 
                     className="orange"
-                    data-bs-toggle={walking >= 3 ? "modal" : (simulationExistValue.cost === "0" ? "modal" : "")}
-                    data-bs-target={walking >= 3 ? "#exampleModal2" : (simulationExistValue.cost === "0" ? "#exampleModal3" : "")}
-                    onClick={() => {
-                        if (walking < 3) {
-                        setHandleMove(7);
+                    data-bs-toggle={walking >= 3 ? "modal" : (simulationExistValue.cost < currentPayValue ? "modal" : "")}
+                    data-bs-target={walking >= 3 ? "#exampleModal2" : (simulationExistValue.cost < currentPayValue ? "#exampleModal4" : "")}
+                    onClick={(e) => {
+                        if (walking >= 3 || parseInt(simulationExistValue.cost) < currentPayValue) {
+                            e.preventDefault(); // 클릭 동작 막기
+                            // 조건에 따라 필요한 모달 띄우는 코드 (이미 data-bs-toggle 및 data-bs-target 속성을 사용하고 있으므로 별도 처리는 필요 없을 수 있음)
+                        } else {
+                            setHandleMove(7);
                         }
                     }}
-                    >
+                >
                     산책하러 가기
                 </GameBtn>
                 <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -216,19 +269,6 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                         </div>
                     </div>
                 </div>
-                <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-sm modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">산책 횟수 제한</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                돈이 없습니다!!
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div>
                 <GameBtn className="orange" as="div">{simulationExistValue.petName}네 집</GameBtn>
@@ -237,22 +277,24 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                 <div className="d-flex flex-column">
                     <GameMenu borderColor="#FF914D" time={props.time}/>
                     <div className="d-flex flex-column align-items-end">
-                    <GameBtn className="orange" data-bs-toggle="modal" data-bs-target="#exampleModal">가격표 보기</GameBtn>
+                    <GameBtn className="orange" data-bs-toggle="modal" data-bs-target="#exampleModal">게임 설명</GameBtn>
                     <div class="modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-sm modal-dialog-centered">
+                        <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="exampleModalLabel">가격표</h1>
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">게임 설명</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <S.GameModalBody>
-                                    <p>▪ 밥 2000원</p>
-                                    <p>▪ 간식 1000원</p>
-                                    <p>▪ 배변패드 500원</p>
-                                    <p>▪ 장난감 500원</p>
-                                    <p>▪ 산책 1000원</p>
-                                    <p>▪ 병원비 100000원</p>
+                                    <p>▪ 체력은 최대 100까지</p>
+                                    <p>▪ 게임은 24시간 후 종료, 체력 0이 되면 사망</p>
+                                    <p>▪ 밥 2000원 / 체력 +20 / 총 2회 (8~9시, 17~18시)</p>
+                                    <p>▪ 간식 1000원 / 체력 +10 / 총 2회 (12시~13시, 20시~21시)</p>
+                                    <p>▪ 배변패드 500원 / 체력 +5 / 총 2회 (식사 후 3분 후에)</p>
+                                    <p>▪ 장난감 500원 / 체력 +5 / 총 8회(랜덤)</p>
+                                    <p>▪ 산책 1000원 / 체력 +5 / 총 3회 (원할 때 가능)</p>
+                                    <p>▪ 병원비 100000원 / 미수행 시 체력 -30 / 최대 2회 (랜덤)</p>
                                 </S.GameModalBody>
                             </div>
                             </div>
@@ -266,31 +308,49 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
         <div className='d-flex justify-content-center'>
             <S.DogImg src={`assets/${simulationExistValue.petType}/idle${simulationExistValue.petType}.gif`} alt="" />
             <S.DogBtn 
-                onClick={() => {
-                    if (simulationExistValue.cost !== "0") {
+                onClick={(e) => {
+                    if (parseInt(simulationExistValue.cost) < currentPayValue) {
+                        e.preventDefault(); // 클릭 동작 막기
+
+                        // 응급상황일 경우
+                        if (requirementNum === 13) {
+                            setSimulationExistValue(prevState => {
+                                let newHealth = Math.max(parseInt(prevState.health) - 30, 0); // health가 0 미만이 되지 않도록 함
+                                return {
+                                    ...prevState,
+                                    health: newHealth,
+                                    requirement: (parseInt(simulationExistValue.requirement)+10000).toString().padStart(5, '0')
+                                };
+                            });
+                            setEmergency(emergency+1)
+                        }
+
+                        // 모달을 띄우는 코드, 필요한 경우
+                    } else {
                         setHandleMove(requirementNum);
                     }
                 }}
-                data-bs-toggle={simulationExistValue.cost === "0" ? "modal" : ""}
-                data-bs-target={simulationExistValue.cost === "0" ? "#exampleModal4" : ""}
+                data-bs-toggle={parseInt(simulationExistValue.cost) < currentPayValue ? "modal" : ""}
+                data-bs-target={parseInt(simulationExistValue.cost) < currentPayValue ? "#exampleModal4" : ""}
             >
                 {isImageVisible && (
                     <S.Requirement src={showRandomImage} alt="" onClick={handleImageClick} />
                 )}
             </S.DogBtn>
-                    <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">돈이 부족합니다😥</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        퀴즈를 통해 돈을 벌어보세요🎉
+
+            <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">돈이 부족합니다😥</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            퀴즈를 통해 돈을 벌어보세요🎉
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
         <div className="d-flex justify-content-end">
             <S.GameBasicOver data-bs-toggle="modal" data-bs-target="#exampleModal1">중도포기하기</S.GameBasicOver>

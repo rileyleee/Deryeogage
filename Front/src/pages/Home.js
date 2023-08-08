@@ -117,11 +117,15 @@ function Home() {
             const totalRecoveryMinutes = recoveryHours * 60;
             setExistValue(prevState => ({
               ...prevState,
-              health: Math.max(
-                0,
-                prevState.health - totalHpMinutes + totalRecoveryMinutes
-            ),
+              health: Math.min(
+                100,
+                Math.max(
+                  0,
+                  prevState.health - totalHpMinutes + totalRecoveryMinutes
+                )
+              ),
             }));
+            
             console.log(hpHours, hpMinutes)
             localStorage.setItem('timeDifference', JSON.stringify({
               hours: Hours,
