@@ -2,10 +2,17 @@ package com.kkosunnae.deryeogage.domain.user;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.kkosunnae.deryeogage.domain.adopt.AdoptEntity;
+import com.kkosunnae.deryeogage.domain.adopt.AdoptRepository;
+import com.kkosunnae.deryeogage.domain.pretest.PreTestEntity;
+import com.kkosunnae.deryeogage.domain.pretest.PreTestRepository;
+import com.kkosunnae.deryeogage.domain.simulation.SimulationEntity;
+import com.kkosunnae.deryeogage.domain.simulation.SimulationRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -18,15 +25,14 @@ import java.util.Optional;
 @Slf4j
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PreTestRepository preTestRepository;
+    private final SimulationRepository simulationRepository;
+    private final AdoptRepository adoptRepository;
 
-
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Transactional(readOnly = true)
     public String getAccessToken(String code) {
@@ -216,5 +222,56 @@ public class UserService {
 
         userRepository.save(userEntity);  // 변경 사항을 데이터베이스에 저장
         return newPath;
+    }
+
+    // 사용자의 프로필 조회 (없는 경우는 예외 아니고 optional
+    public ProfileResponseDto getProfile(Long userId) {
+
+        // 사용자
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("사용자를 찾을 수 없습니다."));
+
+        // 사전 테스트
+        Optional<PreTestEntity> pretest = preTestRepository.findByUserId(userId);
+
+        // 가장 최근 시뮬레이션 수행 내역
+        SimulationEntity simulation = simulationRepository.findTopByUserIdOrderByIdDesc(userId);
+
+        // 분양 내역
+        Optional<List<AdoptEntity>> adoptFromEntities = adoptRepository.findByFromUserId(userId);
+
+        // 입양 내역
+        Optional<List<AdoptEntity>> adoptToEntities = adoptRepository.findByToUserId(userId);
+
+
+        String nickname = user.getNickname();
+        String userImg = user.getImageUrl();
+        byte pretestScore = 0;
+        String pretestPromise = null;
+        String simulationTitle = null;
+        int adoptFromCount = 0;
+        int adoptToCount = 0;
+
+
+        if (pretest.isPresent()) {
+            pretestScore = pretest.get().getScore();
+            pretestPromise = pretest.get().getPromise();
+        }
+
+        if (simulation != null) {
+            simulationTitle = simulation.getTitle();
+        }
+
+        if (adoptFromEntities.isPresent()) {
+            adoptFromCount = adoptFromEntities.get().size();
+        }
+
+        if (adoptToEntities.isPresent()) {
+            adoptToCount = adoptToEntities.get().size();
+        }
+
+        ProfileResponseDto profile = new ProfileResponseDto(userId, nickname, userImg, pretestScore, pretestPromise, simulationTitle, adoptFromCount, adoptToCount);
+
+        return profile;
     }
 }

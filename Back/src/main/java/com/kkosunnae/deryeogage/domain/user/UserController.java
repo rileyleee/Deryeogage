@@ -6,16 +6,14 @@ import com.kkosunnae.deryeogage.global.util.Response;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
+
 
 @Slf4j
 @Api
@@ -26,7 +24,6 @@ public class UserController {
 
     private final JwtUtil jwtUtil;
     private final UserService userService;
-    private final UserRepository userRepository;
     private final S3FileService s3FileService;
 
     @ResponseBody
@@ -92,6 +89,14 @@ public class UserController {
         String newPath = userService.updatePicture(userId, nameList);
 
         return Response.success(newPath);
+    }
+
+    /** 입양게시판 및 채팅 화면에서 타인 닉네임 클릭 시
+     * 게시판 및 채팅 entity에 담겨 있는 사용자 id를 활용 **/
+    @GetMapping("/profile")
+    public Response<Object> getProfile(@RequestHeader("Authorization") String authorizationHeader, @RequestBody Long userId){
+        ProfileResponseDto profileResponse = userService.getProfile(userId);
+        return Response.success(profileResponse);
     }
 
 }
