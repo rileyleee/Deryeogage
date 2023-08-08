@@ -31,16 +31,12 @@ public class ChatController {
     private final UserService userService;
     private final BoardService boardService;
 
-
-
     //스케쥴 잡기, 수정, 삭제
     @PutMapping("/room/{roomId}/schedule")
     public ResponseEntity<Integer> updateScheduledDate(@PathVariable Integer roomId, @RequestBody ChatRoomRequestDto chatRoomRequestDto) {
         chatRoomService.updateScheduledDate(roomId, chatRoomRequestDto);
-
         return new ResponseEntity<>(roomId, HttpStatus.OK);
     }
-
 
     //스케줄 존재여부 확인
     @GetMapping("/room/{roomId}/schedule")
@@ -66,16 +62,14 @@ public class ChatController {
         Long userId1 = boardService.getBoard(boardId).getUserId();
         String boardName = boardService.getBoard(boardId).getName();
 
-        ChatRoomRequestDto chatRoomRequestDto = new ChatRoomRequestDto(userId1,userId2,boardId,boardName);
-
-        // 이미 있는 채팅방 확인
+        // 이미 있는 채팅방이 있다면 반환
         ChatRoomResponseDto existingChatRoom = chatRoomService.findChatRoomByUsersAndBoardId(userId1, userId2, boardId);
-
         if (existingChatRoom != null) {
-            // 이미 있는 채팅방이 있다면 반환
             return new ResponseEntity<>(existingChatRoom, HttpStatus.OK);
         }
 
+        // 새 채팅방 생성 후 반환
+        ChatRoomRequestDto chatRoomRequestDto = new ChatRoomRequestDto(userId1,userId2,boardId,boardName);
         ChatRoomResponseDto chatRoomResponseDto = chatRoomService.save(chatRoomRequestDto);
         return new ResponseEntity<>(chatRoomResponseDto, HttpStatus.CREATED);
     }
@@ -87,8 +81,8 @@ public class ChatController {
 
         Long userId = jwtUtil.getUserId(jwtToken);
 
-        List<ChatRoomResponseDto> rooms = chatRoomService.findAll(userId);
-        return new ResponseEntity<>(rooms, HttpStatus.OK);
+        List<ChatRoomResponseDto> chatRoomResponseDtoList = chatRoomService.findAll(userId);
+        return new ResponseEntity<>(chatRoomResponseDtoList, HttpStatus.OK);
     }
 
     //특정 채팅방 상세
@@ -97,13 +91,13 @@ public class ChatController {
         String jwtToken = authorizationHeader.substring(7);
         Long userId = jwtUtil.getUserId(jwtToken);
 
-        //chatMessageService.markMessagesAsRead(id, userId);
+        ChatRoomResponseDto chatRoomResponseDto = chatRoomService.findById(userId, id);
 
-        ChatRoomResponseDto dto = chatRoomService.findById(userId, id);
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+
+
+        chatMessageService.markMessagesAsRead(id, userId);
+        return new ResponseEntity<>(chatRoomResponseDto, HttpStatus.OK);
     }
-
-
 
     //채팅 메시지 보내고 받기
     @MessageMapping("/message")
@@ -116,9 +110,9 @@ public class ChatController {
         requestDto.setUser(userid);
         requestDto.setNickName(nickName);
 
-        Integer id = chatMessageService.save(requestDto.getChatRoom().getId(), requestDto);
-        if(id != null) {
-            messagingTemplate.convertAndSend("/topic/messages", "Message received successfully!");
+        ChatMessageResponseDto chatMessageResponseDto = chatMessageService.save(requestDto.getChatRoom().getId(), requestDto);
+        if(chatMessageResponseDto.getId() != null) {
+            messagingTemplate.convertAndSend("/topic/messages", chatMessageResponseDto);
             // 채팅방 상태 변경 알림
             messagingTemplate.convertAndSend("/topic/rooms/update", "Chat room updated");
         } else {
@@ -138,9 +132,9 @@ public class ChatController {
     }
 
     //채팅방 밖에서 가장 최근 메시지
-    @GetMapping("/room/{id}/lastmessage")
-    public ResponseEntity<ChatMessageResponseDto> getRoomLastMessage(@PathVariable Integer id) {
-        ChatMessageResponseDto message = chatMessageService.findLastByChatRoomId(id);
+    @GetMapping("/room/{roomId}/lastmessage")
+    public ResponseEntity<ChatMessageResponseDto> getRoomLastMessage(@PathVariable Integer roomId) {
+        ChatMessageResponseDto message = chatMessageService.findLastByChatRoomId(roomId);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
