@@ -6,14 +6,14 @@ import styled from "styled-components";
 function MyAdopt() {
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
-
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
   // Load user posts on mount
   useEffect(() => {
     const fetchPosts = async () => {
       const token = localStorage.getItem("accessToken");
 
       try {
-        const response = await axios.get("http://localhost:8080/api/boards/list/user", {
+        const response = await axios.get(`${REACT_APP_API_URL}/boards/list/user`, {
           headers: {
             Authorization: `Bearer ${token}`, // Use Bearer authentication
           },

@@ -5,7 +5,8 @@ import { Stomp } from "@stomp/stompjs"; // 변경된 import 경로
 function ChatRoomsList() {
   const accessToken = localStorage.getItem("accessToken");
   const [chatRooms, setChatRooms] = useState([]);
-
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL
+  const REACT_APP_CHAT_URL = process.env.REACT_APP_CHAT_URL
   useEffect(() => {
     loadChatRooms();
     setupWebSocket();
@@ -14,7 +15,7 @@ function ChatRoomsList() {
   const loadNonReadCount = async (roomId) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/chat/room/${roomId}/nonreadcount`,
+        `${REACT_APP_API_URL}/chat/room/${roomId}/nonreadcount`,
         {
           method: "GET",
           headers: {
@@ -33,7 +34,7 @@ function ChatRoomsList() {
   const loadLastMessage = async (roomId) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/chat/room/${roomId}/lastmessage`,
+        `${REACT_APP_API_URL}/chat/room/${roomId}/lastmessage`,
         {
           method: "GET",
           headers: {
@@ -51,7 +52,7 @@ function ChatRoomsList() {
 
   const loadChatRooms = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/chat/rooms", {
+      const response = await fetch(`${REACT_APP_API_URL}/chat/rooms`, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + accessToken,
@@ -78,7 +79,7 @@ function ChatRoomsList() {
   const setupWebSocket = () => {
     // 웹소켓 연결 설정
     const socket = new SockJS(
-      "http://localhost:8080/ws/chat?token=" + accessToken
+      `${REACT_APP_CHAT_URL}/ws/chat?token=` + accessToken
     );
     const stompClient = Stomp.over(socket);
 
