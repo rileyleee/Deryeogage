@@ -6,6 +6,7 @@ import ChatRoomDetail from "./ChatRoomDetail";
 import Reservation from "../../components/Adopt/Reservation";
 import { useLocation } from "react-router-dom";
 import axios from "axios"; // axios import
+import VideoRoom from "./openvidu/VideoRoom";
 
 function ChatVideo() {
   const location = useLocation();
@@ -16,6 +17,10 @@ function ChatVideo() {
 
   const [isAuthor, setIsAuthor] = useState(false); // 작성자 여부 상태 추가
   const userId = localStorage.getItem("userId"); // 현재 로그인된 사용자 ID 가져오기
+  const nickname = localStorage.getItem("nickname"); // 현재 로그인된 사용자 ID 가져오기
+
+  const [showVideoRoom, setShowVideoRoom] = useState(false); //화상 채팅 열기 클릭시 이벤트 처리 위함
+
   useEffect(() => {
     // 글 작성자의 ID를 가져옵니다.
     // 이 부분은 실제 구현 방식에 따라 다를 수 있으며, 글 작성자의 ID를 어떻게 가져올지에 따라 변경됩니다.
@@ -73,7 +78,8 @@ function ChatVideo() {
         </>
       )}
       <StyledDogDetail>
-        <DogDetail boardId={boardId} />
+        {!showVideoRoom && <DogDetail boardId={boardId}  setShowVideoRoom={setShowVideoRoom} />}
+        {showVideoRoom && <VideoRoom roomId={roomId} nickname={nickname} setShowVideoRoom={setShowVideoRoom}/>}
       </StyledDogDetail>
       <StyledChatRoom>
         <ChatRoomDetail />
