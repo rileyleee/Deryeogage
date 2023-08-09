@@ -145,7 +145,7 @@ function AdoptTo() {
             {adopt.status === "arrive" && (
               adopt.completedMissions === 4 ? (
                 <ResponsibilityButton
-                  onClick={() => handleResponsibilityFeeReturn(adopt.boardId)}
+                  onClick={() => handleResponsibilityFeeReturn(adopt.id)}
                 >
                   책임비 반환하기
                 </ResponsibilityButton>
