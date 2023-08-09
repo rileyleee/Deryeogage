@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ChatRoomRepository extends JpaRepository<ChatRoomEntity, Integer> {
+    List<ChatRoomEntity> findAllByUser1_IdAndBoardId(Long userId, Integer boardId);
+
+
     /** ChatRoom 조회 - 두 사용자와 게시판 ID로 정확한 매치 찾기 */
     ChatRoomEntity findByUser1_IdAndUser2_IdAndBoardId(Long userId1, Long userId2, Integer boardId);
 
