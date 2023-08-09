@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import styled from "styled-components";
+import * as S from "../../styled/Review/ReviewBoardCreate.style"
 
 function ReviewBoardCreate() {
   const [ReviewContent, setReviewContent] = useState({
@@ -29,7 +29,7 @@ function ReviewBoardCreate() {
           onChange={getValue}
           name="title"
         />
-        <Editor>
+        <S.Editor>
           <CKEditor
             editor={ClassicEditor}
             data="<p>입양 후기를 자유롭게 작성해주세요.</p>"
@@ -53,7 +53,7 @@ function ReviewBoardCreate() {
               console.log("Focus.", editor);
             }}
           />
-        </Editor>
+        </S.Editor>
       <button className="submit-button">입력</button>
       </div>
     </div>
@@ -61,9 +61,3 @@ function ReviewBoardCreate() {
 }
 
 export default ReviewBoardCreate;
-
-const Editor = styled.div`
-  .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
-  min-height: 500px;
-}
-`;

@@ -4,6 +4,7 @@ import ChipRadio from "../../components/Radio/ChipRadio";
 import styled from "styled-components";
 import SearchAuto from "./SearchAuto";
 import { useState } from "react";
+import * as S from "../../styled/Adopt/DogInfoSection.style"
 
 function DogInfoSection({
   setName,
@@ -18,12 +19,12 @@ function DogInfoSection({
   dogAge,
 }) {
   return (
-    <Div>
-      강아지의 <Span>기본정보</Span>를 작성해주세요.
-      <DogInfo>
-        <P>
-          강아지의 <Span>이름</Span>을 작성해주세요.
-        </P>
+    <S.Div>
+      강아지의 <S.Span>기본정보</S.Span>를 작성해주세요.
+      <S.DogInfo>
+        <S.P>
+          강아지의 <S.Span>이름</S.Span>을 작성해주세요.
+        </S.P>
         <input
           type="text"
           name="name"
@@ -32,9 +33,9 @@ function DogInfoSection({
           onChange={(e) => setName(e.target.value)}
         />
 
-        <P>
-          강아지의 <Span>나이</Span>를 작성해주세요.
-        </P>
+        <S.P>
+          강아지의 <S.Span>나이</S.Span>를 작성해주세요.
+        </S.P>
         <input
           type="number"
           name="age"
@@ -42,43 +43,21 @@ function DogInfoSection({
           value={dogAge}
           onChange={(e) => setAge(e.target.value)}
         />
-        <P>
-          현재 강아지가 살고있는 <Span>지역</Span>을 작성해주세요.
-        </P>
+        <S.P>
+          현재 강아지가 살고있는 <S.Span>지역</S.Span>을 작성해주세요.
+        </S.P>
         <SearchAuto region={dogRegion} setRegion={setRegion} />
-        <P>
-          <Span>성별</Span>을 선택해주세요.
+        <S.P>
+          <S.Span>성별</S.Span>을 선택해주세요.
           <GenderRadio gender={dogGender} setGender={setGender} />
-        </P>
-        <P>
-          <Span>칩 등록 여부</Span>를 선택해주세요.
+        </S.P>
+        <S.P>
+          <S.Span>칩 등록 여부</S.Span>를 선택해주세요.
           <ChipRadio chip={dogChip} setChip={setChip} />
-        </P>
-      </DogInfo>
-    </Div>
+        </S.P>
+      </S.DogInfo>
+    </S.Div>
   );
 }
 
 export default DogInfoSection;
-
-export const DogInfo = styled.div`
-  margin: 1vw 0;
-  padding: 1vh;
-  border: 1px #ff914d solid;
-  border-radius: 30px;
-  background-color: white;
-  text-align: center;
-`;
-export const Div = styled.div`
-  margin: 1vw 0;
-  padding: 1vh;
-  font-size: 2vh;
-`;
-
-export const Span = styled.span`
-  color: rgba(255, 145, 77, 1);
-`;
-export const P = styled.div`
-  margin: 1vh;
-  padding-top: 1vh;
-`;

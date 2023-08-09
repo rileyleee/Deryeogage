@@ -5,7 +5,7 @@ import MyAdopt from "../../components/User/MyAdopt";
 import AdoptFrom from "../../components/User/AdoptFrom";
 import AdoptTo from "../../components/User/AdoptTo";
 import Edit from "../../components/User/Edit";
-import styled from "styled-components"; // 추가된 부분
+import * as S from "../../styled/User/Profile.style"
 
 function Profile() {
   const nickname = localStorage.getItem("nickname");
@@ -52,7 +52,7 @@ function Profile() {
     <div>
       <h1>마이페이지</h1>
       <h3>안녕하세요 {nickname}님 !</h3>
-      {profileImage && <ProfileImage src={profileImage} alt="프로필 이미지" />}
+      {profileImage && <S.ProfileImage src={profileImage} alt="프로필 이미지" />}
       <button onClick={handleLogout}>로그아웃</button>
       <button onClick={() => setShowEditModal(true)}>프로필 수정</button>
       <div>
@@ -98,9 +98,4 @@ function Profile() {
 }
 
 export default Profile;
-const ProfileImage = styled.img`
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-`;
+

@@ -1,9 +1,9 @@
-import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import React, { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import Postcost from "./Postcost";
+import * as S from "../../styled/Adopt/Reservation.style"
 
 function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
   const [reservationScheduled, setReservationScheduled] = useState(null);
@@ -73,7 +73,7 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
   }, [roomId]);
 
   return (
-    <ReservationContainer>
+    <S.ReservationContainer>
       {showPostCost ? (
         <Postcost roomId={roomId} boardId={boardId} goToReservation={handlePostCostClick} />
       ) : (
@@ -85,40 +85,16 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
           <div>
             <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} dateFormat="yyyy-MM-dd" inline />
           </div>
-          <SelectedDate>
+          <S.SelectedDate>
             선택한 날짜: {startDate.toLocaleDateString()}
-          </SelectedDate>
-          <ConfirmButton onClick={handleConfirmClick}>
+          </S.SelectedDate>
+          <S.ConfirmButton onClick={handleConfirmClick}>
             {reservationScheduled ? "수정하기" : "예약 등록하기"}
-          </ConfirmButton>
+          </S.ConfirmButton>
         </>
       )}
-    </ReservationContainer>
+    </S.ReservationContainer>
   );
 }
 
 export default Reservation;
-
-const ReservationContainer = styled.div`
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-`;
-
-const SelectedDate = styled.div`
-  margin-top: 10px;
-  font-size: 16px;
-`;
-
-const ConfirmButton = styled.button`
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  &:hover {
-    background-color: #0056b3;
-  }
-`;

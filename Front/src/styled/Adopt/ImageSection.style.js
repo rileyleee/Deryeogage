@@ -121,3 +121,9 @@ border: 1px solid #ccc;
 border-radius: 4px;
 `;
 
+export const VideoPreview = styled.video`
+  width: 100px; // Adjust this to your preferred width
+  height: 100px; // Adjust this to your preferred height
+  object-fit: cover;
+  border-radius: 30px;
+`;

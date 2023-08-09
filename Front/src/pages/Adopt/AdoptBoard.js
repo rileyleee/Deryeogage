@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import styled from "styled-components";
+import * as S from "../../styled/Adopt/AdoptBoard.style"
 import { useNavigate } from "react-router-dom";
 import NotLogin from "../../components/Adopt/NotLogin";
 import NotSurvey from "../../components/Adopt/NotSurvey";
@@ -63,7 +63,7 @@ function AdoptBoard() {
           {insertedToken && hasSurvey ? <NotSurvey /> : null}
           {!insertedToken ? <NotLogin /> : null}
 
-          <Button onClick={onClick}>글 작성하기</Button>
+          <S.Button onClick={onClick}>글 작성하기</S.Button>
 
           {dogsArray.map((dog) => (
             <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} /> 
@@ -74,19 +74,3 @@ function AdoptBoard() {
 }
 
 export default AdoptBoard;
-
-export const Button = styled.button`
-  border: none;
-  background-color: #ff914d;
-  padding: 0.5vw 1vw;
-  border-radius: 30px;
-  color: white;
-  margin-top: 1vw;
-  left: 50%;
-  transform: translateX(-50%);
-  position: relative;
-
-  display: block;
-  width: fit-content;
-  cursor: pointer;
-`;

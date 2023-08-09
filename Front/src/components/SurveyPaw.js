@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"; // useEffect를 import
 import { PiPawPrintFill } from "react-icons/pi";
-import styled from "styled-components";
+import * as S from "../styled/SurveyPaw.style"
 
 const ARRAY = [0, 1, 2, 3, 4];
 
@@ -19,10 +19,10 @@ function SurveyPaw({ title, onSelect, initial }) {
   };
 
   return (
-    <Wrap>
-      <Paws>
+    <S.Wrap>
+      <S.Paws>
         <p>
-          <Span>{title} </Span>
+          <S.Span>{title} </S.Span>
           {ARRAY.map((el, idx) => (
             <PiPawPrintFill
               key={idx}
@@ -33,33 +33,9 @@ function SurveyPaw({ title, onSelect, initial }) {
           ))}
           
         </p>
-      </Paws>
-    </Wrap>
+      </S.Paws>
+    </S.Wrap>
   );
 }
 
 export default SurveyPaw;
-
-const Wrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 15px;
-`;
-
-const Span = styled.span`
-  margin: 1vw;
-`;
-
-const Paws = styled.div`
-  display: flex;
-  padding-top: 5px;
-
-  & svg {
-    color: gray;
-    cursor: pointer;
-  }
-
-  .orangePaw {
-    color: #ff914d;
-  }
-`;

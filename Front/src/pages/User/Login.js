@@ -1,45 +1,7 @@
 // 로그인 페이지 컴포넌트
 import React from "react";
-import styled from "styled-components";
+import * as S from "../../styled/User/Login.style"
 
-const Button = styled.button`
-  border: none;
-  background-color: #ff914d;
-  padding: 0.5vw 1vw;
-  border-radius: 30px;
-  color: white;
-  margin-top: 1vw;
-  cursor: pointer; /* 커서를 손가락 모양으로 변경 */
-`;
-
-const LoginContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: auto;
-  min-height: 100vh;
-`;
-
-const LoginBox = styled.div`
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-  background-color: white;
-  border: 1px #ff914d solid;
-  border-radius: 30px;
-  text-align: center;
-  margin-top: 1%;
-  padding: 1vw;
-  width: 100%;
-  max-width: 40vw;
-  min-width: 300px;
-  height: auto;
-`;
-
-const Title = styled.h3`
-  color: rgba(255, 145, 77, 1);
-  margin-bottom: 1rem;
-`;
 function Login() {
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
   const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL;
@@ -50,14 +12,14 @@ function Login() {
   };
 
   return (
-    <LoginContainer>
-      <LoginBox>
-        <Title>로그인</Title>
+    <S.LoginContainer>
+      <S.LoginBox>
+        <S.Title>로그인</S.Title>
         <p>데려가게에 오신걸 환영합니다!</p>
         <p>로그인을 하고 더 많은 기능을 이용해보세요!</p>
-        <Button onClick={handleKakaoLogin}>카카오로그인</Button>
-      </LoginBox>
-    </LoginContainer>
+        <S.Button onClick={handleKakaoLogin}>카카오로그인</S.Button>
+      </S.LoginBox>
+    </S.LoginContainer>
   );
 }
 
