@@ -95,32 +95,40 @@ function CheckList() {
 
   return (
     <div>
-      <h1>반려동물 입양을 위한 사전테스트입니다.</h1>
-      <h3>성실하게 답변해주세요.</h3>
-      {questions.map((question) => (
-        <CheckBtn
-          key={question}
-          question={question}
-          value={answers[question]}
-          onChange={handleChange}
-        />
-      ))}
-      <PledgeContainer>
-        <h2>입양 서약서</h2>
-        <PledgeTextarea
-          value={promise}
-          onChange={handleChangePledge}
-          placeholder="입양 서약서를 작성해주세요."
-        />
-      </PledgeContainer>
-      <ButtonContainer>
-        <SubmitButton onClick={handleSubmit}>제출하기</SubmitButton>
-      </ButtonContainer>
+      <InfoContainer>
+        <h4>사전테스트를 통해 반려견을 입양 할 준비가 되었는지 확인해보세요!</h4>
+      </InfoContainer>
+      <div>
+        {questions.map((question) => (
+          <CheckBtn
+            key={question}
+            question={question}
+            value={answers[question]}
+            onChange={handleChange}
+          />
+        ))}
+        <PledgeContainer>
+          <h2>입양 서약서</h2>
+          <PledgeTextarea
+            value={promise}
+            onChange={handleChangePledge}
+            placeholder="입양 서약서를 작성해주세요."
+          />
+        </PledgeContainer>
+        <ButtonContainer>
+          <SubmitButton onClick={handleSubmit}>제출하기</SubmitButton>
+        </ButtonContainer>
+      </div>
     </div>
   );
 }
 
 export default CheckList;
+
+const InfoContainer = styled.div`
+  margin-top: 50px;
+  margin-bottom: 50px;
+`;
 
 const SubmitButton = styled.button`
   margin-top: 20px;
