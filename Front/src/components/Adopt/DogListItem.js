@@ -12,17 +12,17 @@ function DogListItem({ dog, media }) {
   const isVideo = (media) => {
     return (
       media && (media.includes(".mp4") ||
-      media.includes(".avi") ||
-      media.includes(".mov"))
+        media.includes(".avi") ||
+        media.includes(".mov"))
     );
   };
 
   const renderMedia = (media) => {
     if (isVideo(media)) {
       return (
-        <div style={{ width: "100%", height: 0, paddingTop: "56.25%", position: "relative" }}>
+        <div style={{ position: "relative", width: "100%", height: "250px" }}>
           <video
-            style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover" }}
+            style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", borderRadius: "30px" }}
             src={media}
             autoPlay
             loop
@@ -31,12 +31,12 @@ function DogListItem({ dog, media }) {
         </div>
       );
     } else {
-      return <Card.Img variant="top" src={media} />;
+      return <Card.Img variant="top" src={media} style={{ width: "100%", height: "250px", borderRadius: "30px"}} />;
     }
   };
 
   return (
-    <Card style={{ width: "18rem" }} onClick={handleClick}>
+    <Card style={{ width: "18rem", border: 0 }} onClick={handleClick}>
       {renderMedia(media)}
       <Card.Body>
         <Card.Title>{dog.title}</Card.Title>

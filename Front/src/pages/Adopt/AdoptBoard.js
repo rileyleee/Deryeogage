@@ -45,9 +45,9 @@ function AdoptBoard() {
       }
     } catch (error) {
       setHasSurvey(true);
-    } 
+    }
   };
-  
+
   const dogsArray = Array.isArray(adoptData) ? adoptData : [];
 
   useEffect(() => {
@@ -57,18 +57,23 @@ function AdoptBoard() {
 
   return (
     <div>
-        <>
-          <h1>AdoptBoard</h1>
-          {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
-          {insertedToken && hasSurvey ? <NotSurvey /> : null}
-          {!insertedToken ? <NotLogin /> : null}
+      <>
+        <h1>AdoptBoard</h1>
+        {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
+        {insertedToken && hasSurvey ? <NotSurvey /> : null}
+        {!insertedToken ? <NotLogin /> : null}
 
-          <S.Button onClick={onClick}>글 작성하기</S.Button>
-
+        <S.Button onClick={onClick}>글 작성하기</S.Button>
+        <S.BoardGrid>
           {dogsArray.map((dog) => (
-            <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} /> 
+
+              <S.Media>
+                <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} />
+              </S.Media>
+
           ))}
-        </>
+        </S.BoardGrid>
+      </>
     </div>
   );
 }
