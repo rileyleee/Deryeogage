@@ -82,8 +82,8 @@ public class SimulationEntity{
         this.quizNum = quizNum;
         this.requirement = requirement;
         this.title = title;
-        this.end = false;
-        this.endCheck = false;
+        this.end = end;
+        this.endCheck = endCheck;
     }
 
     public SimulationDto toDto() {

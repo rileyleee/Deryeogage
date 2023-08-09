@@ -78,12 +78,22 @@ public class ChatController {
     @GetMapping("/rooms")
     public ResponseEntity<List<ChatRoomResponseDto>> getAllRooms(@RequestHeader("Authorization") String authorizationHeader) {
         String jwtToken = authorizationHeader.substring(7);
-
         Long userId = jwtUtil.getUserId(jwtToken);
 
         List<ChatRoomResponseDto> chatRoomResponseDtoList = chatRoomService.findAll(userId);
         return new ResponseEntity<>(chatRoomResponseDtoList, HttpStatus.OK);
     }
+
+    //내가 올린 분양글에 대한 전체 채팅방 목록 출력
+    @GetMapping("/rooms/{boardId}")
+    public ResponseEntity<List<ChatRoomResponseDto>> getAllRoomsInBoard(@RequestHeader("Authorization") String authorizationHeader, @PathVariable Integer boardId) {
+        String jwtToken = authorizationHeader.substring(7);
+        Long userId = jwtUtil.getUserId(jwtToken);
+
+        List<ChatRoomResponseDto> chatRoomResponseDtoList = chatRoomService.findAllInBoard(userId, boardId);
+        return new ResponseEntity<>(chatRoomResponseDtoList, HttpStatus.OK);
+    }
+
 
     //특정 채팅방 상세
     @GetMapping("/room/{id}")
@@ -103,7 +113,6 @@ public class ChatController {
     @MessageMapping("/message")
     @SendTo("/topic/messages")
     public void send(@Header("Authorization") String token, @RequestBody ChatMessageRequestDto requestDto) {
-
         token = token.replace("Bearer ", "");
         long userid=jwtUtil.getUserId(token);
         String nickName = userService.getUserNickname(userid);
@@ -148,8 +157,6 @@ public class ChatController {
         System.out.println("count"+nonReadCount);
         return nonReadCount;
     }
-
-
 
     @GetMapping("/message/{id}")
     public ResponseEntity<ChatMessageResponseDto> getMessage(@PathVariable Integer id) {
