@@ -36,7 +36,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/boards/list",
                         "/api/boards/each/**"); //추천 알고리즘은 어떻게 처리하지
 
-            
+
     }
 
     //CORS 에러를 해결하기 위해서 컨트롤러에서 세분화 하여 처리할 수도 있지만
