@@ -6,6 +6,7 @@ import * as S from "../../styled/Check/SimulationEnd.style"
 import { useRecoilValue, useRecoilState } from "recoil"
 import { SimulationExistAtom, GameTitle } from "../../recoil/SimulationAtom"
 import axios from 'axios';
+import {useNavigate} from "react-router-dom"
 
 function Simulation() {
   const [ExistValue, setExistValue] = useRecoilState(SimulationExistAtom)
@@ -14,6 +15,7 @@ function Simulation() {
   const [trainCheck, setTrainCheck] = useState(0)
   const titles = useRecoilValue(GameTitle)
   const [title, setTitle] = useState('')
+  const navigate = useNavigate();
 
   useEffect(() => {
     let count = 0;
@@ -35,19 +37,22 @@ function Simulation() {
   useEffect(() => {
     let newTitle;
     const health = parseInt(ExistValue.health);
-  
-    if (health === 0) {
-      newTitle = titles[0];
-    } else if (health >= 1 && health < 20) {
-      newTitle = titles[1];
-    } else if (health >= 20 && health < 40) {
-      newTitle = titles[20];
-    } else if (health >= 40 && health < 60) {
-      newTitle = titles[40];
-    } else if (health >= 60 && health < 85) {
-      newTitle = titles[60];
-    } else if (health >= 85) {
-      newTitle = titles[85];
+    if (ExistValue.train === "10202030" && health >= 85) {
+      newTitle = titles[100]
+    } else {
+      if (health === 0) {
+        newTitle = titles[0];
+      } else if (health >= 1 && health < 20) {
+        newTitle = titles[1];
+      } else if (health >= 20 && health < 40) {
+        newTitle = titles[20];
+      } else if (health >= 40 && health < 60) {
+        newTitle = titles[40];
+      } else if (health >= 60 && health < 85) {
+        newTitle = titles[60];
+      } else if (health >= 85) {
+        newTitle = titles[85];
+      }
     }
   
     if (newTitle && newTitle !== ExistValue.title) {
@@ -61,31 +66,41 @@ function Simulation() {
   
 
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
-  
-  // sendData 함수 및 의존성 배열 정의
-  const sendData = (async () => {
-    setExistValue(prevState => ({ // simulationExistValue값의 health도 업데이트
+
+  const sendData = async () => {
+    setExistValue((prevState) => ({
       ...prevState,
-      endCheck: "true",
+      endCheck: true,
     }));
-    try {
-      const Token = localStorage.getItem("accessToken");
-      if (Token) { // 로그인 했을 때만
-        const response = await axios.put(
-          `${REACT_APP_API_URL}/simulations/save`,
-          ExistValue,
+    localStorage.setItem('endCheck', true);
+  };
+  console.log(ExistValue)
+  useEffect(() => {
+    const sendToServer = async () => {
+      try {
+        const Token = localStorage.getItem('accessToken');
+        if (Token && ExistValue.endCheck === true) {
+          console.log(ExistValue)
+          const response = await axios.put(`${REACT_APP_API_URL}/simulations/save`, 
+          ExistValue, 
           {
             headers: {
-              Authorization : 'Bearer '+ Token,
-            }
-          }
-        );
-        console.log(response.data)
+              Authorization: 'Bearer ' + Token,
+            },
+          });
+          console.log(response.data);
+          navigate('/profile');
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
+    };
+
+    if (ExistValue.endCheck === true) {
+      sendToServer();
     }
-  })
+  }, [ExistValue]);
+
 
 return (
     <div className="container" id="Simulation">
@@ -107,7 +122,7 @@ return (
                     <S.GameResultli>하우스! {train.substr(6, 2) === "30" && <S.CheckImg src="/assets/things/checked.png" alt="" />}</S.GameResultli>
 
                     <br />
-                    <S.GameResulth3>{nickname} 님은 {title} 입니다.</S.GameResulth3>
+                    <S.GameResulth3>{nickname} 님은 {ExistValue.title} 입니다.</S.GameResulth3>
                     <div className='d-flex justify-content-center'>
                       <S.GameResultBtn onClick={sendData}>확인</S.GameResultBtn>
                     </div>

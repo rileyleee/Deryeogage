@@ -54,7 +54,8 @@ function Home() {
           console.log(currentHours)
           if (currentHours >= 0 && currentHours < 8) {
             navigate("/nosimulations"); // NoSimulation 페이지로 이동
-          } else if (response.data.end === "true") {
+          } 
+          else if (response.data.end === true) {
             navigate("/simulations/end")
           }
           else {
@@ -67,7 +68,6 @@ function Home() {
             }));
           } else {
             setExistValue(response.data); // SET하자마자 담기지 않아서 response.data로 해줌
-            console.log(existValue)
             console.log(response.data)
             localStorage.setItem("activatedNum", 5);
 
@@ -113,8 +113,8 @@ function Home() {
             }
 
             // 체력 회복 및 감소 계산
-            const totalHpMinutes = (hpHours - recoveryHours) * 60 + hpMinutes;
-            const totalRecoveryMinutes = recoveryHours * 60;
+            const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes)/10)
+            const totalRecoveryMinutes = recoveryHours * 6;
             setExistValue(prevState => ({
               ...prevState,
               health: Math.min(

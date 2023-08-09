@@ -116,9 +116,15 @@ export const GameTitle = atom({
         20: '새싹 양육자',
         40: '중급 양육자',
         60: '프로 양육러',
-        85: '강아지 그 자체🐶'
+        85: '강아지 그 자체🐶',
+        100: '미래의 강형욱✨'
     }
 })
+
+export const SelectedQuiz = atom({
+    key: 'SelectedQuiz',
+    default: {},
+  });
 
 export const GameQuiz = atom({
     key: 'GameQuiz',
