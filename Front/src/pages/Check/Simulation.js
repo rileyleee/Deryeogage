@@ -50,15 +50,15 @@ function Simulation() {
         ...prevState,
         health: localStorage.getItem('hpPercentage'),
         background : localStorage.getItem('background'),
-        cost : localStorage.getItem('cost'),
+        cost : parseInt(localStorage.getItem('cost')),
         end : localStorage.getItem('end'),
         endCheck : localStorage.getItem('endCheck'),
         endTime : localStorage.getItem('endTime'),
-        id : localStorage.getItem('id'),
+        id : parseInt(localStorage.getItem('id')),
         lastTime : localStorage.getItem('lastTime'),
         petName : localStorage.getItem('petName'),
         petType : localStorage.getItem('petType'),
-        quizNum : localStorage.getItem('quizNum'),
+        quizNum : parseInt(localStorage.getItem('quizNum')),
         requirement : localStorage.getItem('requirement'),
         startTime : localStorage.getItem('startTime'),
         title : localStorage.getItem('title'),
@@ -70,8 +70,12 @@ function Simulation() {
     // 시간 및 hp 계산
     useEffect(() => {
       let hpTimer = 0;
-      const timerId = setInterval(() => {
-        setTimeDifference(prevTimeDifference => {
+    
+      // 타이머 함수
+      const timerFunction = () => {
+        if (simulationExistValue.end === true) return; // end가 true이면 종료
+    
+        setTimeDifference((prevTimeDifference) => {
           let newMinutes = prevTimeDifference.minutes + 1;
           let newHours = prevTimeDifference.hours;
     
@@ -85,16 +89,16 @@ function Simulation() {
           }
     
           return {
-            hours: newHours, 
-            minutes: newMinutes
+            hours: newHours,
+            minutes: newMinutes,
           };
         });
     
         hpTimer += 1;
-        if (hpTimer >= 10) { // 1분마다 HP 감소
+        if (hpTimer >= 10) { // 10분마다 HP 감소
           setHpPercentage((prevHpPercentage) => {
-            const newHpPercentage = prevHpPercentage > 0 ? prevHpPercentage - 1 : 0; // 값이 바뀌면 hpPercentage도 업데이트
-            setSimulationExistValue(prevState => ({ // simulationExistValue값의 health도 업데이트
+            const newHpPercentage = prevHpPercentage > 0 ? prevHpPercentage - 1 : 0;
+            setSimulationExistValue((prevState) => ({
               ...prevState,
               health: newHpPercentage,
             }));
@@ -102,10 +106,18 @@ function Simulation() {
           });
           hpTimer = 0;
         }
-      }, 60000);
+      };
+    
+      // interval 설정
+      const timerId = setInterval(timerFunction, 60000);
+    
+      // 초기 실행
+      timerFunction();
     
       return () => clearInterval(timerId);
-    }, []); 
+    }, [simulationExistValue.end]);
+    
+    
   // 로컬 스토리지 값도 계속 업데이트
   useEffect(() => {
     // simulationExistValue 값이 설정되었을 때만 localStorage에 저장합니다.
@@ -169,7 +181,7 @@ function Simulation() {
     11 : <GameToy handleMove={handleMove}/>,
     12 : <GameQuiz handleMove={handleMove}/>,
     13 : <GameEmergency handleMove={handleMove}/>,
-    14 : <GameTherapy handleMove={handleMove}/>
+    14 : <GameTherapy handleMove={handleMove}/>,
     }
 
   // activatedNum에 따라서 GameStartfirst의 테두리 색을 지정
@@ -196,6 +208,7 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const sendData = useCallback(async () => {
     try {
       const Token = localStorage.getItem("accessToken");
+      console.log(simulationExistValue)
       if (Token) { // 로그인 했을 때만
         const response = await axios.put(
           `${REACT_APP_API_URL}/simulations/save`,
@@ -214,11 +227,18 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     }
   }, [simulationExistValue, setSimulationExistValue, REACT_APP_API_URL]);
   
-  // 컴포넌트가 마운트 될 때 10초마다 sendData 함수 호출
+  // 컴포넌트가 마운트 될 때 5초마다 sendData 함수 호출
   useEffect(() => {
-    const interval = setInterval(sendData, 5000);
-    return () => clearInterval(interval);
-  }, [sendData]);
+    console.log('simulationExistValue.end:', simulationExistValue.end); // 현재 값 확인
+  
+    if (simulationExistValue.end === true) {
+      return;
+    } else{
+      const interval = setInterval(sendData, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [sendData, simulationExistValue.end]);
+  
 
 
   // useEffect를 사용하여 simulationExistValue.health의 변화를 감지
@@ -227,6 +247,7 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
       setIsDead(true);
     }
   }, [simulationExistValue.health]);
+  
   // 24시간이 되면 end를 true로!
   useEffect(() => {
     if (!localStorage.getItem('endTime')) {
@@ -248,7 +269,7 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
         end: true,
       }));
       setButtonVisible(true)
-      localStorage.setItem('end', "true")
+      localStorage.setItem('end', true)
       
     }
   }, [timeDifference, simulationExistValue.endTime, setSimulationExistValue]);

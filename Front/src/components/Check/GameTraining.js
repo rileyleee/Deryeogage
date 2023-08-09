@@ -35,7 +35,7 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
             setHouseScore(parseInt(localStorage.getItem('train').substr(4, 2)));
             setSitScore(parseInt(localStorage.getItem('train').substr(6, 2)));
         }
-        setHpPercentage(localStorage.getItem('hpPercentage'))
+        setHpPercentage(parseInt(localStorage.getItem('hpPercentage')))
     }, []);
 
     

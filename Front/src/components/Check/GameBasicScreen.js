@@ -5,7 +5,7 @@ import * as S from "../../styled/Check/GameBasicScreen.style"
 import GameMenu from "./GameMenu"
 import GameBtn from "./GameBtn"
 import {useRecoilValue, useRecoilState} from "recoil"
-import { SimulationExistAtom, SimulationWalkingCnt, SimulationCost, requirementImagesState, nextImageState, SimulationHp  } from "../../recoil/SimulationAtom"
+import { SimulationExistAtom, SimulationWalkingCnt, SimulationCost, requirementImagesState, nextImageState, SimulationHp, GameQuiz, SelectedQuiz } from "../../recoil/SimulationAtom"
 
 
 function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
@@ -29,8 +29,9 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     useEffect(() => {
         // 처음 로드할 때 localStorage에서 hpPercentage를 가져와서 상태를 설정합니다.
         setRequirement(localStorage.getItem('requirement'));
-        setHpPercentage(localStorage.getItem('hpPercentage'))
-        setCost(localStorage.getItem('cost'))
+        setHpPercentage(parseInt(localStorage.getItem('hpPercentage')))
+        setCost(parseInt(localStorage.getItem('cost')))
+        setQuizCount(localStorage.getItem('quizNum'))
       }, []);
 
       const move = (hp, pay) => {
@@ -51,7 +52,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     const setHandleMove = (num) => {
         props.handleMove(num)
         if (num === 7) { // 산책
-            move(5, 1000)
+            move(15, 1000)
             setSimulationExistValue(prevState => ({
                 ...prevState,
                 requirement: (parseInt(simulationExistValue.requirement)+10).toString().padStart(5, '0')
@@ -60,7 +61,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
             setCost(simulationExistValue.cost)
             //   localStorage.setItem('requirement', simulationExistValue.requirement);
         } else if (num === 8) { // 식사
-            move(20, 2000)
+            move(20, 3000)
             setSimulationExistValue(prevState => ({
                 ...prevState,
                 requirement: (parseInt(simulationExistValue.requirement)+1000).toString().padStart(5, '0')
@@ -73,7 +74,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
             setHpPercentage(simulationExistValue.health)
             setCost(simulationExistValue.cost)
         } else if (num === 10) { // 간식
-            move(10, 1000)
+            move(10, 1500)
             setSimulationExistValue(prevState => ({
                 ...prevState,
                 requirement: (parseInt(simulationExistValue.requirement)+100).toString().padStart(5, '0')
@@ -83,7 +84,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
               
             //   localStorage.setItem('requirement', simulationExistValue.requirement);
         } else if (num === 11) { // 장난감
-            move(5, 300000)
+            move(5, 500)
             setSimulationExistValue(prevState => ({
                 ...prevState,
                 requirement: (parseInt(simulationExistValue.requirement)+1).toString().padStart(5, '0')
@@ -93,7 +94,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
               setReq4Count(req4Count + 1)
             //   localStorage.setItem('requirement', simulationExistValue.requirement);
         } else if (num === 13) { // 응급상황
-            move(0, 100000)
+            move(0, 120000)
             setSimulationExistValue(prevState => ({
                 ...prevState,
                 requirement: (parseInt(simulationExistValue.requirement)+10000).toString().padStart(5, '0')
@@ -121,11 +122,11 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
       const getPayValue = (requirementNum) => {
         switch (requirementNum) {
           case 7: return 1000;
-          case 8: return 2000;
+          case 8: return 3000;
           case 9: return 500;
-          case 10: return 1000;
-          case 11: return 300000;
-          case 13: return 100000;
+          case 10: return 1500;
+          case 11: return 500;
+          case 13: return 120000;
           default: return 0;
         }
       }
@@ -229,7 +230,30 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
         return () => clearTimeout(timeoutId);  // useEffect의 cleanup 함수에서 setTimeout을 clear함
       }
     }, [nextImage]);
-    
+
+  const Quiz = useRecoilValue(GameQuiz);
+  console.log(Quiz)
+  const [quizCount, setQuizCount] = useState(simulationExistValue.quizNum);
+  const [selectedQuiz, setSelectedQuiz] = useRecoilState(SelectedQuiz);
+  console.log(quizCount)
+
+  const showRandomQuiz = (num) => {
+    if (quizCount < 5) {
+      const randomIndex = Math.floor(Math.random() * 20)+1; // 범위 조정
+      console.log(randomIndex)
+      const selected = Quiz[randomIndex];
+      console.log(selected)
+      setSelectedQuiz(selected);
+      props.handleMove(num);
+    } else {
+      console.log("퀴즈가 모두 끝났습니다.");
+    }
+  };
+
+  useEffect(() => {
+    console.log(selectedQuiz);
+  }, [selectedQuiz]);
+      
   return (
     <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-between"
     petType={simulationExistValue.petType}
@@ -287,20 +311,20 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                             </div>
                             <div class="modal-body">
                                 <S.GameModalBody>
-                                    <p>▪ 체력은 최대 100까지</p>
+                                    <p>▪ 체력은 100 이상 넘어가지 않음</p>
                                     <p>▪ 게임은 24시간 후 종료, 체력 0이 되면 사망</p>
-                                    <p>▪ 밥 2000원 / 체력 +20 / 총 2회 (8~9시, 17~18시)</p>
-                                    <p>▪ 간식 1000원 / 체력 +10 / 총 2회 (12시~13시, 20시~21시)</p>
+                                    <p>▪ 밥 3000원 / 체력 +20 / 총 2회 (8~9시, 17~18시)</p>
+                                    <p>▪ 간식 1500원 / 체력 +10 / 총 2회 (12시~13시, 20시~21시)</p>
                                     <p>▪ 배변패드 500원 / 체력 +5 / 총 2회 (식사 후 3분 후에)</p>
                                     <p>▪ 장난감 500원 / 체력 +5 / 총 8회(랜덤)</p>
                                     <p>▪ 산책 1000원 / 체력 +5 / 총 3회 (원할 때 가능)</p>
-                                    <p>▪ 병원비 100000원 / 미수행 시 체력 -30 / 최대 2회 (랜덤)</p>
+                                    <p>▪ 병원비 120000원 / 미수행 시 체력 -30 / 최대 2회 (랜덤)</p>
                                 </S.GameModalBody>
                             </div>
                             </div>
                         </div>
                     </div>
-                    <GameBtn onClick={() => setHandleMove(12)} className="orange">돈 벌러 가기</GameBtn>
+                    <GameBtn disabled={quizCount === 5} onClick={() => showRandomQuiz(12)} className="orange">돈 벌러 가기</GameBtn>
                     </div>
                 </div>
             </div>
