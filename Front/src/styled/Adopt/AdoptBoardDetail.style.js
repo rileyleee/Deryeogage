@@ -124,3 +124,16 @@ export const ModalContent = styled.div`
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
+
+export const TitleContainer = styled.div`
+`
+
+export const ProfileModal = styled.div`
+  position: absolute;
+  top: ${props => props.y}px; // y 위치 적용
+  left: ${props => props.x}px; // x 위치 적용
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 10; // 다른 요소 위에 표시
+`;

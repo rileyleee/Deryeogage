@@ -6,15 +6,28 @@ import { Carousel } from "react-bootstrap";
 import * as S from "../../styled/Adopt/AdoptBoardDetail.style"
 import ResultPaw from "./../../components/ResultPaw";
 import ReturnPrecosts from "../../components/Adopt/ReturnPreconsts";
+import UserProfile from "../../components/User/UserProfile";
 
 function AdoptBoardDetail() {
   const [precostsData, setPrecostsData] = useState(null);
-
+  const [showProfileModal, setShowProfileModal] = useState(false); // 사용자 프로필 모달 상태를 제어하는 상태 변수
   const [showModal, setShowModal] = useState(false);
   const [adoptData, setAdoptData] = useState(null);
   const { boardId } = useParams();
   const navigate = useNavigate();
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
+  const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
+
+  const handleProfileMouseOver = (event) => {
+    // 마우스 포인터의 위치를 파악합니다.
+    const x = event.clientX;
+    const y = event.clientY;
+
+    // 이 위치를 상태로 설정하여 모달의 위치로 사용합니다.
+    setModalPosition({ x, y });
+    setShowProfileModal(true);
+  };
 
   const handleReturnPrecosts = async () => {
     try {
@@ -192,10 +205,29 @@ function AdoptBoardDetail() {
     }
   };
 
+
+
+  // 작성자 정보 모달을 숨기는 함수
+  const handleProfileMouseOut = () => {
+    setShowProfileModal(false);
+  };
   return (
     <S.Container>
-      {adoptData.board.title}
-      {!isWriter() && (
+      <S.TitleContainer>
+        <div>{adoptData.board.title}</div>
+        <div
+          onMouseOver={handleProfileMouseOver}
+          onMouseOut={handleProfileMouseOut}
+        >
+          작성자: {adoptData.board.userNickname}
+          {showProfileModal && (
+            <S.ProfileModal x={modalPosition.x} y={modalPosition.y}>
+            <UserProfile data={adoptData.board.userId} />
+          </S.ProfileModal>
+          )}
+        </div>
+       </S.TitleContainer>
+        {!isWriter() && (
         <S.FavoriteButton onClick={handleFavorite}>
           {isFavorited ? "찜 해제하기" : "찜하기"}
         </S.FavoriteButton>
@@ -275,4 +307,4 @@ function AdoptBoardDetail() {
   );
 }
 
-export default AdoptBoardDetail;
+export default AdoptBoardDetail
