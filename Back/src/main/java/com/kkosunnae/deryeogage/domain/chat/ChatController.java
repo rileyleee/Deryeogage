@@ -21,7 +21,7 @@ import java.util.List;
 @Transactional
 @RestController
 @RequiredArgsConstructor
-    @RequestMapping("/api/chat")
+@RequestMapping("/api/chat")
 public class ChatController {
 
     private final JwtUtil jwtUtil;
