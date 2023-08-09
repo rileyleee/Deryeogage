@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import styled from "styled-components";
-
-const ImagePreview = styled.img`
-  width: 150px;
-  height: 150px;
-`;
+import * as S from "../../styled/User/Edit.style"
 
 function Edit({ onClose }) {
   const [profilePic, setProfilePic] = useState(null);
@@ -84,7 +79,7 @@ function Edit({ onClose }) {
       <h3>프로필 수정할거</h3>
       <input type="file" onChange={handleImageChange} />
       {imagePreview && (
-        <ImagePreview src={imagePreview} alt="프로필 미리보기" />
+        <S.ImagePreview src={imagePreview} alt="프로필 미리보기" />
       )}
       <button onClick={handleUploadImage}>사진 등록</button>
       <button onClick={handleUpdateImage}>사진 수정</button>

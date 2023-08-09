@@ -5,7 +5,7 @@ import ImageSection from "../../components/Adopt/ImageSection";
 import DogInfoSection from "../../components/Adopt/DogInfoSection";
 import PersonalitySection from "../../components/Adopt/PersonalitySection";
 
-import * as S from "../../styled/Adopt/AdoptBoardCreate.style";
+import * as S from "../../styled/Adopt/ImageSection.style";
 
 import Precost from "./../../components/Adopt/Precosts";
 
