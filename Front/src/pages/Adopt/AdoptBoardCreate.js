@@ -16,6 +16,23 @@ function AdoptBoardCreate() {
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const [currentBoardId, setCurrentBoardId] = useState(null);
 
+// 모든 컴포넌트에서 Enter 키 누름을 감지하기 위한 useEffect
+useEffect(() => {
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter' && event.target.tagName === 'INPUT') {
+      event.preventDefault();
+    }
+  };
+
+  // 이벤트 리스너 등록
+  window.addEventListener('keypress', handleKeyPress);
+
+  // 컴포넌트 unmount 시 이벤트 리스너 제거
+  return () => {
+    window.removeEventListener('keypress', handleKeyPress);
+  };
+}, []);
+
   // 요청 중인지 확인하는 상태 추가
   const [isSubmitting, setIsSubmitting] = useState(false);
   // 책임비 모달 관련
@@ -265,7 +282,7 @@ function AdoptBoardCreate() {
   return (
     <>
       {isEditing ? "게시글 수정하기" : "게시글 작성하기"}
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}> 
         <S.TitleInput
           value={title}
           placeholder="제목을 입력해주세요"
