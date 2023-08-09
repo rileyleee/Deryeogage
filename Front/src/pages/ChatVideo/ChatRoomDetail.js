@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { Stomp, CompatClient } from "@stomp/stompjs";
 import axios from "axios"; // axios 불러오기
-import styled from "styled-components";
+import * as S from "../../styled/ChatVideo/ChatRoomDetail.style"
 
 function ChatRoomDetail() {
   const accessToken = localStorage.getItem("accessToken");
@@ -179,13 +179,13 @@ const formatMessageTime = (createdDate) => {
     <div className="d-flex flex-column justify-content-between">
       <div>
       <div id="roomInfo">{roomInfo}</div>
-      <RoomInfo>
+      <S.RoomInfo>
         <div>{yourNickName}</div>
         <div>{myNickName}</div>
-      </RoomInfo>
+      </S.RoomInfo>
 
       {messages.length > 0 ? (
-        <MessageList ref={messageListRef}> {/* ref 속성 추가 */}
+        <S.MessageList ref={messageListRef}> {/* ref 속성 추가 */}
         {messages.map((message, index) => {
           const showTime =
             index === messages.length - 1 ||
@@ -193,40 +193,40 @@ const formatMessageTime = (createdDate) => {
               formatMessageTime(messages[index + 1]?.createdDate);
       
           return (
-            <MessageItem
+            <S.MessageItem
               key={index}
               rightAlign={message.userId === currentUserId}
             >
-              <MessageContent
+              <S.MessageContent
                 key={index}
                 rightAlign={message.userId === currentUserId}
               >
-                <MessageText>{" " + message.message}</MessageText>
+                <S.MessageText>{" " + message.message}</S.MessageText>
                 
-              </MessageContent>
+              </S.MessageContent>
               {showTime && (
-                  <MessageTime rightAlign={message.userId === currentUserId}>
+                  <S.MessageTime rightAlign={message.userId === currentUserId}>
                     {formatMessageTime(message.createdDate)}
-                  </MessageTime>
+                  </S.MessageTime>
                 )}
-            </MessageItem>
+            </S.MessageItem>
           );
         })}
-      </MessageList>
+      </S.MessageList>
       ) : (
         <p>No messages yet.</p>
       )}
       </div>
       <div>
         <div className="d-flex justify-content-around">
-      <MessageInput
+      <S.MessageInput
   type="text"
   value={messageInput}
   onChange={(e) => setMessageInput(e.target.value)}
   onKeyPress={handleKeyPress} // 여기에 추가
   placeholder="Type your message..."
 />
-      <SendButton onClick={sendMessage}>Send</SendButton>
+      <S.SendButton onClick={sendMessage}>Send</S.SendButton>
       </div>
     </div>
   </div>
@@ -234,61 +234,3 @@ const formatMessageTime = (createdDate) => {
 }
 
 export default ChatRoomDetail;
-
-const MessageList = styled.ul`
-  height: 73vh; // 원하는 높이 설정
-  overflow-y: auto; // 내용이 높이를 초과할 경우 스크롤 생성
-  list-style: none;
-  padding: 0;
-`;
-
-const MessageItem = styled.li`
-  text-align: ${(props) => (props.rightAlign ? "right" : "left")};
-  display: flex;
-  flex-direction: ${(props) => (props.rightAlign ? "row-reverse" : "row")}; // 추가
-  border-radius: 30px;
-  padding: 0.5vh;
-  word-wrap: break-word;
-`;
-
-const MessageContent = styled.div`
-  display: flex;
-  flex-direction: row;
-  border: 1px solid;
-  border-radius: 30px;
-  padding: 0.5vh;
-  color: gray;
-  word-wrap: break-word;
-  background-color: ${(props) =>
-    props.rightAlign ? "#e6f7ff" : "#f9e0e0"};
-`;
-
-const NickName = styled.span`
-  font-weight: bold;
-  color: black; // 원하는 색상
-`;
-
-const MessageText = styled.span`
-  color: gray;
-`;
-
-const MessageTime = styled.small`
-  color: gray;
-  align-self: flex-end;
-  margin-left: ${(props) => (props.rightAlign ? "0" : "1rem")};
-  margin-right: ${(props) => (props.rightAlign ? "1rem" : "0")};
-`;
-
-const MessageInput = styled.input`
-  width: 80%;
-  padding: 5px;
-`;
-
-const SendButton = styled.button`
-  padding: 5px 10px;
-`;
-
-const RoomInfo = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;

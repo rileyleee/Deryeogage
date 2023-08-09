@@ -1,7 +1,7 @@
 // ImageSection.js
 
 import React from "react";
-import * as S from "../../styled/Adopt/AdoptBoardCreate.style";
+import * as S from "../../styled/Adopt/ImageSection.style";
 import styled from "styled-components";
 
 function ImageSection({
@@ -66,7 +66,7 @@ function ImageSection({
           selectedVideos.length > 0 &&
           selectedVideos.map((videoURL, index) => (
             <S.ImageContainer key={index}>
-              <VideoPreview
+              <S.VideoPreview
                 src={videoURL}
                 alt={`비디오 미리보기 ${index + 1}`}
                 autoPlay
@@ -84,9 +84,3 @@ function ImageSection({
 
 export default ImageSection;
 
-const VideoPreview = styled.video`
-  width: 100px; // Adjust this to your preferred width
-  height: 100px; // Adjust this to your preferred height
-  object-fit: cover;
-  border-radius: 30px;
-`;

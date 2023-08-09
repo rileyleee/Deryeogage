@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import styled from "styled-components";
+import * as S from "../../styled/User/AdoptTo.style"
 import MissionList from "./MissionList";
 import { Link } from "react-router-dom";
 
@@ -134,121 +134,42 @@ function AdoptTo() {
         <p>입양 내역이 없습니다.</p>
       ) : (
         adopts.map((adopt, index) => (
-          <AdoptToCard key={index}>
-            <Image src={adopt.imageUrl} alt="board" />
+          <S.AdoptToCard key={index}>
+            <S.Image src={adopt.imageUrl} alt="board" />
             <Link to={`/board/${adopt.boardId}`}>
-              <Title>{adopt.boardInfo?.title}</Title>
+              <S.Title>{adopt.boardInfo?.title}</S.Title>
             </Link>
-            <ConfirmButton onClick={() => handleConfirmAdoption(adopt.boardId)}>
+            <S.ConfirmButton onClick={() => handleConfirmAdoption(adopt.boardId)}>
               입양 확정하기
-            </ConfirmButton>
+            </S.ConfirmButton>
             {adopt.status === "arrive" && (
               adopt.completedMissions === 4 ? (
-                <ResponsibilityButton
+                <S.ResponsibilityButton
                   onClick={() => handleResponsibilityFeeReturn(adopt.boardId)}
                 >
                   책임비 반환하기
-                </ResponsibilityButton>
+                </S.ResponsibilityButton>
               ) : (
-                <MissionButton
+                <S.MissionButton
                   onClick={() => handleMissionClick(adopt.missionId)}
                 >
                   입양 미션하기 ({adopt.completedMissions}/4)
-                </MissionButton>
+                </S.MissionButton>
               )
             )}
-          </AdoptToCard>
+          </S.AdoptToCard>
         ))
       )}
       {showMissionModal && (
-        <MissionModal>
-          <MissionContent>
+        <S.MissionModal>
+          <S.MissionContent>
             <MissionList missionId={selectedMissionId} />
-            <CloseButton onClick={closeModal}>닫기</CloseButton>
-          </MissionContent>
-        </MissionModal>
+            <S.CloseButton onClick={closeModal}>닫기</S.CloseButton>
+          </S.MissionContent>
+        </S.MissionModal>
       )}
     </div>
   );
 }
 
 export default AdoptTo;
-
-// 스타일 컴포넌트 정의
-const MissionButton = styled.button`
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
-  margin: 10px;
-  border: none;
-  cursor: pointer;
-  &:hover {
-    background-color: #45a049;
-  }
-`;
-
-const MissionModal = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-`;
-
-const CloseButton = styled.button`
-  background-color: #f44336;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  &:hover {
-    background-color: #da190b;
-  }
-`;
-
-const MissionContent = styled.div`
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const ConfirmButton = styled.button`
-  background-color: #ff5722;
-  color: white;
-  padding: 10px 20px;
-  margin: 10px;
-  border: none;
-  cursor: pointer;
-  &:hover {
-    background-color: #e64a19;
-  }
-`;
-
-const AdoptToCard = styled.div`
-  display: flex;
-  align-items: center; // 세로 정렬
-  margin: 10px 0;
-`;
-
-const Image = styled.img`
-  width: 100px;
-  height: 100px;
-  object-fit: cover; // 이미지 비율 유지
-  margin-right: 20px; // 우측 여백
-`;
-const Title = styled.h3`
-  text-decoration: none; // 밑줄 표시
-  cursor: pointer; // 포인터 마우스 커서
-`;
-
-const ResponsibilityButton = styled.button`
-  // 여기에 필요한 스타일을 적용하세요.
-`;

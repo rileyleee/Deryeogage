@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import axios from "axios";
+import * as S from "../../styled/Adopt/LoginSurvey.style"
 
 function LoginSurvey() {
   const [dogs, setDogs] = useState([]);
@@ -28,13 +28,13 @@ function LoginSurvey() {
   return (
     <div>
       <p>
-        <Span>{localStorage.getItem("nickname")}</Span>님의 선호도조사를
+        <S.Span>{localStorage.getItem("nickname")}</S.Span>님의 선호도조사를
         기반으로 강아지를 추천해드려요!
       </p>
       {dogs.length < 5 ? (
         <p>게시글이 부족합니다.</p>
       ) : (
-        <Carousel>
+        <S.Carousel>
           <div id="carouselExampleIndicators" className="carousel slide">
             <div className="carousel-indicators">
               {dogs.map((dog, index) => (
@@ -52,19 +52,19 @@ function LoginSurvey() {
             <div className="carousel-inner">
               {dogs.map((dog, index) => (
                 <div className={`carousel-item ${index === 0 ? "active" : ""}`}>
-                  <ImageAndCaptionContainer>
-                    <ImageContainer>
+                  <S.ImageAndCaptionContainer>
+                    <S.ImageContainer>
                       <img
                         src={dog.fileList[0]}
                         className="d-block w-100"
                         alt={dog.name}
                       />
-                    </ImageContainer>
-                    <CaptionContainer className="bg-dark text-white">
+                    </S.ImageContainer>
+                    <S.CaptionContainer className="bg-dark text-white">
                       <h5>{dog.name}</h5>
                       <p>{dog.introduction}</p>
-                    </CaptionContainer>
-                  </ImageAndCaptionContainer>
+                    </S.CaptionContainer>
+                  </S.ImageAndCaptionContainer>
                 </div>
               ))}
             </div>
@@ -93,42 +93,10 @@ function LoginSurvey() {
               <span className="visually-hidden">Next</span>
             </button>
           </div>
-        </Carousel>
+        </S.Carousel>
       )}
     </div>
   );
 }
 
 export default LoginSurvey;
-
-export const Span = styled.span`
-  color: rgba(255, 145, 77, 1);
-`;
-
-export const Carousel = styled.div`
-  display: flex;
-  background-color: white;
-  border: 1px #ff914d solid;
-  border-radius: 30px;
-  justify-content: center;
-  padding: 1vw;
-  margin-top: 1%;
-  margin-bottom: 1%;
-`;
-
-export const ImageAndCaptionContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-export const ImageContainer = styled.div`
-  width: 50%;
-  height: 500px;
-  overflow: hidden;
-`;
-
-export const CaptionContainer = styled.div`
-  width: 50%;
-  padding: 10px;
-`;
