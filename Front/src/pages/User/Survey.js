@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SurveyPaw from "../../components/SurveyPaw";
-import styled from "styled-components";
+import * as S from "../../styled/User/Survey.style"
 import axios from "axios";
 import Modal from "react-modal"; // import react-modal
 
@@ -149,8 +149,8 @@ function Survey() {
   const nickname = localStorage.getItem('nickname')
 
   return (
-    <CenteredDiv>
-      <Div>
+    <S.CenteredDiv>
+      <S.Div>
         {/* Button to trigger the modal */}
         {hasSubmitted && (
           <>
@@ -162,9 +162,9 @@ function Survey() {
         )}
 
         {/* The Modal itself */}
-        <StyledModal isOpen={modalIsOpen} onRequestClose={toggleResults}>
+        <S.StyledModal isOpen={modalIsOpen} onRequestClose={toggleResults}>
           {/* Add an exit button */}
-          <CloseButton onClick={toggleResults}>x</CloseButton>
+          <S.CloseButton onClick={toggleResults}>x</S.CloseButton>
 
           {hasSubmitted && surveyData && (
             <div>
@@ -179,9 +179,9 @@ function Survey() {
               </ul>
             </div>
           )}
-        </StyledModal>
+        </S.StyledModal>
 
-        <SurveyContainer>
+        <S.SurveyContainer>
           {ranking.map((item, index) => (
             <div
               key={index}
@@ -201,88 +201,15 @@ function Survey() {
                   />
             </div>
           ))}
-        </SurveyContainer>
+        </S.SurveyContainer>
         {surveyData ? (
-          <Button onClick={handleUpdate}>수정하기</Button>
+          <S.Button onClick={handleUpdate}>수정하기</S.Button>
         ) : (
-          <Button onClick={handleSubmit}>등록하기</Button>
+          <S.Button onClick={handleSubmit}>등록하기</S.Button>
         )}
-      </Div>
-    </CenteredDiv>
+      </S.Div>
+    </S.CenteredDiv>
   );
 }
 
 export default Survey;
-
-const Span = styled.span`
-  color: rgba(255, 145, 77, 1);
-`;
-
-const CenteredDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: auto;
-  min-height: 100vh;
-  width: 100%;
-  overflow: hidden;
-  padding: 0;
-`;
-
-const Div = styled.div`
-  margin-top: 1%;
-  padding: 1vw;
-  width: 100%;
-  max-width: 40vw;
-  min-width: 300px;
-  height: auto;
-  min-height: 70vh;
-  background-color: white;
-  border: 1px #ff914d solid;
-  border-radius: 30px;
-  text-align: center;
-  overflow: auto;
-`;
-
-const SurveyContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 1%;
-  padding: 1vw;
-`;
-
-const Button = styled.button`
-  border: none;
-  background-color: #ff914d;
-  padding: 0.5vw 1vw;
-  border-radius: 30px;
-  color: white;
-  margin-top: 1vw;
-`;
-
-const StyledModal = styled(Modal)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  right: auto;
-  bottom: auto;
-  transform: translate(-50%, -50%);
-  width: 40vw;
-  height: 60vh;
-  border: 1px solid #ff914d;
-  border-radius: 30px;
-  background-color: white;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CloseButton = styled.button`
-  background-color: white;
-  position: absolute;
-  right: 15px;
-  top: 15px;
-  border: none;
-`;

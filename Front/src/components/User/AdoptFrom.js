@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import styled from "styled-components"; // 스타일드 컴포넌트 import
+import * as S from "../../styled/User/AdoptFrom.style"
 
 function AdoptFrom() {
   const [adopts, setAdopts] = useState([]);
@@ -105,7 +105,7 @@ function AdoptFrom() {
             게시글 제목: {adopt.boardInfo.title} <br />
             강아지 이름: {adopt.boardInfo.name} <br />
             나이: {adopt.boardInfo.age} <br />
-            <Image
+            <S.Image
               src={adopt.imageUrl}
               alt={`${adopt.boardInfo.name}의 이미지`}
             />
@@ -130,8 +130,3 @@ function AdoptFrom() {
 }
 
 export default AdoptFrom;
-
-const Image = styled.img`
-  width: 100px;
-  height: 100px;
-`;

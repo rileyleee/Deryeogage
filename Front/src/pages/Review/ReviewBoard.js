@@ -1,6 +1,6 @@
 // 입양후기게시판 전체 글 조회
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import * as S from "../../styled/Review/ReviewBoard.style"
 
 function ReviewBoard() {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ function ReviewBoard() {
   return (
     <div>
       <p>
-        회원님들의 입양후기를 보며 <Span>{nickname}</Span>님도 입양을 생각해보세요!
+        회원님들의 입양후기를 보며 <S.Span>{nickname}</S.Span>님도 입양을 생각해보세요!
       </p>
       <div>
         <button onClick={onClick}>글 작성하기</button>
@@ -22,6 +22,3 @@ function ReviewBoard() {
 
 export default ReviewBoard;
 
-export const Span = styled.span`
-  color: rgba(255, 145, 77, 1);
-`;
