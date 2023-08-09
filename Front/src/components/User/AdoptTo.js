@@ -139,13 +139,13 @@ function AdoptTo() {
             <Link to={`/board/${adopt.boardId}`}>
               <Title>{adopt.boardInfo?.title}</Title>
             </Link>
-            <ConfirmButton onClick={() => handleConfirmAdoption(adopt.boardId)}>
+            <ConfirmButton onClick={() => handleConfirmAdoption(adopt.id)}>
               입양 확정하기
             </ConfirmButton>
             {adopt.status === "arrive" && (
               adopt.completedMissions === 4 ? (
                 <ResponsibilityButton
-                  onClick={() => handleResponsibilityFeeReturn(adopt.id)}
+                  onClick={() => handleResponsibilityFeeReturn(adopt.boardId)}
                 >
                   책임비 반환하기
                 </ResponsibilityButton>
