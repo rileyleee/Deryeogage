@@ -13,7 +13,7 @@ function MyAdopt() {
       const token = localStorage.getItem("accessToken");
 
       try {
-        const response = await axios.get("http://localhost:8080/api/boards/list/user", {
+        const response = await axios.get("${}/boards/list/user", {
           headers: {
             Authorization: `Bearer ${token}`, // Use Bearer authentication
           },

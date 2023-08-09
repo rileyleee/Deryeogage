@@ -34,6 +34,7 @@ function Header() {
     }
   }, []);
 
+
   return (
     <S.HeaderWrapper className="navbar navbar-expand-lg">
       <div className="container-fluid">

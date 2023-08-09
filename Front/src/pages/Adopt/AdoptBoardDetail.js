@@ -3,18 +3,31 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { Carousel } from "react-bootstrap";
 
+import UserProfile from "../../components/User/UserProfile";
 import styled from "styled-components";
 import ResultPaw from "./../../components/ResultPaw";
 import ReturnPrecosts from "../../components/Adopt/ReturnPreconsts";
 
 function AdoptBoardDetail() {
   const [precostsData, setPrecostsData] = useState(null);
-
+  const [showProfileModal, setShowProfileModal] = useState(false); // 사용자 프로필 모달 상태를 제어하는 상태 변수
   const [showModal, setShowModal] = useState(false);
   const [adoptData, setAdoptData] = useState(null);
   const { boardId } = useParams();
   const navigate = useNavigate();
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
+  const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
+
+  const handleProfileMouseOver = (event) => {
+    // 마우스 포인터의 위치를 파악합니다.
+    const x = event.clientX;
+    const y = event.clientY;
+
+    // 이 위치를 상태로 설정하여 모달의 위치로 사용합니다.
+    setModalPosition({ x, y });
+    setShowProfileModal(true);
+  };
 
   const handleReturnPrecosts = async () => {
     try {
@@ -192,16 +205,37 @@ function AdoptBoardDetail() {
     }
   };
 
+
+
+  // 작성자 정보 모달을 숨기는 함수
+  const handleProfileMouseOut = () => {
+    setShowProfileModal(false);
+  };
   return (
     <Container>
-      {adoptData.board.title}
+      <TitleContainer>
+        <div>{adoptData.board.title}</div>
+        <div
+          onMouseOver={handleProfileMouseOver}
+          onMouseOut={handleProfileMouseOut}
+        >
+          작성자: {adoptData.board.userNickname}
+          {showProfileModal && (
+            <ProfileModal x={modalPosition.x} y={modalPosition.y}>
+            <UserProfile data={adoptData.board.userId} />
+          </ProfileModal>
+          )}
+        </div>
+      </TitleContainer>
       {!isWriter() && (
         <FavoriteButton onClick={handleFavorite}>
           {isFavorited ? "찜 해제하기" : "찜하기"}
         </FavoriteButton>
       )}
       {isWriter() && (
-        <ChatButton to="/adopt/chatlist">채팅방 목록보기</ChatButton>
+        <Link to={`/adopt/chatlist?boardId=${boardId}`}>
+          채팅방 목록보기 {boardId}
+        </Link>
       )}
       {canChat() && <Button onClick={handleChat}>채팅하기</Button>}
       <FlexContainer>
@@ -399,4 +433,20 @@ const ModalContent = styled.div`
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+// 모달 스타일을 정의하는 스타일 컴포넌트
+const ProfileModal = styled.div`
+  position: absolute;
+  top: ${props => props.y}px; // y 위치 적용
+  left: ${props => props.x}px; // x 위치 적용
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 10; // 다른 요소 위에 표시
 `;

@@ -109,7 +109,7 @@ function SearchAuto({ setRegion }) {
         id="pac-input"
         ref={inputRef}
         type="text"
-        placeholder="Enter a location"
+        placeholder="지역을 입력해주세요."
       />
       <br />
       {/* 추가: 검색된 장소의 정보를 화면에 출력 */}

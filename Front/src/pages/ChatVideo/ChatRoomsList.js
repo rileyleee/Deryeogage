@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs"; // 변경된 import 경로
+import { useLocation } from "react-router-dom";
 
 function ChatRoomsList() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const boardId = queryParams.get('boardId');
+
+  console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", boardId);
+
   const accessToken = localStorage.getItem("accessToken");
   const [chatRooms, setChatRooms] = useState([]);
 
@@ -51,7 +58,7 @@ function ChatRoomsList() {
 
   const loadChatRooms = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/chat/rooms", {
+      const response = await fetch(`http://localhost:8080/api/chat/rooms/${boardId}`, {
         method: "GET",
         headers: {
           Authorization: "Bearer " + accessToken,
