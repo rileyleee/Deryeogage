@@ -24,7 +24,7 @@ function SurveyPaw({ title, onSelect, initial }) {
         <p>
           <S.Span>{title} </S.Span>
           {ARRAY.map((el, idx) => (
-            <S.PiPawPrintFill
+            <PiPawPrintFill
               key={idx}
               size="40"
               onClick={() => handleStarClick(idx)}

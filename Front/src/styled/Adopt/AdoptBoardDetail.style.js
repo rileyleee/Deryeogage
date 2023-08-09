@@ -5,7 +5,7 @@ export const Container = styled.div`
   /* 여기에 Container의 스타일을 적용하세요. */
 `;
 
-const Media = styled.div`
+export const Media = styled.div`
   width: 100%;
   height: 100%;
   img,
@@ -106,7 +106,7 @@ export const IntroductionBox = styled.div`
   flex-direction: column; // 수직 방향으로 내용을 정렬합니다.
 `;
 
-const ModalContainer = styled.div`
+export const ModalContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -118,7 +118,7 @@ const ModalContainer = styled.div`
   align-items: center;
 `;
 
-const ModalContent = styled.div`
+export const ModalContent = styled.div`
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;

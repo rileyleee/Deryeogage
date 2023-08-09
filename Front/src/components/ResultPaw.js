@@ -11,7 +11,7 @@ function ResultPaw({ title, selected, small  }) {
         <p>
           <S.Span>{title} </S.Span>
           {ARRAY.map((el, idx) => (
-            <S.PiPawPrintFill
+            <PiPawPrintFill
               key={idx}
               size={small ? "20" : "40"} // 작은 크기로 표시하고 싶을 때 size를 줄입니다.
               className={selected > idx ? 'orangePaw' : ''}

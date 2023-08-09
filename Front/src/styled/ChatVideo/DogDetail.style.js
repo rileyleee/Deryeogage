@@ -5,7 +5,7 @@ export const Container = styled.div`
   height: 75vh;
 `;
 
-const Media = styled.div`
+export const Media = styled.div`
   width: 100%;
   height: 100%;
   img,
@@ -26,7 +26,7 @@ export const ChatButton = styled(Link)`
   text-align: center;
 `;
 
-const MediaBox = styled.div`
+export const MediaBox = styled.div`
   width: 100%;
   height: 500px; // 원하는 높이를 설정하세요.
 `;
@@ -42,7 +42,7 @@ export const FlexContainer = styled.div`
   margin-top: 1vh; /* 간격을 좁게 조정하려면 더 작은 값으로 변경하세요. */
 `;
 
-const Box = styled.div`
+export const Box = styled.div`
   margin: 1vw 0;
   padding: 2vh 2vw; // 패딩을 증가시켰습니다
   border: 1px #ff914d solid;
@@ -80,7 +80,7 @@ export const EditButton = styled(Link)`
   text-decoration: none;
 `;
 
-const FixedButton = styled.button`
+export const FixedButton = styled.button`
 // position: absolute;
   right: 20px;
   bottom: 20px;
