@@ -139,7 +139,7 @@ function AdoptTo() {
             <Link to={`/board/${adopt.boardId}`}>
               <S.Title>{adopt.boardInfo?.title}</S.Title>
             </Link>
-            <S.ConfirmButton onClick={() => handleConfirmAdoption(adopt.boardId)}>
+            <S.ConfirmButton onClick={() => handleConfirmAdoption(adopt.id)}>
               입양 확정하기
             </S.ConfirmButton>
             {adopt.status === "arrive" && (

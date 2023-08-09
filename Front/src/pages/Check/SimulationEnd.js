@@ -88,7 +88,6 @@ function Simulation() {
               Authorization: 'Bearer ' + Token,
             },
           });
-          console.log(response.data);
           navigate('/profile');
         }
       } catch (error) {
