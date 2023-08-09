@@ -1,5 +1,6 @@
 package com.kkosunnae.deryeogage.domain.board;
 
+import com.kkosunnae.deryeogage.domain.adopt.AdoptStatus;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.*;
@@ -34,6 +35,7 @@ public class BoardDto {
     private LocalDateTime createdDate;
     private List fileList;
     private boolean isWriter;
+    private AdoptStatus status;
 
 
     public boolean isChipYn() {
@@ -44,7 +46,7 @@ public class BoardDto {
     }
 
     @Builder
-    public BoardDto(int id, long userId, String regionCode, Double lat, Double lon, String dogTypeCode, String userNickname, String title, char friendly, char activity, char dependency, char bark, char hair, String name, boolean gender, byte age, boolean chipYn, String health, String introduction, LocalDateTime createdDate) {
+    public BoardDto(int id, long userId, String regionCode, Double lat, Double lon, String dogTypeCode, String userNickname, String title, char friendly, char activity, char dependency, char bark, char hair, String name, boolean gender, byte age, boolean chipYn, String health, String introduction, LocalDateTime createdDate, AdoptStatus status) {
         this.id = id;
         this.userId = userId;
         this.regionCode = regionCode;
@@ -65,6 +67,7 @@ public class BoardDto {
         this.health = health;
         this.introduction = introduction;
         this.createdDate = createdDate;
+        this.status = status;
     }
 
 

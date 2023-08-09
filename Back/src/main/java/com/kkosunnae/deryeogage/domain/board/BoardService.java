@@ -1,5 +1,8 @@
 package com.kkosunnae.deryeogage.domain.board;
 
+import com.kkosunnae.deryeogage.domain.adopt.AdoptEntity;
+import com.kkosunnae.deryeogage.domain.adopt.AdoptRepository;
+import com.kkosunnae.deryeogage.domain.adopt.AdoptStatus;
 import com.kkosunnae.deryeogage.domain.survey.SurveyEntity;
 import com.kkosunnae.deryeogage.domain.survey.SurveyRepository;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
@@ -21,10 +24,10 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
-
     private final JjimRepository jjimRepository;
     private final BoardFileRepository boardFileRepository;
     private final SurveyRepository surveyRepository;
+    private final AdoptRepository adoptRepository;
 
     //게시글 작성
     @Transactional
@@ -69,7 +72,23 @@ public class BoardService {
     public BoardDto getBoard(Integer boardId) {
         BoardEntity board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new NoSuchElementException("게시글을 찾을 수 없습니다."));
-        return board.toDto();
+
+        // 입양 정보에 존재 여부 및 depart/arrive 확인하여 게시글별 status 반환
+        Optional<AdoptEntity> entity = adoptRepository.findByBoardId(boardId);
+
+        // 초기화
+        AdoptStatus status = AdoptStatus.depart;
+
+        if (entity.isPresent()) {
+            status = entity.get().getStatus();
+        } else {
+            status = null;
+        }
+
+        BoardDto boardDto = board.toDto();
+        boardDto.setStatus(status);
+
+        return boardDto;
     }
 
     @Transactional(readOnly = true)
@@ -150,7 +169,7 @@ public class BoardService {
         List<Integer> result = euclideanSimilarityRecommendation.recommendDogs(userPreferences, boardMap, order);
         for (Integer index : result) {
             BoardDto boardDto = boardRepository.findById(index).get().toDto();
-            List <String> uploadedFiles = this.getBoardFileUrls(boardDto.getId());
+            List<String> uploadedFiles = this.getBoardFileUrls(boardDto.getId());
             boardDto.setFileList(uploadedFiles);
             boardDtoList.add(boardDto);
         }

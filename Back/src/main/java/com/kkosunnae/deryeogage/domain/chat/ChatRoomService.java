@@ -56,10 +56,26 @@ public class ChatRoomService {
                 .collect(Collectors.toList());
     }
 
+    /** 내가 올린 분양글에 대한 전체 ChatRoom 조회 */
+    @Transactional
+    public List<ChatRoomResponseDto> findAllInBoard(Long userId, Integer boardId) {
+        List<ChatRoomEntity> chatRooms = chatRoomRepository.findAllByUser1_IdAndBoardId(userId, boardId);
+        return chatRooms.stream()
+                .map(chatRoom -> {
+                    ChatRoomResponseDto dto = new ChatRoomResponseDto(chatRoom);
+                    if(chatRoom.getUser2() != null && chatRoom.getUser2().getId().equals(userId)) {
+                        dto.setSchedule(true);
+                    }
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
 
 
 
-//    @Transactional
+
+
+    //    @Transactional
 //    public ChatRoomResponseDto findById(Long userId, final Integer id) {
 //        ChatRoomEntity entity = this.chatRoomRepository.findById(id).orElseThrow(
 //                () -> new IllegalArgumentException("해당 ChatRoom이 존재하지 않습니다. id = " + id));
