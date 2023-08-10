@@ -20,7 +20,8 @@ export const BoardGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
   margin-top: 20px;
-  padding: 20px;
+  margin-bottom: 20px;
+  padding: 30px;
   border: 1px solid #FF914D;
   background-color: white;
   border-radius: 30px;
@@ -44,4 +45,34 @@ export const Media = styled.div`
   display: flex; /* Use flex display to align content vertically */
   justify-content: center; /* Align content horizontally in the center */
   align-items: center; /* Align content vertically in the center */
+`;
+
+export const StyledPagination = styled.div`
+   .pagination {
+     display: flex;
+     justify-content: center; // 중앙 정렬
+     list-style-type: none;
+     padding: 0;
+   }
+
+   .pagination li {
+     margin: 0 5px;
+   }
+
+   .pagination li a {
+     text-decoration: none;
+     color: black;
+     padding: 8px 16px;
+     transition: background-color .3s;
+   }
+
+   .pagination li a.active {
+     background-color: #ff914d;
+     color: white;
+     border-radius: 30px;
+   }
+
+   .pagination li a:hover:not(.active) {
+     background-color: #ddd;
+   }
 `;
