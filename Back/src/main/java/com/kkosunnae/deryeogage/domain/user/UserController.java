@@ -99,4 +99,15 @@ public class UserController {
         return Response.success(profileResponse);
     }
 
+
+    /** 마이페이지에 내 프로필 정보 반환 **/
+    @GetMapping("/profile/mypage")
+    public Response<Object> getProfile(@RequestHeader("Authorization") String authorizationHeader){
+        String jwtToken = authorizationHeader.substring(7);
+        Long userId = jwtUtil.getUserId(jwtToken);
+
+        ProfileResponseDto profileResponse = userService.getProfile(userId);
+        return Response.success(profileResponse);
+    }
+
 }
