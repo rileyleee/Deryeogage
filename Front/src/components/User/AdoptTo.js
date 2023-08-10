@@ -8,11 +8,13 @@ function AdoptTo() {
   const [adopts, setAdopts] = useState([]);
   const [showMissionModal, setShowMissionModal] = useState(false);
   const [selectedMissionId, setSelectedMissionId] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null);
   console.log("=================adopts: ", adopts);
 
-  const handleMissionClick = (missionId) => {
+  const handleMissionClick = (missionId, index) => {
     setShowMissionModal(true);
     setSelectedMissionId(missionId);
+    setSelectedIndex(index); // 인덱스를 상태로 설정
     console.log(missionId);
   };
 
@@ -132,6 +134,21 @@ function AdoptTo() {
     fetchAdopts();
   }, []);
 
+  const Media = ({ src }) => {
+    if (src.endsWith(".mp4")) {
+      return (
+        <MediaContainer>
+          <StyledVideo src={src} controls muted />
+        </MediaContainer>
+      );
+    }
+    return (
+      <MediaContainer>
+        <StyledImage src={src} alt="board" />
+      </MediaContainer>
+    );
+  };
+
   return (
     <div>
       <h2>입양 내역</h2>
@@ -140,8 +157,8 @@ function AdoptTo() {
       ) : (
         adopts.map((adopt, index) => (
           <AdoptToCard key={index}>
-            <Image src={adopt.imageUrl} alt="board" />
-            <Link to={`/board/${adopt.boardId}`}>
+            <Media src={adopt.imageUrl} />
+            <Link to={`/adopt/${adopt.boardId}`}>
               <Title>{adopt.boardInfo?.title}</Title>
             </Link>
             {adopt.toConfirmYn ? ( // toConfirmYn 값에 따라 버튼을 표시
@@ -162,7 +179,7 @@ function AdoptTo() {
                 </ResponsibilityButton>
               ) : (
                 <MissionButton
-                  onClick={() => handleMissionClick(adopt.missionId)}
+                  onClick={() => handleMissionClick(adopt.missionId, index)}
                 >
                   입양 미션하기 ({adopt.completedMissions}/4)
                 </MissionButton>
@@ -173,7 +190,11 @@ function AdoptTo() {
       {showMissionModal && (
         <MissionModal>
           <MissionContent>
-            <MissionList missionId={selectedMissionId} />
+            <MissionList
+              missionId={selectedMissionId}
+              completedMissions={adopts[selectedIndex]?.completedMissions}
+              fetchAdopts={fetchAdopts} // 이 줄을 추가하세요
+            />
             <CloseButton onClick={closeModal}>닫기</CloseButton>
           </MissionContent>
         </MissionModal>
@@ -256,12 +277,27 @@ const AdoptToCard = styled.div`
   margin: 10px 0;
 `;
 
-const Image = styled.img`
+const MediaContainer = styled.div`
   width: 100px;
   height: 100px;
-  object-fit: cover; // 이미지 비율 유지
   margin-right: 20px; // 우측 여백
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
+
+const StyledImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover; // 이미지 비율 유지
+`;
+
+const StyledVideo = styled.video`
+  width: 100%;
+  height: 100%;
+  object-fit: cover; // 비디오 비율 유지
+`;
+
 const Title = styled.h3`
   text-decoration: none; // 밑줄 표시
   cursor: pointer; // 포인터 마우스 커서
