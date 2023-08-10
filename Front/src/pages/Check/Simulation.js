@@ -43,135 +43,36 @@ function Simulation() {
     console.log(hpPercentage)
     const navigate = useNavigate();
     const [isButtonVisible, setButtonVisible] = useState(false);
-    // const [loading, setLoading] = useState(true);
-    // get 요청
-    // useEffect(() => {
-    //   const fetchData = async () => {
-    //     setLoading(true);
-    //     if (localStorage.getItem("accessToken")) {
-    //     // 로그인되어 있는 경우 해당 페이지로 이동
-    //     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
-    //       try {
-    //         const url = `${REACT_APP_API_URL}/simulations`;
-    //         const token = localStorage.getItem("accessToken");
-    //         const response = await axios.get(url, {
-    //           headers: {
-    //             Authorization: "Bearer " + token,
-    //           },
-    //         });
-    //         const now = new Date()
-    //         const currentHours = now.getHours()
-    //         const currentMinutes = now.getMinutes()
-    //         if (response.data === "Start a new simulation") {
-    //           setLoading(false);
-    //           localStorage.setItem("activatedNum", 1);
-    //           localStorage.setItem('hpPercentage', 100);
-    //           localStorage.setItem('timeDifference', JSON.stringify({ // 객체 데이터 등록할 때 무조건 stringify 활용
-    //             hours:0,
-    //             minutes:0
-    //           }));
-    //         } else {
-    //           setSimulationExistValue(response.data); // SET하자마자 담기지 않아서 response.data로 해줌
-    //           setLoading(false);
-    //           console.log(simulationExistValue)
-    //           localStorage.setItem("activatedNum", 5);
-  
-    //           const startTimeHours = Number(response.data.startTime.substr(11, 2));
-    //           const startTimeMinutes = Number(response.data.startTime.substr(14, 2));
-    //           const lastTimeHours = Number(response.data.lastTime.substr(11, 2));
-    //           const lastTimeMinutes = Number(response.data.lastTime.substr(14, 2));
-              
-    //           let diffHours = lastTimeHours - startTimeHours;
-    //           let diffMinutes = lastTimeMinutes - startTimeMinutes;
-              
-    //           if (diffMinutes < 0) {
-    //             diffHours--;
-    //             diffMinutes += 60;
-    //           }
-  
-    //           if (diffHours < 0) {
-    //             diffHours += 24;
-    //           }
-    //           // // 게임에 접속하지 않는동안 체력을 닳게 하기 위해
-    //           // 게임 접속하지 않은 시간 계산 결과
-    //           let hpHours = currentHours - lastTimeHours
-    //           let hpMinutes = currentMinutes - lastTimeMinutes
-    //           if (hpMinutes < 0) {
-    //             hpHours--;
-    //             hpMinutes += 60;
-    //           }
-  
-    //           if (hpHours < 0) {
-    //             hpHours += 24;
-    //           }
-    //           // 
-    //           let Hours = diffHours + hpHours
-    //           let Minutes = diffMinutes + hpMinutes
-    //           if (Minutes >= 60) {
-    //             Hours += 1
-    //             Minutes -= 60
-    //           }
-    //           // 오전 12시 ~ 오전 8시 사이의 시간을 계산
-    //           let recoveryHours = 0;
-    //           for (let hour = lastTimeHours; hour !== currentHours; hour = (hour + 1) % 24) {
-    //               if (hour >= 0 && hour < 8) recoveryHours++;
-    //           }
-  
-    //           // 체력 회복 및 감소 계산
-    //           const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes)/10)
-    //           const totalRecoveryMinutes = recoveryHours * 6;
-    //           setSimulationExistValue(prevState => ({
-    //             ...prevState,
-    //             health: Math.min(
-    //               100,
-    //               Math.max(
-    //                 0,
-    //                 prevState.health - totalHpMinutes + totalRecoveryMinutes
-    //               )
-    //             ),
-    //           }));
-              
-    //           localStorage.setItem('timeDifference', JSON.stringify({
-    //             hours: Hours,
-    //             minutes: Minutes
-    //           }));
-    //         }
-    //       } catch (error) {
-    //         console.log(error);
-    //       }
-    //     }
-    //   }
-    //   fetchData()
-    // }, []); // 의존성 배열을 적절히 설정
 
     useEffect(() => {
       // 처음 로드할 때 localStorage에서 hpPercentage를 가져와서 상태를 설정합니다.
-      setHpPercentage(parseInt(localStorage.getItem('hpPercentage')));
-      setSimulationExistValue(prevState => ({
-        ...prevState,
-        health: localStorage.getItem('hpPercentage'),
-        background : localStorage.getItem('background'),
-        cost : parseInt(localStorage.getItem('cost')),
-        end : localStorage.getItem('end'),
-        endCheck : localStorage.getItem('endCheck'),
-        endTime : localStorage.getItem('endTime'),
-        id : parseInt(localStorage.getItem('id')),
-        lastTime : localStorage.getItem('lastTime'),
-        petName : localStorage.getItem('petName'),
-        petType : localStorage.getItem('petType'),
-        quizNum : parseInt(localStorage.getItem('quizNum')),
-        requirement : localStorage.getItem('requirement'),
-        startTime : localStorage.getItem('startTime'),
-        title : localStorage.getItem('title'),
-        train : localStorage.getItem('train'),
-        user : localStorage.getItem('user')
-      }));
+      setHpPercentage(simulationExistValue.health);
+      // setSimulationExistValue(prevState => ({
+      //   ...prevState,
+      //   health: parseInt(localStorage.getItem('hpPercentage')),
+      //   background : localStorage.getItem('background'),
+      //   cost : parseInt(localStorage.getItem('cost')),
+      //   end : localStorage.getItem('end'),
+      //   endCheck : localStorage.getItem('endCheck'),
+      //   endTime : localStorage.getItem('endTime'),
+      //   id : parseInt(localStorage.getItem('id')),
+      //   lastTime : localStorage.getItem('lastTime'),
+      //   petName : localStorage.getItem('petName'),
+      //   petType : localStorage.getItem('petType'),
+      //   quizNum : parseInt(localStorage.getItem('quizNum')),
+      //   requirement : localStorage.getItem('requirement'),
+      //   startTime : localStorage.getItem('startTime'),
+      //   title : localStorage.getItem('title'),
+      //   train : localStorage.getItem('train'),
+      //   user : localStorage.getItem('user')
+      // }));
     }, []);
     console.log(simulationExistValue)
     // 시간 및 hp 계산
     useEffect(() => {
       let hpTimer = 0;
       let initialMount = true; // 초기 마운트 여부 확인
+      let initialMountHealth = true
       // 타이머 함수
       const timerFunction = () => {
         if (simulationExistValue.end === true) return; // end가 true이면 종료
@@ -197,9 +98,11 @@ function Simulation() {
         }
         initialMount = false; // 초기 실행 후 false로 설정
         hpTimer += 1;
+        if (!initialMountHealth) { // 초기 마운트가 아닐 때만 시간 증가
         if (hpTimer >= 10) { // 10분마다 HP 감소
           setHpPercentage((prevHpPercentage) => {
             const newHpPercentage = prevHpPercentage > 0 ? prevHpPercentage - 1 : 0;
+            console.log(newHpPercentage, timeDifference)
             setSimulationExistValue((prevState) => ({
               ...prevState,
               health: newHpPercentage,
@@ -208,6 +111,8 @@ function Simulation() {
           });
           hpTimer = 0;
         }
+      }
+      initialMountHealth = false; 
       };
     
       // interval 설정
