@@ -14,8 +14,7 @@ function Home() {
   const navigate = useNavigate();
   useEffect(() => {
     if (existValue !== null) {
-      console.log(existValue)
-      localStorage.setItem('petType', existValue.petType)
+        localStorage.setItem('petType', existValue.petType)
         localStorage.setItem('background', existValue.background)
         localStorage.setItem('cost', existValue.cost)
         localStorage.setItem('petName', existValue.petName)
@@ -51,7 +50,6 @@ function Home() {
           const now = new Date()
           const currentHours = now.getHours()
           const currentMinutes = now.getMinutes()
-          console.log(currentHours)
           if (currentHours >= 0 && currentHours < 8) {
             navigate("/nosimulations"); // NoSimulation 페이지로 이동
           } 
@@ -68,29 +66,28 @@ function Home() {
             }));
           } else {
             setExistValue(response.data); // SET하자마자 담기지 않아서 response.data로 해줌
-            console.log(response.data)
             localStorage.setItem("activatedNum", 5);
 
-            const startTimeHours = Number(response.data.startTime.substr(11, 2));
-            const startTimeMinutes = Number(response.data.startTime.substr(14, 2));
-            const lastTimeHours = Number(response.data.lastTime.substr(11, 2));
-            const lastTimeMinutes = Number(response.data.lastTime.substr(14, 2));
+            const startTimeHours = Number(response.data.startTime.substr(11, 2)); // 시작 시간
+            const startTimeMinutes = Number(response.data.startTime.substr(14, 2)); // 시작 분
+            const lastTimeHours = Number(response.data.lastTime.substr(11, 2)); // 최근 접속 시간
+            const lastTimeMinutes = Number(response.data.lastTime.substr(14, 2)); // 최근 접속 분
             
-            let diffHours = lastTimeHours - startTimeHours;
-            let diffMinutes = lastTimeMinutes - startTimeMinutes;
+            let diffHours = lastTimeHours - startTimeHours; // 게임을 진행한 시간의 시간
+            let diffMinutes = lastTimeMinutes - startTimeMinutes; // 게임을 진행한 시간의 분
             
-            if (diffMinutes < 0) {
+            if (diffMinutes < 0) { // 분이 0보다 작으면 시간을 1 빼고 분에 60분 더해
               diffHours--;
               diffMinutes += 60;
             }
 
-            if (diffHours < 0) {
+            if (diffHours < 0) { // 시간이 0보다 작으면 시간에 24시 더해
               diffHours += 24;
             }
             // // 게임에 접속하지 않는동안 체력을 닳게 하기 위해
             // 게임 접속하지 않은 시간 계산 결과
-            let hpHours = currentHours - lastTimeHours
-            let hpMinutes = currentMinutes - lastTimeMinutes
+            let hpHours = currentHours - lastTimeHours // 게임을 접속하지 않은 시간의 시간만큼 hp를 줄여야 돼
+            let hpMinutes = currentMinutes - lastTimeMinutes // 게임을 접속하지 않은 시간의 분만큼 hp를 줄여야 돼
             if (hpMinutes < 0) {
               hpHours--;
               hpMinutes += 60;
@@ -100,8 +97,9 @@ function Home() {
               hpHours += 24;
             }
             // 
-            let Hours = diffHours + hpHours
-            let Minutes = diffMinutes + hpMinutes
+            let Hours = diffHours + hpHours // 게임을 시작한 이후로 지난 시간의 시간
+            let Minutes = diffMinutes + hpMinutes // 게임을 시작안 이후로 지난 시간의 분
+            console.log(Hours, Minutes)
             if (Minutes >= 60) {
               Hours += 1
               Minutes -= 60
@@ -126,7 +124,6 @@ function Home() {
               ),
             }));
             
-            console.log(hpHours, hpMinutes)
             localStorage.setItem('timeDifference', JSON.stringify({
               hours: Hours,
               minutes: Minutes
@@ -147,9 +144,7 @@ function Home() {
               Authorization: "Bearer " + token,
             },
           });
-          console.log(response.data);
           if (response.data.status === "success") {
-            console.log(response.data.message);
             window.location.href = "/checklist/result";
           }
         } catch (error) {

@@ -176,7 +176,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
           setRequirementNum(11);
           setIsImageVisible(true);
         }
-        else if (emergency < 2 && Math.random() < 0.5) {
+        else if (emergency < 2 && Math.random() < 0.2) {
           setShowRandomImage("assets/things/sick.png");
           setRequirementNum(13);
           setIsImageVisible(true);
@@ -232,7 +232,6 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     }, [nextImage]);
 
   const Quiz = useRecoilValue(GameQuiz);
-  console.log(Quiz)
   const [quizCount, setQuizCount] = useState(simulationExistValue.quizNum);
   const [selectedQuiz, setSelectedQuiz] = useRecoilState(SelectedQuiz);
   console.log(quizCount)

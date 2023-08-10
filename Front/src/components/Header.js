@@ -64,7 +64,7 @@ function Header() {
         localStorage.setItem('user', existValue.user)
         localStorage.setItem('hpPercentage', existValue.health)
     }
-  }, [existValue]);
+  }, []);
   const handleLinkClick = async (event, page) => {
     event.preventDefault();
     // 로그인 여부를 확인하여 이동할 페이지 결정
