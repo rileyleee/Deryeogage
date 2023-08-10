@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import axios from "axios"; // axios import
 import * as S from "../../styled/ChatVideo/ChatVideo.style"
 import DogDetail from "./DogDetail";
 import ChatRoomDetail from "./ChatRoomDetail";
 import Reservation from "../../components/Adopt/Reservation";
-import { useLocation } from "react-router-dom";
-import axios from "axios"; // axios import
 import VideoRoom from "./openvidu/VideoRoom";
 
 function ChatVideo() {

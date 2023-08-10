@@ -44,6 +44,7 @@ function Header() {
 
 
   useEffect(() => {
+
     if (existValue !== null) {
       console.log(existValue)
       localStorage.setItem('petType', existValue.petType)
@@ -199,7 +200,10 @@ function Header() {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="/checklist">
+              <a className="nav-link" aria-current="page" href="/checklist" onClick={(event) => {
+                event.preventDefault();
+                checkUserCheckList(event);
+                }}>
               체크리스트
               </a>
             </li>

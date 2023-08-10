@@ -24,7 +24,6 @@ const LoginHandeler = () => {
         url: `${REACT_APP_API_URL}/users/oauth?code=${code}`,
         headers: {
           "Content-Type": "application/json;charset=utf-8", //json형태로 데이터를 보내겠다는뜻
-          //"Access-Control-Allow-Origin": "*", //이건 cors 에러때문에 넣어둔것. 당신의 프로젝트에 맞게 지워도됨
         },
         withCredentials: true,
       }).then((res) => {
@@ -61,7 +60,6 @@ const LoginHandeler = () => {
         console.log(res);
         console.log("getNickname 함수 실행됐닥")
         localStorage.setItem("nickname", res.data.data);
-        window.location.reload()
       })
       .catch((err) => {
         console.log(err);

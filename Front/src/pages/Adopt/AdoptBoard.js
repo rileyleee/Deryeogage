@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import * as S from "../../styled/Adopt/AdoptBoard.style"
+import * as S from "../../styled/Adopt/AdoptBoard.style";
 import { useNavigate } from "react-router-dom";
 import NotLogin from "../../components/Adopt/NotLogin";
 import NotSurvey from "../../components/Adopt/NotSurvey";
@@ -11,6 +11,23 @@ function AdoptBoard() {
   const navigate = useNavigate();
   const [adoptData, setAdoptData] = useState([]);
   const [hasSurvey, setHasSurvey] = useState(false);
+
+  // 검색기능
+  const [searchTerm, setSearchTerm] = useState({
+    title: "",
+    dogTypeCode: "",
+    regionCode: "",
+  });
+
+  // 검색 카테고리 상태
+  const [searchCategory, setSearchCategory] = useState("title");
+
+  const filteredDogs = adoptData.filter((dog) => {
+    const value = searchTerm[searchCategory];
+    return dog[searchCategory] ? dog[searchCategory].includes(value) : true;
+  });
+
+  // 여기까지 검색
 
   const insertedToken = localStorage.getItem("accessToken");
 
@@ -45,9 +62,9 @@ function AdoptBoard() {
       }
     } catch (error) {
       setHasSurvey(true);
-    } 
+    }
   };
-  
+
   const dogsArray = Array.isArray(adoptData) ? adoptData : [];
 
   useEffect(() => {
@@ -57,18 +74,36 @@ function AdoptBoard() {
 
   return (
     <div>
-        <>
-          <h1>AdoptBoard</h1>
-          {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
-          {insertedToken && hasSurvey ? <NotSurvey /> : null}
-          {!insertedToken ? <NotLogin /> : null}
+      <>
+        <h1>AdoptBoard</h1>
+        {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
+        {insertedToken && hasSurvey ? <NotSurvey /> : null}
+        {!insertedToken ? <NotLogin /> : null}
 
-          <S.Button onClick={onClick}>글 작성하기</S.Button>
+        <S.Button onClick={onClick}>글 작성하기</S.Button>
+        <div>
+          <select
+            name="category"
+            value={searchCategory}
+            onChange={(e) => setSearchCategory(e.target.value)}
+          >
+            <option value="title">제목</option>
+            <option value="dogTypeCode">견종</option>
+            <option value="regionCode">지역</option>
+          </select>
+          <input
+            type="text"
+            value={searchTerm[searchCategory]}
+            onChange={(e) =>
+              setSearchTerm({ ...searchTerm, [searchCategory]: e.target.value })
+            }
+          />
+        </div>
 
-          {dogsArray.map((dog) => (
-            <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} /> 
-          ))}
-        </>
+        {filteredDogs.map((dog) => (
+          <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} />
+        ))}
+      </>
     </div>
   );
 }
