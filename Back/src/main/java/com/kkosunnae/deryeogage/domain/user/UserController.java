@@ -109,5 +109,4 @@ public class UserController {
         ProfileResponseDto profileResponse = userService.getProfile(userId);
         return Response.success(profileResponse);
     }
-
 }
