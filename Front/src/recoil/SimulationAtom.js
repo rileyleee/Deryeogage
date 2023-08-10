@@ -7,7 +7,24 @@ export const SimulationStartAtom = atom({
 
 export const SimulationExistAtom = atom({
     key: 'SimulationExistAtom',
-    default:{}
+    default:{
+        health: parseInt(localStorage.getItem('hpPercentage')) || 100,
+        background : localStorage.getItem('background') || '',
+        cost : parseInt(localStorage.getItem('cost')) || 30000,
+        end : localStorage.getItem('end') || false,
+        endCheck : localStorage.getItem('endCheck') || false,
+        endTime : localStorage.getItem('endTime'),
+        id : parseInt(localStorage.getItem('id')) || 0,
+        lastTime : localStorage.getItem('lastTime'),
+        petName : localStorage.getItem('petName') || '',
+        petType : localStorage.getItem('petType') || '',
+        quizNum : parseInt(localStorage.getItem('quizNum')) || 0,
+        requirement : localStorage.getItem('requirement') || '00000',
+        startTime : localStorage.getItem('startTime'),
+        title : localStorage.getItem('title') || '',
+        train : localStorage.getItem('train') || '00000000',
+        user : localStorage.getItem('user') || 0
+    }
 })
 
 export const SimulationNum = atom({

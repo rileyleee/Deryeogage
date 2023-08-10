@@ -61,7 +61,7 @@ const LoginHandeler = () => {
         console.log(res);
         console.log("getNickname 함수 실행됐닥")
         localStorage.setItem("nickname", res.data.data);
-        window.location.reload()
+        // window.location.reload()
       })
       .catch((err) => {
         console.log(err);

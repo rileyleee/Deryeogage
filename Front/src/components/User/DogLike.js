@@ -14,7 +14,7 @@ function DogLike() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data.data); // 로깅
+        console.log("찜하기 ~~~~~~~~~~~~~~~~~~~~~~~~", response.data.data); // 로깅
 
         // 좋아요한 게시글의 ID를 가져옵니다.
         const favoriteBoardIds = response.data.data.map((item) => item.boardId);
@@ -28,10 +28,16 @@ function DogLike() {
                 },
               })
               .then((response) => ({
-                title: response.data.data[0].regionCode, // 제목을 regionCode로 설정 (데이터 구조에 따라 변경 필요)
-                name: response.data.data[0].userId, // 이름을 userId로 설정 (데이터 구조에 따라 변경 필요)
+                
+                title: response.data.data[0].title, // 제목을 regionCode로 설정 (데이터 구조에 따라 변경 필요)
+                name: response.data.data[0].userNickname,
+                dogName:  response.data.data[0].name,
+                dogAge:  response.data.data[0].age,
+                regionCode: response.data.data[0].regionCode,
                 imageUrl: Object.values(response.data.data[1])[0], // 첫 번째 이미지 URL
-              }))
+                response,
+                
+              }) )
           )
         );
         console.log(favoritedPostsDetails); // 로깅
@@ -54,7 +60,9 @@ function DogLike() {
           {favoritedPosts.map((post, index) => (
             <li key={index}>
               <h3>{post.title}</h3>
-              <p>이름: {post.name}</p>
+              <p>작성자: {post.name}</p>
+              <p>강쥐 이름: {post.dogName}</p>
+              <p>강쥐 나이: {post.dogAge}살</p>
               <img src={post.imageUrl} alt={`이미지 ${index}`} />
             </li>
           ))}

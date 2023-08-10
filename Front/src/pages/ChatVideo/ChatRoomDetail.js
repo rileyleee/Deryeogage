@@ -6,6 +6,8 @@ import axios from "axios"; // axios 불러오기
 import styled from "styled-components";
 
 function ChatRoomDetail() {
+  const REACT_APP_CHAT_URL = process.env.REACT_APP_CHAT_URL
+
   const accessToken = localStorage.getItem("accessToken");
   const [roomInfo, setRoomInfo] = useState("");
   const [messages, setMessages] = useState([]);
@@ -63,7 +65,7 @@ const formatMessageTime = (createdDate) => {
 
   const loadRoomInfo = () => {
     axios
-      .get("http://localhost:8080/api/chat/room/" + roomId, {
+      .get(`${REACT_APP_CHAT_URL}/api/chat/room/` + roomId, {
         headers: {
           Authorization: "Bearer " + accessToken,
         },
@@ -89,7 +91,7 @@ const formatMessageTime = (createdDate) => {
 
   const loadMessages = () => {
     axios
-      .get("http://localhost:8080/api/chat/room/" + roomId + "/messages", {
+      .get(`${REACT_APP_CHAT_URL}/api/chat/room/` + roomId + "/messages", {
         headers: {
           Authorization: "Bearer " + accessToken,
         },
@@ -108,7 +110,7 @@ const formatMessageTime = (createdDate) => {
     }
     // 웹소켓 연결 설정
     const socket = new SockJS(
-      "http://localhost:8080/ws/chat?token=" + accessToken,
+      `${REACT_APP_CHAT_URL}/ws/chat?token=` + accessToken,
       null,
       { headers: { Authorization: "Bearer " + accessToken } }
     );
