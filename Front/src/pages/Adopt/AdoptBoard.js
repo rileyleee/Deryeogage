@@ -77,32 +77,36 @@ function AdoptBoard() {
 
   return (
     <div>
-      <h1>AdoptBoard</h1>
+       <S.Smallspacer></S.Smallspacer>
+      <h1>입양게시판</h1>
       {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
       {insertedToken && hasSurvey ? <NotSurvey /> : null}
       {!insertedToken ? <NotLogin /> : null}
-
-      <S.Button onClick={onClick}>글 작성하기</S.Button>
-      <S.BoardGrid>
-        {dogsToShow.map((dog) => (
-          <S.Media>
-            <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} />
-          </S.Media>
-        ))}
-      </S.BoardGrid>
-      <S.StyledPagination>
-        <Pagination
-          activePage={activePage}
-          itemsCountPerPage={itemsPerPage}
-          totalItemsCount={dogsArray.length}
-          pageRangeDisplayed={5} // 표시될 페이지 링크 수를 조정
-          prevPageText={"이전"} // "이전"을 나타낼 텍스트
-          nextPageText={"다음"} // "다음"을 나타낼 텍스트
-          firstPageText={"처음"}
-          lastPageText={"마지막"}
-          onChange={handlePageChange}
-        />
-      </S.StyledPagination>
+      <S.Background>
+        <S.Button onClick={onClick}>글 작성</S.Button>
+        <S.BoardGrid>
+          {dogsToShow.map((dog) => (
+            <S.Media>
+              <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} />
+            </S.Media>
+          ))}
+        </S.BoardGrid>
+        <S.StyledPagination>
+          <Pagination
+            activePage={activePage}
+            itemsCountPerPage={itemsPerPage}
+            totalItemsCount={dogsArray.length}
+            pageRangeDisplayed={5} // 표시될 페이지 링크 수를 조정
+            prevPageText={"<"} // "이전"을 나타낼 텍스트
+            nextPageText={">"} // "다음"을 나타낼 텍스트
+            hideFirstLastPages={true}
+            // firstPageText={"처음"}
+            // lastPageText={"마지막"}
+            onChange={handlePageChange}
+          />
+        </S.StyledPagination>
+      </S.Background>
+      <S.Largespacer></S.Largespacer>
     </div>
   );
 }

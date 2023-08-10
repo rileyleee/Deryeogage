@@ -1,5 +1,15 @@
 import styled from "styled-components";
 
+export const Background = styled.div`
+  position: absolute; /* 상대적 위치를 기준으로 움직입니다 */
+  top: 75%;           /* 컨테이너 중간부터 시작 */
+  left: 10%;          /* 컨테이너 중간부터 시작 */
+  width: 80%;
+  height: 300px;
+  background: #FFFCF8; 
+  margin-bottom: 100px;
+`;
+
 export const Button = styled.button`
   border: none;
   background-color: #ff914d;
@@ -7,7 +17,7 @@ export const Button = styled.button`
   border-radius: 30px;
   color: white;
   margin-top: 1vw;
-  left: 50%;
+  left: 96%;
   transform: translateX(-50%);
   position: relative;
   display: block;
@@ -28,7 +38,7 @@ export const BoardGrid = styled.div`
 `;
 
 export const BoardItem = styled.div`
-  border: white;
+  border-color: white;
   padding: 10px;
   background-color: white;
 `;
@@ -75,4 +85,12 @@ export const StyledPagination = styled.div`
    .pagination li a:hover:not(.active) {
      background-color: #ddd;
    }
+`;
+
+export const Largespacer = styled.div`
+height: 1350px;
+`;
+
+export const Smallspacer = styled.div`
+height: 20px;
 `;
