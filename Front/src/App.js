@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import * as S from "./styled/Footer.style";
 
 // common
 import Header from "./components/Header";
@@ -21,10 +22,10 @@ import AdoptBoardDetail from "./pages/Adopt/AdoptBoardDetail";
 
 // Simulation
 import Simulation from "./pages/Check/Simulation";
-import NoSimulation from "./pages/Check/NoSimulation"
+import NoSimulation from "./pages/Check/NoSimulation";
 import Survey from "./pages/User/Survey";
 
-import SimulationEnd from "./pages/Check/SimulationEnd"
+import SimulationEnd from "./pages/Check/SimulationEnd";
 
 // Check
 import CheckList from "./pages/Check/CheckList";
@@ -78,7 +79,6 @@ function App() {
 
             {/* NotFound */}
             <Route path="*" element={<NotFound />}></Route>
-
           </Routes>
         </Router>
       </div>

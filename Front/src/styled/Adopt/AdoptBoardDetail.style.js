@@ -129,11 +129,15 @@ export const TitleContainer = styled.div`
 `
 
 export const ProfileModal = styled.div`
-  position: absolute;
-  top: ${props => props.y}px; // y 위치 적용
-  left: ${props => props.x}px; // x 위치 적용
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 10px;
   z-index: 10; // 다른 요소 위에 표시
+`;
+
+export const StatusMessage = styled.div`
+  font-size: 18px;
+  color: red; // 원하는 색상을 사용
+  text-align: center;
+  margin: 10px 0; // 상단 및 하단 여백 추가
 `;
