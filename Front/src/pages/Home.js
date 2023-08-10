@@ -12,6 +12,8 @@ import { useNavigate } from "react-router-dom";
 function Home() {
   const [existValue, setExistValue] = useRecoilState(SimulationExistAtom);
   const navigate = useNavigate();
+  const [isLoading, setLoading] = useState(false);
+  console.log(existValue)
   useEffect(() => {
     if (existValue !== null) {
         localStorage.setItem('petType', existValue.petType)
@@ -33,12 +35,18 @@ function Home() {
     }
   }, [existValue]);
   const handleLinkClick = async (event, page) => {
-    event.preventDefault();
+    if (event) event.preventDefault();
     // 로그인 여부를 확인하여 이동할 페이지 결정
     if (localStorage.getItem("accessToken")) {
       // 로그인되어 있는 경우 해당 페이지로 이동
       const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
       if (page === "/simulations") {
+        localStorage.setItem("afterLoginPage", page);
+      } else {
+        navigate(page);
+      }
+      if (page === "/simulations") {
+        setLoading(true) // 로딩 시작
         try {
           const url = `${REACT_APP_API_URL}/simulations`;
           const token = localStorage.getItem("accessToken");
@@ -48,8 +56,11 @@ function Home() {
             },
           });
           const now = new Date()
+          console.log(Date())
           const currentHours = now.getHours()
           const currentMinutes = now.getMinutes()
+          const simulationData = response.data;
+          console.log(simulationData)
           if (currentHours >= 0 && currentHours < 8) {
             navigate("/nosimulations"); // NoSimulation 페이지로 이동
           } 
@@ -65,13 +76,14 @@ function Home() {
               minutes:0
             }));
           } else {
-            setExistValue(response.data); // SET하자마자 담기지 않아서 response.data로 해줌
+            setExistValue(simulationData);; // SET하자마자 담기지 않아서 response.data로 해줌
             localStorage.setItem("activatedNum", 5);
+            console.log(existValue)
 
-            const startTimeHours = Number(response.data.startTime.substr(11, 2)); // 시작 시간
-            const startTimeMinutes = Number(response.data.startTime.substr(14, 2)); // 시작 분
-            const lastTimeHours = Number(response.data.lastTime.substr(11, 2)); // 최근 접속 시간
-            const lastTimeMinutes = Number(response.data.lastTime.substr(14, 2)); // 최근 접속 분
+            const startTimeHours = Number(simulationData.startTime.substr(11, 2)); // 시작 시간
+            const startTimeMinutes = Number(simulationData.startTime.substr(14, 2)); // 시작 분
+            const lastTimeHours = Number(simulationData.lastTime.substr(11, 2)); // 최근 접속 시간
+            const lastTimeMinutes = Number(simulationData.lastTime.substr(14, 2)); // 최근 접속 분
             
             let diffHours = lastTimeHours - startTimeHours; // 게임을 진행한 시간의 시간
             let diffMinutes = lastTimeMinutes - startTimeMinutes; // 게임을 진행한 시간의 분
@@ -134,6 +146,7 @@ function Home() {
         } catch (error) {
           console.log(error);
         }
+        setLoading(false) // 로딩 완료
       } else if (page === "/checklist") {
         // 체크리스트 페이지를 선택한 경우
         try {
@@ -166,22 +179,29 @@ function Home() {
       localStorage.setItem("clickedPage", page);
     }
   };
+
+  // 컴포넌트가 렌더링될 때에 로그인 후에 이동할 페이지를 처리
+  React.useEffect(() => {
+    if (localStorage.getItem("accessToken")) {
+      const clickedPage = localStorage.getItem("clickedPage");
+      const afterLoginPage = localStorage.getItem("afterLoginPage");
+  
+      if (clickedPage || afterLoginPage) {
+        if (!isLoading) {
+          // 시뮬레이션 페이지로 이동하려는 경우, handleLinkClick 함수를 호출합니다.
+          handleLinkClick(null, clickedPage || afterLoginPage);
+        }
+      }
+  
+      localStorage.removeItem("clickedPage");
+      localStorage.removeItem("afterLoginPage");
+    }
+  }, [navigate, isLoading]);
+
   // 이 부분에 useEffect를 추가합니다.  그래야 업데이트가 잘된다.
   useEffect(() => {
     console.log(existValue);
   }, [existValue]);
-
-  // 컴포넌트가 렌더링될 때에 로그인 후에 이동할 페이지를 처리
-  React.useEffect(() => {
-    const clickedPage = localStorage.getItem("clickedPage");
-    if (localStorage.getItem("accessToken") && clickedPage) {
-      navigate(clickedPage);
-      localStorage.removeItem("clickedPage"); // 이동한 페이지 정보를 삭제
-    }
-  }, [navigate]);
-
-
-
 
 
 
