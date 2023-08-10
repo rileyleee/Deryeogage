@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -60,5 +62,24 @@ public class SimulationService {
             simulationEntity.update(newRequirement);
             simulationRepository.save(simulationEntity);
         }
+    }
+
+
+    private static final Map<String, Integer> titleRankings = new HashMap<>();
+    static {
+        titleRankings.put("도살자", 7);
+        titleRankings.put("생초보 양육자", 6);
+        titleRankings.put("새싹 양육자", 5);
+        titleRankings.put("중급 양육자", 4);
+        titleRankings.put("프로 양육러", 3);
+        titleRankings.put("강아지 그 자체🐶", 2);
+        titleRankings.put("미래의 강형욱✨", 1);
+    }
+
+    public String getTitle(Long userId){
+        List<String> titleList = simulationRepository.findDistinctTitlesByUserId(userId);
+        return titleList.stream()
+                .min((title1, title2) -> titleRankings.get(title1) - titleRankings.get(title2))
+                .orElse(null);  // returns null if there's no title, adjust as needed
     }
 }

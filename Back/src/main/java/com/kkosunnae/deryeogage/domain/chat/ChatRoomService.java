@@ -104,8 +104,10 @@ public class ChatRoomService {
 
         String myNickName = userRepository.findById(userId).get().getNickname();
         String yourNickName = (entity.getUser1().getId()==userId) ? entity.getUser2().getNickname() : entity.getUser1().getNickname();
-        chatRoomResponseDto.setMyNickName(myNickName);
+        String yourImg = (entity.getUser1().getId()==userId) ? entity.getUser2().getImageUrl() : entity.getUser1().getImageUrl();
+                chatRoomResponseDto.setMyNickName(myNickName);
         chatRoomResponseDto.setYourNickName(yourNickName);
+        chatRoomResponseDto.setYourImg(yourImg);
 
         return chatRoomResponseDto;
     }
@@ -127,7 +129,6 @@ public class ChatRoomService {
     public boolean getExist(Integer roomId) {
         ChatRoomEntity entity = this.chatRoomRepository.findById(roomId).orElseThrow(
                 () -> new IllegalArgumentException("해당 ChatRoom이 존재하지 않습니다. roomId = " + roomId));
-
         if(entity.getScheduledDate()==null){ // 일정이 없으면
             return false;
         }else{ // 일정이 있으면
