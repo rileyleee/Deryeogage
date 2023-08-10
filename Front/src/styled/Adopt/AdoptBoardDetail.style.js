@@ -124,3 +124,20 @@ export const ModalContent = styled.div`
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
+
+export const TitleContainer = styled.div`
+`
+
+export const ProfileModal = styled.div`
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 10; // 다른 요소 위에 표시
+`;
+
+export const StatusMessage = styled.div`
+  font-size: 18px;
+  color: red; // 원하는 색상을 사용
+  text-align: center;
+  margin: 10px 0; // 상단 및 하단 여백 추가
+`;

@@ -36,6 +36,7 @@ function Simulation() {
     console.log(simulationExistValue)
     // const [hpPercentage, setHpPercentage] = useRecoilState(SimulationHp)
     const [timeDifference, setTimeDifference] = useState(JSON.parse(localStorage.getItem('timeDifference')))
+    console.log(timeDifference)
     // 죽었야 안죽었냐
     const [isDead, setIsDead] = useState(false);
     const [hpPercentage, setHpPercentage] = useState(null) // hp값을 계산해야 되니까 따로 빼놓는거임
@@ -45,36 +46,37 @@ function Simulation() {
 
     useEffect(() => {
       // 처음 로드할 때 localStorage에서 hpPercentage를 가져와서 상태를 설정합니다.
-      setHpPercentage(parseInt(localStorage.getItem('hpPercentage')));
-      setSimulationExistValue(prevState => ({
-        ...prevState,
-        health: localStorage.getItem('hpPercentage'),
-        background : localStorage.getItem('background'),
-        cost : parseInt(localStorage.getItem('cost')),
-        end : localStorage.getItem('end'),
-        endCheck : localStorage.getItem('endCheck'),
-        endTime : localStorage.getItem('endTime'),
-        id : parseInt(localStorage.getItem('id')),
-        lastTime : localStorage.getItem('lastTime'),
-        petName : localStorage.getItem('petName'),
-        petType : localStorage.getItem('petType'),
-        quizNum : parseInt(localStorage.getItem('quizNum')),
-        requirement : localStorage.getItem('requirement'),
-        startTime : localStorage.getItem('startTime'),
-        title : localStorage.getItem('title'),
-        train : localStorage.getItem('train'),
-        user : localStorage.getItem('user')
-      }));
+      setHpPercentage(simulationExistValue.health);
+      // setSimulationExistValue(prevState => ({
+      //   ...prevState,
+      //   health: parseInt(localStorage.getItem('hpPercentage')),
+      //   background : localStorage.getItem('background'),
+      //   cost : parseInt(localStorage.getItem('cost')),
+      //   end : localStorage.getItem('end'),
+      //   endCheck : localStorage.getItem('endCheck'),
+      //   endTime : localStorage.getItem('endTime'),
+      //   id : parseInt(localStorage.getItem('id')),
+      //   lastTime : localStorage.getItem('lastTime'),
+      //   petName : localStorage.getItem('petName'),
+      //   petType : localStorage.getItem('petType'),
+      //   quizNum : parseInt(localStorage.getItem('quizNum')),
+      //   requirement : localStorage.getItem('requirement'),
+      //   startTime : localStorage.getItem('startTime'),
+      //   title : localStorage.getItem('title'),
+      //   train : localStorage.getItem('train'),
+      //   user : localStorage.getItem('user')
+      // }));
     }, []);
     console.log(simulationExistValue)
     // 시간 및 hp 계산
     useEffect(() => {
       let hpTimer = 0;
-    
+      let initialMount = true; // 초기 마운트 여부 확인
+      let initialMountHealth = true
       // 타이머 함수
       const timerFunction = () => {
         if (simulationExistValue.end === true) return; // end가 true이면 종료
-    
+        if (!initialMount) { // 초기 마운트가 아닐 때만 시간 증가
         setTimeDifference((prevTimeDifference) => {
           let newMinutes = prevTimeDifference.minutes + 1;
           let newHours = prevTimeDifference.hours;
@@ -93,11 +95,14 @@ function Simulation() {
             minutes: newMinutes,
           };
         });
-    
+        }
+        initialMount = false; // 초기 실행 후 false로 설정
         hpTimer += 1;
+        if (!initialMountHealth) { // 초기 마운트가 아닐 때만 시간 증가
         if (hpTimer >= 10) { // 10분마다 HP 감소
           setHpPercentage((prevHpPercentage) => {
             const newHpPercentage = prevHpPercentage > 0 ? prevHpPercentage - 1 : 0;
+            console.log(newHpPercentage, timeDifference)
             setSimulationExistValue((prevState) => ({
               ...prevState,
               health: newHpPercentage,
@@ -106,6 +111,8 @@ function Simulation() {
           });
           hpTimer = 0;
         }
+      }
+      initialMountHealth = false; 
       };
     
       // interval 설정
@@ -219,8 +226,8 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
             }
           }
         );
-        setSimulationExistValue(response.data);
-        console.log(simulationExistValue)
+        // setSimulationExistValue(response.data);
+        // console.log(simulationExistValue)
       }
     } catch (error) {
       console.error(error);
@@ -245,8 +252,12 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   useEffect(() => {
     if (simulationExistValue.health === 0) {
       setIsDead(true);
+      setSimulationExistValue(prevState => ({
+        ...prevState,
+        end: true,
+      }));
     }
-  }, [simulationExistValue.health]);
+  }, [simulationExistValue.health, simulationExistValue.end]);
   
   // 24시간이 되면 end를 true로!
   useEffect(() => {
@@ -275,6 +286,10 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   }, [timeDifference, simulationExistValue.endTime, setSimulationExistValue]);
   
 
+  // if (loading) {
+  //   return <div>Loading...</div>; // 로딩 중인 경우 표시할 컴포넌트
+  // }
+  // else {
   return (
     <div className="container" id="Simulation" style={{ position: 'relative' }}>
       <GameText />
@@ -298,5 +313,5 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     </div>
     );
   }
-  
+// }
   export default Simulation;

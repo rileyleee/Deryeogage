@@ -49,7 +49,7 @@ function Profile() {
   };
 
   return (
-    <div>
+    <S.ProfileWrap>
       <h1>마이페이지</h1>
       <h3>안녕하세요 {nickname}님 !</h3>
       {profileImage && <S.ProfileImage src={profileImage} alt="프로필 이미지" />}
@@ -93,7 +93,7 @@ function Profile() {
           </div>
         </div>
       )}
-    </div>
+    </S.ProfileWrap>
   );
 }
 

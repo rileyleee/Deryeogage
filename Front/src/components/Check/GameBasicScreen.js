@@ -9,7 +9,6 @@ import { SimulationExistAtom, SimulationWalkingCnt, SimulationCost, requirementI
 
 
 function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
-    // const walkingCnt = useRecoilValue(SimulationWalkingCnt) // 산책 횟수
     const [cost, setCost] = useRecoilState(SimulationCost)
     // requirementImages Recoil 상태와 상태 업데이트 함수를 가져옴
     const [requirementImages, setRequirementImages] = useRecoilState(requirementImagesState); // 이미지 객체로 저장
@@ -17,11 +16,8 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     const [simulationExistValue, setSimulationExistValue] = useRecoilState(SimulationExistAtom)
     const [hpPercentage, setHpPercentage] = useState(simulationExistValue.health)
     const [requirement, setRequirement] = useState(simulationExistValue.requirement)
-    // const [petname, setPetname] = useState('')
-    // const [background, setBackground] = useState(0)
-    // const [petType, setPetType] = useState(0)
+    
 
-    console.log(simulationExistValue)
       // 산책 횟수 카운트
     const walking = simulationExistValue.requirement
     ? simulationExistValue.requirement.substr(2, 1)
@@ -118,7 +114,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
       const [emergency, setEmergency] = useState(parseInt(simulationExistValue.requirement.substr(0, 1))) // 응급상황 횟수
       console.log(emergency, req4Count, requirementNum)
     
-
+        
       const getPayValue = (requirementNum) => {
         switch (requirementNum) {
           case 7: return 1000;
@@ -176,7 +172,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
           setRequirementNum(11);
           setIsImageVisible(true);
         }
-        else if (emergency < 2 && Math.random() < 0.5) {
+        else if (emergency < 2 && Math.random() < 0.2) {
           setShowRandomImage("assets/things/sick.png");
           setRequirementNum(13);
           setIsImageVisible(true);
@@ -232,7 +228,6 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     }, [nextImage]);
 
   const Quiz = useRecoilValue(GameQuiz);
-  console.log(Quiz)
   const [quizCount, setQuizCount] = useState(simulationExistValue.quizNum);
   const [selectedQuiz, setSelectedQuiz] = useRecoilState(SelectedQuiz);
   console.log(quizCount)

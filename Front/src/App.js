@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import * as S from "./styled/Footer.style";
 
 // common
 import Header from "./components/Header";
@@ -19,17 +20,12 @@ import AdoptBoard from "./pages/Adopt/AdoptBoard";
 import AdoptBoardCreate from "./pages/Adopt/AdoptBoardCreate";
 import AdoptBoardDetail from "./pages/Adopt/AdoptBoardDetail";
 
-// Review
-import ReviewBoard from "./pages/Review/ReviewBoard";
-import ReviewBoardCreate from "./pages/Review/ReviewBoardCreate";
-import ReviewBoardDetail from "./pages/Review/ReviewBoardDetail";
-
 // Simulation
 import Simulation from "./pages/Check/Simulation";
-import NoSimulation from "./pages/Check/NoSimulation"
+import NoSimulation from "./pages/Check/NoSimulation";
 import Survey from "./pages/User/Survey";
 
-import SimulationEnd from "./pages/Check/SimulationEnd"
+import SimulationEnd from "./pages/Check/SimulationEnd";
 
 // Check
 import CheckList from "./pages/Check/CheckList";
@@ -65,15 +61,9 @@ function App() {
             <Route path="/adopt" element={<AdoptBoard />} />
             <Route path="/adopt/create" element={<AdoptBoardCreate />} />
             <Route path="/adopt/:boardId" element={<AdoptBoardDetail />} />
-            <Route path="/adopt/:boardId" element={<AdoptBoardDetail />} />
             <Route path="/adopt/chatlist" element={<ChatRoomsList />} />
             <Route path="/adopt/chatroom/:roomId" element={<ChatVideo />} />
             <Route path="/adopt/edit/:boardId" element={<AdoptBoardCreate />} />
-
-            {/* 입양후기게시판 */}
-            <Route path="/review" element={<ReviewBoard />} />
-            <Route path="/review/create" element={<ReviewBoardCreate />} />
-            <Route path="/review/:boardId" element={<ReviewBoardDetail />} />
 
             {/* 마이페이지 */}
             <Route path="/profile" element={<Profile />} />
@@ -86,11 +76,6 @@ function App() {
             <Route path="/nosimulations" element={<NoSimulation />} />
             <Route path="/checklist" element={<CheckList />} />
             <Route path="/checklist/result" element={<CheckListResult />} />
-
-            {/* 미션페이지 */}
-            <Route path="/mission/:" element={<CheckList />} />
-
-            {/* 입양후기게시판 */}
 
             {/* NotFound */}
             <Route path="*" element={<NotFound />}></Route>

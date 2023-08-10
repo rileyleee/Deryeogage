@@ -16,6 +16,23 @@ function AdoptBoardCreate() {
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const [currentBoardId, setCurrentBoardId] = useState(null);
 
+  // 모든 컴포넌트에서 Enter 키 누름을 감지하기 위한 useEffect
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter" && event.target.tagName === "INPUT") {
+        event.preventDefault();
+      }
+    };
+
+    // 이벤트 리스너 등록
+    window.addEventListener("keypress", handleKeyPress);
+
+    // 컴포넌트 unmount 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("keypress", handleKeyPress);
+    };
+  }, []);
+
   // 요청 중인지 확인하는 상태 추가
   const [isSubmitting, setIsSubmitting] = useState(false);
   // 책임비 모달 관련
@@ -150,7 +167,7 @@ function AdoptBoardCreate() {
   const [dogName, setDogName] = useState("");
   const [dogAge, setDogAge] = useState(0);
   const [dogRegion, setRegion] = useState({ address: "", lat: 0, lng: 0 });
-
+  const [dogTypeCode, setDogTypeCode] = useState(""); // 견종 정보를 저장할 상태
   const [dogGender, setDogGender] = useState(false);
   const [dogChip, setDogChip] = useState(false);
 
@@ -172,6 +189,19 @@ function AdoptBoardCreate() {
     event.preventDefault();
 
     if (isSubmitting) return;
+
+    if (
+      title.trim() === "" ||
+      dogName.trim() === "" ||
+      dogAge <= 0 ||
+      dogRegion.address.trim() === "" ||
+      selectedImages.length === 0 ||
+      dogHealth.trim() === "" ||
+      dogIntroduction.trim() === ""
+    ) {
+      alert("모든 항목을 입력해주세요!");
+      return; // 검사에 실패하면 함수를 종료합니다.
+    }
 
     setIsSubmitting(true);
 
@@ -220,7 +250,7 @@ function AdoptBoardCreate() {
     formData.append("lon", dogRegion.lng);
     formData.append("gender", dogGender);
     formData.append("chipYn", dogChip);
-    formData.append("dogTypeCode", "CHIHUAHUA");
+    formData.append("dogTypeCode", dogTypeCode);
     formData.append("title", title);
 
     try {
@@ -303,11 +333,13 @@ function AdoptBoardCreate() {
               dogRegion={dogRegion}
               dogGender={dogGender}
               dogChip={dogChip}
+              dogTypeCode={dogTypeCode}
               setName={setDogName}
               setAge={setDogAge}
               setRegion={setRegion}
               setGender={setDogGender}
               setChip={setDogChip}
+              setDogTypeCode={setDogTypeCode}
             />
           </S.Box>
         </S.FlexContainer>
