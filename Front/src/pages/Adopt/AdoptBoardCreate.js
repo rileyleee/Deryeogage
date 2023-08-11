@@ -16,9 +16,6 @@ function AdoptBoardCreate() {
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const [currentBoardId, setCurrentBoardId] = useState(null);
 
-  // 이미지 수정할때 꼭 수정해야하는거 ,, 원래 사진 있으면 반영 안됨
-  const [originalImages, setOriginalImages] = useState([]);
-
   // 모든 컴포넌트에서 Enter 키 누름을 감지하기 위한 useEffect
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -55,7 +52,11 @@ function AdoptBoardCreate() {
   useEffect(() => {
     if (boardId) {
       axios
-        .get(`${REACT_APP_API_URL}/boards/each/${boardId}`)
+        .get(`${REACT_APP_API_URL}/boards/each/${boardId}`, {
+          headers: {
+            "Access-Control-Allow-Origin": "*"
+          }
+        })
         .then((response) => {
           setIsEditing(true);
           const data = response.data.data;
@@ -100,6 +101,9 @@ function AdoptBoardCreate() {
 
           setSelectedImages(images);
           setSelectedVideos(videos);
+          setOriginalImages(images);
+
+          console.log("selectedImages : ", selectedImages);
         });
     }
   }, [boardId]);
@@ -107,16 +111,21 @@ function AdoptBoardCreate() {
   // 이미지 등록 관련 코드
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImageFiles, setSelectedImageFiles] = useState([]);
+
+  const [originalImages, setOriginalImages] = useState([]);
+
   const handleImageChange = (event) => {
     const files = event.target.files;
     const selectedImagesArray = [...selectedImages];
     const selectedImageFilesArray = [...selectedImageFiles];
+
     for (let i = 0; i < files.length; i++) {
       selectedImagesArray.push(URL.createObjectURL(files[i]));
       selectedImageFilesArray.push(files[i]);
     }
     setSelectedImages(selectedImagesArray);
     setSelectedImageFiles(selectedImageFilesArray);
+
     event.target.value = null; // 이 부분 추가
   };
 
@@ -138,6 +147,11 @@ function AdoptBoardCreate() {
 
   // 이미지 삭제 관련 코드
   const handleImageRemove = (indexToRemove) => {
+    const removedImage = selectedImages[indexToRemove];
+
+    // 원본 이미지에서도 제거
+    setOriginalImages(originalImages.filter((img) => img !== removedImage));
+
     setSelectedImages(
       selectedImages.filter((_, index) => index !== indexToRemove)
     );
@@ -190,12 +204,6 @@ function AdoptBoardCreate() {
 
     if (isSubmitting) return;
 
-    if (isEditing) {
-      originalImages.forEach((imageUrl) => {
-        formData.append("multipartFile", imageUrl);
-      });
-    }
-
     if (
       title.trim() === "" ||
       dogName.trim() === "" ||
@@ -221,10 +229,41 @@ function AdoptBoardCreate() {
       formData.append("multipartFile", image);
     });
 
+    if (isEditing) {
+      const fetchAndAppend = async (url) => {
+          const response = await fetch(url);
+          const blob = await response.blob();
+  
+          // Convert the blob to a File object
+          const file = new File([blob], "filename.jpg", { type: blob.type });
+          formData.append("multipartFile", file);
+      }
+  
+      // Sequentially process all images (this can be changed to parallel processing if needed)
+      for (let image of selectedImages) {
+          await fetchAndAppend(image);
+      }
+  }
+
     // 비디오 파일들 추가
     selectedVideoFiles.forEach((video) => {
       formData.append("multipartFile", video);
     });
+
+    // // 이미지 파일들 추가
+    // selectedImageFiles.forEach((image) => {
+    //   formData.append("multipartFile", image);
+    // });
+
+    // // 이미지 파일들 추가
+    // originalImages.forEach((image) => {
+    //   formData.append("multipartFile", image);
+    // });
+
+    // // 비디오 파일들 추가
+    // selectedVideoFiles.forEach((video) => {
+    //   formData.append("multipartFile", video);
+    // });
 
     // 다른 필드들 추가
     formData.append("friendly", friendly);
@@ -255,6 +294,7 @@ function AdoptBoardCreate() {
           headers: {
             "Content-Type": "multipart/form-data", // 이 부분 추가
             Authorization: `Bearer ${token}`,
+            "Access-Control-Allow-Origin": "*"
           },
         });
         alert("게시글이 수정되었습니다.");
@@ -262,6 +302,10 @@ function AdoptBoardCreate() {
         // 요청 성공 후
         setIsSubmitting(false); // 요청 상태 초기화
       } else {
+        // FormData 객체의 내용을 콘솔로 출력하기 위한 코드
+        for (var pair of formData.entries()) {
+          console.log(pair[0] + ": " + pair[1]);
+        }
         const response = await axios.post(
           `${REACT_APP_API_URL}/boards`,
           formData,

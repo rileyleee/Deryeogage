@@ -77,11 +77,9 @@ function AdoptBoard() {
     }
   };
 
-  const dogsArray = Array.isArray(adoptData) ? adoptData : [];
-
   const startIndex = (activePage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const dogsToShow = dogsArray.slice(startIndex, endIndex);
+  const dogsToShow = filteredDogs.slice(startIndex, endIndex);
 
   useEffect(() => {
     fetchDogs();
@@ -96,23 +94,23 @@ function AdoptBoard() {
       {insertedToken && hasSurvey ? <NotSurvey /> : null}
       {!insertedToken ? <NotLogin /> : null}
       <div>
-          <select
-            name="category"
-            value={searchCategory}
-            onChange={(e) => setSearchCategory(e.target.value)}
-          >
-            <option value="title">제목</option>
-            <option value="dogTypeCode">견종</option>
-            <option value="regionCode">지역</option>
-          </select>
-          <input
-            type="text"
-            value={searchTerm[searchCategory]}
-            onChange={(e) =>
-              setSearchTerm({ ...searchTerm, [searchCategory]: e.target.value })
-            }
-          />
-        </div>
+        <select
+          name="category"
+          value={searchCategory}
+          onChange={(e) => setSearchCategory(e.target.value)}
+        >
+          <option value="title">제목</option>
+          <option value="dogTypeCode">견종</option>
+          <option value="regionCode">지역</option>
+        </select>
+        <input
+          type="text"
+          value={searchTerm[searchCategory]}
+          onChange={(e) =>
+            setSearchTerm({ ...searchTerm, [searchCategory]: e.target.value })
+          }
+        />
+      </div>
       <S.Button onClick={onClick}>글 작성</S.Button>
       <S.BoardGrid>
         {dogsToShow.map((dog) => (
@@ -125,7 +123,7 @@ function AdoptBoard() {
         <Pagination
           activePage={activePage}
           itemsCountPerPage={itemsPerPage}
-          totalItemsCount={dogsArray.length}
+          totalItemsCount={filteredDogs.length}
           pageRangeDisplayed={5} // 표시될 페이지 링크 수를 조정
           prevPageText={"<"} // "이전"을 나타낼 텍스트
           nextPageText={">"} // "다음"을 나타낼 텍스트
