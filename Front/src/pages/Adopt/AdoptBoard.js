@@ -19,6 +19,14 @@ function AdoptBoard() {
   const [adoptData, setAdoptData] = useState([]);
   const [hasSurvey, setHasSurvey] = useState(false);
 
+  const [activePage, setActivePage] = useState(1);
+  const itemsPerPage = 8; // 한 페이지에 표시할 게시글 수
+
+  const handlePageChange = (pageNumber) => {
+    setActivePage(pageNumber);
+  };
+
+
   // 검색기능
   const [searchTerm, setSearchTerm] = useState({
     title: "",
