@@ -27,3 +27,14 @@ export const GameBasicMenu = styled.div`
     margin-bottom: 1vh;
     padding: 1vh 0.5vw 0 1vh;
 `
+
+export const GameIcon = styled.p`
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-left: 12px;
+`
+
+export const GameText = styled.p`
+    margin-top: 8px;
+    margin-bottom: 8px;
+`

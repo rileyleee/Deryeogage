@@ -1,18 +1,13 @@
 import styled from "styled-components";
 
-export const FooterWrapper = styled.div`
-    &.footer {
-        padding-top: 50px;
-        //background-color: rgb(190, 190, 190);
-        color: #4A2511;
-        text-align: center;
-    }
-`
-
-// export const Background = styled.div`
-//   position: fixed; 
-//   bottom: 20px;           /* 컨테이너 중간부터 시작 */
-//   left: 0;          /* 컨테이너 중간부터 시작 */
-//   width: 100%;
-//   height: 20px;
-// `;
+export const FooterWrapper = styled.footer`
+  &.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #f9f9f9; /* 원하는 배경색 */
+    text-align: center;
+    display: flex
+  }
+`;

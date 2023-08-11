@@ -6,3 +6,8 @@ export const ProfileImage = styled.img`
   border-radius: 50%;
   object-fit: cover;
 `;
+
+
+export const ProfileWrap = styled.div`
+    height: 100vh;
+`

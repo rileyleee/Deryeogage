@@ -16,22 +16,25 @@ function AdoptBoardCreate() {
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const [currentBoardId, setCurrentBoardId] = useState(null);
 
-// 모든 컴포넌트에서 Enter 키 누름을 감지하기 위한 useEffect
-useEffect(() => {
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter' && event.target.tagName === 'INPUT') {
-      event.preventDefault();
-    }
-  };
+  // 이미지 수정할때 꼭 수정해야하는거 ,, 원래 사진 있으면 반영 안됨
+  const [originalImages, setOriginalImages] = useState([]);
 
-  // 이벤트 리스너 등록
-  window.addEventListener('keypress', handleKeyPress);
+  // 모든 컴포넌트에서 Enter 키 누름을 감지하기 위한 useEffect
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (event.key === "Enter" && event.target.tagName === "INPUT") {
+        event.preventDefault();
+      }
+    };
 
-  // 컴포넌트 unmount 시 이벤트 리스너 제거
-  return () => {
-    window.removeEventListener('keypress', handleKeyPress);
-  };
-}, []);
+    // 이벤트 리스너 등록
+    window.addEventListener("keypress", handleKeyPress);
+
+    // 컴포넌트 unmount 시 이벤트 리스너 제거
+    return () => {
+      window.removeEventListener("keypress", handleKeyPress);
+    };
+  }, []);
 
   // 요청 중인지 확인하는 상태 추가
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -81,6 +84,7 @@ useEffect(() => {
           setHair(dogData.hair);
           setDogHealth(dogData.health);
           setDogIntroduction(dogData.introduction);
+          setDogTypeCode(dogData.dogTypeCode);
 
           // 1번 인덱스에서의 이미지와 비디오 URL 처리
           const images = [];
@@ -104,7 +108,6 @@ useEffect(() => {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImageFiles, setSelectedImageFiles] = useState([]);
   const handleImageChange = (event) => {
-    // 수정 상태에서의 제한 제거
     const files = event.target.files;
     const selectedImagesArray = [...selectedImages];
     const selectedImageFilesArray = [...selectedImageFiles];
@@ -114,14 +117,13 @@ useEffect(() => {
     }
     setSelectedImages(selectedImagesArray);
     setSelectedImageFiles(selectedImageFilesArray);
-    event.target.value = null;
+    event.target.value = null; // 이 부분 추가
   };
 
   // 동영상 등록 관련 코드
   const [selectedVideos, setSelectedVideos] = useState([]);
   const [selectedVideoFiles, setSelectedVideoFiles] = useState([]);
   const handleVideoChange = (event) => {
-    // 수정 상태에서의 제한 제거
     const files = event.target.files;
     const selectedVideosArray = [...selectedVideos];
     const selectedVideoFilesArray = [...selectedVideoFiles];
@@ -131,12 +133,11 @@ useEffect(() => {
     }
     setSelectedVideos(selectedVideosArray);
     setSelectedVideoFiles(selectedVideoFilesArray);
-    event.target.value = null;
+    event.target.value = null; // 이 부분 추가
   };
 
   // 이미지 삭제 관련 코드
   const handleImageRemove = (indexToRemove) => {
-    // 수정 상태에서의 제한 제거
     setSelectedImages(
       selectedImages.filter((_, index) => index !== indexToRemove)
     );
@@ -147,7 +148,6 @@ useEffect(() => {
 
   // 비디오 삭제 관련 코드
   const handleVideoRemove = (indexToRemove) => {
-    // 수정 상태에서의 제한 제거
     setSelectedVideos(
       selectedVideos.filter((_, index) => index !== indexToRemove)
     );
@@ -167,7 +167,7 @@ useEffect(() => {
   const [dogName, setDogName] = useState("");
   const [dogAge, setDogAge] = useState(0);
   const [dogRegion, setRegion] = useState({ address: "", lat: 0, lng: 0 });
-
+  const [dogTypeCode, setDogTypeCode] = useState(""); // 견종 정보를 저장할 상태
   const [dogGender, setDogGender] = useState(false);
   const [dogChip, setDogChip] = useState(false);
 
@@ -190,22 +190,31 @@ useEffect(() => {
 
     if (isSubmitting) return;
 
+    if (isEditing) {
+      originalImages.forEach((imageUrl) => {
+        formData.append("multipartFile", imageUrl);
+      });
+    }
+
+    if (
+      title.trim() === "" ||
+      dogName.trim() === "" ||
+      dogAge <= 0 ||
+      dogRegion.address.trim() === "" ||
+      selectedImages.length === 0 ||
+      dogHealth.trim() === "" ||
+      dogIntroduction.trim() === ""
+    ) {
+      alert("모든 항목을 입력해주세요!");
+      return; // 검사에 실패하면 함수를 종료합니다.
+    }
+
     setIsSubmitting(true);
 
     const token = localStorage.getItem("accessToken");
 
     // FormData 객체 생성
     const formData = new FormData();
-
-    if (isEditing) {
-      // 수정 상태에서 기존의 이미지와 동영상 URL 추가
-      selectedImages.forEach((imageUrl) => {
-        formData.append("existingImages", imageUrl);
-      });
-      selectedVideos.forEach((videoUrl) => {
-        formData.append("existingVideos", videoUrl);
-      });
-    }
 
     // 이미지 파일들 추가
     selectedImageFiles.forEach((image) => {
@@ -216,11 +225,6 @@ useEffect(() => {
     selectedVideoFiles.forEach((video) => {
       formData.append("multipartFile", video);
     });
-
-    // 이미지나 비디오가 선택되지 않았을 경우 빈 파일 추가
-    if (selectedImageFiles.length === 0 && selectedVideoFiles.length === 0) {
-      formData.append("multipartFile", new Blob(), "");
-    }
 
     // 다른 필드들 추가
     formData.append("friendly", friendly);
@@ -237,7 +241,7 @@ useEffect(() => {
     formData.append("lon", dogRegion.lng);
     formData.append("gender", dogGender);
     formData.append("chipYn", dogChip);
-    formData.append("dogTypeCode", "CHIHUAHUA");
+    formData.append("dogTypeCode", dogTypeCode);
     formData.append("title", title);
 
     try {
@@ -282,7 +286,7 @@ useEffect(() => {
   return (
     <>
       {isEditing ? "게시글 수정하기" : "게시글 작성하기"}
-      <form onSubmit={handleSubmit}> 
+      <form onSubmit={handleSubmit}>
         <S.TitleInput
           value={title}
           placeholder="제목을 입력해주세요"
@@ -320,11 +324,16 @@ useEffect(() => {
               dogRegion={dogRegion}
               dogGender={dogGender}
               dogChip={dogChip}
+              dogTypeCode={dogTypeCode}
               setName={setDogName}
               setAge={setDogAge}
               setRegion={setRegion}
               setGender={setDogGender}
               setChip={setDogChip}
+              setDogTypeCode={setDogTypeCode}
+              initialRegion={dogRegion}
+              initialDogTypeCode={dogTypeCode}
+              F
             />
           </S.Box>
         </S.FlexContainer>

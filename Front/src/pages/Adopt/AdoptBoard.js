@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import * as S from "../../styled/Adopt/AdoptBoard.style"
+import * as S from "../../styled/Adopt/AdoptBoard.style";
 import { useNavigate } from "react-router-dom";
 import NotLogin from "../../components/Adopt/NotLogin";
 import NotSurvey from "../../components/Adopt/NotSurvey";
@@ -14,12 +14,22 @@ function AdoptBoard() {
   const [adoptData, setAdoptData] = useState([]);
   const [hasSurvey, setHasSurvey] = useState(false);
 
-  const [activePage, setActivePage] = useState(1);
-  const itemsPerPage = 8; // 한 페이지에 표시할 게시글 수
+  // 검색기능
+  const [searchTerm, setSearchTerm] = useState({
+    title: "",
+    dogTypeCode: "",
+    regionCode: "",
+  });
 
-  const handlePageChange = (pageNumber) => {
-    setActivePage(pageNumber);
-  };
+  // 검색 카테고리 상태
+  const [searchCategory, setSearchCategory] = useState("title");
+
+  const filteredDogs = adoptData.filter((dog) => {
+    const value = searchTerm[searchCategory];
+    return dog[searchCategory] ? dog[searchCategory].includes(value) : true;
+  });
+
+  // 여기까지 검색
 
   const insertedToken = localStorage.getItem("accessToken");
 

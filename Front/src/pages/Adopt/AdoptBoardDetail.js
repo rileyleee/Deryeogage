@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { Carousel } from "react-bootstrap";
 
-import * as S from "../../styled/Adopt/AdoptBoardDetail.style"
+import * as S from "../../styled/Adopt/AdoptBoardDetail.style";
 import ResultPaw from "./../../components/ResultPaw";
 import ReturnPrecosts from "../../components/Adopt/ReturnPreconsts";
 import UserProfile from "../../components/User/UserProfile";
@@ -105,7 +105,12 @@ function AdoptBoardDetail() {
               },
             }
           );
-          console.log(response);
+          console.log("게시판 상세조회 할 때 가져오는 것들 ~~~", response);
+          console.log(
+            "status를 보자 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+            response.data.data[0].status
+          );
+
           setAdoptData({
             board: response.data.data[0],
             images: response.data.data[1],
@@ -165,7 +170,11 @@ function AdoptBoardDetail() {
   // 채팅 버튼이 보여져야 하는지 확인하는 함수
   const canChat = () => {
     const insertedToken = localStorage.getItem("accessToken");
-    return !!insertedToken && !adoptData.board.writer; // 토큰이 존재하고, writer가 false면 true, 아니면 false를 반환
+    return (
+      !!insertedToken &&
+      !adoptData.board.writer &&
+      adoptData.board.status === null
+    );
   };
 
   // 채팅 버튼을 누르면 실행되는 함수
@@ -205,8 +214,6 @@ function AdoptBoardDetail() {
     }
   };
 
-
-
   // 작성자 정보 모달을 숨기는 함수
   const handleProfileMouseOut = () => {
     setShowProfileModal(false);
@@ -219,21 +226,35 @@ function AdoptBoardDetail() {
           onMouseOver={handleProfileMouseOver}
           onMouseOut={handleProfileMouseOut}
         >
-          작성자: {adoptData.board.userNickname}
-          {showProfileModal && (
-            <S.ProfileModal x={modalPosition.x} y={modalPosition.y}>
-            <UserProfile data={adoptData.board.userId} />
-          </S.ProfileModal>
+          {!isWriter() && ( // <-- 이 줄을 추가하였습니다.
+            <div
+              onMouseOver={handleProfileMouseOver}
+              onMouseOut={handleProfileMouseOut}
+            >
+              작성자: {adoptData.board.userNickname}
+              {showProfileModal && (
+                <S.ProfileModal x={modalPosition.x} y={modalPosition.y}>
+                  <UserProfile data={adoptData.board.userId} />
+                </S.ProfileModal>
+              )}
+            </div>
+          )}
+          {/* 입양 상태에 따른 메시지 표시 */}
+          {adoptData.board.status === "depart" && (
+            <S.StatusMessage>입양 진행중인 강아지입니다.</S.StatusMessage>
+          )}
+          {adoptData.board.status === "arrive" && (
+            <S.StatusMessage>입양이 완료된 강아지입니다</S.StatusMessage>
           )}
         </div>
-       </S.TitleContainer>
-        {!isWriter() && (
+      </S.TitleContainer>
+      {!isWriter() && (
         <S.FavoriteButton onClick={handleFavorite}>
           {isFavorited ? "찜 해제하기" : "찜하기"}
         </S.FavoriteButton>
       )}
       {isWriter() && (
-        <S.ChatButton to="/adopt/chatlist">채팅방 목록보기</S.ChatButton>
+        <Link to={`/adopt/chatlist?boardId=${boardId}`}>채팅방 목록보기 {boardId}</Link>
       )}
       {canChat() && <S.Button onClick={handleChat}>채팅하기</S.Button>}
       <S.FlexContainer>
@@ -272,6 +293,7 @@ function AdoptBoardDetail() {
           <p>나이 :{adoptData.board.age}세</p>
           <p>지역 :{adoptData.board.regionCode}</p>
           <p>성별 :{adoptData.board.gender ? "남자" : "여자"}</p>
+          <p>견종 :{adoptData.board.dogTypeCode}</p>
           <p>
             칩 등록 여부 :
             {adoptData.board.chipYn ? "등록" : "미등록(알 수 없음)"}
@@ -307,4 +329,4 @@ function AdoptBoardDetail() {
   );
 }
 
-export default AdoptBoardDetail
+export default AdoptBoardDetail;
