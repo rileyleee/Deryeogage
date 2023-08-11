@@ -133,7 +133,7 @@ function CheckList() {
 
 export default CheckList;
 
-const InfoContainer = styled.div`
+export const InfoContainer = styled.div`
   margin-top: 50px;
   margin-bottom: 20px;
 
