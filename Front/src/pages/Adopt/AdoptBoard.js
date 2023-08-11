@@ -8,8 +8,13 @@ import LoginSurvey from "../../components/Adopt/LoginSurvey";
 import DogListItem from "./../../components/Adopt/DogListItem";
 import Pagination from "react-js-pagination";
 
-
 function AdoptBoard() {
+  const [activePage, setActivePage] = useState(1);
+  const itemsPerPage = 8; // 한 페이지에 표시할 게시글 수
+
+  const handlePageChange = (pageNumber) => {
+    setActivePage(pageNumber);
+  };
   const navigate = useNavigate();
   const [adoptData, setAdoptData] = useState([]);
   const [hasSurvey, setHasSurvey] = useState(false);
@@ -78,8 +83,6 @@ function AdoptBoard() {
   const endIndex = startIndex + itemsPerPage;
   const dogsToShow = dogsArray.slice(startIndex, endIndex);
 
-
-
   useEffect(() => {
     fetchDogs();
     checkSurvey();
@@ -87,34 +90,52 @@ function AdoptBoard() {
 
   return (
     <div>
-       <S.Smallspacer></S.Smallspacer>
+      <S.Smallspacer></S.Smallspacer>
       <h1>입양게시판</h1>
       {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
       {insertedToken && hasSurvey ? <NotSurvey /> : null}
       {!insertedToken ? <NotLogin /> : null}
-        <S.Button onClick={onClick}>글 작성</S.Button>
-        <S.BoardGrid>
-          {dogsToShow.map((dog) => (
-            <S.Media>
-              <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} />
-            </S.Media>
-          ))}
-        </S.BoardGrid>
-        <S.StyledPagination>
-          <Pagination
-            activePage={activePage}
-            itemsCountPerPage={itemsPerPage}
-            totalItemsCount={dogsArray.length}
-            pageRangeDisplayed={5} // 표시될 페이지 링크 수를 조정
-            prevPageText={"<"} // "이전"을 나타낼 텍스트
-            nextPageText={">"} // "다음"을 나타낼 텍스트
-            hideFirstLastPages={true}
-            // firstPageText={"처음"}
-            // lastPageText={"마지막"}
-            onChange={handlePageChange}
+      <div>
+          <select
+            name="category"
+            value={searchCategory}
+            onChange={(e) => setSearchCategory(e.target.value)}
+          >
+            <option value="title">제목</option>
+            <option value="dogTypeCode">견종</option>
+            <option value="regionCode">지역</option>
+          </select>
+          <input
+            type="text"
+            value={searchTerm[searchCategory]}
+            onChange={(e) =>
+              setSearchTerm({ ...searchTerm, [searchCategory]: e.target.value })
+            }
           />
-        </S.StyledPagination>
-{/* 
+        </div>
+      <S.Button onClick={onClick}>글 작성</S.Button>
+      <S.BoardGrid>
+        {dogsToShow.map((dog) => (
+          <S.Media>
+            <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} />
+          </S.Media>
+        ))}
+      </S.BoardGrid>
+      <S.StyledPagination>
+        <Pagination
+          activePage={activePage}
+          itemsCountPerPage={itemsPerPage}
+          totalItemsCount={dogsArray.length}
+          pageRangeDisplayed={5} // 표시될 페이지 링크 수를 조정
+          prevPageText={"<"} // "이전"을 나타낼 텍스트
+          nextPageText={">"} // "다음"을 나타낼 텍스트
+          hideFirstLastPages={true}
+          // firstPageText={"처음"}
+          // lastPageText={"마지막"}
+          onChange={handlePageChange}
+        />
+      </S.StyledPagination>
+      {/* 
       <S.Largespacer></S.Largespacer> */}
     </div>
   );
