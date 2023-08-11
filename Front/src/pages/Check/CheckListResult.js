@@ -2,22 +2,43 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import { InfoContainer } from "./CheckList";
 
 // styled-components 추가
 const ResultContainer = styled.div`
   margin: 20px 0;
   padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  border: 1px solid #ff914d;
+  border-radius: 25px;
   background-color: #f9f9f9;
 `;
 
 const PledgeContainer = styled.div`
   margin: 20px 0;
   padding: 20px;
-  border: 1px solid #ddd;
   border-radius: 5px;
-  background-color: #f9f9f9;
+  background-color: #fff7e7;
+`;
+
+const FitnessContainer = styled.div`
+  margin-bottom: 20px;
+`;
+
+const ButtonContainer = styled.div`
+  margin-top: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+`;
+
+const AnswersContainer = styled.div`
+  ul {
+    list-style-type: none;
+
+    li {
+      margin-bottom: 5px;
+    }
+  }
 `;
 
 const TotalScore = styled.h2`
@@ -25,29 +46,29 @@ const TotalScore = styled.h2`
 `;
 
 const ToggleButton = styled.button`
+  margin-right: 20px;
   padding: 10px;
   font-size: 1em;
-  background-color: #007bff;
+  background-color: #ff914d;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   &:hover {
-    background-color: #0056b3;
+    background-color: #eb7d39;
   }
 `;
 
 const DeleteButton = styled.button`
-  margin-top: 20px;
   padding: 10px;
   font-size: 1em;
-  background-color: #dc3545;
+  background-color: #ff914d;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   &:hover {
-    background-color: #c82333;
+    background-color: #eb7d39;
   }
 `;
 
@@ -106,30 +127,49 @@ function CheckListResult() {
   };
   console.log(data);
 
+  const getAnswerColor = (answer) => {
+    switch (answer) {
+      case '아주많이':
+        return 'red';
+      case '많이':
+        return '#ff914d'; // 주황색
+      default:
+        return 'black'; // 기본 텍스트 색상
+    }
+  };
+
   return (
     <div>
-      <h1>CheckListResult</h1>
+      <InfoContainer>
+        <h4><span>사전테스트</span> 결과를 확인해보세요 !</h4>
+      </InfoContainer>
       <ResultContainer>
-        <TotalScore>총점: {data.score} </TotalScore>
-        <h3>{localStorage.getItem("nickname")}님이 작성하신 입양 서약서</h3>
+        <TotalScore>{localStorage.getItem("nickname")}님의 적합도 점수: {data.score} </TotalScore>
+        <FitnessContainer>
+          적합 / 부적합
+        </FitnessContainer>
+        <h3>입양 서약서</h3>
         <PledgeContainer>
           <p>{data.promise}</p>
         </PledgeContainer>
-        <ToggleButton onClick={handleToggleClick}>
-          {showAnswers ? "답변 숨기기" : "답변내용 확인하기"}
-        </ToggleButton>
-        {showAnswers && (
-          <div>
-            <ul>
-              {Object.entries(answers).map(([question, answer], index) => (
-                <li key={index}>
-                  {question}: {answer}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <DeleteButton onClick={handleDeleteClick}>다시 진행하기</DeleteButton> 
+        <p>입양서약서와 사전테스트 점수는 분양자가 <span>확인</span>할 수 있습니다.</p>
+        <ButtonContainer>
+          <ToggleButton onClick={handleToggleClick}>
+            {showAnswers ? "답변 숨기기" : "답변내용 확인하기"}
+          </ToggleButton>
+          <DeleteButton onClick={handleDeleteClick}>다시 진행하기</DeleteButton> 
+        </ButtonContainer>
+          {showAnswers && (
+            <AnswersContainer>
+              <ul>
+                {Object.entries(answers).map(([question, answer], index) => (
+                  <li key={index} style={{ color: getAnswerColor(answer) }}>
+                    {question}: {answer}
+                  </li>
+                ))}
+              </ul>
+            </AnswersContainer>
+          )}
       </ResultContainer>
     </div>
   );
