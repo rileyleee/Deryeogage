@@ -38,20 +38,20 @@ function Simulation() {
     let newTitle;
     const health = parseInt(ExistValue.health);
     if (ExistValue.train === "10202030" && health >= 85) {
-      newTitle = titles[100]
+      newTitle = '100'
     } else {
       if (health === 0) {
-        newTitle = titles[0];
+        newTitle = '0'
       } else if (health >= 1 && health < 20) {
-        newTitle = titles[1];
+        newTitle = '1'
       } else if (health >= 20 && health < 40) {
-        newTitle = titles[20];
+        newTitle = '20'
       } else if (health >= 40 && health < 60) {
-        newTitle = titles[40];
+        newTitle = '40'
       } else if (health >= 60 && health < 85) {
-        newTitle = titles[60];
+        newTitle = '60'
       } else if (health >= 85) {
-        newTitle = titles[85];
+        newTitle = '85'
       }
     }
   
@@ -88,7 +88,21 @@ function Simulation() {
               Authorization: 'Bearer ' + Token,
             },
           });
-          console.log(response.data);
+          localStorage.removeItem('hpPercentage')
+          localStorage.removeItem('end')
+          localStorage.removeItem('endCheck')
+          localStorage.removeItem('id')
+          localStorage.removeItem('endTime')
+          localStorage.removeItem('lastTime')
+          localStorage.removeItem('petName')
+          localStorage.removeItem('title')
+          localStorage.removeItem('train')
+          localStorage.removeItem('background')
+          localStorage.removeItem('cost')
+          localStorage.removeItem('quizNum')
+          localStorage.removeItem('requirement')
+          localStorage.removeItem('startTime')
+          localStorage.removeItem('petType')
           navigate('/profile');
         }
       } catch (error) {

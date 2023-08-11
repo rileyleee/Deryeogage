@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import * as S from "../../styled/User/AdoptTo.style"
 import MissionList from "./MissionList";
-import { Link } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function AdoptTo() {
   const [adopts, setAdopts] = useState([]);
   const [showMissionModal, setShowMissionModal] = useState(false);
   const [selectedMissionId, setSelectedMissionId] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(null);
   console.log("=================adopts: ", adopts);
+  const nickname = localStorage.getItem('nickname')
 
-  const handleMissionClick = (missionId) => {
+  const handleMissionClick = (missionId, index) => {
     setShowMissionModal(true);
     setSelectedMissionId(missionId);
+    setSelectedIndex(index); // 인덱스를 상태로 설정
     console.log(missionId);
   };
 
@@ -36,6 +39,8 @@ function AdoptTo() {
       );
       const updatedAdopts = [...adopts];
       updatedAdopts[index].isConfirmed = true; // 해당 입양 항목을 확정 상태로 설정
+      updatedAdopts[index].toConfirmYn = true; // 입양 확정 여부도 업데이트
+      updatedAdopts[index].adoptionStatus = "confirmed"; // 해당 입양 항목을 확정 상태로 설정
       setAdopts(updatedAdopts);
     } catch (error) {
       console.error("Failed to confirm adoption:", error);
@@ -56,7 +61,10 @@ function AdoptTo() {
         }
       );
       console.log(adopts);
-      fetchAdopts(); // 입양 목록을 다시 불러오기
+      fetchAdopts();
+      const updatedAdopts = [...adopts];
+      updatedAdopts[selectedIndex].adoptionStatus = "completed"; // 해당 입양 항목을 완료 상태로 설정
+      setAdopts(updatedAdopts);
     } catch (error) {
       console.error("Failed to return responsibility fee:", error);
     }
@@ -84,43 +92,43 @@ function AdoptTo() {
       );
       console.log("====================adoptTo:", response.data.data);
 
-      const adoptsWithBoardInfo = await Promise.all(
-        response.data.data.map(async (adopt) => {
-          const matchingBoard = boardResponse.data.data.find(
-            (board) => board.id === adopt.boardId
+    const adoptsWithBoardInfo = await Promise.all(
+      response.data.data.map(async (adopt) => {
+        const matchingBoard = boardResponse.data.data.find(
+          (board) => board.id === adopt.boardId
+        );
+
+        let completedMissions = 0;
+        if (adopt.missionId !== null) {
+          // missionId가 null이 아닌 경우에만 요청
+          // 미션 정보를 가져옴
+          const missionResponse = await axios.get(
+            `${REACT_APP_API_URL}/missions/${adopt.missionId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
           );
 
-          let completedMissions = 0;
-          if (adopt.missionId !== null) {
-            // missionId가 null이 아닌 경우에만 요청
-            // 미션 정보를 가져옴
-            const missionResponse = await axios.get(
-              `${REACT_APP_API_URL}/missions/${adopt.missionId}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
+          // 완료된 미션 수를 계산
+          completedMissions = [
+            missionResponse.data.data.missionUrl1,
+            missionResponse.data.data.missionUrl2,
+            missionResponse.data.data.missionUrl3,
+            missionResponse.data.data.missionUrl4,
+          ].filter((url) => url !== null).length; // null이 아닌 갯수를 세서 완료된 미션의 수를 계산
+        }
 
-            // 완료된 미션 수를 계산
-            completedMissions = [
-              missionResponse.data.data.missionUrl1,
-              missionResponse.data.data.missionUrl2,
-              missionResponse.data.data.missionUrl3,
-              missionResponse.data.data.missionUrl4,
-            ].filter((url) => url !== null).length; // null이 아닌 갯수를 세서 완료된 미션의 수를 계산
-          }
-
-          return {
-            ...adopt,
-            boardInfo: matchingBoard,
-            imageUrl: matchingBoard?.fileList[0],
-            completedMissions, // 완료된 미션 수
-            toConfirmYn: adopt.toConfirmYn, // 입양 확정 여부를 추가
-          };
-        })
-      );
+        return {
+          ...adopt,
+          boardInfo: matchingBoard,
+          imageUrl: matchingBoard?.fileList[0],
+          completedMissions, // 완료된 미션 수
+          toConfirmYn: adopt.toConfirmYn, // 입양 확정 여부를 추가
+        };
+      })
+    );
 
       setAdopts(adoptsWithBoardInfo);
     } catch (error) {
@@ -132,43 +140,75 @@ function AdoptTo() {
     fetchAdopts();
   }, []);
 
+  const Media = ({ src }) => {
+    if (src.endsWith(".mp4")) {
+      return (
+        <div className="col-1">
+          <S.StyledVideo src={src} controls muted />
+        </div>
+      );
+    }
+    return (
+      <div className="col-1">
+        <S.StyledImage src={src} alt="board" />
+      </div>
+    );
+  };
+
   return (
-    <div>
-      <h2>입양 내역</h2>
+    <div className="container">
+      <S.BoardRow className="row list">
+        <div className="col-2 text-center">대표 이미지</div>
+        <div className="col-4 text-center">입양글 제목</div>
+        <div className="col-3 text-center">입양 확정 내역</div>
+        {/* <div className="col-2 text-center">입양자</div> */}
+        <div className="col-3 text-center">입양 미션</div>
+      </S.BoardRow>
+      <S.ScrollBar>
       {adopts.length === 0 ? (
-        <p>입양 내역이 없습니다.</p>
+        <div className="text-center">입양 내역이 없습니다.</div>
       ) : (
         adopts.map((adopt, index) => (
-          <S.AdoptToCard key={index}>
-            <S.Image src={adopt.imageUrl} alt="board" />
-            <Link to={`/board/${adopt.boardId}`}>
-              <S.Title>{adopt.boardInfo?.title}</S.Title>
-            </Link>
-            <S.ConfirmButton onClick={() => handleConfirmAdoption(adopt.boardId)}>
-              입양 확정하기
-            </S.ConfirmButton>
-            {adopt.status === "arrive" && (
-              adopt.completedMissions === 4 ? (
-                <S.ResponsibilityButton
+          <S.BoardRow className="row item" key={index}>
+            <Media className="col-2" src={adopt.imageUrl} />
+            <S.TitleLink className="col-4 text-center" to={`/adopt/${adopt.boardId}`}>{adopt.boardInfo?.title}</S.TitleLink>
+            {adopt.toConfirmYn ? ( // toConfirmYn 값에 따라 버튼을 표시
+              <S.ConfirmedButton className="col-3 text-center">입양 확정 완료</S.ConfirmedButton>
+            ) : (
+              <S.ConfirmButton className="col-3 text-center"
+                onClick={() => handleConfirmAdoption(adopt.id, index)}
+              >
+                입양 확정하기
+              </S.ConfirmButton>
+            )}
+            {/* <div className="col-2 text-center">{adopts[0].boardInfo.userNickname}</div>
+            <div className="col-2 text-center">{nickname}</div> */}
+            {adopt.status === "arrive" ?
+              (adopt.completedMissions === 4 ? (
+                <S.ResponsibilityButton className="col-3 text-center"
                   onClick={() => handleResponsibilityFeeReturn(adopt.boardId)}
                 >
                   책임비 반환하기
                 </S.ResponsibilityButton>
               ) : (
-                <S.MissionButton
-                  onClick={() => handleMissionClick(adopt.missionId)}
+                <S.MissionButton className="col-3 text-center"
+                  onClick={() => handleMissionClick(adopt.missionId, index)}
                 >
                   입양 미션하기 ({adopt.completedMissions}/4)
                 </S.MissionButton>
-              )
-            )}
-          </S.AdoptToCard>
+              )) : <div className="col-3 text-center">입양 예정</div>}
+          </S.BoardRow>
         ))
       )}
+      </S.ScrollBar>
       {showMissionModal && (
         <S.MissionModal>
           <S.MissionContent>
-            <MissionList missionId={selectedMissionId} />
+            <MissionList
+              missionId={selectedMissionId}
+              completedMissions={adopts[selectedIndex]?.completedMissions}
+              fetchAdopts={fetchAdopts} // 이 줄을 추가하세요
+            />
             <S.CloseButton onClick={closeModal}>닫기</S.CloseButton>
           </S.MissionContent>
         </S.MissionModal>
