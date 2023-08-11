@@ -15,6 +15,7 @@ function AdoptBoard() {
   const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber);
   };
+  
   const navigate = useNavigate();
   const [adoptData, setAdoptData] = useState([]);
   const [hasSurvey, setHasSurvey] = useState(false);
@@ -77,11 +78,9 @@ function AdoptBoard() {
     }
   };
 
-  const dogsArray = Array.isArray(adoptData) ? adoptData : [];
-
   const startIndex = (activePage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const dogsToShow = dogsArray.slice(startIndex, endIndex);
+  const dogsToShow = filteredDogs.slice(startIndex, endIndex);
 
   useEffect(() => {
     fetchDogs();
@@ -125,7 +124,7 @@ function AdoptBoard() {
         <Pagination
           activePage={activePage}
           itemsCountPerPage={itemsPerPage}
-          totalItemsCount={dogsArray.length}
+          totalItemsCount={filteredDogs.length}
           pageRangeDisplayed={5} // 표시될 페이지 링크 수를 조정
           prevPageText={"<"} // "이전"을 나타낼 텍스트
           nextPageText={">"} // "다음"을 나타낼 텍스트

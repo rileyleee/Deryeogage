@@ -1,15 +1,5 @@
 import styled from "styled-components";
 
-export const Background = styled.div`
-  position: absolute; /* 상대적 위치를 기준으로 움직입니다 */
-  top: 75%;           /* 컨테이너 중간부터 시작 */
-  left: 10%;          /* 컨테이너 중간부터 시작 */
-  width: 80%;
-  height: 300px;
-  background: #FFFCF8; 
-  margin-bottom: 100px;
-`;
-
 export const Button = styled.button`
   border: none;
   background-color: #ff914d;
@@ -52,9 +42,9 @@ export const Media = styled.div`
     height: 100%;
     object-fit: cover;
   }
-  display: flex; /* Use flex display to align content vertically */
-  justify-content: center; /* Align content horizontally in the center */
-  align-items: center; /* Align content vertically in the center */
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
 `;
 
 export const StyledPagination = styled.div`
