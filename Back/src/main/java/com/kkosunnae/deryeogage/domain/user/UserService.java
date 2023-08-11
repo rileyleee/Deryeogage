@@ -8,6 +8,7 @@ import com.kkosunnae.deryeogage.domain.pretest.PreTestEntity;
 import com.kkosunnae.deryeogage.domain.pretest.PreTestRepository;
 import com.kkosunnae.deryeogage.domain.simulation.SimulationEntity;
 import com.kkosunnae.deryeogage.domain.simulation.SimulationRepository;
+import com.kkosunnae.deryeogage.domain.simulation.SimulationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PreTestRepository preTestRepository;
-    private final SimulationRepository simulationRepository;
+    private final SimulationService simulationService;
     private final AdoptRepository adoptRepository;
 
 
@@ -235,7 +236,7 @@ public class UserService {
         Optional<PreTestEntity> pretest = preTestRepository.findByUserId(userId);
 
         // 가장 최근 시뮬레이션 수행 내역
-        SimulationEntity simulation = simulationRepository.findTopByUserIdOrderByIdDesc(userId);
+        String title = simulationService.getTitle(userId);
 
         // 분양 내역
         Optional<List<AdoptEntity>> adoptFromEntities = adoptRepository.findByFromUserId(userId);
@@ -258,8 +259,8 @@ public class UserService {
             pretestPromise = pretest.get().getPromise();
         }
 
-        if (simulation != null) {
-            simulationTitle = simulation.getTitle();
+        if (title != null) {
+            simulationTitle = title;
         }
 
         if (adoptFromEntities.isPresent()) {
