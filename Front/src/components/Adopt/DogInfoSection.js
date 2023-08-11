@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import GenderRadio from "../../components/Radio/GenderRadio";
 import ChipRadio from "../../components/Radio/ChipRadio";
-import styled from "styled-components";
 import SearchAuto from "./SearchAuto";
 import { useState } from "react";
 import * as S from "../../styled/Adopt/DogInfoSection.style";
@@ -19,12 +18,41 @@ function DogInfoSection({
   dogName,
   dogAge,
   dogTypeCode,
+  initialRegion,
+  initialDogTypeCode,
 }) {
+  const [hasRegionChanged, setHasRegionChanged] = useState(false);
+  const [hasDogTypeChanged, setHasDogTypeChanged] = useState(false); // 이 상태도 추가합니다.
+
+  useEffect(() => {
+    if (!hasRegionChanged) {
+      setRegion(initialRegion);
+    }
+  }, [hasRegionChanged, initialRegion, setRegion]);
+  useEffect(() => {
+    if (!hasDogTypeChanged) {
+      setDogTypeCode(initialDogTypeCode);
+    }
+  }, [hasDogTypeChanged, initialDogTypeCode, setDogTypeCode]);
+
+  const handleRegionChange = (regionValue) => {
+    if (regionValue !== initialRegion) {
+      setHasRegionChanged(true);
+      setRegion(regionValue);
+    }
+  };
+
+  const handleDogTypeCodeChange = (typeCodeValue) => {
+    if (typeCodeValue !== initialDogTypeCode) {
+      setHasDogTypeChanged(true);
+      setDogTypeCode(typeCodeValue);
+    }
+  };
   return (
     <S.Div>
       강아지의 <S.Span>기본정보</S.Span>를 작성해주세요.
       <S.DogInfo>
-        <S.P>
+        <S.P> 
           강아지의 <S.Span>이름</S.Span>을 작성해주세요.
         </S.P>
         <input
@@ -48,7 +76,10 @@ function DogInfoSection({
         <S.P>
           강아지의 <S.Span>견종</S.Span>을 선택해주세요.
         </S.P>
-        <select onChange={(e) => setDogTypeCode(e.target.value)} value={dogTypeCode}>
+        <select
+          onChange={(e) => handleDogTypeCodeChange(e.target.value)}
+          value={dogTypeCode}
+        >
           <option value="기타">기타</option>
           <option value="말티즈">말티즈</option>
           <option value="푸들">푸들</option>
@@ -85,7 +116,11 @@ function DogInfoSection({
         <S.P>
           현재 강아지가 살고있는 <S.Span>지역</S.Span>을 작성해주세요.
         </S.P>
-        <SearchAuto region={dogRegion} setRegion={setRegion} />
+        <SearchAuto
+          region={dogRegion}
+          setRegion={handleRegionChange}
+          initialValue={initialRegion}
+        />
         <S.P>
           <S.Span>성별</S.Span>을 선택해주세요.
           <GenderRadio gender={dogGender} setGender={setGender} />

@@ -39,6 +39,8 @@ function AdoptTo() {
       );
       const updatedAdopts = [...adopts];
       updatedAdopts[index].isConfirmed = true; // 해당 입양 항목을 확정 상태로 설정
+      updatedAdopts[index].toConfirmYn = true; // 입양 확정 여부도 업데이트
+      updatedAdopts[index].adoptionStatus = "confirmed"; // 해당 입양 항목을 확정 상태로 설정
       setAdopts(updatedAdopts);
     } catch (error) {
       console.error("Failed to confirm adoption:", error);
@@ -59,7 +61,10 @@ function AdoptTo() {
         }
       );
       console.log(adopts);
-      fetchAdopts(); // 입양 목록을 다시 불러오기
+      fetchAdopts();
+      const updatedAdopts = [...adopts];
+      updatedAdopts[selectedIndex].adoptionStatus = "completed"; // 해당 입양 항목을 완료 상태로 설정
+      setAdopts(updatedAdopts);
     } catch (error) {
       console.error("Failed to return responsibility fee:", error);
     }

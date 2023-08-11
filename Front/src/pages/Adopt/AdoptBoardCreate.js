@@ -16,6 +16,9 @@ function AdoptBoardCreate() {
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const [currentBoardId, setCurrentBoardId] = useState(null);
 
+  // 이미지 수정할때 꼭 수정해야하는거 ,, 원래 사진 있으면 반영 안됨
+  const [originalImages, setOriginalImages] = useState([]);
+
   // 모든 컴포넌트에서 Enter 키 누름을 감지하기 위한 useEffect
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -81,6 +84,7 @@ function AdoptBoardCreate() {
           setHair(dogData.hair);
           setDogHealth(dogData.health);
           setDogIntroduction(dogData.introduction);
+          setDogTypeCode(dogData.dogTypeCode);
 
           // 1번 인덱스에서의 이미지와 비디오 URL 처리
           const images = [];
@@ -104,7 +108,6 @@ function AdoptBoardCreate() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImageFiles, setSelectedImageFiles] = useState([]);
   const handleImageChange = (event) => {
-    // 수정 상태에서의 제한 제거
     const files = event.target.files;
     const selectedImagesArray = [...selectedImages];
     const selectedImageFilesArray = [...selectedImageFiles];
@@ -114,14 +117,13 @@ function AdoptBoardCreate() {
     }
     setSelectedImages(selectedImagesArray);
     setSelectedImageFiles(selectedImageFilesArray);
-    event.target.value = null;
+    event.target.value = null; // 이 부분 추가
   };
 
   // 동영상 등록 관련 코드
   const [selectedVideos, setSelectedVideos] = useState([]);
   const [selectedVideoFiles, setSelectedVideoFiles] = useState([]);
   const handleVideoChange = (event) => {
-    // 수정 상태에서의 제한 제거
     const files = event.target.files;
     const selectedVideosArray = [...selectedVideos];
     const selectedVideoFilesArray = [...selectedVideoFiles];
@@ -131,12 +133,11 @@ function AdoptBoardCreate() {
     }
     setSelectedVideos(selectedVideosArray);
     setSelectedVideoFiles(selectedVideoFilesArray);
-    event.target.value = null;
+    event.target.value = null; // 이 부분 추가
   };
 
   // 이미지 삭제 관련 코드
   const handleImageRemove = (indexToRemove) => {
-    // 수정 상태에서의 제한 제거
     setSelectedImages(
       selectedImages.filter((_, index) => index !== indexToRemove)
     );
@@ -147,7 +148,6 @@ function AdoptBoardCreate() {
 
   // 비디오 삭제 관련 코드
   const handleVideoRemove = (indexToRemove) => {
-    // 수정 상태에서의 제한 제거
     setSelectedVideos(
       selectedVideos.filter((_, index) => index !== indexToRemove)
     );
@@ -190,6 +190,12 @@ function AdoptBoardCreate() {
 
     if (isSubmitting) return;
 
+    if (isEditing) {
+      originalImages.forEach((imageUrl) => {
+        formData.append("multipartFile", imageUrl);
+      });
+    }
+
     if (
       title.trim() === "" ||
       dogName.trim() === "" ||
@@ -210,16 +216,6 @@ function AdoptBoardCreate() {
     // FormData 객체 생성
     const formData = new FormData();
 
-    if (isEditing) {
-      // 수정 상태에서 기존의 이미지와 동영상 URL 추가
-      selectedImages.forEach((imageUrl) => {
-        formData.append("existingImages", imageUrl);
-      });
-      selectedVideos.forEach((videoUrl) => {
-        formData.append("existingVideos", videoUrl);
-      });
-    }
-
     // 이미지 파일들 추가
     selectedImageFiles.forEach((image) => {
       formData.append("multipartFile", image);
@@ -229,11 +225,6 @@ function AdoptBoardCreate() {
     selectedVideoFiles.forEach((video) => {
       formData.append("multipartFile", video);
     });
-
-    // 이미지나 비디오가 선택되지 않았을 경우 빈 파일 추가
-    if (selectedImageFiles.length === 0 && selectedVideoFiles.length === 0) {
-      formData.append("multipartFile", new Blob(), "");
-    }
 
     // 다른 필드들 추가
     formData.append("friendly", friendly);
@@ -340,6 +331,9 @@ function AdoptBoardCreate() {
               setGender={setDogGender}
               setChip={setDogChip}
               setDogTypeCode={setDogTypeCode}
+              initialRegion={dogRegion}
+              initialDogTypeCode={dogTypeCode}
+              F
             />
           </S.Box>
         </S.FlexContainer>
