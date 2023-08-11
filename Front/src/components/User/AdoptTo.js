@@ -38,6 +38,8 @@ function AdoptTo() {
       );
       const updatedAdopts = [...adopts];
       updatedAdopts[index].isConfirmed = true; // 해당 입양 항목을 확정 상태로 설정
+      updatedAdopts[index].toConfirmYn = true; // 입양 확정 여부도 업데이트
+      updatedAdopts[index].adoptionStatus = "confirmed"; // 해당 입양 항목을 확정 상태로 설정
       setAdopts(updatedAdopts);
     } catch (error) {
       console.error("Failed to confirm adoption:", error);
@@ -58,7 +60,10 @@ function AdoptTo() {
         }
       );
       console.log(adopts);
-      fetchAdopts(); // 입양 목록을 다시 불러오기
+      fetchAdopts();
+      const updatedAdopts = [...adopts];
+      updatedAdopts[selectedIndex].adoptionStatus = "completed"; // 해당 입양 항목을 완료 상태로 설정
+      setAdopts(updatedAdopts);
     } catch (error) {
       console.error("Failed to return responsibility fee:", error);
     }
@@ -161,29 +166,38 @@ function AdoptTo() {
             <Link to={`/adopt/${adopt.boardId}`}>
               <Title>{adopt.boardInfo?.title}</Title>
             </Link>
-            {adopt.toConfirmYn ? ( // toConfirmYn 값에 따라 버튼을 표시
-              <ConfirmedButton>입양 확정 완료</ConfirmedButton>
+            {adopt.status === "arrive" ? (
+              <CompletedButton>예쁘게 키워주세여</CompletedButton>
             ) : (
-              <ConfirmButton
-                onClick={() => handleConfirmAdoption(adopt.id, index)}
-              >
-                입양 확정하기
-              </ConfirmButton>
+              <>
+                {adopt.toConfirmYn ? (
+                  <ConfirmedButton>입양 확정 완료</ConfirmedButton>
+                ) : (
+                  <ConfirmButton
+                    onClick={() => handleConfirmAdoption(adopt.id, index)}
+                  >
+                    입양 확정하기
+                  </ConfirmButton>
+                )}
+                {adopt.status === "arrive" &&
+                  adopt.adoptionStatus !== "completed" &&
+                  (adopt.completedMissions === 4 ? (
+                    <ResponsibilityButton
+                      onClick={() =>
+                        handleResponsibilityFeeReturn(adopt.boardId)
+                      }
+                    >
+                      책임비 반환하기
+                    </ResponsibilityButton>
+                  ) : (
+                    <MissionButton
+                      onClick={() => handleMissionClick(adopt.missionId, index)}
+                    >
+                      입양 미션하기 ({adopt.completedMissions}/4)
+                    </MissionButton>
+                  ))}
+              </>
             )}
-            {adopt.status === "arrive" &&
-              (adopt.completedMissions === 4 ? (
-                <ResponsibilityButton
-                  onClick={() => handleResponsibilityFeeReturn(adopt.boardId)}
-                >
-                  책임비 반환하기
-                </ResponsibilityButton>
-              ) : (
-                <MissionButton
-                  onClick={() => handleMissionClick(adopt.missionId, index)}
-                >
-                  입양 미션하기 ({adopt.completedMissions}/4)
-                </MissionButton>
-              ))}
           </AdoptToCard>
         ))
       )}
@@ -306,3 +320,5 @@ const Title = styled.h3`
 const ResponsibilityButton = styled.button`
   // 여기에 필요한 스타일을 적용하세요.
 `;
+
+const CompletedButton = styled.button``;

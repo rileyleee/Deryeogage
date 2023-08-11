@@ -77,3 +77,6 @@ export const Title = styled.h3`
 export const ResponsibilityButton = styled.button`
   // 여기에 필요한 스타일을 적용하세요.
 `;
+
+export const CompletedButton = styled.button`
+`;

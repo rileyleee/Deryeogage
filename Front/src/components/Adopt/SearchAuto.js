@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 
-function SearchAuto({ setRegion }) {
+function SearchAuto({ region, setRegion, initialValue  }) {
   const mapRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -14,6 +14,10 @@ function SearchAuto({ setRegion }) {
   });
 
   useEffect(() => {
+    if (initialValue) {
+      setRegion(initialValue);
+    }
+
     const googleScript = document.createElement("script");
     const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
     googleScript.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`;
