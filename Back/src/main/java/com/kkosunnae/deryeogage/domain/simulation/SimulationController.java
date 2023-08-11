@@ -54,8 +54,15 @@ public class SimulationController {
     }
 
     @PutMapping("/save")
-    public SimulationDto simulationSave(@RequestBody SimulationDto simulationDto){
+    public void simulationSave(@RequestBody SimulationDto simulationDto){
         SimulationDto savedSimulation = simulationService.saveSimulation(simulationDto);
-        return savedSimulation;
+    }
+
+    @GetMapping("/title")
+    public String getTitle(@RequestHeader("Authorization") String authorizationHeader){
+        String jwtToken = authorizationHeader.substring(7);
+        Long userId = jwtUtil.getUserId(jwtToken);
+
+        return simulationService.getTitle(userId);
     }
 }
