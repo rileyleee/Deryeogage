@@ -82,7 +82,6 @@ function AdoptBoard() {
       {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
       {insertedToken && hasSurvey ? <NotSurvey /> : null}
       {!insertedToken ? <NotLogin /> : null}
-      <S.Background>
         <S.Button onClick={onClick}>글 작성</S.Button>
         <S.BoardGrid>
           {dogsToShow.map((dog) => (
@@ -105,8 +104,8 @@ function AdoptBoard() {
             onChange={handlePageChange}
           />
         </S.StyledPagination>
-      </S.Background>
-      <S.Largespacer></S.Largespacer>
+{/* 
+      <S.Largespacer></S.Largespacer> */}
     </div>
   );
 }

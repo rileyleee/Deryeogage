@@ -2,15 +2,15 @@ import styled from "styled-components";
 
 export const Background = styled.div`
   position: absolute; /* 상대적 위치를 기준으로 움직입니다 */
-  top: 20%;     
+  top: 25%;     
   left: 0;          
   width: 100%;
-  height: 300px;
-  background: #FFFCF8;
+  height: 330px;
+  background: #FFF7E7;
 `;
 
 export const Span = styled.span`
-  margin-left: 7.5%;
+  //margin-left: 7.5%;
   color: rgba(255, 145, 77, 1);
 `;
 
@@ -22,9 +22,11 @@ export const Carousel = styled.div`
   padding: 1vw;
   margin-top: 1%;
   margin-bottom: 1%;
+  border-radius: 30px;
 `;
 
 export const CustomCarousel = styled.div`
+
   /* 좌우 버튼 색 변경 */
   .carousel-control-prev-icon,
   .carousel-control-next-icon {
@@ -33,12 +35,17 @@ export const CustomCarousel = styled.div`
   }
 
   .carousel-control-prev {
-    left: -20%;  /* 기본값은 0%입니다. */
+    left: -180px;  /* 기본값은 0% */
   }
 
   .carousel-control-next {
-    right: -20%; /* 기본값은 0%입니다. */
+    right: -180px; /* 기본값은 0% */
   }
+
+  .carousel-indicators {
+    position: relative;
+    bottom: -370px;
+}
 
   /* 순서를 나타내는 바(인디케이터) 색 변경 */
   .carousel-indicators button {
@@ -66,16 +73,36 @@ export const ImageAndCaptionContainer = styled.div`
 `;
 
 export const ImageContainer = styled.div`
-  width: 50%;
+  width: 25%;
   height: 300px;
-  margin-right: 50px; 
+  margin-right: 30px; 
   overflow: hidden;
 `;
 
 export const CaptionContainer = styled.div`
-  width: 50%;
+  width: 30%;
   padding: 10px;
+  padding-top: 50px;
   height: 300px;
   background-color: #FFF7E7;
   color:#4A2511;
+`;
+
+export const StyledText = styled.h5`
+  font-size: 20px;       // 글자 크기 지정. 원하는 크기로 조절 가능.
+  margin-bottom: 15px;   // 아래쪽 간격 지정. 원하는 크기로 조절 가능.
+`;
+
+export const Box = styled.div`
+  margin: 1vw 0;
+  padding: 1vh;
+  border: 1px #ff914d solid;
+  border-radius: 30px;
+  background-color: white;
+  text-align: center;
+  display: flex;
+  align-items: center; /* SurveyPaw 컴포넌트들을 수직 방향으로 중앙 정렬 */
+  flex-direction: column; /* SurveyPaw 컴포넌트들을 수직 방향으로 배치 */
+  flex: 1;
+  margin-right: 1vw;
 `;
