@@ -59,9 +59,17 @@ function CheckList() {
 
   const handleSubmit = async () => {
     const unanswered = questions.filter((q) => !answers[q]);
+    
     if (unanswered.length > 0) {
       alert("모든 질문에 답변을 완료해주세요.");
     } else {
+
+      //입양서약서 내용 최소10자 이상인지 확인
+      if (promise.length < 10) {
+        alert('입양서약서는 최소 10자 이상 입력하셔야 합니다.');
+        return; // 이 부분은 경고창 후에 나머지 로직을 중단하기 위한 코드입니다.
+      }
+      
       const rawTotalScore = questions.reduce(
         (sum, q) => sum + scores[answers[q]],
         0
@@ -95,32 +103,50 @@ function CheckList() {
 
   return (
     <div>
-      <h1>반려동물 입양을 위한 사전테스트입니다.</h1>
-      <h3>성실하게 답변해주세요.</h3>
-      {questions.map((question) => (
-        <CheckBtn
-          key={question}
-          question={question}
-          value={answers[question]}
-          onChange={handleChange}
-        />
-      ))}
-      <PledgeContainer>
-        <h2>입양 서약서</h2>
-        <PledgeTextarea
-          value={promise}
-          onChange={handleChangePledge}
-          placeholder="입양 서약서를 작성해주세요."
-        />
-      </PledgeContainer>
-      <ButtonContainer>
-        <SubmitButton onClick={handleSubmit}>제출하기</SubmitButton>
-      </ButtonContainer>
+      <InfoContainer>
+        <h4><span>사전테스트</span>를 통해 반려견을 입양 할 준비가 되었는지 확인해보세요!</h4>
+      </InfoContainer>
+      <div>
+        {questions.map((question) => (
+          <CheckBtn
+            key={question}
+            question={question}
+            value={answers[question]}
+            onChange={handleChange}
+          />
+        ))}
+        <PledgeContainer>
+          <h2>입양 서약서</h2>
+          <PledgeTextarea
+            value={promise}
+            onChange={handleChangePledge}
+            placeholder="입양 서약서를 작성해주세요."
+          />
+        </PledgeContainer>
+        <ButtonContainer>
+          <SubmitButton onClick={handleSubmit}>제출하기</SubmitButton>
+        </ButtonContainer>
+      </div>
     </div>
   );
 }
 
 export default CheckList;
+
+export const InfoContainer = styled.div`
+  margin-top: 50px;
+  margin-bottom: 20px;
+
+  h4 {
+    font-size: 17px;
+    font-weight: bold;
+    color: #4a2511;
+  }
+
+  span {
+    color: #ff914d;
+  }
+`;
 
 const SubmitButton = styled.button`
   margin-top: 20px;
@@ -159,4 +185,5 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  
 `;

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as S from "../../styled/User/Edit.style"
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Edit({ onClose }) {
   const [profilePic, setProfilePic] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  console.log(imagePreview)
   const token = localStorage.getItem("accessToken");
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -20,7 +22,7 @@ function Edit({ onClose }) {
     }
   };
 
-  const handleUploadImage = async () => {
+  const handleUploadImage = async () => { // 프로필 이미지 등록
     const formData = new FormData();
     formData.append("multipartFile", profilePic); // 키를 "multipartFile"로 변경
     try {
@@ -37,7 +39,7 @@ function Edit({ onClose }) {
     }
   };
 
-  const handleUpdateImage = async () => {
+  const handleUpdateImage = async () => { // 프로필 이미지 업데이트
     const formData = new FormData();
     formData.append("multipartFile", profilePic); // 키를 "multipartFile"로 변경
     try {
@@ -54,14 +56,15 @@ function Edit({ onClose }) {
     }
   };
 
-  const fetchProfileImage = async () => {
+  const fetchProfileImage = async () => { // 아마 기존 프로필 이미지 가져옴..?
     try {
       const response = await axios.get(`${REACT_APP_API_URL}/users/pic`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      setImagePreview(response.data.url);
+      setImagePreview(response.data);
+      console.log(response.data)
     } catch (error) {
       console.error(
         "An error occurred while fetching the profile image:",
@@ -76,13 +79,19 @@ function Edit({ onClose }) {
 
   return (
     <div>
-      <h3>프로필 수정할거</h3>
-      <input type="file" onChange={handleImageChange} />
-      {imagePreview && (
-        <S.ImagePreview src={imagePreview} alt="프로필 미리보기" />
-      )}
-      <button onClick={handleUploadImage}>사진 등록</button>
-      <button onClick={handleUpdateImage}>사진 수정</button>
+      <div className="d-flex flex-column align-items-center">
+        <S.EditTitle>프로필 수정하기</S.EditTitle>
+        <S.ImgBox className="d-flex flex-column align-items-center">
+          {imagePreview && (
+            <S.ImagePreview src={imagePreview.data} alt="프로필 미리보기" />
+          )}
+          <S.ImgInput type="file" onChange={handleImageChange} />
+        </S.ImgBox>
+      </div>
+      <div className="d-flex justify-content-around">
+        <S.ImgChangeBtn onClick={handleUploadImage}>사진 등록</S.ImgChangeBtn>
+        <S.ImgChangeBtn onClick={handleUpdateImage}>사진 수정</S.ImgChangeBtn>
+      </div>
     </div>
   );
 }

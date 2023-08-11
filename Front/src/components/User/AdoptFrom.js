@@ -5,6 +5,9 @@ import * as S from "../../styled/User/AdoptFrom.style"
 function AdoptFrom() {
   const [adopts, setAdopts] = useState([]);
   const [confirmedAdopts, setConfirmedAdopts] = useState({});
+  const nickname = localStorage.getItem('nickname')
+  console.log(adopts)
+  console.log(confirmedAdopts)
 
 
 
@@ -34,7 +37,7 @@ function AdoptFrom() {
     }
   };
 
-  const handleRefundResponsibility = async (boardId) => {
+  const handleRefundResponsibility = async (boardId) => { // 책임비
     const token = localStorage.getItem("accessToken");
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     
@@ -94,21 +97,33 @@ function AdoptFrom() {
   }, []);
 
   return (
-    <div>
-      <h2>분양 내역</h2>
+    <div className="container">
+      <S.BoardRow className="row list">
+        <div className="col-4 text-center">입양글 제목</div>
+        <div className="col-2 text-center">입양 확정 내역</div>
+        <div className="col-2 text-center">분양자</div>
+        <div className="col-2 text-center">입양자</div>
+        <div className="col-2 text-center">책임비 현황</div>
+      </S.BoardRow>
+      <S.ScrollBar>
       {adopts.length === 0 ? (
-        <p>분양 내역이 없습니다.</p>
+        <div className="text-center">입양 내역이 없습니다.</div>
       ) : (
         adopts.map((adopt, index) => (
-          <div key={index}>
-            분양 날짜: {adopt.scheduledDate} <br />
-            게시글 제목: {adopt.boardInfo.title} <br />
-            강아지 이름: {adopt.boardInfo.name} <br />
-            나이: {adopt.boardInfo.age} <br />
-            <S.Image
-              src={adopt.imageUrl}
-              alt={`${adopt.boardInfo.name}의 이미지`}
-            />
+          <S.BoardRow className="row item" key={index}>
+            {/* <Media src={adopt.imageUrl} /> */}
+            <S.TitleLink className="col-4 text-center" to={`/adopt/${adopt.boardId}`}>{adopt.boardInfo?.title}</S.TitleLink>
+            {adopt.toConfirmYn ? ( // toConfirmYn 값에 따라 버튼을 표시
+              <S.ConfirmedButton className="col-2 text-center">입양 확정 완료</S.ConfirmedButton>
+            ) : (
+              <S.ConfirmButton className="col-2 text-center"
+                onClick={() => handleConfirmAdoption(adopt.id, index)}
+              >
+                입양 확정하기
+              </S.ConfirmButton>
+            )}
+            <div className="col-2 text-center">{adopts[0].boardInfo.userNickname}</div>
+            <div className="col-2 text-center">{nickname}</div>
             {confirmedAdopts[adopt.id] ? (
               <button
                 onClick={() => handleRefundResponsibility(adopt.boardId)}
@@ -122,10 +137,55 @@ function AdoptFrom() {
                 분양 확정하기
               </button>
             ) : null}
-          </div>
+          </S.BoardRow>
         ))
       )}
+      </S.ScrollBar>
+      {/* {showMissionModal && (
+        <S.MissionModal>
+          <S.MissionContent>
+            <MissionList
+              missionId={selectedMissionId}
+              completedMissions={adopts[selectedIndex]?.completedMissions}
+              fetchAdopts={fetchAdopts} // 이 줄을 추가하세요
+            />
+            <S.CloseButton onClick={closeModal}>닫기</S.CloseButton>
+          </S.MissionContent>
+        </S.MissionModal>
+      )} */}
     </div>
+    // <div>
+    //   <h2>분양 내역</h2>
+    //   {adopts.length === 0 ? (
+    //     <p>분양 내역이 없습니다.</p>
+    //   ) : (
+    //     adopts.map((adopt, index) => (
+    //       <div key={index}>
+    //         분양 날짜: {adopt.scheduledDate} <br />
+    //         게시글 제목: {adopt.boardInfo.title} <br />
+    //         강아지 이름: {adopt.boardInfo.name} <br />
+    //         나이: {adopt.boardInfo.age} <br />
+    //         <S.Image
+    //           src={adopt.imageUrl}
+    //           alt={`${adopt.boardInfo.name}의 이미지`}
+    //         />
+    //         {confirmedAdopts[adopt.id] ? (
+    //           <button
+    //             onClick={() => handleRefundResponsibility(adopt.boardId)}
+    //           >
+    //             책임비 반환하기
+    //           </button>
+    //         ) : adopt.toConfirmYn ? (
+    //           <button
+    //             onClick={() => handleConfirmAdoption(adopt.id, adopt.toUserId)}
+    //           >
+    //             분양 확정하기
+    //           </button>
+    //         ) : null}
+    //       </div>
+    //     ))
+    //   )}
+    // </div>
   );
 }
 

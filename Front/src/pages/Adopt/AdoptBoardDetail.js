@@ -254,7 +254,7 @@ function AdoptBoardDetail() {
         </S.FavoriteButton>
       )}
       {isWriter() && (
-        <S.ChatButton to="/adopt/chatlist">채팅방 목록보기</S.ChatButton>
+        <Link to={`/adopt/chatlist?boardId=${boardId}`}>채팅방 목록보기 {boardId}</Link>
       )}
       {canChat() && <S.Button onClick={handleChat}>채팅하기</S.Button>}
       <S.FlexContainer>

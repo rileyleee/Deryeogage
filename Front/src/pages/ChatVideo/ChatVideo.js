@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import axios from "axios"; // axios import
-import * as S from "../../styled/ChatVideo/ChatVideo.style"
+import * as S from "../../styled/ChatVideo/ChatVideo.style";
 import DogDetail from "./DogDetail";
 import ChatRoomDetail from "./ChatRoomDetail";
 import Reservation from "../../components/Adopt/Reservation";
@@ -13,7 +13,12 @@ function ChatVideo() {
   const { boardId } = location.state?.data || {};
   const { roomId } = useParams(); // URL에서 roomId 값을 얻음
   const [showReservationModal, setShowReservationModal] = useState(false);
+  const [isReservationScheduled, setIsReservationScheduled] = useState(false);
   const modalRef = useRef();
+
+  const onReservationComplete = () => {
+    setIsReservationScheduled(true);
+  };
 
   const [isAuthor, setIsAuthor] = useState(false); // 작성자 여부 상태 추가
   const userId = localStorage.getItem("userId"); // 현재 로그인된 사용자 ID 가져오기
@@ -49,13 +54,14 @@ function ChatVideo() {
     if (modalRef.current && modalRef.current.contains(e.target)) return; // 모달 내부 클릭이면 반환
     setShowReservationModal(false); // 모달 외부 클릭이면 모달 닫기
   };
-  console.log(boardId);
+  console.log("boardId: ", boardId);
 
   return (
     <S.StyledContainer>
       {showReservationModal && (
         <>
-          <S.ModalBackground onClick={handleModalClick} /> {/* 배경 블러 처리 */}
+          <S.ModalBackground onClick={handleModalClick} />{" "}
+          {/* 배경 블러 처리 */}
           <S.Modal>
             <S.ModalContent ref={modalRef}>
               {" "}
@@ -64,6 +70,7 @@ function ChatVideo() {
                 roomId={roomId}
                 boardId={boardId}
                 closeModal={() => setShowReservationModal(false)}
+                onReservationComplete={onReservationComplete} // 이렇게 prop으로 전달합니다.
               />{" "}
               {/* closeModal prop 추가 */}
             </S.ModalContent>
@@ -73,13 +80,21 @@ function ChatVideo() {
       {!isAuthor && ( // 작성자가 아닐 경우에만 버튼 표시
         <>
           <S.ModalButton onClick={() => setShowReservationModal(true)}>
-            예약하기
+            {isReservationScheduled ? "예약 수정하기" : "예약하기"}
           </S.ModalButton>
         </>
       )}
       <S.StyledDogDetail>
-        {!showVideoRoom && <DogDetail boardId={boardId}  setShowVideoRoom={setShowVideoRoom} />}
-        {showVideoRoom && <VideoRoom roomId={roomId} nickname={nickname} setShowVideoRoom={setShowVideoRoom}/>}
+        {!showVideoRoom && (
+          <DogDetail boardId={boardId} setShowVideoRoom={setShowVideoRoom} />
+        )}
+        {showVideoRoom && (
+          <VideoRoom
+            roomId={roomId}
+            nickname={nickname}
+            setShowVideoRoom={setShowVideoRoom}
+          />
+        )}
       </S.StyledDogDetail>
       <S.StyledChatRoom>
         <ChatRoomDetail />
