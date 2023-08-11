@@ -17,7 +17,7 @@ const PledgeContainer = styled.div`
   margin: 20px 0;
   padding: 20px;
   border-radius: 5px;
-  background-color: #fff7e7;
+  background-color: #FFF0D7;
 `;
 
 const FitnessContainer = styled.div`
@@ -146,7 +146,10 @@ function CheckListResult() {
       <ResultContainer>
         <TotalScore>{localStorage.getItem("nickname")}님의 적합도 점수: {data.score} </TotalScore>
         <FitnessContainer>
-          적합 / 부적합
+          {data.score < 50 ? 
+            <p>입양 적합도 여부 <span>❌</span></p> : 
+            <p>입양 적합도 여부 <span>✅</span></p>
+          }
         </FitnessContainer>
         <h3>입양 서약서</h3>
         <PledgeContainer>
