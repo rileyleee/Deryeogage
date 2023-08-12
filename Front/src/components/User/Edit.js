@@ -33,6 +33,7 @@ function Edit({ onClose }) {
         },
       });
       alert("사진이 등록되었습니다!");
+      fetchProfileImage(); // 업로드 후 바로 프로필 사진 다시 가져옴
       onClose(); // 업로드 성공 후 모달 닫기
     } catch (error) {
       console.error("An error occurred while uploading the image:", error);
@@ -50,6 +51,7 @@ function Edit({ onClose }) {
         },
       });
       alert("사진이 수정되었습니다!");
+      fetchProfileImage(); // 수정 후 바로 프로필 사진 다시 가져옴
       onClose(); // 업로드 성공 후 모달 닫기
     } catch (error) {
       console.error("An error occurred while updating the image:", error);

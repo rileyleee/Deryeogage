@@ -46,9 +46,28 @@ function ChatVideo() {
         console.error(error);
       }
     };
-
-    fetchAuthorId();
-  }, [boardId, userId]); // boardId와 userId가 변경되면 다시 실행
+    // 예약 상태를 확인하는 로직
+    const fetchReservationStatus = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/chat/room/info/${roomId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const scheduledDate = response.data.data.scheduledDate;
+        if (scheduledDate) {
+          setIsReservationScheduled(true);
+        }
+      } catch (error) {
+        console.error("Failed to get reservation status:", error);
+      }
+    };
+    fetchReservationStatus();
+  }, [roomId, boardId, userId]);
 
   const handleModalClick = (e) => {
     if (modalRef.current && modalRef.current.contains(e.target)) return; // 모달 내부 클릭이면 반환
