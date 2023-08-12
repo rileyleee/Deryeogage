@@ -9,13 +9,15 @@ export const Smallspacer = styled.div`
 height: 20px;
 `;
 
-export const Carousel = styled.div`
-  display: flex;
+export const CarouselContainer = styled.div`
+  /* display: flex; */
   background-color: #FFF7E7;
   border: 1px #ff914d none;
   justify-content: center;
-  padding-top: 35px;
-  padding-bottom: 60px;
+  padding-top: 20px;
+  padding-bottom: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
   margin-top: 1%;
   margin-bottom: 5%;
   border-radius: 30px;
@@ -31,14 +33,15 @@ export const CustomCarousel = styled.div`
     //background-color: #ff914d;  /* 활성화된 버튼 */
   }
 
+  /* 좌우 버튼 위치 */
   .carousel-control-prev {
     left: -15%;  /* 기본값은 0% */
   }
-
   .carousel-control-next {
     right: -15%; /* 기본값은 0% */
   }
 
+  /* 하단 5개 버튼 위치 */
   .carousel-indicators {
     position: relative;
     bottom: -360px;
@@ -48,7 +51,6 @@ export const CustomCarousel = styled.div`
   .carousel-indicators button {
     background-color: #ff914d;  /* 기본 버튼 */
   }
-
   .carousel-indicators .active {
     background-color: #4A2511;  /* 활성화된 버튼 */
   }
