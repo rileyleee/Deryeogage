@@ -6,13 +6,64 @@ export const Button = styled.button`
   padding: 0.5vw 1vw;
   border-radius: 30px;
   color: white;
-  margin-top: 1vw;
+  margin-top: 30px;
   left: 96%;
   transform: translateX(-50%);
   position: relative;
   display: block;
   width: fit-content;
   cursor: pointer;
+`;
+
+export const BoardContainer = styled.div`
+  border: 1px solid #FF914D;
+  border-radius: 30px;
+  padding-top: 30px;
+  margin-top: 20px;
+`;
+
+export const SearchContainer = styled.div`
+  display: flex; 
+  justify-content: space-between; 
+  margin-top: 10px; 
+  margin-bottom: 20px; 
+  justify-content: center;
+`;
+
+export const SelectInputBox = styled.span`
+  width: 500px;
+  display: flex; 
+  justify-content: space-between; 
+  border-radius: 20px;  
+  border: 1px solid #FF914D;
+  padding: 5px;
+`;
+
+export const SelectBox = styled.select`
+  padding-left: 10px;
+  padding-right: 10px;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  option::selection {
+    background-color: #FFFCF8; /* 원하는 색상으로 변경하세요 */
+    border: 1px solid #FF914D; /* 원하는 경계선 색상으로 변경하세요 */
+  }
+`;
+
+export const InputBox = styled.input`
+  width: 100%;
+  border: none;
+  
+  &:focus {
+    outline: none;
+  }
 `;
 
 export const BoardGrid = styled.div`
@@ -22,9 +73,9 @@ export const BoardGrid = styled.div`
   margin-top: 20px;
   margin-bottom: 20px;
   padding: 30px;
-  border: 1px solid #FF914D;
+
   background-color: white;
-  border-radius: 30px;
+
 `;
 
 export const BoardItem = styled.div`

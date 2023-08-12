@@ -5,14 +5,19 @@ export const Span = styled.span`
   color: rgba(255, 145, 77, 1);
 `;
 
+export const Smallspacer = styled.div`
+height: 20px;
+`;
+
 export const Carousel = styled.div`
   display: flex;
   background-color: #FFF7E7;
   border: 1px #ff914d none;
   justify-content: center;
-  padding: 1vw;
+  padding-top: 35px;
+  padding-bottom: 60px;
   margin-top: 1%;
-  margin-bottom: 1%;
+  margin-bottom: 5%;
   border-radius: 30px;
 `;
 

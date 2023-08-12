@@ -15,7 +15,7 @@ function AdoptBoard() {
   const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber);
   };
-  
+
   const navigate = useNavigate();
   const [adoptData, setAdoptData] = useState([]);
   const [hasSurvey, setHasSurvey] = useState(false);
@@ -94,32 +94,39 @@ function AdoptBoard() {
       {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
       {insertedToken && hasSurvey ? <NotSurvey /> : null}
       {!insertedToken ? <NotLogin /> : null}
-      <div>
-          <select
-            name="category"
-            value={searchCategory}
-            onChange={(e) => setSearchCategory(e.target.value)}
-          >
-            <option value="title">제목</option>
-            <option value="dogTypeCode">견종</option>
-            <option value="regionCode">지역</option>
-          </select>
-          <input
-            type="text"
-            value={searchTerm[searchCategory]}
-            onChange={(e) =>
-              setSearchTerm({ ...searchTerm, [searchCategory]: e.target.value })
-            }
-          />
-        </div>
+
       <S.Button onClick={onClick}>글 작성</S.Button>
-      <S.BoardGrid>
-        {dogsToShow.map((dog) => (
-          <S.Media>
-            <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} />
-          </S.Media>
-        ))}
-      </S.BoardGrid>
+
+      <S.BoardContainer>
+        <S.SearchContainer>
+          <S.SelectInputBox>
+            <S.SelectBox
+              name="category"
+              value={searchCategory}
+              onChange={(e) => setSearchCategory(e.target.value)}
+            >
+              <option value="title">제목</option>
+              <option value="dogTypeCode">견종</option>
+              <option value="regionCode">지역</option>
+            </S.SelectBox>
+            <S.InputBox
+              type="text"
+              value={searchTerm[searchCategory]}
+              onChange={(e) =>
+                setSearchTerm({ ...searchTerm, [searchCategory]: e.target.value })
+              }
+            />
+          </S.SelectInputBox>
+        </S.SearchContainer>
+
+        <S.BoardGrid>
+          {dogsToShow.map((dog) => (
+            <S.Media>
+              <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} />
+            </S.Media>
+          ))}
+        </S.BoardGrid>
+      </S.BoardContainer>
       <S.StyledPagination>
         <Pagination
           activePage={activePage}
@@ -134,8 +141,6 @@ function AdoptBoard() {
           onChange={handlePageChange}
         />
       </S.StyledPagination>
-      {/* 
-      <S.Largespacer></S.Largespacer> */}
     </div>
   );
 }
