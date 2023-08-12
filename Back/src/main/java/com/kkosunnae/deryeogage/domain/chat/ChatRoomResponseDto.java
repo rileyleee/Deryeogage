@@ -3,6 +3,8 @@ package com.kkosunnae.deryeogage.domain.chat;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
@@ -14,6 +16,7 @@ public class ChatRoomResponseDto {
     private String updatedDate;
 
     private Boolean schedule;
+    private LocalDate scheduledDate;
 
     private String myNickName;
     private String yourNickName;

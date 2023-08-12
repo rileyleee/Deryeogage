@@ -1,5 +1,6 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
+import com.kkosunnae.deryeogage.domain.board.BoardRepository;
 import com.kkosunnae.deryeogage.domain.user.UserEntity;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.Builder;
@@ -31,7 +32,7 @@ public class ChatRoomRequestDto {
     }
 
 
-    public ChatRoomEntity toEntity(UserRepository userRepository) {
+    public ChatRoomEntity toEntity(UserRepository userRepository, BoardRepository boardRepository) {
         if (this.user1 == null || this.user2 == null) {
             throw new IllegalArgumentException("user1과 user2는 null일 수 없습니다.");
         }
@@ -46,7 +47,7 @@ public class ChatRoomRequestDto {
                 .boardId(this.boardId)
                 .user1(user1)
                 .user2(user2)
-                .roomName(this.roomName)
+                .roomName(boardRepository.findById(boardId).get().getTitle())
                 .build();
     }
 
