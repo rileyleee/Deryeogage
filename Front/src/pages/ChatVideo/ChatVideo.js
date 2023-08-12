@@ -15,7 +15,7 @@ function ChatVideo() {
   const [showReservationModal, setShowReservationModal] = useState(false);
   const [isReservationScheduled, setIsReservationScheduled] = useState(false);
   const modalRef = useRef();
-
+  console.log("boardId!!!!!!!!!!!!!!!!!!!!!!!", boardId)
   const onReservationComplete = () => {
     setIsReservationScheduled(true);
   };

@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const DogCheck = styled.div`
   /* 스타일을 추가하여 간격을 줍니다. */
   margin: 1vw 0;
-  padding: 1vh;
+  padding: 2vh;
   border: 1px #ff914d solid;
   border-radius: 30px;
   background-color: white;
@@ -20,7 +20,7 @@ export const Div = styled.div`
 `;
 export const Text = styled.div`
   /* 스타일을 추가하여 간격을 줍니다. */
-
+  margin-top: 3vh;
   font-size: 2vh;
 `;
 

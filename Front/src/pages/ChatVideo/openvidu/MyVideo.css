@@ -1,0 +1,7 @@
+.my-streamcomponent {
+    position: relative; /* 상대적 위치 설정 */
+}
+
+.toolbar{
+    margin-bottom: 10px;
+}

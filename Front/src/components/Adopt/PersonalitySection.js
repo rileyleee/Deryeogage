@@ -24,8 +24,8 @@ function PersonalitySection({
         <SurveyPaw title="왈왈왈" value={bark} onSelect={setBark} />
         <SurveyPaw title="털빠짐" value={hair} onSelect={setHair} />
         <S.Text>
-          강아지의 성격과 특성을 선택하면 <br /> 입양자의 선호도조사 결과에 따른
-          강아지의 추천이 가능하게 됩니다.
+          강아지의 성격과 특성을 선택하면 <br /> 입양자의 선호도조사 결과에 따라
+          추천이 가능하게 됩니다.
         </S.Text>
       </S.DogCheck>
     </S.Div>

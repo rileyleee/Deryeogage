@@ -2,14 +2,18 @@ import React, { useState, useEffect } from "react";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs"; // 변경된 import 경로
 import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function ChatRoomsList() {
-  const REACT_APP_CHAT_URL = process.env.REACT_APP_CHAT_URL
+  const REACT_APP_CHAT_URL = process.env.REACT_APP_CHAT_URL;
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const boardId = queryParams.get('boardId');
+  const boardId = queryParams.get("boardId");
 
-  console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", boardId);
+  console.log(
+    "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++",
+    boardId
+  );
 
   const accessToken = localStorage.getItem("accessToken");
   const [chatRooms, setChatRooms] = useState([]);
@@ -59,12 +63,15 @@ function ChatRoomsList() {
 
   const loadChatRooms = async () => {
     try {
-      const response = await fetch(`${REACT_APP_CHAT_URL}/api/chat/rooms/${boardId}`, {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + accessToken,
-        },
-      });
+      const response = await fetch(
+        `${REACT_APP_CHAT_URL}/api/chat/rooms/${boardId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + accessToken,
+          },
+        }
+      );
       const data = await response.json();
 
       // 비동기 함수들로 데이터를 미리 가져온 후 chatRooms 상태를 설정합니다.
@@ -110,7 +117,9 @@ function ChatRoomsList() {
       <div id="chatRoomsList">
         {chatRooms.map((room) => (
           <div key={room.id} className="chat-room-box">
-            <a href={"/adopt/chatroom/" + room.id}>{room.roomName}</a>
+            <Link to={`/adopt/chatroom/${room.id}?boardId=${boardId}`}>
+              {room.roomName}
+            </Link>
             {room.nonReadCount > 0 && (
               <span className="unread-count"> ({room.nonReadCount})</span>
             )}

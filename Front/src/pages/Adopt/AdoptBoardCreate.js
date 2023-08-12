@@ -4,10 +4,8 @@ import axios from "axios";
 import ImageSection from "../../components/Adopt/ImageSection";
 import DogInfoSection from "../../components/Adopt/DogInfoSection";
 import PersonalitySection from "../../components/Adopt/PersonalitySection";
-
-import * as S from "../../styled/Adopt/ImageSection.style";
-
 import Precost from "./../../components/Adopt/Precosts";
+import * as S from "../../styled/Adopt/AdoptBoardCreate.style";
 
 function AdoptBoardCreate() {
   const navigate = useNavigate();
@@ -52,11 +50,7 @@ function AdoptBoardCreate() {
   useEffect(() => {
     if (boardId) {
       axios
-        .get(`${REACT_APP_API_URL}/boards/each/${boardId}`, {
-          headers: {
-            "Access-Control-Allow-Origin": "*"
-          }
-        })
+        .get(`${REACT_APP_API_URL}/boards/each/${boardId}`)
         .then((response) => {
           setIsEditing(true);
           const data = response.data.data;
@@ -230,40 +224,14 @@ function AdoptBoardCreate() {
     });
 
     if (isEditing) {
-      const fetchAndAppend = async (url) => {
-          const response = await fetch(url);
-          const blob = await response.blob();
-  
-          // Convert the blob to a File object
-          const file = new File([blob], "filename.jpg", { type: blob.type });
-          formData.append("multipartFile", file);
-      }
-  
-      // Sequentially process all images (this can be changed to parallel processing if needed)
-      for (let image of selectedImages) {
-          await fetchAndAppend(image);
-      }
-  }
+      const imagesJSON = JSON.stringify(selectedImages);
+      formData.append("multipartFile", imagesJSON);
+    }
 
     // 비디오 파일들 추가
     selectedVideoFiles.forEach((video) => {
       formData.append("multipartFile", video);
     });
-
-    // // 이미지 파일들 추가
-    // selectedImageFiles.forEach((image) => {
-    //   formData.append("multipartFile", image);
-    // });
-
-    // // 이미지 파일들 추가
-    // originalImages.forEach((image) => {
-    //   formData.append("multipartFile", image);
-    // });
-
-    // // 비디오 파일들 추가
-    // selectedVideoFiles.forEach((video) => {
-    //   formData.append("multipartFile", video);
-    // });
 
     // 다른 필드들 추가
     formData.append("friendly", friendly);
@@ -294,7 +262,6 @@ function AdoptBoardCreate() {
           headers: {
             "Content-Type": "multipart/form-data", // 이 부분 추가
             Authorization: `Bearer ${token}`,
-            "Access-Control-Allow-Origin": "*"
           },
         });
         alert("게시글이 수정되었습니다.");
@@ -328,23 +295,29 @@ function AdoptBoardCreate() {
   };
 
   return (
-    <>
+    <S.Container>
       {isEditing ? "게시글 수정하기" : "게시글 작성하기"}
       <form onSubmit={handleSubmit}>
-        <S.TitleInput
-          value={title}
-          placeholder="제목을 입력해주세요"
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <ImageSection
-          selectedImages={selectedImages}
-          selectedVideos={selectedVideos}
-          handleImageChange={handleImageChange}
-          handleVideoChange={handleVideoChange}
-          handleImageRemove={handleImageRemove}
-          handleVideoRemove={handleVideoRemove} // 이 부분 추가
-          isEditing={isEditing} // 이 부분 추가
-        />
+        <S.ContentBox>
+          <S.Span>제목</S.Span>을 작성해주세요.
+          <S.TitleInput
+            value={title}
+            placeholder="제목을 입력해주세요"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </S.ContentBox>
+        <S.ContentBox>
+          <ImageSection
+            selectedImages={selectedImages}
+            selectedVideos={selectedVideos}
+            handleImageChange={handleImageChange}
+            handleVideoChange={handleVideoChange}
+            handleImageRemove={handleImageRemove}
+            handleVideoRemove={handleVideoRemove} // 이 부분 추가
+            isEditing={isEditing} // 이 부분 추가
+          />
+        </S.ContentBox>
+        
         <S.FlexContainer>
           <S.Box>
             <PersonalitySection
@@ -381,6 +354,7 @@ function AdoptBoardCreate() {
             />
           </S.Box>
         </S.FlexContainer>
+
         강아지의 <S.Span>건강정보</S.Span>를 상세하게 작성해주세요.
         <S.DogTextarea value={dogHealth} onChange={handleHealthChange} />
         강아지를 자유롭게 <S.Span>소개</S.Span>해주세요.
@@ -393,7 +367,7 @@ function AdoptBoardCreate() {
           <Precost onClose={handlePrecostClose} boardId={currentBoardId} />
         )}{" "}
       </form>
-    </>
+    </S.Container>
   );
 }
 
