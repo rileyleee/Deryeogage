@@ -155,6 +155,10 @@ public class BoardEntity {
         this.health = boardDto.getHealth();
         this.introduction = boardDto.getIntroduction();
         this.createdDate = boardDto.getCreatedDate();
+        this.regionCode = boardDto.getRegionCode();
+        this.dogTypeCode = boardDto.getDogTypeCode();
+        this.lat = boardDto.getLat();
+        this.lon = boardDto.getLon();
     }
 
 }
