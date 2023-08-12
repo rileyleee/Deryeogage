@@ -11,6 +11,7 @@ function AdoptTo() {
   const [selectedIndex, setSelectedIndex] = useState(null);
   console.log("=================adopts: ", adopts);
   const nickname = localStorage.getItem('nickname')
+  console.log(selectedMissionId, selectedIndex)
 
   const handleMissionClick = (missionId, index) => {
     setShowMissionModal(true);
@@ -143,13 +144,13 @@ function AdoptTo() {
   const Media = ({ src }) => {
     if (src.endsWith(".mp4")) {
       return (
-        <div className="col-1">
+        <div className="col-2 d-flex justify-content-center align-items-center">
           <S.StyledVideo src={src} controls muted />
         </div>
       );
     }
     return (
-      <div className="col-1">
+      <div className="col-2 d-flex justify-content-center align-items-center">
         <S.StyledImage src={src} alt="board" />
       </div>
     );
@@ -161,7 +162,6 @@ function AdoptTo() {
         <div className="col-2 text-center">대표 이미지</div>
         <div className="col-4 text-center">입양글 제목</div>
         <div className="col-3 text-center">입양 확정 내역</div>
-        {/* <div className="col-2 text-center">입양자</div> */}
         <div className="col-3 text-center">입양 미션</div>
       </S.BoardRow>
       <S.ScrollBar>
@@ -169,33 +169,39 @@ function AdoptTo() {
         <div className="text-center">입양 내역이 없습니다.</div>
       ) : (
         adopts.map((adopt, index) => (
-          <S.BoardRow className="row item" key={index}>
-            <Media className="col-2" src={adopt.imageUrl} />
+          <S.BoardRow className="row item align-items-center" key={index}>
+            <Media src={adopt.imageUrl} />
             <S.TitleLink className="col-4 text-center" to={`/adopt/${adopt.boardId}`}>{adopt.boardInfo?.title}</S.TitleLink>
             {adopt.toConfirmYn ? ( // toConfirmYn 값에 따라 버튼을 표시
-              <S.ConfirmedButton className="col-3 text-center">입양 확정 완료</S.ConfirmedButton>
+            <div className="col-3 d-flex justify-content-center">
+              <S.ConfirmedButton>입양 확정 완료</S.ConfirmedButton>
+            </div>
             ) : (
-              <S.ConfirmButton className="col-3 text-center"
+            <div className="col-3 d-flex justify-content-center">
+              <S.ConfirmButton
                 onClick={() => handleConfirmAdoption(adopt.id, index)}
               >
                 입양 확정하기
               </S.ConfirmButton>
+            </div>
             )}
-            {/* <div className="col-2 text-center">{adopts[0].boardInfo.userNickname}</div>
-            <div className="col-2 text-center">{nickname}</div> */}
             {adopt.status === "arrive" ?
               (adopt.completedMissions === 4 ? (
+                <div className="col-3 d-flex justify-content-center">
                 <S.ResponsibilityButton className="col-3 text-center"
                   onClick={() => handleResponsibilityFeeReturn(adopt.boardId)}
                 >
                   책임비 반환하기
                 </S.ResponsibilityButton>
+                </div>
               ) : (
+                <div className="col-3 d-flex justify-content-center">
                 <S.MissionButton className="col-3 text-center"
                   onClick={() => handleMissionClick(adopt.missionId, index)}
                 >
                   입양 미션하기 ({adopt.completedMissions}/4)
                 </S.MissionButton>
+                </div>
               )) : <div className="col-3 text-center">입양 예정</div>}
           </S.BoardRow>
         ))

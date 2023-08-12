@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MissionListItem from "./MissionListItem";
 import axios from "axios";
+import * as S from "../../styled/User/MissionList.style"
 
 function MissionList({
   missionId,
@@ -65,32 +66,34 @@ function MissionList({
 
   return (
     <>
-      {localStorage.getItem("nickname")}님, 미션을 진행해주세요! 현재까지{" "}
-      {completedMissions}개 진행하셨습니다.
-      <button
+      <S.MissionTitle>
+      <p>{localStorage.getItem("nickname")}님, 미션을 진행해주세요!</p>
+      <p>현재까지 <S.TitlePoint>{completedMissions}개</S.TitlePoint> 진행하셨습니다.</p>
+      </S.MissionTitle>
+      <S.MissionButton
         onClick={() => handleMissionClick(1)}
-        style={{ backgroundColor: missionCompletion[0] ? "#ccc" : "white" }}
+        style={{ backgroundColor: missionCompletion[0] ? "#ccc" : "#FF914D", color: missionCompletion[1] ? "black" : "white" }}
       >
         1. 건강검진
-      </button>
-      <button
+      </S.MissionButton>
+      <S.MissionButton
         onClick={() => handleMissionClick(2)}
-        style={{ backgroundColor: missionCompletion[1] ? "#ccc" : "white" }}
+        style={{ backgroundColor: missionCompletion[1] ? "#ccc" : "#FF914D", color: missionCompletion[2] ? "black" : "white" }}
       >
         2. 산책사진
-      </button>
-      <button
+      </S.MissionButton>
+      <S.MissionButton
         onClick={() => handleMissionClick(3)}
-        style={{ backgroundColor: missionCompletion[2] ? "#ccc" : "white" }}
+        style={{ backgroundColor: missionCompletion[2] ? "#ccc" : "#FF914D" , color: missionCompletion[3] ? "black" : "white"}}
       >
         3. 용품구매
-      </button>
-      <button
+      </S.MissionButton>
+      <S.MissionButton
         onClick={() => handleMissionClick(4)}
-        style={{ backgroundColor: missionCompletion[3] ? "#ccc" : "white" }}
+        style={{ backgroundColor: missionCompletion[3] ? "#ccc" : "#FF914D", color: missionCompletion[4] ? "black" : "white" }}
       >
         4. 동물등록
-      </button>
+      </S.MissionButton>
       {selectedMissionNumber && (
         <MissionListItem
           missionNumber={selectedMissionNumber}

@@ -11,6 +11,8 @@ export const BoardGroupWrap = styled.div`
 export const BoardBtn = styled.button`
     border: none;
     background-color: transparent;
+    color: ${props => props.active ? '#FF914D' : 'black'};
+    font-weight: ${props => props.active ? 'bold' : ''};
 `
 
 export const Board = styled.div`

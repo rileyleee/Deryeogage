@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"; // useRef 추가
 import axios from "axios";
+import * as S from "../../styled/User/MissionListItem.style"
 
 function MissionListItem({
   missionNumber,
@@ -146,11 +147,11 @@ function MissionListItem({
   // 나머지 코드는 동일합니다.
 
   return (
-    <div>
-      <div>
-        {localStorage.getItem("nickname")}님, <br />
-        Mission{missionNumber}: {mission.description}
-      </div>
+    <S.MissionBox>
+      <S.MissionTextWrapper>
+        <S.MissionPtag>{localStorage.getItem("nickname")}님, </S.MissionPtag>
+        <S.MissionPtag>{mission.description}</S.MissionPtag>
+      </S.MissionTextWrapper>
       {previewImage && (
         <div>
           <img
@@ -163,8 +164,8 @@ function MissionListItem({
       )}
       <input type="file" onChange={handleFileChange} ref={fileInputRef} />
 
-      <button onClick={handleSubmit}>제출하기</button>
-    </div>
+      <S.MissionSubmit onClick={handleSubmit}>제출하기</S.MissionSubmit>
+    </S.MissionBox>
   );
 }
 

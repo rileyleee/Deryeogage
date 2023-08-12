@@ -8,7 +8,6 @@ function UserInfo() {
   const nickname = localStorage.getItem("nickname");
   const [showEditModal, setShowEditModal] = useState(false);
   const [profileData, setProfileData] = useState(null);
-  const token = localStorage.getItem("accessToken");
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const [userInfo, setUserInfo] = useState([]);
 
