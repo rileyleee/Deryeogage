@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as S from "../../styled/Adopt/LoginSurvey.style"
 import BoardResultPaw from "./../../components/BoardResultPaw";
+import { Link } from 'react-router-dom';
 
 function getFileType(url) {
   const extension = url.split(".").pop().toLowerCase();
@@ -74,11 +75,12 @@ function LoginSurvey() {
           <p>게시글이 부족합니다.</p>
         ) : (
           <S.CustomCarousel>
-            <S.Carousel>
-              <div id="carouselExampleIndicators" className="carousel slide">
+            <S.Carousel id="carouselExampleIndicators" className="carousel slide" data-bs-interval="3000">
+              <div>
                 <div className="carousel-indicators">
                   {dogs.map((dog, index) => (
                     <button
+                      key={dog.id || index}
                       type="button"
                       data-bs-target="#carouselExampleIndicators"
                       data-bs-slide-to={index}
@@ -91,11 +93,13 @@ function LoginSurvey() {
 
                 <div className="carousel-inner">
                   {dogs.map((dog, index) => (
-                    <div className={`carousel-item ${index === 0 ? "active" : ""}`}>
+                    <div key={dog.id || index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
                       <S.MediaAndCaptionContainer>
                         <S.MediaContainer>
                           {getFileType(dog.fileList[0]) === "image" ? (
-                            <S.StyledMedia src={dog.fileList[0]} alt={dog.name} />
+                            <Link to={`${dog.id}`}>
+                              <S.StyledMedia src={dog.fileList[0]} alt={dog.name} />
+                            </Link>
                           ) : (
                             <video width="100%" controls>
                               <source src={dog.fileList[0]} type="video/mp4" />

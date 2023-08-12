@@ -39,24 +39,6 @@ export const SelectInputBox = styled.span`
   padding: 5px;
 `;
 
-export const SelectBox = styled.select`
-  padding-left: 10px;
-  padding-right: 10px;
-  border: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-
-  &:focus {
-    outline: none;
-  }
-
-  option::selection {
-    background-color: #FFFCF8; /* 원하는 색상으로 변경하세요 */
-    border: 1px solid #FF914D; /* 원하는 경계선 색상으로 변경하세요 */
-  }
-`;
-
 export const InputBox = styled.input`
   width: 100%;
   border: none;
@@ -73,9 +55,8 @@ export const BoardGrid = styled.div`
   margin-top: 20px;
   margin-bottom: 20px;
   padding: 30px;
-
   background-color: white;
-
+  border-radius: 20px;
 `;
 
 export const BoardItem = styled.div`

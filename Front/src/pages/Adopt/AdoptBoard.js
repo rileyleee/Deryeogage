@@ -7,6 +7,7 @@ import NotSurvey from "../../components/Adopt/NotSurvey";
 import LoginSurvey from "../../components/Adopt/LoginSurvey";
 import DogListItem from "./../../components/Adopt/DogListItem";
 import Pagination from "react-js-pagination";
+import ReactSelect from 'react-select';
 
 function AdoptBoard() {
   const [activePage, setActivePage] = useState(1);
@@ -20,19 +21,20 @@ function AdoptBoard() {
   const [adoptData, setAdoptData] = useState([]);
   const [hasSurvey, setHasSurvey] = useState(false);
 
-  // 검색기능
-  const [searchTerm, setSearchTerm] = useState({
-    title: "",
-    dogTypeCode: "",
-    regionCode: "",
-  });
+  // 검색 기능
+  const searchOptions = [
+    { value: 'title', label: '제목' },
+    { value: 'dogTypeCode', label: '견종' },
+    { value: 'regionCode', label: '지역' },
+  ];
+
+  const [searchText, setSearchText] = useState("");
 
   // 검색 카테고리 상태
   const [searchCategory, setSearchCategory] = useState("title");
 
   const filteredDogs = adoptData.filter((dog) => {
-    const value = searchTerm[searchCategory];
-    return dog[searchCategory] ? dog[searchCategory].includes(value) : true;
+    return dog[searchCategory] ? dog[searchCategory].includes(searchText) : true;
   });
 
   // 여기까지 검색
@@ -100,29 +102,42 @@ function AdoptBoard() {
       <S.BoardContainer>
         <S.SearchContainer>
           <S.SelectInputBox>
-            <S.SelectBox
+            <ReactSelect
               name="category"
-              value={searchCategory}
-              onChange={(e) => setSearchCategory(e.target.value)}
-            >
-              <option value="title">제목</option>
-              <option value="dogTypeCode">견종</option>
-              <option value="regionCode">지역</option>
-            </S.SelectBox>
+              value={searchOptions.find(option => option.value === searchCategory)}
+              onChange={option => {
+                setSearchCategory(option.value);
+              }}
+              options={searchOptions}
+              styles={{
+                container: (provided) => ({
+                  ...provided,
+                  width: '120px'
+                }),
+                control: (provided) => ({
+                  ...provided,
+                  border: 'none',        // 경계선 제거
+                  boxShadow: 'none'      // 그림자 제거
+                }),
+                option: (provided, state) => ({
+                  ...provided,
+                  backgroundColor: state.isFocused ? '#FFF7E7' : null, // 호버 시 색상 변경
+                  color: 'black',
+                }),
+              }}
+            />
             <S.InputBox
               type="text"
-              value={searchTerm[searchCategory]}
-              onChange={(e) =>
-                setSearchTerm({ ...searchTerm, [searchCategory]: e.target.value })
-              }
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
             />
           </S.SelectInputBox>
         </S.SearchContainer>
 
         <S.BoardGrid>
           {dogsToShow.map((dog) => (
-            <S.Media>
-              <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} />
+            <S.Media key={dog.id}>
+              <DogListItem dog={dog} media={dog.fileList[0]} />
             </S.Media>
           ))}
         </S.BoardGrid>

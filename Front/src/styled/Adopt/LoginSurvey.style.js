@@ -26,21 +26,22 @@ export const CustomCarousel = styled.div`
   /* 좌우 버튼 색 변경 */
   .carousel-control-prev-icon,
   .carousel-control-next-icon {
-    filter: invert(1);  /* 색상 반전 */
+    display: none;
+    //filter: invert(1);  /* 색상 반전 */
     //background-color: #ff914d;  /* 활성화된 버튼 */
   }
 
   .carousel-control-prev {
-    left: -180px;  /* 기본값은 0% */
+    left: -15%;  /* 기본값은 0% */
   }
 
   .carousel-control-next {
-    right: -180px; /* 기본값은 0% */
+    right: -15%; /* 기본값은 0% */
   }
 
   .carousel-indicators {
     position: relative;
-    bottom: -370px;
+    bottom: -360px;
 }
 
   /* 순서를 나타내는 바(인디케이터) 색 변경 */
