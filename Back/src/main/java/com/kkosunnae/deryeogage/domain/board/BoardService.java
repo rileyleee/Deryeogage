@@ -241,10 +241,16 @@ public class BoardService {
                     boardFileDto.setPath(savedPaths.get(i));
                     boardFileDto.setCreatedDate(uploadTime);
 
-                    // 그 다음 Entity로 변환하여 DB에 저장
-                    boardFileRepository.save(boardFileDto.toEntity(boardRepository));
+                    try {
+                        // 그 다음 Entity로 변환하여 DB에 저장
+                        boardFileRepository.save(boardFileDto.toEntity(boardRepository));
+                        log.info("File [{}] was successfully saved to the database.", savedNames.get(i));
+                    } catch (Exception e) {
+                        log.error("Error saving file [{}] to the database. Error: {}", savedNames.get(i), e.getMessage());
+                    }
                 });
     }
+
 
     //게시글에 저장된 파일 조회
     @Transactional
