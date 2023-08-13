@@ -37,7 +37,24 @@ function AdoptBoard() {
     return dog[searchCategory] ? dog[searchCategory].includes(searchText) : true;
   });
 
-  // 여기까지 검색
+
+  // 랜덤 적용
+  const randomizeArray = (arr) => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]]; // 순서 섞기
+    }
+    return arr;
+  };
+
+  const nonadoptedDogs = filteredDogs.filter(dog => dog.status === null);
+  const adoptedDogs = filteredDogs.filter(dog => dog.status === "arrive");
+  const beingadoptedDogs = filteredDogs.filter(dog => dog.status === "depart");
+
+  const randomizedNonadoptedDogs = randomizeArray([...nonadoptedDogs]);
+  const combinedDogs = [...randomizedNonadoptedDogs, ...beingadoptedDogs, ...adoptedDogs];
+
+  
 
   const insertedToken = localStorage.getItem("accessToken");
 
@@ -82,7 +99,7 @@ function AdoptBoard() {
 
   const startIndex = (activePage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const dogsToShow = filteredDogs.slice(startIndex, endIndex);
+  const dogsToShow = combinedDogs.slice(startIndex, endIndex);
 
   useEffect(() => {
     fetchDogs();
@@ -138,6 +155,10 @@ function AdoptBoard() {
           {dogsToShow.map((dog) => (
             <S.Media key={dog.id}>
               <DogListItem dog={dog} media={dog.fileList[0]} />
+              <S.DogStatus>{dog.status === "depart" ? "입양 중" :
+                          dog.status === "arrive" ? "입양 완료" :
+                          dog.status === null ? "입양 가능" :
+                          "확인 중"}</S.DogStatus>
             </S.Media>
           ))}
         </S.BoardGrid>
@@ -146,7 +167,7 @@ function AdoptBoard() {
         <Pagination
           activePage={activePage}
           itemsCountPerPage={itemsPerPage}
-          totalItemsCount={filteredDogs.length}
+          totalItemsCount={combinedDogs.length}
           pageRangeDisplayed={5} // 표시될 페이지 링크 수를 조정
           prevPageText={"<"} // "이전"을 나타낼 텍스트
           nextPageText={">"} // "다음"을 나타낼 텍스트

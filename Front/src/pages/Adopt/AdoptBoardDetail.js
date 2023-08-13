@@ -172,7 +172,8 @@ function AdoptBoardDetail() {
     return (
       !!insertedToken &&
       !adoptData.board.writer &&
-      adoptData.board.status === null
+      (adoptData.board.status === null ||
+        adoptData.board.adopter)
     );
   };
 

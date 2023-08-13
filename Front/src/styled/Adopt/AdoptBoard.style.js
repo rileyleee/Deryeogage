@@ -61,11 +61,11 @@ export const BoardGrid = styled.div`
 
 export const BoardItem = styled.div`
   border-color: white;
-  padding: 10px;
   background-color: white;
 `;
 
 export const Media = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   img,
@@ -110,9 +110,21 @@ export const StyledPagination = styled.div`
 `;
 
 export const Largespacer = styled.div`
-height: 1350px;
+  height: 1350px;
 `;
 
 export const Smallspacer = styled.div`
-height: 20px;
+  height: 20px;
+`;
+
+export const DogStatus = styled.span`
+  font-size: 15px;
+  position: absolute;   
+  color: white;
+  top: 350px;           
+  right: 10px;          
+  background-color: #ff914d;
+  border-radius: 10px;
+  z-index: 10; 
+  padding: 3px 8px;         
 `;

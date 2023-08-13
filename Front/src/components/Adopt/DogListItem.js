@@ -36,7 +36,7 @@ function DogListItem({ dog, media }) {
   };
 
   return (
-    <Card style={{ width: "18rem", border: 0 }} onClick={handleClick}>
+    <Card style={{ width: "18rem", border: 0}} onClick={handleClick}>
       {renderMedia(media)}
       <Card.Body>
         <Card.Title>{dog.title}</Card.Title>
