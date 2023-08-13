@@ -1,5 +1,7 @@
 package com.kkosunnae.deryeogage.domain.board;
 
+import com.kkosunnae.deryeogage.domain.adopt.AdoptEntity;
+import com.kkosunnae.deryeogage.domain.adopt.AdoptRepository;
 import com.kkosunnae.deryeogage.global.s3file.S3FileService;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import com.kkosunnae.deryeogage.global.util.Response;
@@ -9,10 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Slf4j
 @Api
@@ -28,6 +27,8 @@ public class BoardController {
     private final S3FileService s3FileService;
 
     private final BoardFileRepository boardFileRepository;
+
+    private final AdoptRepository adoptRepository;
 
     // 글 작성 // Swagger 하려면 @requestBody 삭제 필요
     // 한 가지 주의할 점은, @RequestBody와 @RequestPart를
@@ -60,16 +61,20 @@ public class BoardController {
 
         // 요청한 사용자가 로그인 되어 있는 경우
         if (authorizationHeader != null) {
-
             String jwtToken = authorizationHeader.substring(7);
             Long requestUser = jwtUtil.getUserId(jwtToken);
-
             log.info("userid : "+thisBoard.getUserId()+" requestuserid : "+requestUser);
             // 작성자 여부 파악하여 DTO에 담기
             if (thisBoard.getUserId() == requestUser) {
                 thisBoard.setWriter(true);
             } else {
                 thisBoard.setWriter(false);
+            }
+
+            Optional<AdoptEntity> adoptEntity = adoptRepository.findByBoardId(boardId);
+            if(!adoptEntity.isEmpty()){
+                thisBoard.setAdopter(adoptEntity.get().getToUser().getId().equals(requestUser));
+                log.info("adapter : "+thisBoard.isAdopter());
             }
         } else {// 로그인하지 않은 경우
             thisBoard.setWriter(false);

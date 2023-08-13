@@ -73,7 +73,7 @@ public class ChatController {
 
         // 새 채팅방 생성 후 반환
         ChatRoomRequestDto chatRoomRequestDto = new ChatRoomRequestDto(userId1,userId2,boardId,boardName);
-        ChatRoomResponseDto chatRoomResponseDto = chatRoomService.save(chatRoomRequestDto);
+        ChatRoomResponseDto chatRoomResponseDto = chatRoomService.save(userId2, chatRoomRequestDto);
         return new ResponseEntity<>(chatRoomResponseDto, HttpStatus.CREATED);
     }
 
