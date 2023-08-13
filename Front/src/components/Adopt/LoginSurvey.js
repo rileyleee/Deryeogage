@@ -86,8 +86,8 @@ function LoginSurvey() {
                           <Link to={`${dog.id}`}>
                             <S.StyledMedia src={dog.fileList[0]} alt={dog.name} />
                           </Link>
-                        ) : (
-                          <video width="100%" controls>
+                        ) : ( //이미지 필수 등록임에 따라 0번이 동영상이 될 수 없음
+                          <video width="100%" controls autoPlay loop muted style={{ width: '250px', height: '290px', objectFit: 'cover' }}>
                             <source src={dog.fileList[0]} type="video/mp4" />
                           </video>
                         )}

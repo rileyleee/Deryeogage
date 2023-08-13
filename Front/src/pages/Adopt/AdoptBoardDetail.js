@@ -275,9 +275,8 @@ function AdoptBoardDetail() {
                       <Carousel.Item key={index}>
                         <S.StyledMedia>
                           {isVideo ? (
-                            <video controls autoPlay loop muted>
-                              <source src={fileUrl} type="video/mp4" />
-                              Your browser does not support the video tag.
+                            <video controls autoPlay loop muted style={{ width: '720px', height: '500px', objectFit: 'cover' }}>
+                              <source src={fileUrl} type="video/mp4" />                              
                             </video>
                           ) : (
                             <img src={fileUrl} alt="Dog" />

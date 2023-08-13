@@ -38,7 +38,8 @@ export const StretchedBox = styled.div`
 `;
 
 export const ImageBox = styled.div`
-  height: 300px;
+  width: auto;
+  height: 500px;
   overflow: hidden;
   margin: 1vw 0;
   border: none;
@@ -51,10 +52,11 @@ export const ImageBox = styled.div`
   flex-direction: column; 
   margin-right: 1vw;
 `;
+
 export const StyledMedia = styled.div`
   img, video {
-    width: 100%;          
-    height: 100%;         
+    width: 720px; // 동영상 크기: 여기서는 안 먹고 인라인으로 작업 시에는 적용된다.(이미지는 여기서도 된다.)        
+    height: 500px;         
     object-fit: cover;  
     object-position: center;    
     border-radius: 30px;
@@ -64,15 +66,15 @@ export const StyledMedia = styled.div`
 export const BoardBox = styled.div`
   font-size: 22px;
   text-align: left;
-  line-height: 2;
+  line-height: 3;
   margin: 1vw 0;
-  padding: 20px 20px 20px 40px;  
+  padding: 50px 20px 20px 40px;  
   border: none;
   border-radius: 30px;
   background-color: #FFF8E4;
   display: flex;
   flex-direction: column;
-  height: 300px;
+  height: 500px;
 `;
 
 export const Span = styled.span`
