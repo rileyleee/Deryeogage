@@ -137,9 +137,12 @@ public class ChatRoomService {
 
     /** ChatRoom 생성 */
     @Transactional
-    public ChatRoomResponseDto save(ChatRoomRequestDto chatRoomRequestDto) {
+    public ChatRoomResponseDto save(Long userId2, ChatRoomRequestDto chatRoomRequestDto) {
         ChatRoomEntity chatRoomEntity = chatRoomRequestDto.toEntity(userRepository, boardRepository);
-        return new ChatRoomResponseDto(chatRoomRepository.save(chatRoomEntity));
+        chatRoomRepository.save(chatRoomEntity);
+
+
+        return  this.findById(userId2,chatRoomEntity.getId());
     }
 
     /** ChatRoom 삭제 */

@@ -35,6 +35,7 @@ public class BoardDto {
     private LocalDateTime createdDate;
     private List fileList;
     private boolean isWriter;
+    private boolean isAdopter;
     private AdoptStatus status;
 
 
@@ -74,8 +75,6 @@ public class BoardDto {
     public BoardEntity toEntity(UserRepository userRepository){
         UserEntity user = userRepository.findById(this.userId)
            .orElseThrow(() -> new NoSuchElementException("해당 사용자가 존재하지 않습니다."));
-
-
         return BoardEntity.builder()
                 .user(user)
                 .regionCode(regionCode)
