@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import * as S from "../../styled/Adopt/Precosts.style"
 
@@ -37,11 +37,28 @@ const Precost = ({ onClose, boardId }) => {
   };
 
   return (
-    <S.ModalOverlay onClick={onClose}>
+    <S.ModalOverlay onClick={onClose} >
       <S.ModalContainer onClick={(e) => e.stopPropagation()}>
-        <h3>책임비를 납부한 뒤에 작성이 가능합니다.</h3>
-        {/* 여기에 모달의 내용을 넣으세요 */}
-        <button onClick={handlePay}>납부하기</button>
+        <S.Notification>
+          <S.Title>책임비 납부 안내</S.Title>
+          <S.MainText>
+            <p>저희 데려가개를 통해 강아지를 입양보내기 위해서는</p>
+            <p>게시글 작성 전에 책임비(금 십만원정)을 납부하여야 합니다.</p>
+            <p>책임비는 강아지가 완전히 입양되고 난 후, 또는 게시글을 삭제하는 경우 반환받을 수 있습니다.</p>
+          </S.MainText>
+          <S.SubText>
+            <p>강아지를 구조하거나 보호하는 경우에도 강아지에 대한 책임감을 가져야합니다.</p>
+            <p>모든 이해관계자가 강아지의 입양 절차를 책임감 있게 수행하기 위한 수단입니다.</p>
+            <p>데려가개는 책임비를 통해 수익을 얻지 않으며, 입양 제반 절차 미수행으로 인해 반환되지 못한 책임비는 전국 유기동물 보호소에 전액 기부함을 알려드립니다.</p>
+          </S.SubText>
+          <S.AgreeMentText>
+            <p> 위의 사실을 모두 인지하고 동의하는 경우 책임비를 납부하여 주시기 바랍니다.</p>
+          </S.AgreeMentText>
+        </S.Notification>
+        <Link to={"/adopt"} onClick={handlePay}>
+          <S.Media src={process.env.PUBLIC_URL + "/assets/책임비 납부.png"} alt="선 책임비 납부" />
+        </Link>
+        {/* <button onClick={handlePay}>납부하기</button> */}
       </S.ModalContainer>
     </S.ModalOverlay>
   );

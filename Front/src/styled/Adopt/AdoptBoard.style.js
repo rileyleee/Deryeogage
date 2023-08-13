@@ -20,6 +20,7 @@ export const BoardContainer = styled.div`
   border-radius: 30px;
   padding-top: 30px;
   margin-top: 20px;
+  background-color: white;
 `;
 
 export const SearchContainer = styled.div`
