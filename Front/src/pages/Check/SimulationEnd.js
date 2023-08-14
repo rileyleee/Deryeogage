@@ -41,17 +41,17 @@ function Simulation() {
       newTitle = '100'
     } else {
       if (health === 0) {
-        newTitle = '0'
+        newTitle = titles[0]
       } else if (health >= 1 && health < 20) {
-        newTitle = '1'
+        newTitle = titles[1]
       } else if (health >= 20 && health < 40) {
-        newTitle = '20'
+        newTitle = titles[20]
       } else if (health >= 40 && health < 60) {
-        newTitle = '40'
+        newTitle = titles[40]
       } else if (health >= 60 && health < 85) {
-        newTitle = '60'
+        newTitle = titles[60]
       } else if (health >= 85) {
-        newTitle = '85'
+        newTitle = titles[85]
       }
     }
   

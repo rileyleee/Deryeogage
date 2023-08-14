@@ -7,6 +7,7 @@ import NotSurvey from "../../components/Adopt/NotSurvey";
 import LoginSurvey from "../../components/Adopt/LoginSurvey";
 import DogListItem from "./../../components/Adopt/DogListItem";
 import Pagination from "react-js-pagination";
+import ReactSelect from 'react-select';
 
 function AdoptBoard() {
   const [activePage, setActivePage] = useState(1);
@@ -15,31 +16,51 @@ function AdoptBoard() {
   const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber);
   };
+
   const navigate = useNavigate();
   const [adoptData, setAdoptData] = useState([]);
   const [hasSurvey, setHasSurvey] = useState(false);
 
-  // 검색기능
-  const [searchTerm, setSearchTerm] = useState({
-    title: "",
-    dogTypeCode: "",
-    regionCode: "",
-  });
+  // 검색 기능
+  const searchOptions = [
+    { value: 'title', label: '제목' },
+    { value: 'dogTypeCode', label: '견종' },
+    { value: 'regionCode', label: '지역' },
+  ];
+
+  const [searchText, setSearchText] = useState("");
 
   // 검색 카테고리 상태
   const [searchCategory, setSearchCategory] = useState("title");
 
   const filteredDogs = adoptData.filter((dog) => {
-    const value = searchTerm[searchCategory];
-    return dog[searchCategory] ? dog[searchCategory].includes(value) : true;
+    return dog[searchCategory] ? dog[searchCategory].includes(searchText) : true;
   });
 
-  // 여기까지 검색
+
+  // 랜덤 적용
+  const randomizeArray = (arr) => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]]; // 순서 섞기
+    }
+    return arr;
+  };
+
+  const nonadoptedDogs = filteredDogs.filter(dog => dog.status === null);
+  const adoptedDogs = filteredDogs.filter(dog => dog.status === "arrive");
+  const beingadoptedDogs = filteredDogs.filter(dog => dog.status === "depart");
+
+  const randomizedNonadoptedDogs = randomizeArray([...nonadoptedDogs]);
+  const combinedDogs = [...randomizedNonadoptedDogs, ...beingadoptedDogs, ...adoptedDogs];
+
+  
 
   const insertedToken = localStorage.getItem("accessToken");
 
   const onClick = () => {
     if (!insertedToken) {
+      localStorage.setItem("redirect", "/adopt/create");
       navigate("/login");
     } else {
       navigate("/adopt/create");
@@ -77,16 +98,23 @@ function AdoptBoard() {
     }
   };
 
-  const dogsArray = Array.isArray(adoptData) ? adoptData : [];
-
   const startIndex = (activePage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const dogsToShow = dogsArray.slice(startIndex, endIndex);
+  const dogsToShow = combinedDogs.slice(startIndex, endIndex);
 
   useEffect(() => {
     fetchDogs();
     checkSurvey();
   }, []);
+
+  function handleDogClick(dog) {
+    if (!insertedToken) {
+      localStorage.setItem("redirect", `/adopt/${dog.id}`);
+      navigate("/login");
+    } else {
+      navigate(`/adopt/${dog.id}`);
+    }
+  }
 
   return (
     <div>
@@ -95,37 +123,61 @@ function AdoptBoard() {
       {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
       {insertedToken && hasSurvey ? <NotSurvey /> : null}
       {!insertedToken ? <NotLogin /> : null}
-      <div>
-          <select
-            name="category"
-            value={searchCategory}
-            onChange={(e) => setSearchCategory(e.target.value)}
-          >
-            <option value="title">제목</option>
-            <option value="dogTypeCode">견종</option>
-            <option value="regionCode">지역</option>
-          </select>
-          <input
-            type="text"
-            value={searchTerm[searchCategory]}
-            onChange={(e) =>
-              setSearchTerm({ ...searchTerm, [searchCategory]: e.target.value })
-            }
-          />
-        </div>
+
       <S.Button onClick={onClick}>글 작성</S.Button>
-      <S.BoardGrid>
-        {dogsToShow.map((dog) => (
-          <S.Media>
-            <DogListItem key={dog.id} dog={dog} media={dog.fileList[0]} />
-          </S.Media>
-        ))}
-      </S.BoardGrid>
+
+      <S.BoardContainer>
+        <S.SearchContainer>
+          <S.SelectInputBox>
+            <ReactSelect
+              name="category"
+              value={searchOptions.find(option => option.value === searchCategory)}
+              onChange={option => {
+                setSearchCategory(option.value);
+              }}
+              options={searchOptions}
+              styles={{
+                container: (provided) => ({
+                  ...provided,
+                  width: '120px'
+                }),
+                control: (provided) => ({
+                  ...provided,
+                  border: 'none',        // 경계선 제거
+                  boxShadow: 'none'      // 그림자 제거
+                }),
+                option: (provided, state) => ({
+                  ...provided,
+                  backgroundColor: state.isFocused ? '#FFF7E7' : null, // 호버 시 색상 변경
+                  color: 'black',
+                }),
+              }}
+            />
+            <S.InputBox
+              type="text"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+          </S.SelectInputBox>
+        </S.SearchContainer>
+
+        <S.BoardGrid>
+          {dogsToShow.map((dog) => (
+            <S.Media key={dog.id}>
+              <DogListItem dog={dog} media={dog.fileList[0]} />
+              <S.DogStatus>{dog.status === "depart" ? "입양 중" :
+                          dog.status === "arrive" ? "입양 완료" :
+                          dog.status === null ? "입양 가능" :
+                          "확인 중"}</S.DogStatus>
+            </S.Media>
+          ))}
+        </S.BoardGrid>
+      </S.BoardContainer>
       <S.StyledPagination>
         <Pagination
           activePage={activePage}
           itemsCountPerPage={itemsPerPage}
-          totalItemsCount={dogsArray.length}
+          totalItemsCount={combinedDogs.length}
           pageRangeDisplayed={5} // 표시될 페이지 링크 수를 조정
           prevPageText={"<"} // "이전"을 나타낼 텍스트
           nextPageText={">"} // "다음"을 나타낼 텍스트
@@ -135,8 +187,6 @@ function AdoptBoard() {
           onChange={handlePageChange}
         />
       </S.StyledPagination>
-      {/* 
-      <S.Largespacer></S.Largespacer> */}
     </div>
   );
 }

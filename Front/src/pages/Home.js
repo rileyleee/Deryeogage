@@ -6,14 +6,16 @@ import { useRecoilState } from "recoil";
 import {
   SimulationExistAtom,
   SimulationNum,
+  SimulationStartAtom
 } from "../recoil/SimulationAtom";
 import { useNavigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Home() {
   const [existValue, setExistValue] = useRecoilState(SimulationExistAtom);
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
-  console.log(existValue)
+  const [startValue, setStartValue] = useRecoilState(SimulationStartAtom)
   useEffect(() => {
     if (existValue !== null) {
         localStorage.setItem('petType', existValue.petType)
@@ -60,7 +62,6 @@ function Home() {
           const currentHours = now.getHours()
           const currentMinutes = now.getMinutes()
           const simulationData = response.data;
-          console.log(simulationData)
           if (currentHours >= 0 && currentHours < 8) {
             navigate("/nosimulations"); // NoSimulation 페이지로 이동
           } 
@@ -69,6 +70,7 @@ function Home() {
           }
           else {
           if (response.data === "Start a new simulation") {
+            setStartValue(response.data)
             localStorage.setItem("activatedNum", 1);
             localStorage.setItem('hpPercentage', 100);
             localStorage.setItem('timeDifference', JSON.stringify({ // 객체 데이터 등록할 때 무조건 stringify 활용
@@ -276,9 +278,35 @@ function Home() {
 
 
   return (
-    <HomeContainer>
-      <Main>
+    <MainContainer className="row slide">
+      <HomeContainer className='page1'>
+        <Main>
         <Span>데려가개</Span>
+        </Main>
+        <Text>
+          데려가개는 강아지들의 <Span>행복한 미래</Span>를 최우선으로 성숙한
+          반려문화를 도모합니다.
+        </Text>
+        <Text>
+          소중한 생명인 강아지와 오랜시간 함께할 <Span>인연</Span>을 만듭니다.
+        </Text>
+        <ContentContainer>
+          <Div className='simulation'>
+            <p>시뮬레이션을 통해 가상으로 강아지를 키워보세요!</p>
+            <StyledLink
+              onClick={(event) => handleLinkClick(event, "/simulations")}
+            >
+              <PiPawPrintFill /> 시뮬레이션하러 가기
+            </StyledLink>
+          </Div>
+        </ContentContainer>
+        {/* <ImageWrapper>
+          <Image src="assets/main.png" />
+        </ImageWrapper> */}
+      </HomeContainer>
+      <HomeContainer className='row page2'>
+      <Main>
+      <Span>데려가개</Span>
       </Main>
       <Text>
         데려가개는 강아지들의 <Span>행복한 미래</Span>를 최우선으로 성숙한
@@ -288,21 +316,30 @@ function Home() {
         소중한 생명인 강아지와 오랜시간 함께할 <Span>인연</Span>을 만듭니다.
       </Text>
       <ContentContainer>
-        <Div>
-          <p>시뮬레이션을 통해 가상으로 강아지를 키워보세요!</p>
-          <StyledLink
-            onClick={(event) => handleLinkClick(event, "/simulations")}
-          >
-            <PiPawPrintFill /> 시뮬레이션하러 가기
-          </StyledLink>
-        </Div>
-        <Div>
+        <Div className='survey'>
           <p>선호도 조사를 통해 나의 생활에 맞는 강아지를 찾아보세요!</p>
           <StyledLink onClick={(event) => handleLinkClick(event, "/survey")}>
             <PiPawPrintFill /> 선호도 조사하러 가기
           </StyledLink>
         </Div>
-        <Div>
+      </ContentContainer>
+      {/* <ImageWrapper>
+        <Image src="assets/main.png" />
+      </ImageWrapper> */}
+    </HomeContainer>
+    <HomeContainer className='row page3'>
+      <Main>
+      <Span>데려가개</Span>
+      </Main>
+      <Text>
+        데려가개는 강아지들의 <Span>행복한 미래</Span>를 최우선으로 성숙한
+        반려문화를 도모합니다. <br />
+      </Text>
+      <Text>
+        소중한 생명인 강아지와 오랜시간 함께할 <Span>인연</Span>을 만듭니다.
+      </Text>
+      <ContentContainer>
+        <Div className='test'>
           <p>
             입양 전 사전테스트를 통해 강아지를 키울 준비가 되었는지
             확인해보세요!
@@ -312,20 +349,42 @@ function Home() {
           </StyledLink>
         </Div>
       </ContentContainer>
-      <ImageWrapper>
+      {/* <ImageWrapper>
         <Image src="assets/main.png" />
-      </ImageWrapper>
+      </ImageWrapper> */}
     </HomeContainer>
+  </MainContainer>
   );
 }
 
 export default Home;
 
+const MainContainer = styled.div`
+  &.slide {
+    max-width: 100vw;
+    height: 90vh;
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+  }
+  &.slide::-webkit-scrollbar-thumb {
+  background-color: orange;
+  border-radius: 5px;
+}
+  &.slide::-webkit-scrollbar {
+    /* display: none; */
+    /* background-color: white; */
+    width: 5px;
+  }
+  &.slide::-webkit-scrollbar-track {
+    background-color : white;
+  }
+`
+
 const HomeContainer = styled.div`
-  max-width: 1200px;
-  height: 88vh;
-  margin: 0 auto;
-  padding: 20px;
+  scroll-snap-align: center;
+  width: 100vw;
+  height: 90vh;
+  padding: 3vw;
   display: flex; /* Use flexbox to arrange the content */
   flex-direction: column; /* Arrange items vertically */
   position: relative; /* Set relative positioning for absolute elements */
@@ -336,13 +395,12 @@ const Span = styled.span`
 `;
 
 const Main = styled.div`
-  padding-top: 20px;
-  padding-bottom: 30px;
-  font-size: 5vh;
+  padding: 3vh 0;
+  font-size: 6vh;
 `;
 
 const Text = styled.div`
-  padding-bottom: 10px;
+  padding-bottom: 1vh;
   font-size: 3vh;
 `;
 
@@ -350,23 +408,23 @@ const ContentContainer = styled.div`
   display: flex;
   flex-direction: column; /* Arrange items vertically */
   align-items: flex-start;
-  margin-top: 10vh; /* Add spacing between the content and the header */
+  margin-top: 2vh; /* Add spacing between the content and the header */
 `;
 
 const Div = styled.div`
-  margin: 10px;
-  padding-top: 20px;
-  font-size: 2.2vh;
+  margin: 1vh;
+  padding-top: 2vh;
+  font-size: 3vh;
 `;
 
 const ImageWrapper = styled.div`
   position: absolute;
-  bottom: 0px;
-  right: 20px;
+  bottom: 0;
+  left: 45vw;
 `;
 
 const Image = styled.img`
-  width: 500px; /* Set the width to a fixed size */
+  width: 30vw; /* Set the width to a fixed size */
 `;
 
 const StyledLink = styled.a`
@@ -374,4 +432,7 @@ const StyledLink = styled.a`
   color: rgba(255, 145, 77, 1);
   margin: 1vw;
   cursor: pointer; /* Add cursor: pointer style */
+  &:hover {
+    color: #4A2511;
+  }
 `;

@@ -6,7 +6,7 @@ import {useRecoilValue} from "recoil"
 import { SimulationBGI, SimulationDog, SimulationName } from "../../recoil/SimulationAtom"
 import axios from "axios";
 import {useRecoilState} from "recoil"
-import { SimulationExistAtom } from "../../recoil/SimulationAtom"
+import { SimulationExistAtom, SimulationStartAtom } from "../../recoil/SimulationAtom"
 
 function GameDogChip(props) {
   const {onNextPage, onPreviousPage} = props
@@ -16,6 +16,7 @@ function GameDogChip(props) {
   const SimulationBGIValue = useRecoilValue(SimulationBGI) // 배경
   const [existValue, setExistValue] = useRecoilState(SimulationExistAtom)
   console.log(SimulationDogValue, SimulationNameValue, SimulationBGIValue)
+  const [startValue, setStartValue] = useRecoilState(SimulationStartAtom)
 
   const handleSubmit = async (event) => {
     if (localStorage.getItem("accessToken")) { // 로그인 했을 때만
@@ -36,6 +37,7 @@ function GameDogChip(props) {
                 }
               }
           );
+        setStartValue('')
         setExistValue(response.data) // SimulationExistAtom에 데이터 저장
         localStorage.setItem('petType', response.data.petType)
         localStorage.setItem('background', response.data.background)

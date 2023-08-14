@@ -15,7 +15,7 @@ const GenderRadio = ({ gender, setGender }) => {
           checked={gender}
           onChange={handleGenderChange}
         />
-        남자
+        {" "}수컷
       </label>
 
       <label>
@@ -25,7 +25,7 @@ const GenderRadio = ({ gender, setGender }) => {
           checked={!gender}
           onChange={handleGenderChange}
         />
-        여자
+        {" "}암컷
       </label>
     </div>
   );

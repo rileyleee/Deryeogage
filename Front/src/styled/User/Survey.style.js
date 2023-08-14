@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Modal from "react-modal"; // import react-modal
 
 export const Span = styled.span`
   color: rgba(255, 145, 77, 1);
@@ -10,10 +9,10 @@ export const Span = styled.span`
   justify-content: center;
   align-items: center;
   height: auto;
-  min-height: 100vh;
   width: 100%;
   overflow: hidden;
   padding: 0;
+  margin-top: 4vh;
 `;
 
 export const Div = styled.div`
@@ -45,31 +44,21 @@ export const Button = styled.button`
   padding: 0.5vw 1vw;
   border-radius: 30px;
   color: white;
-  margin-top: 1vw;
+  margin-top: 1vh;
+  margin-bottom: 3vh;
 `;
 
-export const StyledModal = styled(Modal)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  right: auto;
-  bottom: auto;
-  transform: translate(-50%, -50%);
-  width: 40vw;
-  height: 60vh;
-  border: 1px solid #ff914d;
-  border-radius: 30px;
-  background-color: white;
+export const Drag = styled.div`
+margin-top: 4vh;
+margin-bottom: 4vh;
+font-size: 1.2rem;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
-export const CloseButton = styled.button`
-  background-color: white;
-  position: absolute;
-  right: 15px;
-  top: 15px;
-  border: none;
+export const Survey = styled.div`
+font-size: 2rem;
+margin-bottom: 1vh;
+margin-top: 2vh;
+font-weight: bold;
 `;
+
