@@ -160,7 +160,7 @@ function AdoptFrom() {
                 onClick={() => handleRefundResponsibility(adopt.boardId, index)}
                 disabled={precost[index].returnYn}
               >
-                책임비 반환하기
+                {precost[index].returnYn ? "반환 완료" : "책임비 반환하기"}
               </S.AdoptComfirmed>
               </div>  
             ) : adopt.toConfirmYn ? (

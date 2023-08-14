@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import css from "styled-components";
 import CheckBtn from "../../components/Check/CheckBtn";
 import axios from "axios";
 
@@ -52,30 +53,28 @@ function CheckList() {
   };
 
   // localStorage에 answers를 저장
-  useEffect(() => {
-    localStorage.setItem("answers", JSON.stringify(answers));
-    localStorage.setItem("promise", promise);
-  }, [answers, promise]);
+  // useEffect(() => {
+  //   localStorage.setItem("answers", JSON.stringify(answers));
+  //   localStorage.setItem("promise", promise);
+  // }, [answers, promise]);
 
   const handleSubmit = async () => {
     const unanswered = questions.filter((q) => !answers[q]);
-    
+
     if (unanswered.length > 0) {
       alert("모든 질문에 답변을 완료해주세요.");
     } else {
-
       //입양서약서 내용 최소10자 이상인지 확인
       if (promise.length < 10) {
-        alert('입양서약서는 최소 10자 이상 입력하셔야 합니다.');
+        alert("입양서약서는 최소 10자 이상 입력하셔야 합니다.");
         return; // 이 부분은 경고창 후에 나머지 로직을 중단하기 위한 코드입니다.
       }
-      
+
       const rawTotalScore = questions.reduce(
         (sum, q) => sum + scores[answers[q]],
         0
       );
       const score = Math.round((rawTotalScore / 70) * 100);
-
 
       const token = localStorage.getItem("accessToken"); // 여기에 토큰을 입력하세요.
       const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -104,7 +103,10 @@ function CheckList() {
   return (
     <div>
       <InfoContainer>
-        <h4><span>사전테스트</span>를 통해 반려견을 입양 할 준비가 되었는지 확인해보세요!</h4>
+        <h4>
+          <span>사전테스트</span>를 통해 반려견을 입양 할 준비가 되었는지
+          확인해보세요!
+        </h4>
       </InfoContainer>
       <div>
         {questions.map((question) => (
@@ -116,7 +118,16 @@ function CheckList() {
           />
         ))}
         <PledgeContainer>
-          <h2>입양 서약서</h2>
+          <h2>
+            입양 서약서
+            <Tooltip>
+              ⓘ
+              <TooltipText className="tooltiptext">
+                입양서약서는 <br /> 10자 이상<br /> 작성해주세요.
+              </TooltipText>
+            </Tooltip>{" "}
+          </h2>
+
           <PledgeTextarea
             value={promise}
             onChange={handleChangePledge}
@@ -148,18 +159,42 @@ export const InfoContainer = styled.div`
   }
 `;
 
+const HoverButton = css`
+  &:hover {
+    background-color: #eb7d39;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.5s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
+  }
+`;
+
 const SubmitButton = styled.button`
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 1.2em;
-  background-color: #fff;
-  color: rgba(255, 145, 77, 1);
-  border: 1px solid rgba(255, 145, 77, 1);
-  border-radius: 30px;
+  padding: 10px;
+  font-size: 1em;
+  background-color: #ff914d;
+  color: white;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
   &:hover {
-    background-color: rgba(255, 145, 77, 1);
-    color: white;
+    background-color: #eb7d39;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    overflow: hidden;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.5s;
+    -webkit-transition-property: color, background-color;
+    transition-property: color, background-color;
   }
 `;
 
@@ -185,5 +220,46 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
-  
+`;
+
+export const Tooltip = styled.div`
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 5px; //간격 조절
+
+  &:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+`;
+
+export const TooltipText = styled.span`
+  visibility: hidden;
+  width: 150px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 1vh;
+  border-radius: 6px;
+  font-size: 1rem;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -75px;
+
+  opacity: 0;
+  transition: opacity 0.3s;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
 `;

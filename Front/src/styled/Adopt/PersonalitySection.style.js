@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const DogCheck = styled.div`
   /* 스타일을 추가하여 간격을 줍니다. */
-  height: 100%;
+  height: 60.1vh;
   margin: 1vw 0;
   padding: 3vh;
   border: 1px #ff914d solid;
@@ -21,7 +21,7 @@ export const Div = styled.div`
 `;
 export const Text = styled.div`
   /* 스타일을 추가하여 간격을 줍니다. */
-  margin-top: 6.2vh;
+  margin-top: 4vh;
 `;
 
 export const Span = styled.span`

@@ -6,7 +6,7 @@ import * as S from "../styled/SurveyPaw.style";
 
 const ARRAY = [0, 1, 2, 3, 4];
 
-function SurveyPaw({ title, onSelect, initial }) {
+function SurveyPaw({ title, onSelect, initial, rank }) {
   const [selectedIdx, setSelectedIdx] = useState(initial - 1);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ function SurveyPaw({ title, onSelect, initial }) {
     <S.Wrap>
       <S.Paws>
         <p>
-          <S.Span>{title} </S.Span>
+          {rank && <S.Rank>{rank}순위</S.Rank>} <S.Span>{title} </S.Span>
           {ARRAY.map((el, idx) => (
             <S.StyledPaw
               key={idx}

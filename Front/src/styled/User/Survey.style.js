@@ -4,7 +4,7 @@ export const Span = styled.span`
   color: rgba(255, 145, 77, 1);
 `;
 
- export const CenteredDiv = styled.div`
+export const CenteredDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,18 +16,15 @@ export const Span = styled.span`
 `;
 
 export const Div = styled.div`
-  margin-top: 1%;
   padding: 1vw;
-  width: 100%;
-  max-width: 40vw;
-  min-width: 300px;
-  height: auto;
-  min-height: 70vh;
+  width: 40vw;
+  height: 82vh;
   background-color: white;
   border: 1px #ff914d solid;
   border-radius: 30px;
   text-align: center;
   overflow: auto;
+  margin-bottom: 2vh;
 `;
 
 export const SurveyContainer = styled.div`
@@ -44,21 +41,23 @@ export const Button = styled.button`
   padding: 0.5vw 1vw;
   border-radius: 30px;
   color: white;
-  margin-top: 1vh;
-  margin-bottom: 3vh;
+  margin-bottom: 1vh;
 `;
 
 export const Drag = styled.div`
-margin-top: 4vh;
-margin-bottom: 4vh;
-font-size: 1.2rem;
+  margin-top: 2vh;
+  margin-bottom: 1vh;
+  font-size: 1.3rem;
+`;
 
+export const SmallText = styled.div`
+  margin-bottom: 4vh;
+  font-size: 1.1rem;
 `;
 
 export const Survey = styled.div`
-font-size: 2rem;
-margin-bottom: 1vh;
-margin-top: 2vh;
-font-weight: bold;
+  font-size: 2rem;
+  margin-bottom: 1vh;
+  margin-top: 1vh;
+  font-weight: bold;
 `;
-
