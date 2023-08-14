@@ -33,10 +33,13 @@ function ChatRoomDetail() {
   useEffect(() => {
     // messages가 변경될 때마다 실행되는 useEffect
     if (messageListRef.current) {
-      const element = messageListRef.current;
-      element.scrollTop = element.scrollHeight; // 스크롤을 맨 아래로 이동
+      setTimeout(() => {
+        const element = messageListRef.current;
+        element.scrollTop = element.scrollHeight; // 스크롤을 맨 아래로 이동
+      }, 80); // 100ms의 지연시간을 주었습니다.
     }
-  }, [messages]); // messages 배열이 변경될 때마다 실행
+  }, [messages]);
+  
 
   useEffect(() => {
     loadRoomInfo();
@@ -150,7 +153,7 @@ const formatMessageTime = (createdDate) => {
     client.onDisconnect = function () {
       console.log("WebSocket disconnected. Trying to reconnect...");
       setIsConnected(false);
-      setTimeout(setupWebSocket, 3000);
+      setTimeout(setupWebSocket, 5000);
     };
     
     setStompClient(client);
@@ -246,18 +249,17 @@ const formatMessageTime = (createdDate) => {
       <div>
       {!searchMode ? (
     <div className="d-flex justify-content-between">
-      <div id="roomInfo">{roomInfo}</div>
+      <div id="roomInfo"></div>
       <SearchButton onClick={handleSearchClick} />
     </div>
 ) : (
           <div className="d-flex justify-content-between">
-            <input
+            <SearchInput
   type="text"
   ref={searchInputRef}  // <-- Add this line
   value={searchInput}
   onChange={handleSearchInput}
   onKeyPress={handleSearchEnter}
-  placeholder="Search messages..."
 />
             <ExitButton onClick={() => {
               setSearchMode(false);
@@ -367,16 +369,17 @@ const MessageItem = styled.li`
 const MessageContent = styled.div`
   display: flex;
   flex-direction: row;
-  border: 1px solid;
+  // 테두리 선 제거
+  // border: 1px solid;
+  border: none;
   border-radius: 30px;
-  padding: 0.5vh;
+  padding: 0.8vh;
   color: gray;
   word-break: break-all;  // 이 줄을 추가
   background-color: ${(props) =>
-    props.rightAlign ? "#e6f7ff" : "#f9e0e0"};
+    props.rightAlign ? "#FFE7BA" : "#D8D8D8"};
     max-width: 70%;
 `;
-
 
 const NickName = styled.span`
   font-size: 0.8rem;   // 글자 크기 조정
@@ -386,7 +389,7 @@ const NickName = styled.span`
 `;
 
 const MessageText = styled.span`
-  color: ${props => props.highlighted ? "red" : "gray"};
+  color: ${props => props.highlighted ? "red" : "black"};
   word-break: break-all;
 `;
 
@@ -404,18 +407,12 @@ const MessageInput = styled.input`
   padding: 5px;
 `;
 
-const SendButtonIcon = styled(PiPawPrintFill)`
-  color: white;
-  font-size: 20px;
-`;
-
 const SendButton = styled.button`
   background-color: transparent; // 배경을 투명하게 설정
   border: none; // 기본 버튼 테두리 제거
   cursor: ${props => props.disabled ? "not-allowed" : "pointer"};
   color: ${props => props.disabled ? "#e0e0e0" : "#FF8000"}; // 아이콘 색상 조절
 `;
-
 
 const DateIndicator = styled.div`
   width: 100%;
@@ -426,21 +423,25 @@ const DateIndicator = styled.div`
 `;
 
 const UserImage = styled.img`
-  width: 40px;  // 원하는 사이즈로 조절
-  height: 40px;
+  width: 5vh;  // 원하는 사이즈로 조절
+  height: 5vh;
   border-radius: 50%;  // 동그란 형태를 만들기 위해
   margin-right: 5px;  // 오른쪽 여백 추가
 `;
 
+const SearchInput = styled.input`
+  width: 60%;
+`;
+
 const SearchButton = styled.button`
-  background-image: url('/assets/search.png');
+  background-image: url('/assets/chatimg/search.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
   background-color: transparent; // 배경색을 제거
   border: none;
-  width: 30px; // 원하는 크기로 조절
-  height: 30px; // 원하는 크기로 조절
+  width: 4vh; // 원하는 크기로 조절
+  height: 4vh; // 원하는 크기로 조절
   cursor: pointer;
 
   &:hover, &:focus {
@@ -449,16 +450,15 @@ const SearchButton = styled.button`
 `;
 
 const ExitButton = styled.button`
-  background-image: url('/assets/cancel.png');
+  background-image: url('/assets/chatimg/cancel.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
   background-color: transparent; // 배경색을 제거
   border: none;
-  width: 30px; // 원하는 크기로 조절
-  height: 30px; // 원하는 크기로 조절
+  width: 4vh; // 원하는 크기로 조절
+  height: 4vh; // 원하는 크기로 조절
   cursor: pointer;
-
   &:hover, &:focus {
     background-color: white; // 만약 transparent가 작동하지 않을 때 흰색으로 변경
   }

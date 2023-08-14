@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import * as S from "../../styled/User/DogLike.style"
 
 function DogLike() {
   const [favoritedPosts, setFavoritedPosts] = useState([]);
@@ -28,7 +29,8 @@ function DogLike() {
                 },
               })
               .then((response) => ({
-                
+              boardId: response.data.data[0].id,
+                createdDate: response.data.data[0].createdDate.split('T')[0],
                 title: response.data.data[0].title, // 제목을 regionCode로 설정 (데이터 구조에 따라 변경 필요)
                 name: response.data.data[0].userNickname,
                 dogName:  response.data.data[0].name,
@@ -53,23 +55,32 @@ function DogLike() {
   console.log(favoritedPosts); // 로깅
 
   return (
-    <div>
-      <h1>내가 찜한 내역</h1>
-      {favoritedPosts.length > 0 ? (
-        <ul>
-          {favoritedPosts.map((post, index) => (
-            <li key={index}>
-              <h3>{post.title}</h3>
-              <p>작성자: {post.name}</p>
-              <p>강쥐 이름: {post.dogName}</p>
-              <p>강쥐 나이: {post.dogAge}살</p>
-              <img src={post.imageUrl} alt={`이미지 ${index}`} />
-            </li>
-          ))}
-        </ul>
+    <div className="container">
+      <S.BoardRow className="row list">
+        <div className="col-3 text-center">작성자</div>
+        <div className="col-2 text-center">대표 이미지</div>
+        <div className="col-4 text-center">찜한 글</div>
+        <div className="col-3 text-center">작성 일자</div>
+      </S.BoardRow>
+      <S.ScrollBar>
+      {favoritedPosts.length === 0 ? (
+        <div className="text-center">찜한 글이 없습니다.</div>
       ) : (
-        <p>찜한 게시글이 없습니다.</p>
+        favoritedPosts.map((favorite, index) => (
+          <S.BoardRow className="row item align-items-center " key={index}>
+            <div className="col-3 text-center">{favorite.name}</div>
+            <div className="col-2 d-flex justify-content-center align-items-center">
+              <S.Image
+                src={favorite.imageUrl}
+                alt={`${favorite.dogName}의 이미지`}
+              />
+            </div>
+            <S.TitleLink className="col-4 text-center" to={`/adopt/${favorite.boardId}`}>{favorite.title}</S.TitleLink>
+            <div className="col-3 text-center">{favorite.createdDate}</div>
+          </S.BoardRow>
+        ))
       )}
+      </S.ScrollBar>
     </div>
   );
 }

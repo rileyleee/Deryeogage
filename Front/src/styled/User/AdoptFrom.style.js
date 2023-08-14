@@ -1,5 +1,13 @@
-import styled from "styled-components";
+import styled from "styled-components"; // 스타일드 컴포넌트 import
 import { Link } from "react-router-dom";
+
+export const Image = styled.img`
+  width: 3vw;
+  height: 3vw;
+  object-fit: cover; // 이미지 비율 유지
+  border-radius: 10px;
+`;
+
 // 스타일 컴포넌트 정의
 export const MissionButton = styled.button`
   background-color: #4caf50;
@@ -48,6 +56,7 @@ export const MissionContent = styled.div`
 
 export const ConfirmButton = styled.button`
   background-color: #ff5722;
+  width: 12vw;
   color: white;
   border: none;
   cursor: pointer;
@@ -58,6 +67,7 @@ export const ConfirmButton = styled.button`
 
 export const ConfirmedButton = styled.button`
   background-color: #ccc;
+  width: 12vw;
   color: white;
   border: none;
 `;
@@ -83,7 +93,7 @@ export const StyledVideo = styled.video`
 
 export const TitleLink = styled(Link)`
   text-decoration: none; // 밑줄 표시
-  color: #4A2511;
+  color: black;
   &:hover{
     color: #FF914D;
   }
@@ -105,19 +115,68 @@ export const Hr = styled.hr`
 `
 
 export const BoardRow = styled.div`
-  padding: 1vh 2vw;
-  margin: 1vh 2vw;
+  padding: 1vh 0 1vh 2vw;
   &.list {
+    margin: 0 2vw;
     border-top: 2px solid #CCCCCC;
     border-bottom: 2px solid #CCCCCC;
     background-color: #F2F2F2;
   }
   &.item {
     border-bottom: 2px solid #CCCCCC;
+    margin: 0 0 0 2vw;
   }
 `
 
 export const ScrollBar = styled.div`
-  max-height: 500px; /* 원하는 높이 설정 */
+  max-height: 40vh; /* 원하는 높이 설정 */
   overflow-y: auto;  /* 세로 스크롤 표시 */
+  margin-right: 2vw;
+`
+
+export const AdoptComfirm = styled.button`
+  background-color: #ff5722;
+  width: 12vw;
+  color: white;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    background-color: #e64a19;
+  }
+`;
+
+export const AdoptComfirmed = styled.button`
+  background-color: #FF914D;
+  width: 12vw;
+  color: white;
+  border: none;
+  &[disabled] {
+    background-color: #ddd; // 변경할 색상
+    color: white; // 변경할 글자 색상
+    cursor: not-allowed; // 마우스 커서 변경
+  }
+`;
+
+export const ResponsibilityModal = styled.div`
+  /* width: 30vw; */
+  height: 20vh;
+  background-color: white;
+  border-radius: 20px;
+  padding: 2vw;
+`
+
+export const ModalBtn = styled.button`
+  background-color: #FF914D;
+  border: none;
+  border-radius: 30px;
+  color: white;
+  padding: 1vh 2vw;
+  margin-top: 1vw;
+`
+
+export const ModalText = styled.div`
+  font-size: 2vw;
+  text-align: center;
+  margin: 1vw;
+
 `

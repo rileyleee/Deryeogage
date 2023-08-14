@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import * as S from "./styled/Footer.style";
 
 // common
 import Header from "./components/Header";
@@ -46,7 +45,6 @@ function App() {
       <div className="container">
         <Router>
           <Header />
-
           <Routes>
             {/* 메인페이지 */}
             <Route path="/" element={<Home />} />
@@ -82,7 +80,7 @@ function App() {
           </Routes>
         </Router>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

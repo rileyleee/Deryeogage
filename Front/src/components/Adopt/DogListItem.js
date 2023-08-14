@@ -36,10 +36,10 @@ function DogListItem({ dog, media }) {
   };
 
   return (
-    <Card style={{ width: "18rem", border: 0 }} onClick={handleClick}>
+    <Card style={{ width: "18rem", border: 0}} onClick={handleClick}>
       {renderMedia(media)}
       <Card.Body>
-        <Card.Title>{dog.title}</Card.Title>
+        <Card.Title style={{ textOverflow: "ellipsis", display:"block", overflow:"hidden", whiteSpace:"nowrap"}}>{dog.title}</Card.Title>
         <Card.Text>이름: {dog.name}</Card.Text>
         <Card.Text>나이: {dog.age}세</Card.Text>
       </Card.Body>

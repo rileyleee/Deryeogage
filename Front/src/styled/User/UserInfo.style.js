@@ -1,8 +1,8 @@
 import styled from "styled-components"; // 추가된 부분
 
 export const ProfileImage = styled.img`
-  width: 10vw;
-  height: 10vw;
+  width: 9vw;
+  height: 9vw;
   border-radius: 50%;
   object-fit: cover;
 `;

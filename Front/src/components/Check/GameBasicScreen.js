@@ -16,19 +16,22 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     const [simulationExistValue, setSimulationExistValue] = useRecoilState(SimulationExistAtom)
     const [hpPercentage, setHpPercentage] = useState(simulationExistValue.health)
     const [requirement, setRequirement] = useState(simulationExistValue.requirement)
-    
+    const Quiz = useRecoilValue(GameQuiz);
+    const [quizCount, setQuizCount] = useState(simulationExistValue.quizNum);
+    const [selectedQuiz, setSelectedQuiz] = useRecoilState(SelectedQuiz);
+    console.log(quizCount)
+    console.log(requirement)
 
       // 산책 횟수 카운트
-    const walking = simulationExistValue.requirement
-    ? simulationExistValue.requirement.substr(2, 1)
-    : 0;
+    let walking = simulationExistValue.requirement ? simulationExistValue.requirement.substr(3, 1) : 0;
+
     useEffect(() => {
         // 처음 로드할 때 localStorage에서 hpPercentage를 가져와서 상태를 설정합니다.
         setRequirement(localStorage.getItem('requirement'));
         setHpPercentage(parseInt(localStorage.getItem('hpPercentage')))
         setCost(parseInt(localStorage.getItem('cost')))
         setQuizCount(localStorage.getItem('quizNum'))
-      }, []);
+      }, [setRequirement, setHpPercentage, setCost, setQuizCount]);
 
       const move = (hp, pay) => {
         setSimulationExistValue(prevState => {
@@ -48,7 +51,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     const setHandleMove = (num) => {
         props.handleMove(num)
         if (num === 7) { // 산책
-            move(15, 1000)
+            move(10, 1000)
             setSimulationExistValue(prevState => ({
                 ...prevState,
                 requirement: (parseInt(simulationExistValue.requirement)+10).toString().padStart(5, '0')
@@ -226,11 +229,6 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
         return () => clearTimeout(timeoutId);  // useEffect의 cleanup 함수에서 setTimeout을 clear함
       }
     }, [nextImage]);
-
-  const Quiz = useRecoilValue(GameQuiz);
-  const [quizCount, setQuizCount] = useState(simulationExistValue.quizNum);
-  const [selectedQuiz, setSelectedQuiz] = useRecoilState(SelectedQuiz);
-  console.log(quizCount)
 
   const showRandomQuiz = (num) => {
     if (quizCount < 5) {

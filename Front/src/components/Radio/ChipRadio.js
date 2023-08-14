@@ -15,7 +15,7 @@ const ChipRadio = ({ chip, setChip }) => {
           checked={chip}
           onChange={handleDogchipChange}
         />
-        등록
+        {" "}등록
       </label>
 
       <label>
@@ -25,7 +25,7 @@ const ChipRadio = ({ chip, setChip }) => {
           checked={!chip}
           onChange={handleDogchipChange}
         />
-        미등록(알 수 없음)
+        {" "}미등록(알 수 없음)
       </label>
     </div>
   );

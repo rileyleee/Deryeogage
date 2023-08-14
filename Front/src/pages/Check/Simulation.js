@@ -43,29 +43,12 @@ function Simulation() {
     console.log(hpPercentage)
     const navigate = useNavigate();
     const [isButtonVisible, setButtonVisible] = useState(false);
+    const StartValue = useRecoilValue(SimulationStartAtom)
+    console.log(StartValue)
 
     useEffect(() => {
       // 처음 로드할 때 localStorage에서 hpPercentage를 가져와서 상태를 설정합니다.
       setHpPercentage(simulationExistValue.health);
-      // setSimulationExistValue(prevState => ({
-      //   ...prevState,
-      //   health: parseInt(localStorage.getItem('hpPercentage')),
-      //   background : localStorage.getItem('background'),
-      //   cost : parseInt(localStorage.getItem('cost')),
-      //   end : localStorage.getItem('end'),
-      //   endCheck : localStorage.getItem('endCheck'),
-      //   endTime : localStorage.getItem('endTime'),
-      //   id : parseInt(localStorage.getItem('id')),
-      //   lastTime : localStorage.getItem('lastTime'),
-      //   petName : localStorage.getItem('petName'),
-      //   petType : localStorage.getItem('petType'),
-      //   quizNum : parseInt(localStorage.getItem('quizNum')),
-      //   requirement : localStorage.getItem('requirement'),
-      //   startTime : localStorage.getItem('startTime'),
-      //   title : localStorage.getItem('title'),
-      //   train : localStorage.getItem('train'),
-      //   user : localStorage.getItem('user')
-      // }));
     }, []);
     console.log(simulationExistValue)
     // 시간 및 hp 계산
@@ -215,9 +198,9 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const sendData = useCallback(async () => {
     try {
       const Token = localStorage.getItem("accessToken");
-      console.log(simulationExistValue)
-      if (Token) { // 로그인 했을 때만
-        const response = await axios.put(
+      
+      if (Token && StartValue !== "Start a new simulation") {
+        await axios.put(
           `${REACT_APP_API_URL}/simulations/save`,
           simulationExistValue,
           {
@@ -226,13 +209,11 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
             }
           }
         );
-        // setSimulationExistValue(response.data);
-        // console.log(simulationExistValue)
       }
     } catch (error) {
       console.error(error);
     }
-  }, [simulationExistValue, setSimulationExistValue, REACT_APP_API_URL]);
+  }, [simulationExistValue, StartValue, REACT_APP_API_URL]);
   
   // 컴포넌트가 마운트 될 때 5초마다 sendData 함수 호출
   useEffect(() => {
