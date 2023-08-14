@@ -106,6 +106,16 @@ function AdoptBoard() {
     checkSurvey();
   }, []);
 
+  function handleDogClick(dog) {
+    if (localStorage.getItem('accessToken')) {  // isLoggedIn은 현재 로그인 상태를 나타냅니다.
+      // 로그인 페이지로 리다이렉트
+      // 예: React Router를 사용하는 경우
+      navigate(`/adopt/${dog.id}`);
+    } else {
+      navigate(`/login`);
+    }
+  }
+
   return (
     <div>
       <S.Smallspacer></S.Smallspacer>

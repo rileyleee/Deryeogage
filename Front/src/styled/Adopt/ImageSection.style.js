@@ -84,10 +84,11 @@ export const FlexContainer = styled.div`
 
 
 
-export const Box = styled.div`
-  flex: 1;
-  margin-right: 1vw;
+export const SamllText = styled.span`
+  font-size: small;
+  color: #ccc;
 `;
+
 export const Button = styled.button`
   border: none;
   background-color: #ff914d;
@@ -105,25 +106,13 @@ export const Button = styled.button`
   cursor: pointer;
 `;
 
-export const Div = styled.div`
-  /* 스타일을 추가하여 간격을 줍니다. */
-  margin: 1vw 0;
-  padding: 1vh;
-  font-size: 2vh;
-`;
-
-
-export const TitleInput = styled.input`
-width: 100%;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-radius: 4px;
-`;
-
 export const VideoPreview = styled.video`
   width: 100px; // Adjust this to your preferred width
   height: 100px; // Adjust this to your preferred height
   object-fit: cover;
   border-radius: 30px;
+`;
+
+export const MediaSection = styled.div`
+margin-top: 1vh;
 `;

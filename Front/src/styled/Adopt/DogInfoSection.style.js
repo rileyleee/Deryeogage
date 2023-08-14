@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const DogInfo = styled.div`
+
   margin: 1vw 0;
   padding: 1vh;
   border: 1px #ff914d solid;
@@ -11,7 +12,7 @@ export const DogInfo = styled.div`
 export const Div = styled.div`
   margin: 1vw 0;
   padding: 1vh;
-  font-size: 2vh;
+
 `;
 
 export const Span = styled.span`

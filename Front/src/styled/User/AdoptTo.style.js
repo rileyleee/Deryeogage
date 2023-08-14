@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 // 스타일 컴포넌트 정의
 export const MissionButton = styled.button`
   background-color: #4caf50;
+  width: 12vw;
   color: white;
-  padding: 10px 20px;
-  margin: 10px;
   border: none;
   cursor: pointer;
   &:hover {
@@ -27,13 +26,14 @@ export const MissionModal = styled.div`
 `;
 
 export const CloseButton = styled.button`
-  background-color: #f44336;
-  color: white;
+  background-color: #D6D6D6;
+  color: black;
   padding: 10px 20px;
   border: none;
   cursor: pointer;
+  border-radius : 10px;
   &:hover {
-    background-color: #da190b;
+    background-color: #ccc;
   }
 `;
 
@@ -44,20 +44,28 @@ export const MissionContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 35vw;
 `;
 
 export const ConfirmButton = styled.button`
   background-color: #ff5722;
+  width: 12vw;
   color: white;
   border: none;
   cursor: pointer;
   &:hover {
     background-color: #e64a19;
   }
+  &[disabled] {
+    background-color: #ddd; // 변경할 색상
+    color: white; // 변경할 글자 색상
+    cursor: not-allowed; // 마우스 커서 변경
+  }
 `;
 
 export const ConfirmedButton = styled.button`
   background-color: #ccc;
+  width: 12vw;
   color: white;
   border: none;
 `;
@@ -83,14 +91,22 @@ export const StyledVideo = styled.video`
 
 export const TitleLink = styled(Link)`
   text-decoration: none; // 밑줄 표시
-  color: #4A2511;
+  color: black;
   &:hover{
     color: #FF914D;
   }
 `
 
 export const ResponsibilityButton = styled.button`
-  // 여기에 필요한 스타일을 적용하세요.
+  border: none;
+  width: 12vw;
+  background-color: #2C6BCA;
+  color: white;
+  &[disabled] {
+    background-color: #ddd; // 변경할 색상
+    color: white; // 변경할 글자 색상
+    cursor: not-allowed; // 마우스 커서 변경
+  }
 `;
 
 export const BoardList = styled.div`
@@ -105,19 +121,27 @@ export const Hr = styled.hr`
 `
 
 export const BoardRow = styled.div`
-  padding: 1vh 2vw;
-  margin: 1vh 2vw;
+  padding: 1vh 0 1vh 2vw;
   &.list {
+    margin: 0 2vw;
     border-top: 2px solid #CCCCCC;
     border-bottom: 2px solid #CCCCCC;
     background-color: #F2F2F2;
   }
   &.item {
     border-bottom: 2px solid #CCCCCC;
+    margin: 0 0 0 2vw;
   }
 `
 
 export const ScrollBar = styled.div`
-  max-height: 500px; /* 원하는 높이 설정 */
+  max-height: 40vh; /* 원하는 높이 설정 */
   overflow-y: auto;  /* 세로 스크롤 표시 */
+  margin-right: 2vw;
+`
+
+export const ModalText = styled.div`
+  font-size: 2vw;
+  text-align: center;
+  margin: 1vw;
 `

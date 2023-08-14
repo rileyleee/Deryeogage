@@ -37,7 +37,7 @@ export default class OpenViduVideoComponent extends Component {
 
 
     render() { // 비디오 엘리먼트 렌더링
-        return <video autoPlay={true} ref={this.videoRef} />;
+        return <video id ="video" autoPlay={true} ref={this.videoRef} />;
         // return (
         //   <video
         //     className="rounded-2xl"

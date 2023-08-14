@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"; // useRef 추가
 import axios from "axios";
+import * as S from "../../styled/User/MissionListItem.style"
 
 function MissionListItem({
   missionNumber,
@@ -11,6 +12,7 @@ function MissionListItem({
   const [previewImage, setPreviewImage] = useState(null);
   const [submissionComplete, setSubmissionComplete] = useState(false); // 추가
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+  console.log(selectedFile)
 
   // 파일 입력창에 대한 참조를 생성
   const fileInputRef = useRef(null);
@@ -69,9 +71,10 @@ function MissionListItem({
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
-
+    console.log(file)
     // 파일을 읽어 미리보기 URL을 생성
     const reader = new FileReader();
+    console.log(reader)
     reader.onloadend = () => {
       setPreviewImage(reader.result);
     };
@@ -104,6 +107,7 @@ function MissionListItem({
       onMissionSuccess();
       fileInputRef.current.value = "";
       const newImageUrl = response.data.newImageUrl;
+      setSelectedFile(null)
       setPreviewImage(newImageUrl);
       setSubmissionComplete(true); // 제출 완료 상태를 true로 설정
       fetchAdopts(); // 화면을 갱신하려면 이 줄을 추가하세요
@@ -146,11 +150,11 @@ function MissionListItem({
   // 나머지 코드는 동일합니다.
 
   return (
-    <div>
-      <div>
-        {localStorage.getItem("nickname")}님, <br />
-        Mission{missionNumber}: {mission.description}
-      </div>
+    <S.MissionBox>
+      <S.MissionTextWrapper>
+        <S.MissionPtag>{localStorage.getItem("nickname")}님, </S.MissionPtag>
+        <S.MissionPtag>{mission.description}</S.MissionPtag>
+      </S.MissionTextWrapper>
       {previewImage && (
         <div>
           <img
@@ -163,8 +167,8 @@ function MissionListItem({
       )}
       <input type="file" onChange={handleFileChange} ref={fileInputRef} />
 
-      <button onClick={handleSubmit}>제출하기</button>
-    </div>
+      <S.MissionSubmit onClick={handleSubmit}>제출하기</S.MissionSubmit>
+    </S.MissionBox>
   );
 }
 
