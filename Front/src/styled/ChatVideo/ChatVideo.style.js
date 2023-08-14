@@ -31,14 +31,13 @@ export const ModalButton = styled.button`
 `;
 
 export const Modal = styled.div`
-  width: ${(props) => (props.modalType === 'reservation' ? '20vw' : '55vw')};
+  width: ${(props) => (props.modalType === 'reservation' ? '20vw' : '80vw')};
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000; // 다른 요소 위에 나타나도록 z-index 설정
   height: 60vh;
-  /* width: 30vw; */
   background-color: white; // 배경색을 흰색으로 설정
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); // 모달에 그림자 효과 추가
   text-align: center;

@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import * as S from "../../styled/Adopt/Precosts.style"
+import * as S from "../../styled/Adopt/Postcosts.style"
 
 function Postcost({ boardId, goToReservation }) {
   const token = localStorage.getItem("accessToken"); // Assuming the token is stored in localStorage

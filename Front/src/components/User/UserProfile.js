@@ -36,34 +36,37 @@ function UserProfile({ data }) {
   };
 
   return (
-    <div>
-      <p>
+    <S.ProfileInfo>
+      <S.ProfileTop>
         <S.ProfileImg
           src={userInfo.profilePic || "/assets/free-icon-user-847969.png"}
           alt="Profile"
         />
-        {userInfo.nickname}
+        <S.ProfileUser >{userInfo.nickname}</S.ProfileUser>
+        <S.Button onClick={handleShowPromiseClick}>입양서약서</S.Button>
+      </S.ProfileTop>
+      <p>
+        입양 수: {userInfo.adoptToCount || 0}건
       </p>
       <p>
-        입양수:{userInfo.adoptToCount} 분양수:{userInfo.adoptFromCount}
+        분양 수: {userInfo.adoptFromCount || 0}건
       </p>
+      <p>사전테스트 점수: {userInfo.preTestScore || "테스트 수행 전"}점</p>
       <p>
         시뮬레이션 칭호:{" "}
-        {userInfo.simulationTitle || "시뮬레이션을 진행하지 않았습니다."}
+        {userInfo.simulationTitle || "칭호 부여 전"}
       </p>
 
-      <p>사전테스트 점수: {userInfo.preTestScore}</p>
-      <button onClick={handleShowPromiseClick}>입양서약서 보기</button>
       {showPromise &&
         (userInfo.preTestPromise ? (
-          <div>
-            <h3>입양서약서:</h3>
+          <S.PromiseBox>
             <p>{userInfo.preTestPromise}</p> {/* 입양서약서 표시 */}
-          </div>
+          </S.PromiseBox>
         ) : (
           <p>입양서약서가 존재하지 않습니다.</p> // 입양서약서가 없는 경우
         ))}
-    </div>
+
+    </S.ProfileInfo>
   );
 }
 
