@@ -27,7 +27,8 @@ export const Notification = styled.div`
  display: flex;
  padding: 10px;  /* 텍스트와 주변 요소와의 간격 */
  flex-direction: column;
- width: 65%;
+ 
+ text-align: left;
 `;
 
 
@@ -66,4 +67,5 @@ export const Media = styled.img`
   display: flex; 
   justify-content: center; 
   align-items: center; 
+  width: 35%;
 `;

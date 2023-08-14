@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Carousel } from "react-bootstrap";
-
+import { Carousel, Container, Row, Col } from "react-bootstrap";
 import * as S from "../../styled/Adopt/AdoptBoardDetail.style";
 import ResultPaw from "./../../components/ResultPaw";
 import ReturnPrecosts from "../../components/Adopt/ReturnPreconsts";
@@ -19,14 +18,14 @@ function AdoptBoardDetail() {
 
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
 
-  const handleProfileMouseOver = (event) => {
-    // 마우스 포인터의 위치를 파악합니다.
-    const x = event.clientX;
-    const y = event.clientY;
+  const toggleProfileModal = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
 
     // 이 위치를 상태로 설정하여 모달의 위치로 사용합니다.
     setModalPosition({ x, y });
-    setShowProfileModal(true);
+    setShowProfileModal(!showProfileModal);
   };
 
   const handleReturnPrecosts = async () => {
@@ -173,7 +172,8 @@ function AdoptBoardDetail() {
     return (
       !!insertedToken &&
       !adoptData.board.writer &&
-      adoptData.board.status === null
+      (adoptData.board.status === null ||
+        adoptData.board.adopter)
     );
   };
 
@@ -214,117 +214,150 @@ function AdoptBoardDetail() {
     }
   };
 
-  // 작성자 정보 모달을 숨기는 함수
-  const handleProfileMouseOut = () => {
-    setShowProfileModal(false);
-  };
   return (
     <S.Container>
-      <S.TitleContainer>
-        <div>{adoptData.board.title}</div>
-        <div
-          onMouseOver={handleProfileMouseOver}
-          onMouseOut={handleProfileMouseOut}
-        >
-          {!isWriter() && ( // <-- 이 줄을 추가하였습니다.
-            <div
-              onMouseOver={handleProfileMouseOver}
-              onMouseOut={handleProfileMouseOut}
-            >
-              작성자: {adoptData.board.userNickname}
-              {showProfileModal && (
-                <S.ProfileModal x={modalPosition.x} y={modalPosition.y}>
-                  <UserProfile data={adoptData.board.userId} />
-                </S.ProfileModal>
+      <S.BoardTitle>{adoptData.board.title}</S.BoardTitle>
+      <Container fluid>
+        <Row>
+          <S.Profile>
+              {!isWriter() && (
+                <>
+                  <span onClick={toggleProfileModal}>작성자: {adoptData.board.userNickname}</span>
+                  <span>작성일시: {adoptData.board.createdDate.split('T')[0]}</span>
+                  {showProfileModal && (
+                    <S.ProfileModal x={modalPosition.x} y={modalPosition.y}>
+                      <UserProfile data={adoptData.board.userId} />
+                    </S.ProfileModal>
+                  )}
+                </>
               )}
-            </div>
-          )}
-          {/* 입양 상태에 따른 메시지 표시 */}
-          {adoptData.board.status === "depart" && (
-            <S.StatusMessage>입양 진행중인 강아지입니다.</S.StatusMessage>
-          )}
-          {adoptData.board.status === "arrive" && (
-            <S.StatusMessage>입양이 완료된 강아지입니다</S.StatusMessage>
-          )}
-        </div>
-      </S.TitleContainer>
-      {!isWriter() && (
-        <S.FavoriteButton onClick={handleFavorite}>
-          {isFavorited ? "찜 해제하기" : "찜하기"}
-        </S.FavoriteButton>
-      )}
-      {isWriter() && (
-        <Link to={`/adopt/chatlist?boardId=${boardId}`}>채팅방 목록보기 {boardId}</Link>
-      )}
-      {canChat() && <S.Button onClick={handleChat}>채팅하기</S.Button>}
-      <S.FlexContainer>
-        <S.Box>
-          {/* 강아지 특성 정보를 표시하는 섹션 */}
-          <ResultPaw title="친화력" selected={adoptData.board.friendly} />
-          <ResultPaw title="활동량" selected={adoptData.board.activity} />
-          <ResultPaw title="의존도" selected={adoptData.board.dependency} />
-          <ResultPaw title="왈왈왈" selected={adoptData.board.bark} />
-          <ResultPaw title="털빠짐" selected={adoptData.board.hair} />
-        </S.Box>
-        <S.Box>
-          <Carousel>
-            {Object.entries(adoptData.images).map(
-              ([fileName, fileUrl], index) => {
-                const isVideo = fileName.endsWith(".mp4");
-                return (
-                  <Carousel.Item key={index}>
-                    <S.Media>
-                      {isVideo ? (
-                        <video controls autoPlay loop muted>
-                          <source src={fileUrl} type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
-                      ) : (
-                        <img src={fileUrl} alt="Dog" />
-                      )}
-                    </S.Media>
-                  </Carousel.Item>
-                );
-              }
+          </S.Profile>
+        </Row>
+      </Container>
+      <S.Total>
+        <Container fluid>
+          <S.TopRow>
+            <Col xs={7}>
+              <S.Status>
+                {/* 입양 상태에 따른 메시지 표시 */}
+                {adoptData.board.status === "depart" && (
+                  <S.StatusMessage>입양 진행 중인 강아지입니다.</S.StatusMessage>
+                )}
+                {adoptData.board.status === "arrive" && (
+                  <S.StatusMessage>입양 완료된 강아지입니다</S.StatusMessage>
+                )}
+              </S.Status>
+            </Col>
+            <Col xs={5}>
+              <S.TopButtons>
+                {!isWriter() && (
+                  <S.Button onClick={handleFavorite}>
+                    {isFavorited ? "찜 해제하기" : "찜하기"}
+                  </S.Button>
+                )}
+
+                {isWriter() && (
+                  <S.Button>
+                    <S.StyledLink to={`/adopt/chatlist?boardId=${boardId}`}>채팅방 목록보기</S.StyledLink>
+                  </S.Button>
+                )}
+                {canChat() && <S.Button onClick={handleChat}>채팅하기</S.Button>}
+              </S.TopButtons>
+            </Col>
+          </S.TopRow>
+        </Container>
+        <Container fluid>
+          <Row>
+            <Col xs={7}>
+              <S.ImageBox>
+                <Carousel>
+                  {Object.entries(adoptData.images).map(
+                    ([fileName, fileUrl], index) => {
+                      const isVideo = fileName.endsWith(".mp4");
+                      return (
+                        <Carousel.Item key={index}>
+                          <S.StyledMedia>
+                            {isVideo ? (
+                              <video controls autoPlay loop muted style={{ width: '720px', height: '500px', objectFit: 'cover' }}>
+                                <source src={fileUrl} type="video/mp4" />
+                              </video>
+                            ) : (
+                              <img src={fileUrl} alt="Dog" />
+                            )}
+                          </S.StyledMedia>
+                        </Carousel.Item>
+                      );
+                    })}
+                </Carousel>
+              </S.ImageBox>
+            </Col>
+            <Col xs={5}>
+              <S.BoardBox>
+                {/* 강아지 기본 정보를 표시하는 섹션 */}
+                <p><S.Span>이 름</S.Span> {adoptData.board.name}</p>
+                <p><S.Span>나 이</S.Span> {adoptData.board.age}세</p>
+                <p><S.Span>지 역</S.Span> {adoptData.board.regionCode}</p>
+                <p><S.Span>성 별</S.Span> {adoptData.board.gender ? "남자" : "여자"}</p>
+                <p><S.Span>견 종</S.Span> {adoptData.board.dogTypeCode}</p>
+                <p>
+                  <S.Span>칩등록 </S.Span> {adoptData.board.chipYn ? "등록" : "미등록(알 수 없음)"}
+                </p>
+              </S.BoardBox>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={4}>
+              <S.PawBox>
+                <S.DogTitle>
+                  {adoptData.board.name} 특성과 성격
+                </S.DogTitle>
+                {/* 강아지 특성 정보를 표시하는 섹션 */}
+                <ResultPaw title="친화력" selected={adoptData.board.friendly} />
+                <ResultPaw title="활동량" selected={adoptData.board.activity} />
+                <ResultPaw title="의존도" selected={adoptData.board.dependency} />
+                <ResultPaw title="왈왈왈" selected={adoptData.board.bark} />
+                <ResultPaw title="털빠짐" selected={adoptData.board.hair} />
+              </S.PawBox>
+            </Col>
+            <Col xs={8}>
+              <Container>
+                <Row>
+                  <S.HealthInfoBox>
+                    <S.DogTitle>건강정보</S.DogTitle>
+                    <div>{adoptData.board.health}</div>
+                  </S.HealthInfoBox>
+                </Row>
+                <Row>
+                  <S.IntroductionBox>
+                    <S.DogTitle>소개</S.DogTitle>
+                    <div>{adoptData.board.introduction}</div>
+                  </S.IntroductionBox>
+                </Row>
+              </Container>
+            </Col>
+          </Row>
+        </Container>
+
+        <Container fluid>
+          <S.TopButtons>
+            {precostsData === null && isWriter() && (
+              <S.Button onClick={handleDeleteClick}>삭제</S.Button>
             )}
-          </Carousel>
-          {/* 강아지 기본 정보를 표시하는 섹션 */}
-          <p>이름 :{adoptData.board.name}</p>
-          <p>나이 :{adoptData.board.age}세</p>
-          <p>지역 :{adoptData.board.regionCode}</p>
-          <p>성별 :{adoptData.board.gender ? "남자" : "여자"}</p>
-          <p>견종 :{adoptData.board.dogTypeCode}</p>
-          <p>
-            칩 등록 여부 :
-            {adoptData.board.chipYn ? "등록" : "미등록(알 수 없음)"}
-          </p>
-        </S.Box>
-      </S.FlexContainer>
-      <S.HealthInfoBox>
-        <S.Span>건강정보</S.Span>
-        <div>{adoptData.board.health}</div>
-      </S.HealthInfoBox>
-      <S.IntroductionBox>
-        <S.Span>소개</S.Span>
-        <div>{adoptData.board.introduction}</div>
-      </S.IntroductionBox>
-
-      {precostsData === null && isWriter() && (
-        <S.Button onClick={handleDeleteClick}>삭제</S.Button>
-      )}
-      {showModal && (
-        <S.ModalContainer>
-          <S.ModalContent>
-            <ReturnPrecosts onReturn={handleReturnPrecosts} />
-          </S.ModalContent>
-        </S.ModalContainer>
-      )}
-
-      {isWriter() && (
-        <Link to={`/adopt/edit/${boardId}`}>
-          <button>수정하기</button>
-        </Link>
-      )}
+            {showModal && (
+              <S.ModalContainer>
+                <S.ModalContent>
+                  <ReturnPrecosts onReturn={handleReturnPrecosts} />
+                </S.ModalContent>
+              </S.ModalContainer>
+            )}
+            {isWriter() && (
+              <S.Button>
+                <S.StyledLink to={`/adopt/edit/${boardId}`}>수정하기</S.StyledLink>
+              </S.Button>
+            )}
+          </S.TopButtons>
+        </Container>
+      </S.Total>
     </S.Container>
   );
 }
