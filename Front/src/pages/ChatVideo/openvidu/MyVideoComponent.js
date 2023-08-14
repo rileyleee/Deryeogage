@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import OpenViduVideoComponent from './OvVideo';
 import ToolbarComponent from './toolbar/ToolbarComponent';
 
-import './UserVideo.css';
+// import './UserVideo.css';
+import './MyVideo.css';
 
 export default class MyVideoComponent extends Component {
 

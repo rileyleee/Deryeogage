@@ -11,8 +11,8 @@
 	float: left; /* 화면의 좌측에 배치 */
 	display: block;
 	border-radius: 10px; /* 모서리 둥글게 */
-    border: 2px solid #000; /* 테두리 추가 */
-    padding: 10px;
+    border: 2px solid #000000; /* 테두리 추가 */
+    padding: 2px;
 
 }
 
@@ -24,9 +24,22 @@
 	margin-bottom: 20px;
 	display: block;
 	border-radius: 10px; /* 모서리 둥글게 */
-    border: 2px solid #d47617; /* 테두리 추가 */
-    padding: 10px;
+    /* border: 2px solid #201306; */
+    /* padding: 4px; */
 }
+
+#other-video-section img{
+	width: 100%;
+	display: block;
+	border-radius: 5px; /* 모서리 둥글게 */
+}
+
+#my-video-section img{
+	width: 100%;
+	display: block;
+	border-radius: 5px; /* 모서리 둥글게 */
+}
+
 
 #stream-container {
 	position: relative;
@@ -41,11 +54,42 @@
 }
 
 
-
-/* 
 #join{
     text-align: center;
+	justify-content: center;
+	height: 50vh;
 }
+
+#video-intro{
+	display: flex;
+	justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; 
+	height: 40vh;
+}
+
+#join-dialog {
+	display: flex; 
+	flex-direction: column;
+    text-align: center; /* 텍스트를 중앙 정렬 */
+	height: 40vh;
+
+	text-align: center;
+	align-items: center; 
+	justify-content: center;
+}
+
+#join-dialog h4 {
+    margin-bottom: 30px; /* 원하는 간격 값을 조절할 수 있습니다. */
+}
+
+#join-dialog .btn-primary {
+    margin-right: 8px; /* 원하는 간격에 맞게 조절 */
+}
+
+#join-dialog .btn-secondary {
+    margin-left: 8px; /* 원하는 간격에 맞게 조절 */
+}
+
 
 /* #join, #session {
     position: absolute;

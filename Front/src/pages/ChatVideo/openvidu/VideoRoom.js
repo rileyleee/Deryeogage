@@ -6,6 +6,7 @@ import UserVideoComponent from './UserVideoComponent';
 import MyVideoComponent from './MyVideoComponent';
 
 import UserModel from './models/user-model';
+import LeaveModal from './LeaveModal';
 // import UserModel from "./openVidu/user-model.js"
 // const localUser = new UserModel()
 //class Room extends Component
@@ -301,9 +302,9 @@ class VideoRoom extends Component {
         this.props.setShowVideoRoom(false); // 세션 종료시 바로 상세페이지로 이동하기 위한 변수
         const mySession = this.state.session;
 
-        // if (mySession) {
+        if (mySession) {
             mySession.disconnect();
-        // }
+        }
 
         console.log("Session : ", mySession.sessionId);
 
@@ -374,7 +375,8 @@ class VideoRoom extends Component {
 
     render() {
         const mySessionId = this.state.mySessionId;
-        const placeholderImage = '/assets/nobody.jpg';
+        const placeholderImage = '/assets/waiting.gif';
+        const myPlaceholderImage = '/assets/nobody.jpg';
         const localUser = this.state.localUser;
         // const myUserName = this.state.myUserName;
 
@@ -398,37 +400,16 @@ class VideoRoom extends Component {
                         {/* <div id="img-div">
                             <img src="resources/images/openvidu_grey_bg_transp_cropped.png" alt="OpenVidu logo" />
                         </div> */}
-                        <div id="join-dialog" className="jumbotron vertical-center">
-                            <h3> 화상채팅에 참여하시겠습니까? </h3>
-                            <form className="form-group" onSubmit={this.joinSession}>
-                                {/* <p>
-                                    <label>Participant: </label>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        id="userName"
-                                        value={myUserName}
-                                        onChange={this.handleChangeUserName}
-                                        required
-                                    />
-                                </p>
-                                <p>
-                                    <label> Session: </label>
-                                    <input
-                                        className="form-control"
-                                        type="text"
-                                        id="sessionId"
-                                        value={mySessionId}
-                                        onChange={this.handleChangeSessionId}
-                                        required
-                                    />
-                                </p> */}
-                                <p className="text-center">
-                                    <input className="btn btn-lg btn-success" name="commit" type="submit" value="참여하기" />
-                                    <button className="btn btn-lg btn-secondary" onClick={this.goBack}>뒤로가기</button>
-
-                                </p>
-                            </form>
+                        <div id="video-intro" className="d-flex justify-content-center align-items-center">
+                            <div id="join-dialog">
+                                <h4>화상채팅에 참여하시겠습니까?</h4>
+                                <form className="form-group d-flex flex-column justify-content-center align-items-center" onSubmit={this.joinSession}>
+                                    <div class="d-grid gap-2 d-md-block">
+                                        <input className="btn btn-lg btn-primary mr-2" name="commit" type="submit" value="참여하기" />
+                                        <button className="btn btn-lg btn-secondary ml-2" onClick={this.goBack}>뒤로가기</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 ) : null}
@@ -437,13 +418,13 @@ class VideoRoom extends Component {
                     <div id="session">
                         <div id="session-header">
                             <div id="header-bar">
-                            <h1 id="session-title">{mySessionId}</h1>
+                            <h1 id="session-title"></h1>
                             <input
                                 className="btn btn-large btn-danger"
                                 type="button"
                                 id="buttonLeaveSession"
                                 onClick={this.leaveSession}
-                                value="방나가기"
+                                value="방 나가기"
                             />
                             </div>
                         </div>
@@ -464,7 +445,7 @@ class VideoRoom extends Component {
                             </div>
                             <div id="my-video-section">
                                 {this.state.mainStreamManager !== undefined ? (
-                                    // <div id="main-video" className="col-md-12">
+                                    // <div id="main-video" className="col-md- 12">
                                     <MyVideoComponent     
                                         streamManager={this.state.mainStreamManager}
                                         sessionId={mySessionId}
@@ -474,7 +455,7 @@ class VideoRoom extends Component {
                                         leaveSession={this.leaveSession}/>
                                     
                                 ) : (
-                                    <img src={placeholderImage} alt="No main video" />
+                                    <img src={myPlaceholderImage} alt="No main video" />
                                 )
                             }
                             </div>
