@@ -48,6 +48,7 @@ function ImageSection({
 
         <S.MediaSection>
           <S.Span>동영상</S.Span>을 등록해주세요.
+          <S.SamllText>(동영상은 선택사항입니다.)</S.SamllText>
           <S.FlexContainer>
             {/* "Add Video" button */}
             <S.ImageContainer>
