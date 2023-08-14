@@ -216,145 +216,148 @@ function AdoptBoardDetail() {
 
   return (
     <S.Container>
+      <S.BoardTitle>{adoptData.board.title}</S.BoardTitle>
       <Container fluid>
-        <S.BoardTitle>{adoptData.board.title}</S.BoardTitle>
+        <Row>
+          <S.Profile>
+              {!isWriter() && (
+                <>
+                  <span onClick={toggleProfileModal}>작성자: {adoptData.board.userNickname}</span>
+                  <span>작성일시: {adoptData.board.createdDate.split('T')[0]}</span>
+                  {showProfileModal && (
+                    <S.ProfileModal x={modalPosition.x} y={modalPosition.y}>
+                      <UserProfile data={adoptData.board.userId} />
+                    </S.ProfileModal>
+                  )}
+                </>
+              )}
+          </S.Profile>
+        </Row>
+      </Container>
+      <S.Total>
+        <Container fluid>
+          <S.TopRow>
+            <Col xs={7}>
+              <S.Status>
+                {/* 입양 상태에 따른 메시지 표시 */}
+                {adoptData.board.status === "depart" && (
+                  <S.StatusMessage>입양 진행 중인 강아지입니다.</S.StatusMessage>
+                )}
+                {adoptData.board.status === "arrive" && (
+                  <S.StatusMessage>입양 완료된 강아지입니다</S.StatusMessage>
+                )}
+              </S.Status>
+            </Col>
+            <Col xs={5}>
+              <S.TopButtons>
+                {!isWriter() && (
+                  <S.Button onClick={handleFavorite}>
+                    {isFavorited ? "찜 해제하기" : "찜하기"}
+                  </S.Button>
+                )}
+
+                {isWriter() && (
+                  <S.Button>
+                    <S.StyledLink to={`/adopt/chatlist?boardId=${boardId}`}>채팅방 목록보기</S.StyledLink>
+                  </S.Button>
+                )}
+                {canChat() && <S.Button onClick={handleChat}>채팅하기</S.Button>}
+              </S.TopButtons>
+            </Col>
+          </S.TopRow>
+        </Container>
         <Container fluid>
           <Row>
-            <S.Profile>
-              <div >
-                {!isWriter() && (
-                  <>
-                    <span onClick={toggleProfileModal}>작성자: {adoptData.board.userNickname}</span>
-                    {showProfileModal && (
-                      <S.ProfileModal x={modalPosition.x} y={modalPosition.y}>
-                        <UserProfile data={adoptData.board.userId} />
-                      </S.ProfileModal>
-                    )}
-                  </>
-                )}
-              </div>
-            </S.Profile>
+            <Col xs={7}>
+              <S.ImageBox>
+                <Carousel>
+                  {Object.entries(adoptData.images).map(
+                    ([fileName, fileUrl], index) => {
+                      const isVideo = fileName.endsWith(".mp4");
+                      return (
+                        <Carousel.Item key={index}>
+                          <S.StyledMedia>
+                            {isVideo ? (
+                              <video controls autoPlay loop muted style={{ width: '720px', height: '500px', objectFit: 'cover' }}>
+                                <source src={fileUrl} type="video/mp4" />
+                              </video>
+                            ) : (
+                              <img src={fileUrl} alt="Dog" />
+                            )}
+                          </S.StyledMedia>
+                        </Carousel.Item>
+                      );
+                    })}
+                </Carousel>
+              </S.ImageBox>
+            </Col>
+            <Col xs={5}>
+              <S.BoardBox>
+                {/* 강아지 기본 정보를 표시하는 섹션 */}
+                <p><S.Span>이 름</S.Span> {adoptData.board.name}</p>
+                <p><S.Span>나 이</S.Span> {adoptData.board.age}세</p>
+                <p><S.Span>지 역</S.Span> {adoptData.board.regionCode}</p>
+                <p><S.Span>성 별</S.Span> {adoptData.board.gender ? "남자" : "여자"}</p>
+                <p><S.Span>견 종</S.Span> {adoptData.board.dogTypeCode}</p>
+                <p>
+                  <S.Span>칩등록 </S.Span> {adoptData.board.chipYn ? "등록" : "미등록(알 수 없음)"}
+                </p>
+              </S.BoardBox>
+            </Col>
           </Row>
           <Row>
-            <div>
-              {/* 입양 상태에 따른 메시지 표시 */}
-              {adoptData.board.status === "depart" && (
-                <S.StatusMessage>입양 진행중인 강아지입니다.</S.StatusMessage>
-              )}
-              {adoptData.board.status === "arrive" && (
-                <S.StatusMessage>입양이 완료된 강아지입니다</S.StatusMessage>
-              )}
-            </div>
+            <Col xs={4}>
+              <S.PawBox>
+                <S.DogTitle>
+                  {adoptData.board.name} 특성과 성격
+                </S.DogTitle>
+                {/* 강아지 특성 정보를 표시하는 섹션 */}
+                <ResultPaw title="친화력" selected={adoptData.board.friendly} />
+                <ResultPaw title="활동량" selected={adoptData.board.activity} />
+                <ResultPaw title="의존도" selected={adoptData.board.dependency} />
+                <ResultPaw title="왈왈왈" selected={adoptData.board.bark} />
+                <ResultPaw title="털빠짐" selected={adoptData.board.hair} />
+              </S.PawBox>
+            </Col>
+            <Col xs={8}>
+              <Container>
+                <Row>
+                  <S.HealthInfoBox>
+                    <S.DogTitle>건강정보</S.DogTitle>
+                    <div>{adoptData.board.health}</div>
+                  </S.HealthInfoBox>
+                </Row>
+                <Row>
+                  <S.IntroductionBox>
+                    <S.DogTitle>소개</S.DogTitle>
+                    <div>{adoptData.board.introduction}</div>
+                  </S.IntroductionBox>
+                </Row>
+              </Container>
+            </Col>
           </Row>
         </Container>
-      </Container>
-      <Container fluid>
-        <S.TopButtons>
-          {!isWriter() && (
-            <S.Button onClick={handleFavorite}>
-              {isFavorited ? "찜 해제하기" : "찜하기"}
-            </S.Button>
-          )}
 
-          {isWriter() && (
-            <S.Button>
-              <S.StyledLink to={`/adopt/chatlist?boardId=${boardId}`}>채팅방 목록보기</S.StyledLink>
-            </S.Button>
-          )}
-          {canChat() && <S.Button onClick={handleChat}>채팅하기</S.Button>}
-        </S.TopButtons>
-      </Container>
-      <Container fluid>
-        <Row>
-          <Col xs={7}>
-            <S.ImageBox>
-              <Carousel>
-                {Object.entries(adoptData.images).map(
-                  ([fileName, fileUrl], index) => {
-                    const isVideo = fileName.endsWith(".mp4");
-                    return (
-                      <Carousel.Item key={index}>
-                        <S.StyledMedia>
-                          {isVideo ? (
-                            <video controls autoPlay loop muted style={{ width: '720px', height: '500px', objectFit: 'cover' }}>
-                              <source src={fileUrl} type="video/mp4" />
-                            </video>
-                          ) : (
-                            <img src={fileUrl} alt="Dog" />
-                          )}
-                        </S.StyledMedia>
-                      </Carousel.Item>
-                    );
-                  })}
-              </Carousel>
-            </S.ImageBox>
-          </Col>
-          <Col xs={5}>
-            <S.BoardBox>
-              {/* 강아지 기본 정보를 표시하는 섹션 */}
-              <p><S.Span>이 름</S.Span> {adoptData.board.name}</p>
-              <p><S.Span>나 이</S.Span> {adoptData.board.age}세</p>
-              <p><S.Span>지 역</S.Span> {adoptData.board.regionCode}</p>
-              <p><S.Span>성 별</S.Span> {adoptData.board.gender ? "남자" : "여자"}</p>
-              <p><S.Span>견 종</S.Span> {adoptData.board.dogTypeCode}</p>
-              <p>
-                <S.Span>칩등록 </S.Span> {adoptData.board.chipYn ? "등록" : "미등록(알 수 없음)"}
-              </p>
-            </S.BoardBox>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={4}>
-            <S.PawBox>
-              <S.DogTitle>
-                {adoptData.board.name} 특성과 성격
-              </S.DogTitle>
-              {/* 강아지 특성 정보를 표시하는 섹션 */}
-              <ResultPaw title="친화력" selected={adoptData.board.friendly} />
-              <ResultPaw title="활동량" selected={adoptData.board.activity} />
-              <ResultPaw title="의존도" selected={adoptData.board.dependency} />
-              <ResultPaw title="왈왈왈" selected={adoptData.board.bark} />
-              <ResultPaw title="털빠짐" selected={adoptData.board.hair} />
-            </S.PawBox>
-          </Col>
-          <Col xs={8}>
-            <Container>
-              <Row>
-                <S.HealthInfoBox>
-                  <S.DogTitle>건강정보</S.DogTitle>
-                  <div>{adoptData.board.health}</div>
-                </S.HealthInfoBox>
-              </Row>
-              <Row>
-                <S.IntroductionBox>
-                  <S.DogTitle>소개</S.DogTitle>
-                  <div>{adoptData.board.introduction}</div>
-                </S.IntroductionBox>
-              </Row>
-            </Container>
-          </Col>
-        </Row>
-      </Container>
-
-      <Container fluid>
-        <S.TopButtons>
-          {precostsData === null && isWriter() && (
-            <S.Button onClick={handleDeleteClick}>삭제</S.Button>
-          )}
-          {showModal && (
-            <S.ModalContainer>
-              <S.ModalContent>
-                <ReturnPrecosts onReturn={handleReturnPrecosts} />
-              </S.ModalContent>
-            </S.ModalContainer>
-          )}
-          {isWriter() && (
-            <S.Button>
-              <S.StyledLink to={`/adopt/edit/${boardId}`}>수정하기</S.StyledLink>
-            </S.Button>
-          )}
-        </S.TopButtons>
-      </Container>
+        <Container fluid>
+          <S.TopButtons>
+            {precostsData === null && isWriter() && (
+              <S.Button onClick={handleDeleteClick}>삭제</S.Button>
+            )}
+            {showModal && (
+              <S.ModalContainer>
+                <S.ModalContent>
+                  <ReturnPrecosts onReturn={handleReturnPrecosts} />
+                </S.ModalContent>
+              </S.ModalContainer>
+            )}
+            {isWriter() && (
+              <S.Button>
+                <S.StyledLink to={`/adopt/edit/${boardId}`}>수정하기</S.StyledLink>
+              </S.Button>
+            )}
+          </S.TopButtons>
+        </Container>
+      </S.Total>
     </S.Container>
   );
 }

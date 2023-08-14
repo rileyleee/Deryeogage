@@ -82,6 +82,30 @@ export const Span = styled.span`
   margin-right: 20px;
 `;
 
+export const Total= styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #FF914D;
+  border-radius: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-top: 7vh;
+  background-color: white;
+`;
+
+export const TopRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center; // 컴포넌트를 중앙에 맞추려면 추가
+`;
+
+
+export const Status = styled.div`
+  display: flex;
+  align-items: flex-end; // 내부 아이템들을 바닥에 붙이기 위함
+  margin-top: 2vh;
+`;
+
 export const TopButtons = styled.div`
   margin-top: 2vh;
   display: flex;
@@ -99,6 +123,17 @@ export const Button = styled.button`
   cursor: pointer;
   margin: 10px;
   border: none;
+`;
+
+export const StatusMessage = styled.div`
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 40px;
+  color: #4A2511; // 원하는 색상을 사용
+  text-align: left;
+  margin: 10px;
+  z-index: 1;
+  font-weight: bold;
 `;
 
 export const StyledLink = styled(BaseLink)`
@@ -170,21 +205,15 @@ export const ProfileModal = styled.div`
   position: absolute;
   top: ${props => props.y}px;
   left: ${props => props.x}px;
-  transform: translate(-75%, 10%);  // X 축과 Y 축 모두 50%만큼 이동
+  transform: translate(-24%, 10%);  // X 축과 Y 축 모두 50%만큼 이동
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 10px;
-  z-index: 1; // 다른 요소 위에 표시
+  z-index: 10; // 다른 요소 위에 표시
   border-radius: 10px;
-  width: 260px;
+  width: 26 0px;
 `;
 
-export const StatusMessage = styled.div`
-  font-size: 18px;
-  color: red; // 원하는 색상을 사용
-  text-align: center;
-  margin: 10px 0; // 상단 및 하단 여백 추가
-`;
 
 export const DogTitle = styled.div`
   font-size: 22px;
@@ -199,14 +228,15 @@ export const BoardTitle = styled.div`
   color: #4A2511; // 원하는 색상을 사용
   text-align: left;
   padding: 10px;
-  margin-top: 40px;
-  border-radius: 10px;
-  border-style: none;
-  background-color: #FFE7BA;
+  margin-top: 70px;
+  border-bottom: 1px solid #ff914d;  
 `;
 
 export const Profile = styled.div`
   cursor: pointer;
   font-size: large;
-  text-align: right;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; // 수직 정렬을 중앙으로 지정 
 `;
+
