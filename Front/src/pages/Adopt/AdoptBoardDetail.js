@@ -21,7 +21,7 @@ function AdoptBoardDetail() {
   const toggleProfileModal = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = rect.left + rect.width / 2;
-    const y = rect.bottom;
+    const y = rect.top + rect.height / 2;
 
     // 이 위치를 상태로 설정하여 모달의 위치로 사용합니다.
     setModalPosition({ x, y });
@@ -221,10 +221,10 @@ function AdoptBoardDetail() {
         <Container fluid>
           <Row>
             <S.Profile>
-              <div onClick={toggleProfileModal}>
+              <div >
                 {!isWriter() && (
                   <>
-                    작성자: {adoptData.board.userNickname}
+                    <span onClick={toggleProfileModal}>작성자: {adoptData.board.userNickname}</span>
                     {showProfileModal && (
                       <S.ProfileModal x={modalPosition.x} y={modalPosition.y}>
                         <UserProfile data={adoptData.board.userId} />
@@ -277,7 +277,7 @@ function AdoptBoardDetail() {
                         <S.StyledMedia>
                           {isVideo ? (
                             <video controls autoPlay loop muted style={{ width: '720px', height: '500px', objectFit: 'cover' }}>
-                              <source src={fileUrl} type="video/mp4" />                              
+                              <source src={fileUrl} type="video/mp4" />
                             </video>
                           ) : (
                             <img src={fileUrl} alt="Dog" />

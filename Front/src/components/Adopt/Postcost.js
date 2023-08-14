@@ -1,7 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import axios from "axios";
-import * as S from "../../styled/Adopt/Precosts.style"
+import * as S from "../../styled/Adopt/Postcosts.style"
 
 function Postcost({ boardId, goToReservation }) {
   const token = localStorage.getItem("accessToken"); // Assuming the token is stored in localStorage
@@ -26,7 +25,7 @@ function Postcost({ boardId, goToReservation }) {
     }
   };
 
-  const modal = (
+  return (
     <S.ModalOverlay>
       <S.ModalContainer onClick={(e) => e.stopPropagation()}>
         <S.Notification>
@@ -53,8 +52,6 @@ function Postcost({ boardId, goToReservation }) {
     //   <button onClick={handlePostCost}>책임비 납부하기</button>
     // </div>
   );
-
-  return ReactDOM.createPortal(modal, document.getElementById("modal-root"));
 }
 
 export default Postcost;

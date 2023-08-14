@@ -170,11 +170,13 @@ export const ProfileModal = styled.div`
   position: absolute;
   top: ${props => props.y}px;
   left: ${props => props.x}px;
-  transform: translateX(55%); 
+  transform: translate(-75%, 10%);  // X 축과 Y 축 모두 50%만큼 이동
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 10px;
   z-index: 1; // 다른 요소 위에 표시
+  border-radius: 10px;
+  width: 260px;
 `;
 
 export const StatusMessage = styled.div`

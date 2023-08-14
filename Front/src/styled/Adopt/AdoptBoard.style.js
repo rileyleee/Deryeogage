@@ -81,6 +81,7 @@ export const Media = styled.div`
 `;
 
 export const StyledPagination = styled.div`
+  padding-top: 20px;
    .pagination {
      display: flex;
      justify-content: center; // 중앙 정렬
@@ -94,7 +95,7 @@ export const StyledPagination = styled.div`
 
    .pagination li a {
      text-decoration: none;
-     color: black;
+     color: #4A2511;
      padding: 8px 16px;
      transition: background-color .3s;
    }
@@ -122,7 +123,7 @@ export const DogStatus = styled.span`
   font-size: 15px;
   position: absolute;   
   color: white;
-  top: 350px;           
+  top: 320px;           
   right: 10px;          
   background-color: #ff914d;
   border-radius: 10px;

@@ -3,7 +3,7 @@ import * as S from "../styled/Footer.style"
 
 function Footer() {
   return (
-      <S.FooterWrapper className='footer my-3'>
+      <S.FooterWrapper>
         <p>© KKOSUNNAE 데려가개</p>
       </S.FooterWrapper>
   );
