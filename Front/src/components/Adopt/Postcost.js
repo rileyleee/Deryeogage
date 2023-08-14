@@ -1,6 +1,6 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import * as S from "../../styled/Adopt/Precosts.style"
 
 function Postcost({ boardId, goToReservation }) {
@@ -26,7 +26,7 @@ function Postcost({ boardId, goToReservation }) {
     }
   };
 
-  return (
+  const modal = (
     <S.ModalOverlay>
       <S.ModalContainer onClick={(e) => e.stopPropagation()}>
         <S.Notification>
@@ -53,6 +53,8 @@ function Postcost({ boardId, goToReservation }) {
     //   <button onClick={handlePostCost}>책임비 납부하기</button>
     // </div>
   );
+
+  return ReactDOM.createPortal(modal, document.getElementById("modal-root"));
 }
 
 export default Postcost;

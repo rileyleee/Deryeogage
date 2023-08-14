@@ -1,11 +1,5 @@
 import styled from "styled-components";
 
-export const ReservationContainer = styled.div`
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-`;
-
 export const SelectedDate = styled.div`
   margin-top: 10px;
   font-size: 16px;

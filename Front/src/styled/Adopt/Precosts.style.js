@@ -38,20 +38,20 @@ export const Title = styled.div`
   font-weight: bold;  // 굵게 작성
 `;
 
-export const MainText = styled.text`
+export const MainText = styled.p`
   font-size: 22px;
   margin-bottom:20px;
   line-height: 2;
 `;
 
 
-export const SubText = styled.text`
+export const SubText = styled.p`
   font-size: 18px;
   line-height: 1.6;
   margin-bottom:20px;
 `;
 
-export const AgreeMentText = styled.text`
+export const AgreeMentText = styled.p`
   font-size: 18px;
   line-height: 1.5;  
   font-weight: bold; 

@@ -18,9 +18,13 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
   console.log("roomId!!!!!!!!!!!!!!!!!!!!!", roomId);
   console.log("startDate", startDate.toISOString().split("T")[0]);
   const handleConfirmClick = () => {
-    setShowPostCost(true);
+    if (reservationScheduled) {
+      // 바로 예약 수정 로직을 처리합니다.
+      handlePostCostClick(); // 이미 작성된 예약/수정 로직을 호출하거나 별도의 수정 로직을 작성합니다.
+    } else {
+      setShowPostCost(true); // Postcost 컴포넌트를 보여줍니다.
+    }
   };
-
   const handlePostCostClick = async () => {
     const token = localStorage.getItem("accessToken");
     const scheduledDateToSend = startDate.toISOString().split("T")[0];
@@ -34,8 +38,13 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
       toUserId: boardInfo.user2,
     };
 
-    const putData = {
+    const putDataForRoom = {
       roomId: parseInt(roomId, 10),
+      scheduledDate: scheduledDateToSend,
+    };
+
+    const putDataForAdopts = {
+      boardId: parseInt(boardId, 10),
       scheduledDate: scheduledDateToSend,
     };
 
@@ -44,22 +53,39 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
       "Content-Type": "application/json",
     };
 
-    const postRequest = axios.post(
-      `${process.env.REACT_APP_API_URL}/adopts`,
-      postData,
-      { headers }
-    );
-    const putRequest = axios.put(
+    const putRequestForRoom = axios.put(
       `${process.env.REACT_APP_API_URL}/chat/room/${roomId}/schedule`,
-      putData,
+      putDataForRoom,
       { headers }
     );
 
+    let requests = [putRequestForRoom];
+
+    // 조건에 따라 /adopts로의 요청을 PUT 또는 POST로 수행
+    if (reservationScheduled) {
+      // 예약이 스케줄된 경우 PUT 요청 수행
+      const putRequestForAdopts = axios.put(
+        `${process.env.REACT_APP_API_URL}/adopts`,
+        putDataForAdopts,
+        { headers }
+      );
+      requests.push(putRequestForAdopts);
+    } else {
+      // 예약이 아직 스케줄되지 않았다면 POST 요청 수행
+      const postRequestForAdopts = axios.post(
+        `${process.env.REACT_APP_API_URL}/adopts`,
+        postData,
+        { headers }
+      );
+      requests.push(postRequestForAdopts);
+    }
+
     try {
-      await Promise.all([postRequest, putRequest]);
-      console.log("Both POST and PUT requests were successful!");
+      await Promise.all(requests);
+      console.log("Requests were successful!");
       setShowPostCost(false);
       closeModal();
+      onReservationComplete();
     } catch (error) {
       console.log(error);
       console.error("Failed to send requests:", error);
@@ -77,7 +103,7 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
       })
       .then((response) => {
         const { boardId, scheduledDate, user1, user2 } = response.data.data;
-
+        console.log("111", response);
         if (scheduledDate) {
           setScheduledDate(scheduledDate);
           setReservationScheduled(true);
@@ -98,7 +124,7 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
   }, [roomId]);
 
   return (
-    <S.ReservationContainer>
+    <>
       {showPostCost ? (
         <Postcost
           roomId={roomId}
@@ -123,11 +149,11 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
             선택한 날짜: {startDate.toLocaleDateString()}
           </S.SelectedDate>
           <S.ConfirmButton onClick={handleConfirmClick}>
-            {reservationScheduled ? "수정하기" : "예약 등록하기"}
+            {reservationScheduled ? "예약 수정하기" : "예약하기"}
           </S.ConfirmButton>
         </>
       )}
-    </S.ReservationContainer>
+    </>
   );
 }
 
