@@ -9,6 +9,13 @@ export const Wrap = styled.div`
 
 export const Span = styled.span`
   margin: 1vw;
+  
+`;
+
+export const Rank = styled.span`
+  margin: 1vw;
+  font-weight: bold;
+  font-size: 1.1rem;
 `;
 
 export const Paws = styled.div`
@@ -26,11 +33,11 @@ export const Paws = styled.div`
 `;
 
 export const StyledPaw = styled(PiPawPrintFill)`
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   
   @media (max-width: 992px) {  // 화면 크기가 768px 이하일 때
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
   }
 `;

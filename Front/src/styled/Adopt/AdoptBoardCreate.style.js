@@ -5,6 +5,7 @@ export const Container = styled.div`
   border-radius: 30px;
   padding: 2vw;
   margin-top: 4vh;
+  margin-bottom: 4vh;
   background-color: white;
 `;
 
@@ -78,10 +79,10 @@ export const DogTextarea = styled.textarea`
   border: 1px #ff914d solid;
   border-radius: 30px;
   width: 100%;
-  height: 10vw;
+  height: 22vh;
   padding: 2%;
   resize: none; /* Prevent textarea resizing */
-  height: 12vh;
+
 
   /* Style for the placeholder text */
   &::placeholder {

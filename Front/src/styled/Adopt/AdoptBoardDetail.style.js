@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Link as BaseLink } from "react-router-dom";
 
 export const Container = styled.div`
-  /* 여기에 Container의 스타일을 적용하세요. */
+  margin-bottom: 4vh;
 `;
 
 export const Media = styled.div`
@@ -128,12 +128,11 @@ export const Button = styled.button`
 export const StatusMessage = styled.div`
   padding: 5px 10px;
   border-radius: 5px;
-  font-size: 40px;
+  font-size: 1.5rem;
   color: #4A2511; // 원하는 색상을 사용
   text-align: left;
   margin: 10px;
   z-index: 1;
-  font-weight: bold;
 `;
 
 export const StyledLink = styled(BaseLink)`
@@ -142,7 +141,7 @@ export const StyledLink = styled(BaseLink)`
 `;
 
 export const PawBox = styled.div`
-  padding: 2vh;
+  padding: 11vh 0;
   border: none;
   border-radius: 30px;
   background-color: #FFF8E4;
@@ -152,33 +151,33 @@ export const PawBox = styled.div`
   flex-direction: column; /* SurveyPaw 컴포넌트들을 수직 방향으로 배치 */
   margin-right: 1vw;
   margin-top:1vh;
-  height: auto;
+
 `;
 
 export const HealthInfoBox = styled.div`
   font-size: 18px;
   line-height: 1.5;
   border: none;
-  padding: 2vh 40px;
+  padding: 3vh 40px;
   background-color: #FFF8E4;
   border-radius: 30px;
-  margin-top:1vh;
   display: flex;
   flex-direction: column; // 수직 방향으로 내용을 정렬합니다.
-  height: 180px;
+  height: 28vh;
+  overflow: auto; // 여기에 추가합니다.
 `;
 
 export const IntroductionBox = styled.div`
   font-size: 18px;
   line-height: 1.5;
   border: none;
-  padding: 2vh 40px;
+  padding: 3vh 40px;
   background-color: #FFF8E4;
   border-radius: 30px;
-  margin-top:3vh;
   display: flex;
   flex-direction: column; // 수직 방향으로 내용을 정렬합니다.
-  height: 180px;
+  height: 28vh;
+  overflow: auto; // 여기에 추가합니다.
 `;
 
 export const ModalContainer = styled.div`
@@ -220,16 +219,17 @@ export const DogTitle = styled.div`
   font-size: 22px;
   color: #FF914D; // 원하는 색상을 사용
   text-align: center;
-  margin: 10px 0; // 상단 및 하단 여백 추가
+  margin: 1vh 0; // 상단 및 하단 여백 추가
 
 `;
 
 export const BoardTitle = styled.div`
   font-size: 30px;
+  font-weight: bold;
   color: #4A2511; // 원하는 색상을 사용
   text-align: left;
   padding: 10px;
-  margin-top: 70px;
+  margin-top: 4vh;
   border-bottom: 1px solid #ff914d;  
 `;
 

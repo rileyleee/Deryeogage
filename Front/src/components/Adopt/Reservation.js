@@ -129,6 +129,8 @@ function Reservation({
       });
   }, [roomId]);
 
+  
+
   return (
     <>
       {showPostCost ? (
@@ -149,6 +151,7 @@ function Reservation({
               onChange={(date) => setStartDate(date)}
               dateFormat="yyyy-MM-dd"
               inline
+              minDate={new Date()} // 오늘의 날짜를 minDate로 설정
             />
           </div>
           <S.SelectedDate>
@@ -164,4 +167,3 @@ function Reservation({
 }
 
 export default Reservation;
-

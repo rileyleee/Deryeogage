@@ -332,7 +332,7 @@ function AdoptBoardCreate() {
       <S.Title>
         {isEditing
           ? "변경사항을 수정해주세요!"
-          : `${localStorage.getItem("nickname")}님의 강아지를 소개해주세요!`}
+          : `${localStorage.getItem("nickname")}님이 보호중인 강아지를 소개해주세요!`}
       </S.Title>
       <form onSubmit={handleSubmit}>
         <S.ContentBox>
