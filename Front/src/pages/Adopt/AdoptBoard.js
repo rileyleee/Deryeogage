@@ -40,6 +40,7 @@ function AdoptBoard() {
 
   const onClick = () => {
     if (!insertedToken) {
+      localStorage.setItem("redirect", "/adopt/create");
       navigate("/login");
     } else {
       navigate("/adopt/create");
@@ -87,12 +88,11 @@ function AdoptBoard() {
   }, []);
 
   function handleDogClick(dog) {
-    if (localStorage.getItem('accessToken')) {  // isLoggedIn은 현재 로그인 상태를 나타냅니다.
-      // 로그인 페이지로 리다이렉트
-      // 예: React Router를 사용하는 경우
-      navigate(`/adopt/${dog.id}`);
+    if (!insertedToken) {
+      localStorage.setItem("redirect", `/adopt/${dog.id}`);
+      navigate("/login");
     } else {
-      navigate(`/login`);
+      navigate(`/adopt/${dog.id}`);
     }
   }
 

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StyledContainer = styled.div`
-  max-height: 90vh; // 원하는 높이로 설정
+  height: 90vh; // 원하는 높이로 설정
   display: flex;
   justify-content: space-between;
 `;
@@ -31,15 +31,15 @@ export const ModalButton = styled.button`
 `;
 
 export const Modal = styled.div`
+  width: ${(props) => (props.modalType === 'reservation' ? '20vw' : '55vw')};
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1000; // 다른 요소 위에 나타나도록 z-index 설정
-  width: 30%; // 모달 창의 너비를 80%로 설정
-  height: 60%; // 모달 창의 높이를 80%로 설정
+  height: 60vh;
+  /* width: 30vw; */
   background-color: white; // 배경색을 흰색으로 설정
-  padding: 20px; // 내부 패딩 추가
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); // 모달에 그림자 효과 추가
   text-align: center;
 `;

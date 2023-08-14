@@ -18,7 +18,11 @@ export const TitleInputWrapper = styled.div`
     position: absolute;
     bottom: 0;
     left: 0;
-    width: ${props => `${Math.max(33, props.valueLength)}%`};  // 1/3로 시작해서 입력 값에 따라 증가
+    width: ${(props) =>
+      `${Math.max(
+        33,
+        props.valueLength
+      )}%`}; // 1/3로 시작해서 입력 값에 따라 증가
     height: 1px;
     background-color: #ff914d;
     transition: width 0.3s;
@@ -45,14 +49,13 @@ export const FlexContainer = styled.div`
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 1vh;
-  
+
   @media (max-width: 768px) {
     flex-direction: column;
   }
 `;
 
 export const Box = styled.div`
-
   flex: 1;
   margin-right: 1vw;
   &:last-child {
@@ -105,12 +108,61 @@ export const Button = styled.button`
 
 export const SamllText = styled.span`
   font-size: small;
-  color: #ccc;
+  color: ${(props) =>
+    props.charCount >= 100
+      ? "rgba(255, 145, 77, 0.5)"
+      : "#ccc"}; // desiredColor를 원하는 색상 값으로 변경하세요.
 `;
 
 export const Title = styled.div`
   font-weight: bold;
   font-size: 1.3rem;
   text-align: center;
+`;
 
+export const Warning = styled.div`
+  color: red;
+  font-size: small;
+`;
+
+export const Tooltip = styled.div`
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 5px; //간격 조절
+
+  &:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+`;
+
+export const TooltipText = styled.span`
+  visibility: hidden;
+  width: 150px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 1vh;
+  border-radius: 6px;
+
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -75px;
+
+  opacity: 0;
+  transition: opacity 0.3s;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
 `;

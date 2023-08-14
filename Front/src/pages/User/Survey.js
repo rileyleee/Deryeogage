@@ -160,7 +160,7 @@ function Survey() {
             강아지를 추천해드려요!
           </p>
           <S.Drag>
-            항목을 <S.Span>드래그</S.Span>하여 순위를 조정하세요 !
+            항목을 <S.Span>드래그</S.Span>하여 중요도 순위를 조정해보세요 !
           </S.Drag>
           {ranking.map((item, index) => (
             <div

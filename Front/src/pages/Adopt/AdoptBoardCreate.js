@@ -191,12 +191,23 @@ function AdoptBoardCreate() {
     const input = e.target.value;
     setDogHealth(input);
     setHealthCharCount(input.length);
+
+    if (input.length >= 300) {
+      setDogHealth(input.slice(0, 299)); // 입력값이 300글자를 초과하면 300글자로 자르기
+    } else {
+      setDogHealth(input);
+    }
   };
 
   const handleIntroductionChange = (e) => {
     const input = e.target.value;
     setDogIntroduction(input);
     setIntroductionCharCount(input.length);
+    if (input.length >= 300) {
+      setDogIntroduction(input.slice(0, 299)); // 입력값이 300글자를 초과하면 300글자로 자르기
+    } else {
+      setDogIntroduction(input);
+    }
   };
 
   // 제목
@@ -308,7 +319,6 @@ function AdoptBoardCreate() {
     }
   };
 
-
   // 글자 길이에 따라 밑줄 길이를 조정하는 함수
   const calculateUnderlineWidth = () => {
     const maxLength = 50; // 예시로 50자를 최대 길이로 설정
@@ -320,17 +330,31 @@ function AdoptBoardCreate() {
   return (
     <S.Container>
       <S.Title>
-
-      {isEditing ? "변경사항을 수정해주세요!" : `${localStorage.getItem('nickname')}님의 강아지를 소개해주세요!`}
+        {isEditing
+          ? "변경사항을 수정해주세요!"
+          : `${localStorage.getItem("nickname")}님의 강아지를 소개해주세요!`}
       </S.Title>
       <form onSubmit={handleSubmit}>
         <S.ContentBox>
           <S.Span>제목</S.Span>을 작성해주세요.
+          <S.Tooltip>
+            ⓘ
+            <S.TooltipText className="tooltiptext">
+              제목은 20자까지 <br /> 작성할 수 있습니다.
+            </S.TooltipText>
+          </S.Tooltip>
           <S.TitleInputWrapper valueLength={calculateUnderlineWidth()}>
             <S.TitleInput
               value={title}
               placeholder="제목을 입력해주세요"
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => {
+                const inputValue = e.target.value;
+                if (inputValue.length > 20) {
+                  setTitle(inputValue.slice(0, 20)); // 입력값이 20자를 초과하면 20자로 자르기
+                } else {
+                  setTitle(inputValue);
+                }
+              }}
             />
           </S.TitleInputWrapper>
         </S.ContentBox>
@@ -382,24 +406,33 @@ function AdoptBoardCreate() {
           </S.Box>
         </S.FlexContainer>
         강아지의 <S.Span>건강정보</S.Span>를 상세하게 작성해주세요.
-        <S.SamllText>
-          {healthCharCount < 100 ? (
-            <p style={{ color: "red" }}>
-              건강정보는 최소 100자 이상 작성해주세요.{" "}
-              <S.SamllText>(글자수: {healthCharCount} / 100)</S.SamllText>
-            </p>
-          ) : null}
+        <S.Tooltip>
+          ⓘ
+          <S.TooltipText className="tooltiptext">
+            건강정보는 <br />
+            100자 이상, <br />
+            300자 이하로 <br />
+            작성해주세요.
+          </S.TooltipText>
+        </S.Tooltip>{" "}
+        <S.SamllText charCount={healthCharCount}>
+          (글자수: {healthCharCount} / 300)
         </S.SamllText>
         <S.DogTextarea value={dogHealth} onChange={handleHealthChange} />
         강아지를 자유롭게 <S.Span>소개</S.Span>해주세요.
-        <S.SamllText>
-          {introductionCharCount < 100 ? (
-            <p style={{ color: "red" }}>
-              소개는 최소 100자 이상 작성해주세요.{" "}
-              <S.SamllText>(글자수: {introductionCharCount} / 100)</S.SamllText>
-            </p>
-          ) : null}
+        <S.Tooltip>
+          ⓘ
+          <S.TooltipText className="tooltiptext">
+            소개는 <br />
+            100자 이상, <br />
+            300자 이하로 <br />
+            작성해주세요.
+          </S.TooltipText>
+        </S.Tooltip>{" "}
+        <S.SamllText charCount={introductionCharCount}>
+          (글자수: {introductionCharCount} / 300)
         </S.SamllText>
+        <S.SamllText></S.SamllText>
         <S.DogTextarea
           value={dogIntroduction}
           onChange={handleIntroductionChange}

@@ -5,7 +5,13 @@ import axios from "axios";
 import Postcost from "./Postcost";
 import * as S from "../../styled/Adopt/Reservation.style";
 
-function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
+function Reservation({
+  roomId,
+  boardId,
+  closeModal,
+  onReservationComplete,
+  changeClass,
+}) {
   const [reservationScheduled, setReservationScheduled] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [scheduledDate, setScheduledDate] = useState(null);
@@ -23,6 +29,7 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
       handlePostCostClick(); // 이미 작성된 예약/수정 로직을 호출하거나 별도의 수정 로직을 작성합니다.
     } else {
       setShowPostCost(true); // Postcost 컴포넌트를 보여줍니다.
+      changeClass("postcost");
     }
   };
   const handlePostCostClick = async () => {
@@ -83,7 +90,6 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
     try {
       await Promise.all(requests);
       console.log("Requests were successful!");
-      setShowPostCost(false);
       closeModal();
       onReservationComplete();
     } catch (error) {
@@ -124,7 +130,7 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
   }, [roomId]);
 
   return (
-    <S.ReservationContainer>
+    <>
       {showPostCost ? (
         <Postcost
           roomId={roomId}
@@ -153,7 +159,7 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
           </S.ConfirmButton>
         </>
       )}
-    </S.ReservationContainer>
+    </>
   );
 }
 
