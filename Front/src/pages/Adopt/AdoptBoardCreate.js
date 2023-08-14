@@ -4,10 +4,8 @@ import axios from "axios";
 import ImageSection from "../../components/Adopt/ImageSection";
 import DogInfoSection from "../../components/Adopt/DogInfoSection";
 import PersonalitySection from "../../components/Adopt/PersonalitySection";
-
-import * as S from "../../styled/Adopt/ImageSection.style";
-
 import Precost from "./../../components/Adopt/Precosts";
+import * as S from "../../styled/Adopt/AdoptBoardCreate.style";
 
 function AdoptBoardCreate() {
   const navigate = useNavigate();
@@ -52,11 +50,7 @@ function AdoptBoardCreate() {
   useEffect(() => {
     if (boardId) {
       axios
-        .get(`${REACT_APP_API_URL}/boards/each/${boardId}`, {
-          headers: {
-            "Access-Control-Allow-Origin": "*"
-          }
-        })
+        .get(`${REACT_APP_API_URL}/boards/each/${boardId}`)
         .then((response) => {
           setIsEditing(true);
           const data = response.data.data;
@@ -85,6 +79,8 @@ function AdoptBoardCreate() {
           setHair(dogData.hair);
           setDogHealth(dogData.health);
           setDogIntroduction(dogData.introduction);
+          setHealthCharCount(dogData.health.length);
+          setIntroductionCharCount(dogData.introduction.length);
           setDogTypeCode(dogData.dogTypeCode);
 
           // 1번 인덱스에서의 이미지와 비디오 URL 처리
@@ -188,11 +184,19 @@ function AdoptBoardCreate() {
   // 강아지 소개, 건강정보 관련 코드
   const [dogHealth, setDogHealth] = useState("");
   const [dogIntroduction, setDogIntroduction] = useState("");
-  const handleHealthChange = (event) => {
-    setDogHealth(event.target.value);
+  const [healthCharCount, setHealthCharCount] = useState(0);
+  const [introductionCharCount, setIntroductionCharCount] = useState(0);
+
+  const handleHealthChange = (e) => {
+    const input = e.target.value;
+    setDogHealth(input);
+    setHealthCharCount(input.length);
   };
-  const handleIntroductionChange = (event) => {
-    setDogIntroduction(event.target.value);
+
+  const handleIntroductionChange = (e) => {
+    const input = e.target.value;
+    setDogIntroduction(input);
+    setIntroductionCharCount(input.length);
   };
 
   // 제목
@@ -201,7 +205,11 @@ function AdoptBoardCreate() {
   // axios 요청 보내기
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    if (healthCharCount < 100 || introductionCharCount < 100) {
+      event.preventDefault(); // 제출 이벤트를 막는다.
+      alert("건강정보와 소개는 각각 최소 100자 이상 작성해주세요."); // 사용자에게 알림 제공
+      return;
+    }
     if (isSubmitting) return;
 
     if (
@@ -230,40 +238,14 @@ function AdoptBoardCreate() {
     });
 
     if (isEditing) {
-      const fetchAndAppend = async (url) => {
-          const response = await fetch(url);
-          const blob = await response.blob();
-  
-          // Convert the blob to a File object
-          const file = new File([blob], "filename.jpg", { type: blob.type });
-          formData.append("multipartFile", file);
-      }
-  
-      // Sequentially process all images (this can be changed to parallel processing if needed)
-      for (let image of selectedImages) {
-          await fetchAndAppend(image);
-      }
-  }
+      const imagesJSON = JSON.stringify(selectedImages);
+      formData.append("multipartFile", imagesJSON);
+    }
 
     // 비디오 파일들 추가
     selectedVideoFiles.forEach((video) => {
       formData.append("multipartFile", video);
     });
-
-    // // 이미지 파일들 추가
-    // selectedImageFiles.forEach((image) => {
-    //   formData.append("multipartFile", image);
-    // });
-
-    // // 이미지 파일들 추가
-    // originalImages.forEach((image) => {
-    //   formData.append("multipartFile", image);
-    // });
-
-    // // 비디오 파일들 추가
-    // selectedVideoFiles.forEach((video) => {
-    //   formData.append("multipartFile", video);
-    // });
 
     // 다른 필드들 추가
     formData.append("friendly", friendly);
@@ -294,7 +276,6 @@ function AdoptBoardCreate() {
           headers: {
             "Content-Type": "multipart/form-data", // 이 부분 추가
             Authorization: `Bearer ${token}`,
-            "Access-Control-Allow-Origin": "*"
           },
         });
         alert("게시글이 수정되었습니다.");
@@ -327,24 +308,43 @@ function AdoptBoardCreate() {
     }
   };
 
+
+  // 글자 길이에 따라 밑줄 길이를 조정하는 함수
+  const calculateUnderlineWidth = () => {
+    const maxLength = 50; // 예시로 50자를 최대 길이로 설정
+    const baseWidth = 10;
+    const increment = (title.length / maxLength) * 55 + baseWidth; // 총 100% 중 67%를 최대 증가량으로 설정
+    return Math.min(increment, 100); // 100%를 넘지 않도록
+  };
+
   return (
-    <>
-      {isEditing ? "게시글 수정하기" : "게시글 작성하기"}
+    <S.Container>
+      <S.Title>
+
+      {isEditing ? "변경사항을 수정해주세요!" : `${localStorage.getItem('nickname')}님의 강아지를 소개해주세요!`}
+      </S.Title>
       <form onSubmit={handleSubmit}>
-        <S.TitleInput
-          value={title}
-          placeholder="제목을 입력해주세요"
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <ImageSection
-          selectedImages={selectedImages}
-          selectedVideos={selectedVideos}
-          handleImageChange={handleImageChange}
-          handleVideoChange={handleVideoChange}
-          handleImageRemove={handleImageRemove}
-          handleVideoRemove={handleVideoRemove} // 이 부분 추가
-          isEditing={isEditing} // 이 부분 추가
-        />
+        <S.ContentBox>
+          <S.Span>제목</S.Span>을 작성해주세요.
+          <S.TitleInputWrapper valueLength={calculateUnderlineWidth()}>
+            <S.TitleInput
+              value={title}
+              placeholder="제목을 입력해주세요"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </S.TitleInputWrapper>
+        </S.ContentBox>
+        <S.ContentBox>
+          <ImageSection
+            selectedImages={selectedImages}
+            selectedVideos={selectedVideos}
+            handleImageChange={handleImageChange}
+            handleVideoChange={handleVideoChange}
+            handleImageRemove={handleImageRemove}
+            handleVideoRemove={handleVideoRemove} // 이 부분 추가
+            isEditing={isEditing} // 이 부분 추가
+          />
+        </S.ContentBox>
         <S.FlexContainer>
           <S.Box>
             <PersonalitySection
@@ -382,8 +382,24 @@ function AdoptBoardCreate() {
           </S.Box>
         </S.FlexContainer>
         강아지의 <S.Span>건강정보</S.Span>를 상세하게 작성해주세요.
+        <S.SamllText>
+          {healthCharCount < 100 ? (
+            <p style={{ color: "red" }}>
+              건강정보는 최소 100자 이상 작성해주세요.{" "}
+              <S.SamllText>(글자수: {healthCharCount} / 100)</S.SamllText>
+            </p>
+          ) : null}
+        </S.SamllText>
         <S.DogTextarea value={dogHealth} onChange={handleHealthChange} />
         강아지를 자유롭게 <S.Span>소개</S.Span>해주세요.
+        <S.SamllText>
+          {introductionCharCount < 100 ? (
+            <p style={{ color: "red" }}>
+              소개는 최소 100자 이상 작성해주세요.{" "}
+              <S.SamllText>(글자수: {introductionCharCount} / 100)</S.SamllText>
+            </p>
+          ) : null}
+        </S.SamllText>
         <S.DogTextarea
           value={dogIntroduction}
           onChange={handleIntroductionChange}
@@ -393,7 +409,7 @@ function AdoptBoardCreate() {
           <Precost onClose={handlePrecostClose} boardId={currentBoardId} />
         )}{" "}
       </form>
-    </>
+    </S.Container>
   );
 }
 

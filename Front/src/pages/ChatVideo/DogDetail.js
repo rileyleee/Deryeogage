@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import * as S from "../../styled/ChatVideo/DogDetail.style"
 import ResultPaw from "./../../components/ResultPaw";
@@ -7,15 +7,22 @@ import { Carousel } from "react-bootstrap";
 
 function DogDetail(props) {
   const [adoptData, setAdoptData] = useState(null);
-  const { boardId } = props;
   const token = localStorage.getItem("accessToken");
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  
+  // URL에서 boardId를 먼저 찾음
+  let boardIdFromQuery = queryParams.get('boardId');
+  
+  // URL에서 boardId를 찾지 못했으면 props에서 가져옴
+  const effectiveBoardId = boardIdFromQuery || props.boardId;
 
   useEffect(() => {
     const fetchAdoptData = async () => {
       try {
         const response = await axios.get(
-          `${REACT_APP_API_URL}/boards/each/${boardId}`,
+          `${REACT_APP_API_URL}/boards/each/${effectiveBoardId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -32,7 +39,7 @@ function DogDetail(props) {
     };
 
     fetchAdoptData();
-  }, [boardId]);
+  }, []);
 
   return (
     <div>
