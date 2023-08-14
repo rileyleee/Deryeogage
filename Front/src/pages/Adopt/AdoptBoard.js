@@ -9,6 +9,20 @@ import DogListItem from "./../../components/Adopt/DogListItem";
 import Pagination from "react-js-pagination";
 import ReactSelect from 'react-select';
 
+
+function getColorForStatus(status) {
+  switch (status) {
+    case "depart":
+      return "#ff914d";
+    case "arrive":
+      return "grey";
+    case null:
+      return "green";
+    default:
+      return "grey";
+  }
+}
+
 function AdoptBoard() {
   const [activePage, setActivePage] = useState(1);
   const itemsPerPage = 8; // 한 페이지에 표시할 게시글 수
@@ -54,7 +68,7 @@ function AdoptBoard() {
   const randomizedNonadoptedDogs = randomizeArray([...nonadoptedDogs]);
   const combinedDogs = [...randomizedNonadoptedDogs, ...beingadoptedDogs, ...adoptedDogs];
 
-  
+
 
   const insertedToken = localStorage.getItem("accessToken");
 
@@ -124,51 +138,54 @@ function AdoptBoard() {
       {insertedToken && hasSurvey ? <NotSurvey /> : null}
       {!insertedToken ? <NotLogin /> : null}
 
-      <S.Button onClick={onClick}>글 작성</S.Button>
+      {/* <S.Button onClick={onClick}>글 작성</S.Button> */}
 
       <S.BoardContainer>
-        <S.SearchContainer>
-          <S.SelectInputBox>
-            <ReactSelect
-              name="category"
-              value={searchOptions.find(option => option.value === searchCategory)}
-              onChange={option => {
-                setSearchCategory(option.value);
-              }}
-              options={searchOptions}
-              styles={{
-                container: (provided) => ({
-                  ...provided,
-                  width: '120px'
-                }),
-                control: (provided) => ({
-                  ...provided,
-                  border: 'none',        // 경계선 제거
-                  boxShadow: 'none'      // 그림자 제거
-                }),
-                option: (provided, state) => ({
-                  ...provided,
-                  backgroundColor: state.isFocused ? '#FFF7E7' : null, // 호버 시 색상 변경
-                  color: 'black',
-                }),
-              }}
-            />
-            <S.InputBox
-              type="text"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-            />
-          </S.SelectInputBox>
-        </S.SearchContainer>
-
+        <S.TopBar>
+          <S.SearchContainer>
+            <S.SelectInputBox>
+              <ReactSelect
+                name="category"
+                value={searchOptions.find(option => option.value === searchCategory)}
+                onChange={option => {
+                  setSearchCategory(option.value);
+                }}
+                options={searchOptions}
+                styles={{
+                  container: (provided) => ({
+                    ...provided,
+                    width: '120px'
+                  }),
+                  control: (provided) => ({
+                    ...provided,
+                    border: 'none',        // 경계선 제거
+                    boxShadow: 'none'      // 그림자 제거
+                  }),
+                  option: (provided, state) => ({
+                    ...provided,
+                    backgroundColor: state.isFocused ? '#FFF7E7' : null, // 호버 시 색상 변경
+                    color: 'black',
+                  }),
+                }}
+              />
+              <S.InputBox
+                type="text"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+            </S.SelectInputBox>
+          </S.SearchContainer>
+          <S.Button onClick={onClick}>글 작성</S.Button>
+        </S.TopBar>
         <S.BoardGrid>
           {dogsToShow.map((dog) => (
             <S.Media key={dog.id}>
               <DogListItem dog={dog} media={dog.fileList[0]} />
-              <S.DogStatus>{dog.status === "depart" ? "입양 중" :
-                          dog.status === "arrive" ? "입양 완료" :
-                          dog.status === null ? "입양 가능" :
-                          "확인 중"}</S.DogStatus>
+              <S.DogStatus color={getColorForStatus(dog.status)}>
+                {dog.status === "depart" ? "입양 중" :
+                  dog.status === "arrive" ? "입양 완료" :
+                    dog.status === null ? "입양 가능" : "확인 중"}
+              </S.DogStatus>
             </S.Media>
           ))}
         </S.BoardGrid>
