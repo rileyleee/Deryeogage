@@ -78,8 +78,8 @@ export const StyledMedia = styled.img`
 
 export const CaptionContainer = styled.div`
   width: 20%;
-  padding-top: 35px;
-  margin-left: 10px; 
+  padding-top: 4.5vh;
+  margin-left: 20px; 
   margin-right: 10px; 
   height: 300px;
   background-color: #FFF7E7;

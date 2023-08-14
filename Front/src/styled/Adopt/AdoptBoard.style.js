@@ -125,8 +125,8 @@ export const DogStatus = styled.span`
   color: white;
   top: 320px;           
   right: 10px;          
-  background-color: #ff914d;
+  background-color: ${props => props.color || 'green'};
   border-radius: 10px;
   z-index: 10; 
-  padding: 3px 8px;         
+  padding: 3px 8px;
 `;

@@ -9,6 +9,20 @@ import DogListItem from "./../../components/Adopt/DogListItem";
 import Pagination from "react-js-pagination";
 import ReactSelect from 'react-select';
 
+
+function getColorForStatus(status) {
+  switch(status) {
+    case "depart": 
+      return "#ff914d"; 
+    case "arrive": 
+      return "grey"; 
+    case null: 
+      return "green"; 
+    default:
+      return "grey"; 
+  }
+}
+
 function AdoptBoard() {
   const [activePage, setActivePage] = useState(1);
   const itemsPerPage = 8; // 한 페이지에 표시할 게시글 수
@@ -165,10 +179,11 @@ function AdoptBoard() {
           {dogsToShow.map((dog) => (
             <S.Media key={dog.id}>
               <DogListItem dog={dog} media={dog.fileList[0]} />
-              <S.DogStatus>{dog.status === "depart" ? "입양 중" :
-                          dog.status === "arrive" ? "입양 완료" :
-                          dog.status === null ? "입양 가능" :
-                          "확인 중"}</S.DogStatus>
+              <S.DogStatus color={getColorForStatus(dog.status)}>
+  {dog.status === "depart" ? "입양 중" :
+   dog.status === "arrive" ? "입양 완료" :
+   dog.status === null ? "입양 가능" : "확인 중"}
+</S.DogStatus>
             </S.Media>
           ))}
         </S.BoardGrid>
