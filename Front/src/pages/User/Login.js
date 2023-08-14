@@ -1,6 +1,6 @@
- // 로그인 페이지 컴포넌트
+// 로그인 페이지 컴포넌트
 import React from "react";
-import * as S from "../../styled/User/Login.style"
+import * as S from "../../styled/User/Login.style";
 
 function Login() {
   const REST_API_KEY = process.env.REACT_APP_REST_API_KEY;
@@ -15,9 +15,12 @@ function Login() {
     <S.LoginContainer>
       <S.LoginBox>
         <S.Title>로그인</S.Title>
-        <p>데려가게에 오신걸 환영합니다!</p>
-        <p>로그인을 하고 더 많은 기능을 이용해보세요!</p>
-        <S.Button onClick={handleKakaoLogin}>카카오로그인</S.Button>
+        <S.Content>
+          <p>데려가게에 오신걸 환영합니다!</p>
+          <p>로그인을 하고 더 많은 기능을 이용해 보세요!</p>
+        </S.Content>
+        
+        <S.Button onClick={handleKakaoLogin} />
       </S.LoginBox>
     </S.LoginContainer>
   );

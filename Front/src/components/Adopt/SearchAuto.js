@@ -119,7 +119,7 @@ function SearchAuto({ region, setRegion, initialValue  }) {
       {/* 추가: 검색된 장소의 정보를 화면에 출력 */}
       <div id="infowindow-content">
         {/* <strong>장소 이름: </strong><span>{placeInfo.name}</span><br /> */}
-        <strong>주소: </strong><span>{placeInfo.address}</span><br />
+        {/* <strong>주소: </strong><span>{placeInfo.address}</span><br /> */}
         {/* <strong>위도: </strong><span>{placeInfo.lat}</span><br />
         <strong>경도: </strong><span>{placeInfo.lng}</span><br /> */}
       </div>

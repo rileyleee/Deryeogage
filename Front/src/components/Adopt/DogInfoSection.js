@@ -52,31 +52,56 @@ function DogInfoSection({
     <S.Div>
       강아지의 <S.Span>기본정보</S.Span>를 작성해주세요.
       <S.DogInfo>
-        <S.P> 
+        <S.P>
           강아지의 <S.Span>이름</S.Span>을 작성해주세요.
+          <S.Tooltip>
+            ⓘ
+            <S.TooltipText className="tooltiptext">
+              이름은 10자까지 <br /> 작성할 수 있습니다.
+            </S.TooltipText>
+          </S.Tooltip>
         </S.P>
-        <input
+        <S.StyledInput
           type="text"
           name="name"
           placeholder="이름"
           value={dogName}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => {
+            const inputValue = e.target.value;
+            if (inputValue.length > 10) {
+              setName(inputValue.slice(0, 10)); // 입력값이 10글자를 초과하면 10글자로 자르기
+            } else {
+              setName(inputValue);
+            }
+          }}
         />
+        <br />
 
         <S.P>
           강아지의 <S.Span>나이</S.Span>를 작성해주세요.
+
         </S.P>
         <input
           type="number"
           name="age"
           placeholder="나이"
           value={dogAge}
-          onChange={(e) => setAge(e.target.value)}
+          style={{ textAlign: "right" }} // 오른쪽 정렬
+          min="0"
+          max="25"
+          onChange={(e) => {
+            if (e.target.value > 25) {
+              setAge(25); // 값이 20을 초과하면 20으로 설정
+            } else {
+              setAge(e.target.value);
+            }
+          }}
         />
+
         <S.P>
           강아지의 <S.Span>견종</S.Span>을 선택해주세요.
         </S.P>
-        <select
+        <S.StyledSelect
           onChange={(e) => handleDogTypeCodeChange(e.target.value)}
           value={dogTypeCode}
         >
@@ -111,10 +136,10 @@ function DogInfoSection({
           <option value="독일 셰퍼드">독일 셰퍼드</option>
           <option value="불마스티프">불마스티프</option>
           <option value="롯트와일러">롯트와일러</option>
-        </select>
+        </S.StyledSelect>
 
         <S.P>
-          현재 강아지가 살고있는 <S.Span>지역</S.Span>을 작성해주세요.
+          현재 강아지가 살고있는 <S.Span>지역</S.Span>을 검색한 후 선택해주세요.
         </S.P>
         <SearchAuto
           region={dogRegion}

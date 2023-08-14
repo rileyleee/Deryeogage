@@ -8,7 +8,7 @@ export const StyledContainer = styled.div`
 
 export const StyledChatRoom = styled.div`
   border: 1px solid;
-  width: 50%;
+  width: 35%;
   box-sizing: border-box;
   margin: 10px; // add margin around the box
   padding: 10px; // add padding inside the box
@@ -17,7 +17,7 @@ export const StyledChatRoom = styled.div`
 
 export const StyledDogDetail = styled.div`
   border: 1px solid;
-  width: 50%;
+  width: 65%;
   box-sizing: border-box;
   margin: 10px; // add margin around the box
   padding: 10px; // add padding inside the box

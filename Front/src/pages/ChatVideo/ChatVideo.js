@@ -15,7 +15,7 @@ function ChatVideo() {
   const [showReservationModal, setShowReservationModal] = useState(false);
   const [isReservationScheduled, setIsReservationScheduled] = useState(false);
   const modalRef = useRef();
-
+  console.log("boardId!!!!!!!!!!!!!!!!!!!!!!!", boardId)
   const onReservationComplete = () => {
     setIsReservationScheduled(true);
   };
@@ -25,6 +25,8 @@ function ChatVideo() {
   const nickname = localStorage.getItem("nickname"); // 현재 로그인된 사용자 ID 가져오기
 
   const [showVideoRoom, setShowVideoRoom] = useState(false); //화상 채팅 열기 클릭시 이벤트 처리 위함
+  const [className, setClassName] = useState('reservation')
+  console.log(className)
 
   useEffect(() => {
     // 글 작성자의 ID를 가져옵니다.
@@ -46,9 +48,29 @@ function ChatVideo() {
         console.error(error);
       }
     };
-
-    fetchAuthorId();
-  }, [boardId, userId]); // boardId와 userId가 변경되면 다시 실행
+    // 예약 상태를 확인하는 로직
+    const fetchReservationStatus = async () => {
+      try {
+        const token = localStorage.getItem("accessToken");
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/chat/room/info/${roomId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const scheduledDate = response.data.data.scheduledDate;
+        console.log("!@#!@#!@#!@#!@#!@#!@#!@#!@#!@#!@", response.data.data)
+        if (scheduledDate) {
+          setIsReservationScheduled(true);
+        }
+      } catch (error) {
+        console.error("Failed to get reservation status:", error);
+      }
+    };
+    fetchReservationStatus();
+  }, [roomId, boardId, userId]);
 
   const handleModalClick = (e) => {
     if (modalRef.current && modalRef.current.contains(e.target)) return; // 모달 내부 클릭이면 반환
@@ -62,11 +84,12 @@ function ChatVideo() {
         <>
           <S.ModalBackground onClick={handleModalClick} />{" "}
           {/* 배경 블러 처리 */}
-          <S.Modal>
+          <S.Modal modalType={className}>
             <S.ModalContent ref={modalRef}>
               {" "}
               {/* 모달 내부 참조 추가 */}
-              <Reservation
+              <Reservation 
+                changeClass = {setClassName}
                 roomId={roomId}
                 boardId={boardId}
                 closeModal={() => setShowReservationModal(false)}
@@ -79,7 +102,10 @@ function ChatVideo() {
       )}
       {!isAuthor && ( // 작성자가 아닐 경우에만 버튼 표시
         <>
-          <S.ModalButton onClick={() => setShowReservationModal(true)}>
+          <S.ModalButton onClick={() => {
+            setShowReservationModal(true);
+            setClassName('reservation');
+          }}>
             {isReservationScheduled ? "예약 수정하기" : "예약하기"}
           </S.ModalButton>
         </>

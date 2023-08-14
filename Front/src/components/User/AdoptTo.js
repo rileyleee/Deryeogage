@@ -9,8 +9,11 @@ function AdoptTo() {
   const [showMissionModal, setShowMissionModal] = useState(false);
   const [selectedMissionId, setSelectedMissionId] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [postCost, setPostCost] = useState([])
+  console.log(postCost)
   console.log("=================adopts: ", adopts);
   const nickname = localStorage.getItem('nickname')
+  console.log(selectedMissionId, selectedIndex)
 
   const handleMissionClick = (missionId, index) => {
     setShowMissionModal(true);
@@ -47,7 +50,7 @@ function AdoptTo() {
     }
   };
 
-  const handleResponsibilityFeeReturn = async (boardId) => {
+  const handleResponsibilityFeeReturn = async (boardId, index) => {
     const token = localStorage.getItem("accessToken");
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     try {
@@ -65,6 +68,14 @@ function AdoptTo() {
       const updatedAdopts = [...adopts];
       updatedAdopts[selectedIndex].adoptionStatus = "completed"; // 해당 입양 항목을 완료 상태로 설정
       setAdopts(updatedAdopts);
+      console.log("여까지 오니?")
+      const updatedPostcost = [...postCost];
+      const targetIndex = updatedPostcost.findIndex(item => item.boardId === boardId);
+      console.log(targetIndex)
+      if (targetIndex !== -1) {
+        updatedPostcost[targetIndex].returnYn = true;
+          setPostCost(updatedPostcost);
+      }
     } catch (error) {
       console.error("Failed to return responsibility fee:", error);
     }
@@ -140,16 +151,37 @@ function AdoptTo() {
     fetchAdopts();
   }, []);
 
+  useEffect(() => { // 분양 내역 get
+    const getPreCost = async () => {
+      const token = localStorage.getItem("accessToken");
+      const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
+      try {
+        const response = await axios.get(`${REACT_APP_API_URL}/postcosts`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("입양 내역: ",response);
+        setPostCost(response.data.data)
+      } catch (error) {
+        console.error("An error occurred while fetching the data:", error);
+      }
+    };
+
+    getPreCost();
+  }, []);
+
   const Media = ({ src }) => {
     if (src.endsWith(".mp4")) {
       return (
-        <div className="col-1">
+        <div className="col-2 d-flex justify-content-center align-items-center">
           <S.StyledVideo src={src} controls muted />
         </div>
       );
     }
     return (
-      <div className="col-1">
+      <div className="col-2 d-flex justify-content-center align-items-center">
         <S.StyledImage src={src} alt="board" />
       </div>
     );
@@ -161,7 +193,6 @@ function AdoptTo() {
         <div className="col-2 text-center">대표 이미지</div>
         <div className="col-4 text-center">입양글 제목</div>
         <div className="col-3 text-center">입양 확정 내역</div>
-        {/* <div className="col-2 text-center">입양자</div> */}
         <div className="col-3 text-center">입양 미션</div>
       </S.BoardRow>
       <S.ScrollBar>
@@ -169,34 +200,55 @@ function AdoptTo() {
         <div className="text-center">입양 내역이 없습니다.</div>
       ) : (
         adopts.map((adopt, index) => (
-          <S.BoardRow className="row item" key={index}>
-            <Media className="col-2" src={adopt.imageUrl} />
+          <S.BoardRow className="row item align-items-center" key={index}>
+            <Media src={adopt.imageUrl} />
             <S.TitleLink className="col-4 text-center" to={`/adopt/${adopt.boardId}`}>{adopt.boardInfo?.title}</S.TitleLink>
-            {adopt.toConfirmYn ? ( // toConfirmYn 값에 따라 버튼을 표시
-              <S.ConfirmedButton className="col-3 text-center">입양 확정 완료</S.ConfirmedButton>
-            ) : (
-              <S.ConfirmButton className="col-3 text-center"
+            {/* {adopt.toConfirmYn ? ( // toConfirmYn 값에 따라 버튼을 표시
+            <div className="col-3 d-flex justify-content-center">
+              <S.ConfirmedButton disabled={adopt.toConfirmYn === true}>입양 확정 완료</S.ConfirmedButton>
+            </div>
+            ) : ( */}
+            <div className="col-3 d-flex justify-content-center">
+              <S.ConfirmButton
                 onClick={() => handleConfirmAdoption(adopt.id, index)}
+                disabled={adopt.toConfirmYn}
               >
-                입양 확정하기
+                {adopt.toConfirmYn ? "입양 확정 완료" : "입양 확정하기" }
               </S.ConfirmButton>
-            )}
-            {/* <div className="col-2 text-center">{adopts[0].boardInfo.userNickname}</div>
-            <div className="col-2 text-center">{nickname}</div> */}
+            </div>
+            {/* )} */}
             {adopt.status === "arrive" ?
               (adopt.completedMissions === 4 ? (
+                <div className="col-3 d-flex justify-content-center">
                 <S.ResponsibilityButton className="col-3 text-center"
-                  onClick={() => handleResponsibilityFeeReturn(adopt.boardId)}
+                  data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                  onClick={() => handleResponsibilityFeeReturn(adopt.boardId, index)}
+                  disabled={postCost[index].returnYn}
                 >
-                  책임비 반환하기
+                  {postCost[index].returnYn ? "반환 완료" : "책임비 반환하기"}
                 </S.ResponsibilityButton>
+                </div>
               ) : (
+                <div className="col-3 d-flex justify-content-center">
                 <S.MissionButton className="col-3 text-center"
                   onClick={() => handleMissionClick(adopt.missionId, index)}
                 >
                   입양 미션하기 ({adopt.completedMissions}/4)
                 </S.MissionButton>
+                </div>
               )) : <div className="col-3 text-center">입양 예정</div>}
+              <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div className="modal-dialog modal-sm modal-dialog-centered">
+                <div className="modal-content">
+                  <S.ModalText className="modal-body">
+                    책임비 반환 완료!
+                  </S.ModalText>
+                  <div className="modal-footer d-flex justify-content-center">
+                    <button type="button" style={{backgroundColor:'#FF914D', color: 'white', border : 'none', padding: '1vh 1vw', borderRadius: '30px'}} data-bs-dismiss="modal">확인</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </S.BoardRow>
         ))
       )}
