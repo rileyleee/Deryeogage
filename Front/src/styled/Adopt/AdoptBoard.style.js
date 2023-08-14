@@ -1,5 +1,27 @@
 import styled from "styled-components";
 
+
+
+export const BoardContainer = styled.div`
+  border: 1px solid #FF914D;
+  border-radius: 30px;
+  padding-top: 30px;
+  margin-top: 20px;
+  background-color: white;
+`;
+
+export const TopBar = styled.div`
+  display: flex;
+`;
+
+export const SearchContainer = styled.div`
+  display: flex; 
+  justify-content: space-between; 
+  margin-top: 10px; 
+  margin-bottom: 20px; 
+  justify-content: center;
+`;
+
 export const Button = styled.button`
   border: none;
   background-color: #ff914d;
@@ -14,23 +36,6 @@ export const Button = styled.button`
   width: fit-content;
   cursor: pointer;
 `;
-
-export const BoardContainer = styled.div`
-  border: 1px solid #FF914D;
-  border-radius: 30px;
-  padding-top: 30px;
-  margin-top: 20px;
-  background-color: white;
-`;
-
-export const SearchContainer = styled.div`
-  display: flex; 
-  justify-content: space-between; 
-  margin-top: 10px; 
-  margin-bottom: 20px; 
-  justify-content: center;
-`;
-
 export const SelectInputBox = styled.span`
   width: 500px;
   display: flex; 
@@ -125,8 +130,8 @@ export const DogStatus = styled.span`
   color: white;
   top: 320px;           
   right: 10px;          
-  background-color: #ff914d;
+  background-color: ${props => props.color || 'green'};
   border-radius: 10px;
   z-index: 10; 
-  padding: 3px 8px;         
+  padding: 3px 8px;
 `;
