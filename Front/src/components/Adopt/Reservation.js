@@ -44,7 +44,7 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
     };
 
     const putDataForAdopts = {
-      boardId: boardId,
+      boardId: parseInt(boardId, 10),
       scheduledDate: scheduledDateToSend,
     };
 
@@ -59,22 +59,25 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
       { headers }
     );
 
-    const putRequestForAdopts = axios.put(
-      `${process.env.REACT_APP_API_URL}/adopts`,
-      putDataForAdopts,
-      { headers }
-    );
+    let requests = [putRequestForRoom];
 
-    // 조건적으로 POST 요청 수행
-    let requests = [putRequestForRoom, putRequestForAdopts];
-    if (!reservationScheduled) {
-      // 예약이 아직 스케줄되지 않았다면 POST 요청도 추가
-      const postRequest = axios.post(
+    // 조건에 따라 /adopts로의 요청을 PUT 또는 POST로 수행
+    if (reservationScheduled) {
+      // 예약이 스케줄된 경우 PUT 요청 수행
+      const putRequestForAdopts = axios.put(
+        `${process.env.REACT_APP_API_URL}/adopts`,
+        putDataForAdopts,
+        { headers }
+      );
+      requests.push(putRequestForAdopts);
+    } else {
+      // 예약이 아직 스케줄되지 않았다면 POST 요청 수행
+      const postRequestForAdopts = axios.post(
         `${process.env.REACT_APP_API_URL}/adopts`,
         postData,
         { headers }
       );
-      requests.push(postRequest);
+      requests.push(postRequestForAdopts);
     }
 
     try {
@@ -100,7 +103,7 @@ function Reservation({ roomId, boardId, closeModal, onReservationComplete }) {
       })
       .then((response) => {
         const { boardId, scheduledDate, user1, user2 } = response.data.data;
-        console.log("1111111111111111111111111111111111111111111111111111111111111",response)
+        console.log("111", response);
         if (scheduledDate) {
           setScheduledDate(scheduledDate);
           setReservationScheduled(true);

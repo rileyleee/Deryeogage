@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SurveyPaw from "../../components/SurveyPaw";
-import * as S from "../../styled/User/Survey.style"
+import * as S from "../../styled/User/Survey.style";
 import axios from "axios";
 import Modal from "react-modal"; // import react-modal
+import { Span } from "../../styled/SurveyPaw.style";
 
 Modal.setAppElement("#root");
 
@@ -18,11 +19,10 @@ function Survey() {
   const [hair, setHair] = useState(0);
   const [surveyData, setSurveyData] = useState(null); // surveyData 상태를 추가합니다.
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const token = localStorage.getItem("accessToken");
 
   const titles = ["친화력", "활동량", "의존성", "왈왈왈", "털빠짐"];
-  const egtitles = ['friendly', 'activity', 'dependency', 'bark', 'hair']
+  const egtitles = ["friendly", "activity", "dependency", "bark", "hair"];
   const selectors = [setFriendly, setActivity, setDependency, setBark, setHair];
 
   // axios get 요청
@@ -40,7 +40,7 @@ function Survey() {
           console.log(response.data.data);
           const surveyData = response.data.data;
           setSurveyData(surveyData); // 응답 데이터를 상태로 저장합니다.
-          console.log(surveyData)
+          console.log(surveyData);
           setHasSubmitted(true);
           setRanking(
             surveyData.ranking.split("").map((num) => parseInt(num) - 1)
@@ -141,47 +141,27 @@ function Survey() {
     setRanking(newRanking);
   };
 
-  // 제출결과 토글 모달
-  const toggleResults = () => {
-    setModalIsOpen(!modalIsOpen);
-  };
-
-  const nickname = localStorage.getItem('nickname')
+  const nickname = localStorage.getItem("nickname");
 
   return (
     <S.CenteredDiv>
       <S.Div>
         {/* Button to trigger the modal */}
         {hasSubmitted && (
-          <>
-          <div>{nickname}님은 이미 설문을 제출했습니다.</div>
-          {/* <Button onClick={toggleResults}>
-            {modalIsOpen ? "숨기기" : "제출한 내역 확인하기"}
-          </Button> */}
-          </>
+          <div>
+            {nickname}님은 이미 설문을 제출했습니다.
+          </div>
         )}
 
-        {/* The Modal itself */}
-        <S.StyledModal isOpen={modalIsOpen} onRequestClose={toggleResults}>
-          {/* Add an exit button */}
-          <S.CloseButton onClick={toggleResults}>x</S.CloseButton>
-
-          {hasSubmitted && surveyData && (
-            <div>
-              <h4>제출한 설문 내역</h4>
-              <br />
-              <ul>
-                <p>친화력 : {surveyData.friendly}</p>
-                <p>활동량 : {surveyData.activity}</p>
-                <p>의존성 : {surveyData.dependency}</p>
-                <p>왈왈왈 : {surveyData.bark}</p>
-                <p>털빠짐 : {surveyData.hair}</p>
-              </ul>
-            </div>
-          )}
-        </S.StyledModal>
-
         <S.SurveyContainer>
+          <S.Survey>선호도조사</S.Survey>
+          <p>
+            선호도 조사를 통해 {nickname}님의 생활에 맞는
+            강아지를 추천해드려요!
+          </p>
+          <S.Drag>
+            항목을 <S.Span>드래그</S.Span>하여 순위를 조정하세요 !
+          </S.Drag>
           {ranking.map((item, index) => (
             <div
               key={index}
@@ -194,11 +174,11 @@ function Survey() {
                 title={titles[item]}
                 initial={
                   surveyData ? parseInt(surveyData[`${egtitles[item]}`]) : 0
-                  }
-                  onSelect={(value) => {
-                    selectors[item](value);
-                  }}
-                  />
+                }
+                onSelect={(value) => {
+                  selectors[item](value);
+                }}
+              />
             </div>
           ))}
         </S.SurveyContainer>
