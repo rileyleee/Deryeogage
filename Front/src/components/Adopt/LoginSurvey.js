@@ -20,6 +20,54 @@ function getFileType(url) {
   }
 }
 
+function translateAttribute(attribute) {
+  const translations = {
+    'activity': '활동량',
+    'bark': '왈왈왈',
+    'dependency': '의존성',
+    'friendly': '친화력',
+    'hair': '털빠짐'
+  };
+  return translations[attribute] || attribute;
+}
+
+function parseRanking(ranking) {
+  return ranking.split("").map(Number);
+}
+
+function getSortedAttributes(ranking) {
+  const attributes = ['friendly', 'activity', 'dependency', 'bark', 'hair'];
+  const parsedRanking = parseRanking(ranking);
+
+  return attributes.sort((a, b) => {
+    const indexA = parsedRanking.indexOf(attributes.indexOf(a) + 1);
+    const indexB = parsedRanking.indexOf(attributes.indexOf(b) + 1);
+    return indexA - indexB;
+  });
+}
+
+function renderAttributes(data) {
+
+  if (!data) return null;
+  const sortedAttributes = getSortedAttributes(data.ranking);
+
+  return sortedAttributes.map(attribute => {
+    return (
+      <BoardResultPaw key={attribute} title={translateAttribute(attribute)} selected={data[attribute]} />
+    );
+  });
+}
+
+function renderDogAttributes(dog, userRanking) {
+  const sortedAttributes = getSortedAttributes(userRanking);
+
+  return sortedAttributes.map(attribute => {
+      return (
+          <BoardResultPaw key={attribute} title={translateAttribute(attribute)} selected={dog[attribute]} />
+      );
+  });
+}
+
 function LoginSurvey() {
   const [dogs, setDogs] = useState([]);
   const token = localStorage.getItem("accessToken");
@@ -50,12 +98,10 @@ function LoginSurvey() {
         // 첫 번째 요청의 응답 처리
         if (Array.isArray(boardsResponse.data.data)) {
           setDogs(boardsResponse.data.data);
-          console.log(boardsResponse.data.data);
         }
 
         // 두 번째 요청의 응답 처리
         if (surveysResponse.data.data) {
-          console.log(surveysResponse.data.data);
           const surveyData = surveysResponse.data.data;
           setSurveyData(surveyData);
         }
@@ -103,20 +149,12 @@ function LoginSurvey() {
                       <S.Box>
                         {/* 강아지 특성 정보를 표시하는 섹션 */}
                         {dog.name}의 특성
-                        <BoardResultPaw title="친화력" selected={dog.friendly} />
-                        <BoardResultPaw title="활동량" selected={dog.activity} />
-                        <BoardResultPaw title="의존도" selected={dog.dependency} />
-                        <BoardResultPaw title="왈왈왈" selected={dog.bark} />
-                        <BoardResultPaw title="털빠짐" selected={dog.hair} />
+                        {renderDogAttributes(dog, surveyData.ranking)}
                       </S.Box>
                       <S.Box>
                         {/* 사용자 선호도조사를 표시하는 섹션 */}
                         {localStorage.getItem("nickname")}님의 선호도
-                        <BoardResultPaw title="친화력" selected={surveyData.friendly} />
-                        <BoardResultPaw title="활동량" selected={surveyData.activity} />
-                        <BoardResultPaw title="의존도" selected={surveyData.dependency} />
-                        <BoardResultPaw title="왈왈왈" selected={surveyData.bark} />
-                        <BoardResultPaw title="털빠짐" selected={surveyData.hair} />
+                        {renderAttributes(surveyData)}
                       </S.Box>
                     </S.MediaAndCaptionContainer>
                   </Carousel.Item>
