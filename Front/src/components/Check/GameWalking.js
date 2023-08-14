@@ -15,7 +15,7 @@ function GameWalking(props) { // 자식에서 부모로 데이터 보내기
     useEffect(() => {
       const handleSpacebarRelease = (event) => {
           if (event.code === "Space") {
-              setProgress(prev => (prev < 100 ? prev + 10 : 100)); // 100을 초과하지 않도록 합니다.
+              setProgress(prev => (prev < 100 ? prev + 1 : 100)); // 100을 초과하지 않도록 합니다.
           }
       }
   
