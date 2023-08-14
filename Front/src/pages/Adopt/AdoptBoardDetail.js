@@ -17,16 +17,16 @@ function AdoptBoardDetail() {
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
-  
+
   const [showChatRoomsModal, setShowChatRoomsModal] = useState(false);
 
   const handleShowChatRoomsModal = () => {
     setShowChatRoomsModal(true);
-};
+  };
 
-const handleCloseChatRoomsModal = () => {
+  const handleCloseChatRoomsModal = () => {
     setShowChatRoomsModal(false);
-};
+  };
 
   const toggleProfileModal = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -267,19 +267,26 @@ const handleCloseChatRoomsModal = () => {
                   </S.Button>
                 )}
 
-{isWriter() && (
-  <>
-    <S.Button onClick={handleShowChatRoomsModal}>채팅방 목록보기</S.Button>
-    {showChatRoomsModal && (
-      <S.ModalContainer>
-        <S.ModalContent>
-          <ChatRoomsList boardId={boardId} onClose={handleCloseChatRoomsModal} />
-        </S.ModalContent>
-      </S.ModalContainer>
-    )}
-  </>
-)}
-                {canChat() && <S.Button onClick={handleChat}>채팅하기</S.Button>}
+                {isWriter() && (
+                  <>
+                    <S.Button onClick={handleShowChatRoomsModal}>
+                      채팅방 목록보기
+                    </S.Button>
+                    {showChatRoomsModal && (
+                      <S.ModalContainer>
+                        <S.ModalContent>
+                          <ChatRoomsList
+                            boardId={boardId}
+                            onClose={handleCloseChatRoomsModal}
+                          />
+                        </S.ModalContent>
+                      </S.ModalContainer>
+                    )}
+                  </>
+                )}
+                {canChat() && (
+                  <S.Button onClick={handleChat}>채팅하기</S.Button>
+                )}
               </S.TopButtons>
             </Col>
           </S.TopRow>
@@ -348,7 +355,7 @@ const handleCloseChatRoomsModal = () => {
           </Row>
           <Row>
             <Col xs={4}>
-                <S.DogTitle>{adoptData.board.name} 특성과 성격</S.DogTitle>
+              <S.DogTitle>{adoptData.board.name} 특성과 성격</S.DogTitle>
               <S.PawBox>
                 {/* 강아지 특성 정보를 표시하는 섹션 */}
                 <ResultPaw title="친화력" selected={adoptData.board.friendly} />
@@ -364,13 +371,13 @@ const handleCloseChatRoomsModal = () => {
             <Col xs={8}>
               <Container>
                 <Row>
-                    <S.DogTitle>건강정보</S.DogTitle>
+                  <S.DogTitle>건강정보</S.DogTitle>
                   <S.HealthInfoBox>
                     <div>{adoptData.board.health}</div>
                   </S.HealthInfoBox>
                 </Row>
                 <Row>
-                    <S.DogTitle>소개</S.DogTitle>
+                  <S.DogTitle>소개</S.DogTitle>
                   <S.IntroductionBox>
                     <div>{adoptData.board.introduction}</div>
                   </S.IntroductionBox>

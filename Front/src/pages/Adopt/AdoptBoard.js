@@ -163,7 +163,7 @@ function AdoptBoard() {
 
         <S.BoardGrid>
           {dogsToShow.map((dog) => (
-            <S.Media key={dog.id}>
+            <S.Media key={dog.id} onClick={() => handleDogClick(dog)}>
               <DogListItem dog={dog} media={dog.fileList[0]} />
               <S.DogStatus>{dog.status === "depart" ? "입양 중" :
                           dog.status === "arrive" ? "입양 완료" :
