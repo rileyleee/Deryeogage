@@ -5,7 +5,7 @@ export const BoardGroupWrap = styled.div`
     height: 55vh;
     border: 1px solid #FF914D;
     border-radius: 30px;
-    margin: 1vw 2vw 0 2vw;
+    margin: 0 2vw;
 `
 
 export const BoardBtn = styled.button`

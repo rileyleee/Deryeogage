@@ -10,7 +10,6 @@ import {
 } from "../recoil/SimulationAtom";
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import * as S from "../styled/Home.style"
 
 function Home() {
   const [existValue, setExistValue] = useRecoilState(SimulationExistAtom);
@@ -273,97 +272,167 @@ function Home() {
   localStorage.setItem('lon', state.lon);
 
 
+
+
+
+
+
   return (
-    <S.MainContainer className="row slide">
-      <S.HomeContainer className='page1'>
-        <S.Main>
-        <S.Span>데려가개</S.Span>
-        </S.Main>
-        <S.Text>
-          데려가개는 강아지들의 <S.Span>행복한 미래</S.Span>를 최우선으로 성숙한
+    <MainContainer className="row slide">
+      <HomeContainer className='page1'>
+        <Main>
+        <Span>데려가개</Span>
+        </Main>
+        <Text>
+          데려가개는 강아지들의 <Span>행복한 미래</Span>를 최우선으로 성숙한
           반려문화를 도모합니다.
-        </S.Text>
-        <S.Text>
-          소중한 생명인 강아지와 오랜시간 함께할 <S.Span>인연</S.Span>을 만듭니다.
-        </S.Text>
-      </S.HomeContainer>
-      <S.HomeContainer className='page2'>
-        <S.ContentContainer>
-          <S.Div className='simulation'>
-            <S.TextPtag>시뮬레이션을 통해 가상으로 강아지를 키워보세요!</S.TextPtag>
-            <S.StyledLink
+        </Text>
+        <Text>
+          소중한 생명인 강아지와 오랜시간 함께할 <Span>인연</Span>을 만듭니다.
+        </Text>
+        <ContentContainer>
+          <Div className='simulation'>
+            <p>시뮬레이션을 통해 가상으로 강아지를 키워보세요!</p>
+            <StyledLink
               onClick={(event) => handleLinkClick(event, "/simulations")}
             >
               <PiPawPrintFill /> 시뮬레이션하러 가기
-            </S.StyledLink>
-          </S.Div>
-          <div className='container'>
-            <div className='row'>
-              <S.ColumnContent className='col-6'></S.ColumnContent>
-              <div className='col-6'>
-                <S.VideoContainer>
-                  <S.VideoContent autoPlay muted loop>
-                      <source src="/assets/simulation_video.mp4" type="video/mp4" />
-                  </S.VideoContent>
-                </S.VideoContainer>
-              </div>
-            </div>
-          </div>
-        </S.ContentContainer>
-    </S.HomeContainer>
-    <S.HomeContainer className='page3'>
-    <S.ContentContainer>
-      <S.Div className='test'>
-        <p>
-          입양 전 사전테스트를 통해 강아지를 키울 준비가 되었는지
-          확인해보세요!
-        </p>
-        <S.StyledLink onClick={(event) => handleLinkClick(event, "/checklist")}>
-          <PiPawPrintFill /> 입양 전 사전테스트하러 가기
-        </S.StyledLink>
-      </S.Div>
-          <div className='container'>
-            <div className='row'>
-              <div className='col-6'>
-                <S.VideoContainer>
-                  <S.VideoContent autoPlay muted loop>
-                      <source src="/assets/simulation_video.mp4" type="video/mp4" />
-                  </S.VideoContent>
-                </S.VideoContainer>
-              </div>
-              <S.ColumnContent className='col-6'></S.ColumnContent>
-            </div>
-          </div>
-        </S.ContentContainer>
-    </S.HomeContainer>
-    <S.HomeContainer className='page4'>
-    <S.ContentContainer>
-      <S.Div className='test'>
-        <p>
-          입양 전 사전테스트를 통해 강아지를 키울 준비가 되었는지
-          확인해보세요!
-        </p>
-        <S.StyledLink onClick={(event) => handleLinkClick(event, "/checklist")}>
-          <PiPawPrintFill /> 입양 전 사전테스트하러 가기
-        </S.StyledLink>
-      </S.Div>
-          <div className='container'>
-            <div className='row'>
-              <S.ColumnContent className='col-6'></S.ColumnContent>
-              <div className='col-6'>
-                <S.VideoContainer>
-                  <S.VideoContent autoPlay muted loop>
-                      <source src="/assets/simulation_video.mp4" type="video/mp4" />
-                  </S.VideoContent>
-                </S.VideoContainer>
-              </div>
-            </div>
-          </div>
-        </S.ContentContainer>
-    </S.HomeContainer>
-  </S.MainContainer>
+            </StyledLink>
+          </Div>
+        </ContentContainer>
+        {/* <ImageWrapper>
+          <Image src="assets/main.png" />
+        </ImageWrapper> */}
+      </HomeContainer>
+      <HomeContainer className='row page2'>
+      <Main>
+      <Span>데려가개</Span>
+      </Main>
+      <Text>
+        데려가개는 강아지들의 <Span>행복한 미래</Span>를 최우선으로 성숙한
+        반려문화를 도모합니다. <br />
+      </Text>
+      <Text>
+        소중한 생명인 강아지와 오랜시간 함께할 <Span>인연</Span>을 만듭니다.
+      </Text>
+      <ContentContainer>
+        <Div className='survey'>
+          <p>선호도 조사를 통해 나의 생활에 맞는 강아지를 찾아보세요!</p>
+          <StyledLink onClick={(event) => handleLinkClick(event, "/survey")}>
+            <PiPawPrintFill /> 선호도 조사하러 가기
+          </StyledLink>
+        </Div>
+      </ContentContainer>
+      {/* <ImageWrapper>
+        <Image src="assets/main.png" />
+      </ImageWrapper> */}
+    </HomeContainer>
+    <HomeContainer className='row page3'>
+      <Main>
+      <Span>데려가개</Span>
+      </Main>
+      <Text>
+        데려가개는 강아지들의 <Span>행복한 미래</Span>를 최우선으로 성숙한
+        반려문화를 도모합니다. <br />
+      </Text>
+      <Text>
+        소중한 생명인 강아지와 오랜시간 함께할 <Span>인연</Span>을 만듭니다.
+      </Text>
+      <ContentContainer>
+        <Div className='test'>
+          <p>
+            입양 전 사전테스트를 통해 강아지를 키울 준비가 되었는지
+            확인해보세요!
+          </p>
+          <StyledLink onClick={(event) => handleLinkClick(event, "/checklist")}>
+            <PiPawPrintFill /> 입양 전 사전테스트하러 가기
+          </StyledLink>
+        </Div>
+      </ContentContainer>
+      {/* <ImageWrapper>
+        <Image src="assets/main.png" />
+      </ImageWrapper> */}
+    </HomeContainer>
+  </MainContainer>
   );
 }
 
 export default Home;
 
+const MainContainer = styled.div`
+  &.slide {
+    max-width: 100vw;
+    height: 90vh;
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+  }
+  &.slide::-webkit-scrollbar-thumb {
+  background-color: orange;
+  border-radius: 5px;
+}
+  &.slide::-webkit-scrollbar {
+    /* display: none; */
+    /* background-color: white; */
+    width: 5px;
+  }
+  &.slide::-webkit-scrollbar-track {
+    background-color : white;
+  }
+`
+
+const HomeContainer = styled.div`
+  scroll-snap-align: center;
+  width: 100vw;
+  height: 90vh;
+  padding: 3vw;
+  display: flex; /* Use flexbox to arrange the content */
+  flex-direction: column; /* Arrange items vertically */
+  position: relative; /* Set relative positioning for absolute elements */
+`;
+
+const Span = styled.span`
+  color: rgba(255, 145, 77, 1);
+`;
+
+const Main = styled.div`
+  padding: 3vh 0;
+  font-size: 6vh;
+`;
+
+const Text = styled.div`
+  padding-bottom: 1vh;
+  font-size: 3vh;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column; /* Arrange items vertically */
+  align-items: flex-start;
+  margin-top: 2vh; /* Add spacing between the content and the header */
+`;
+
+const Div = styled.div`
+  margin: 1vh;
+  padding-top: 2vh;
+  font-size: 3vh;
+`;
+
+const ImageWrapper = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 45vw;
+`;
+
+const Image = styled.img`
+  width: 30vw; /* Set the width to a fixed size */
+`;
+
+const StyledLink = styled.a`
+  text-decoration: none;
+  color: rgba(255, 145, 77, 1);
+  margin: 1vw;
+  cursor: pointer; /* Add cursor: pointer style */
+  &:hover {
+    color: #4A2511;
+  }
+`;

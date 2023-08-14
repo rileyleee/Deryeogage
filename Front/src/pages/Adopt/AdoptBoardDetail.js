@@ -6,7 +6,7 @@ import * as S from "../../styled/Adopt/AdoptBoardDetail.style";
 import ResultPaw from "./../../components/ResultPaw";
 import ReturnPrecosts from "../../components/Adopt/ReturnPreconsts";
 import UserProfile from "../../components/User/UserProfile";
-
+import ChatRoomsList from "../../pages/ChatVideo/ChatRoomsList";
 function AdoptBoardDetail() {
   const [precostsData, setPrecostsData] = useState(null);
   const [showProfileModal, setShowProfileModal] = useState(false); // 사용자 프로필 모달 상태를 제어하는 상태 변수
@@ -17,6 +17,16 @@ function AdoptBoardDetail() {
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
+  
+  const [showChatRoomsModal, setShowChatRoomsModal] = useState(false);
+
+  const handleShowChatRoomsModal = () => {
+    setShowChatRoomsModal(true);
+};
+
+const handleCloseChatRoomsModal = () => {
+    setShowChatRoomsModal(false);
+};
 
   const toggleProfileModal = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -256,11 +266,18 @@ function AdoptBoardDetail() {
                   </S.Button>
                 )}
 
-                {isWriter() && (
-                  <S.Button>
-                    <S.StyledLink to={`/adopt/chatlist?boardId=${boardId}`}>채팅방 목록보기</S.StyledLink>
-                  </S.Button>
-                )}
+{isWriter() && (
+  <>
+    <S.Button onClick={handleShowChatRoomsModal}>채팅방 목록보기</S.Button>
+    {showChatRoomsModal && (
+      <S.ModalContainer>
+        <S.ModalContent>
+          <ChatRoomsList boardId={boardId} onClose={handleCloseChatRoomsModal} />
+        </S.ModalContent>
+      </S.ModalContainer>
+    )}
+  </>
+)}
                 {canChat() && <S.Button onClick={handleChat}>채팅하기</S.Button>}
               </S.TopButtons>
             </Col>
