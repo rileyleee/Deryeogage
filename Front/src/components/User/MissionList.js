@@ -72,25 +72,25 @@ function MissionList({
       </S.MissionTitle>
       <S.MissionButton
         onClick={() => handleMissionClick(1)}
-        style={{ backgroundColor: missionCompletion[0] ? "#ccc" : "#FF914D", color: missionCompletion[1] ? "black" : "white" }}
+        style={{ backgroundColor: missionCompletion[0] ? "#ccc" : "#FF914D", color: "white" }}
       >
         1. 건강검진
       </S.MissionButton>
       <S.MissionButton
         onClick={() => handleMissionClick(2)}
-        style={{ backgroundColor: missionCompletion[1] ? "#ccc" : "#FF914D", color: missionCompletion[2] ? "black" : "white" }}
+        style={{ backgroundColor: missionCompletion[1] ? "#ccc" : "#FF914D", color: "white" }}
       >
         2. 산책사진
       </S.MissionButton>
       <S.MissionButton
         onClick={() => handleMissionClick(3)}
-        style={{ backgroundColor: missionCompletion[2] ? "#ccc" : "#FF914D" , color: missionCompletion[3] ? "black" : "white"}}
+        style={{ backgroundColor: missionCompletion[2] ? "#ccc" : "#FF914D" , color: "white"}}
       >
         3. 용품구매
       </S.MissionButton>
       <S.MissionButton
         onClick={() => handleMissionClick(4)}
-        style={{ backgroundColor: missionCompletion[3] ? "#ccc" : "#FF914D", color: missionCompletion[4] ? "black" : "white" }}
+        style={{ backgroundColor: missionCompletion[3] ? "#ccc" : "#FF914D", color: "white" }}
       >
         4. 동물등록
       </S.MissionButton>

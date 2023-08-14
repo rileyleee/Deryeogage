@@ -56,6 +56,11 @@ export const ConfirmButton = styled.button`
   &:hover {
     background-color: #e64a19;
   }
+  &[disabled] {
+    background-color: #ddd; // 변경할 색상
+    color: white; // 변경할 글자 색상
+    cursor: not-allowed; // 마우스 커서 변경
+  }
 `;
 
 export const ConfirmedButton = styled.button`
@@ -97,6 +102,11 @@ export const ResponsibilityButton = styled.button`
   width: 12vw;
   background-color: #2C6BCA;
   color: white;
+  &[disabled] {
+    background-color: #ddd; // 변경할 색상
+    color: white; // 변경할 글자 색상
+    cursor: not-allowed; // 마우스 커서 변경
+  }
 `;
 
 export const BoardList = styled.div`
@@ -128,4 +138,10 @@ export const ScrollBar = styled.div`
   max-height: 40vh; /* 원하는 높이 설정 */
   overflow-y: auto;  /* 세로 스크롤 표시 */
   margin-right: 2vw;
+`
+
+export const ModalText = styled.div`
+  font-size: 2vw;
+  text-align: center;
+  margin: 1vw;
 `

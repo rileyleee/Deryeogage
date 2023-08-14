@@ -152,7 +152,7 @@ export const AdoptComfirmed = styled.button`
   border: none;
   &[disabled] {
     background-color: #ddd; // 변경할 색상
-    color: #aaa; // 변경할 글자 색상
+    color: white; // 변경할 글자 색상
     cursor: not-allowed; // 마우스 커서 변경
   }
 `;

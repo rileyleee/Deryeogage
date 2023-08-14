@@ -215,7 +215,7 @@ function Header() {
     <S.HeaderWrapper className="navbar navbar-expand-lg">
       <div className="container-fluid">
         <a className="navbar-brand" href="/">
-          <img alt="Logo" src="/assets/Logo.png" width="40" />
+          <img alt="Logo" src="/assets/logo.png" height="50vh" />
         </a>
         <button
           className="navbar-toggler"

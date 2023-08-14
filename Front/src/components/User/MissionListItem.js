@@ -12,6 +12,7 @@ function MissionListItem({
   const [previewImage, setPreviewImage] = useState(null);
   const [submissionComplete, setSubmissionComplete] = useState(false); // 추가
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+  console.log(selectedFile)
 
   // 파일 입력창에 대한 참조를 생성
   const fileInputRef = useRef(null);
@@ -70,9 +71,10 @@ function MissionListItem({
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
-
+    console.log(file)
     // 파일을 읽어 미리보기 URL을 생성
     const reader = new FileReader();
+    console.log(reader)
     reader.onloadend = () => {
       setPreviewImage(reader.result);
     };
@@ -105,6 +107,7 @@ function MissionListItem({
       onMissionSuccess();
       fileInputRef.current.value = "";
       const newImageUrl = response.data.newImageUrl;
+      setSelectedFile(null)
       setPreviewImage(newImageUrl);
       setSubmissionComplete(true); // 제출 완료 상태를 true로 설정
       fetchAdopts(); // 화면을 갱신하려면 이 줄을 추가하세요

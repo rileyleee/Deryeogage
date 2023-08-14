@@ -10,6 +10,8 @@ function UserInfo() {
   const [profileData, setProfileData] = useState(null);
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const [userInfo, setUserInfo] = useState([]);
+  const profileImg = userInfo.profilePic || "/assets/default.png";
+  console.log(profileImg)
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -76,9 +78,7 @@ function UserInfo() {
         <div className="container">
           <div className="row">
             <div className="col-4">
-              {userInfo.profilePic && (
-                <S.ProfileImage src={userInfo.profilePic} alt="프로필 이미지" />
-              )}
+                <S.ProfileImage src={profileImg} alt="프로필 이미지" />
             </div>
             <div className="col-8 d-flex flex-column justify-content-between">
               <div className="d-flex justify-content-between">
