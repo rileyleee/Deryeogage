@@ -4,7 +4,6 @@ import axios from "axios";
 import styled, { css, keyframes } from 'styled-components';
 import { InfoContainer } from "./CheckList";
 import 'animate.css/animate.css';
-import 'hover.css/css/hover-min.css';
 
 const breakpoints = {
   xs: '480px',
@@ -244,8 +243,6 @@ function CheckListResult() {
           Authorization: `Bearer ${token}`,
         },
       });
-      localStorage.removeItem("answers");
-      localStorage.removeItem("promise");
       navigate("/checklist"); // 삭제 후 체크리스트 페이지로 이동
     } catch (error) {
       console.error("There was an error!", error);

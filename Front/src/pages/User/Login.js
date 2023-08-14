@@ -17,7 +17,7 @@ function Login() {
         <S.Title>로그인</S.Title>
         <S.Content>
           <p>데려가게에 오신걸 환영합니다!</p>
-          <p>로그인을 하고 더 많은 기능을 이용해보세요!</p>
+          <p>로그인을 하고 더 많은 기능을 이용해 보세요!</p>
         </S.Content>
         
         <S.Button onClick={handleKakaoLogin} />
