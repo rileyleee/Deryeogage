@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import css from 'styled-components';
 import CheckBtn from "../../components/Check/CheckBtn";
 import axios from "axios";
+import 'hover.css/css/hover-min.css';
 
 function CheckList() {
   const scores = {
@@ -148,19 +150,43 @@ export const InfoContainer = styled.div`
   }
 `;
 
+const HoverButton = css`
+    &:hover {
+      background-color: #eb7d39;
+      display: inline-block;
+      vertical-align: middle;
+      -webkit-transform: perspective(1px) translateZ(0);
+      transform: perspective(1px) translateZ(0);
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+      overflow: hidden;
+      -webkit-transition-duration: 0.3s;
+      transition-duration: 0.5s;
+      -webkit-transition-property: color, background-color;
+      transition-property: color, background-color;
+    } 
+  `;
+
 const SubmitButton = styled.button`
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 1.2em;
-  background-color: #fff;
-  color: rgba(255, 145, 77, 1);
-  border: 1px solid rgba(255, 145, 77, 1);
-  border-radius: 30px;
+  padding: 10px;
+  font-size: 1em;
+  background-color: #ff914d;
+  color: white;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
   &:hover {
-    background-color: rgba(255, 145, 77, 1);
-    color: white;
-  }
+      background-color: #eb7d39;
+      display: inline-block;
+      vertical-align: middle;
+      -webkit-transform: perspective(1px) translateZ(0);
+      transform: perspective(1px) translateZ(0);
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+      overflow: hidden;
+      -webkit-transition-duration: 0.3s;
+      transition-duration: 0.5s;
+      -webkit-transition-property: color, background-color;
+      transition-property: color, background-color;
+    } 
 `;
 
 const PledgeContainer = styled.div`
