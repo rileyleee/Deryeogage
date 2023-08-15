@@ -231,47 +231,44 @@ function AdoptBoard() {
         <div>
           <S.BoardContainer>
             <S.TopBar>
-              <S.SearchContainer>
-                <S.SelectInputBox>
-                  <ReactSelect
-                    name="category"
-                    value={searchOptions.find(
-                      (option) => option.value === searchCategory
-                    )}
-                    onChange={(option) => {
-                      setSearchCategory(option.value);
-                      setActivePage(1); // 페이지를 1로 초기화
-                    }}
-                    options={searchOptions}
-                    styles={{
-                      container: (provided) => ({
-                        ...provided,
-                        width: "120px",
-                      }),
-                      control: (provided) => ({
-                        ...provided,
-                        border: "none", // 경계선 제거
-                        boxShadow: "none", // 그림자 제거
-                      }),
-                      option: (provided, state) => ({
-                        ...provided,
-                        backgroundColor: state.isFocused ? "#FFF7E7" : null, // 호버 시 색상 변경
-                        color: "black",
-                      }),
-                    }}
-                  />
-                  <S.InputBox
-                    type="text"
-                    value={searchText}
-                    onChange={(e) => {
-                      setSearchText(e.target.value);
-                      setActivePage(1); // 페이지를 1로 초기화
-                    }}
-                  />
-                </S.SelectInputBox>
+              <S.SelectInputBox>
+                <ReactSelect
+                  name="category"
+                  value={searchOptions.find(
+                    (option) => option.value === searchCategory
+                  )}
+                  onChange={(option) => {
+                    setSearchCategory(option.value);
+                  }}
+                  options={searchOptions}
+                  styles={{
+                    container: (provided) => ({
+                      ...provided,
+                      width: "120px",
+                    }),
+                    control: (provided) => ({
+                      ...provided,
+                      border: "none", // 경계선 제거
+                      boxShadow: "none", // 그림자 제거
+                    }),
+                    option: (provided, state) => ({
+                      ...provided,
+                      backgroundColor: state.isFocused ? "#FFF7E7" : null, // 호버 시 색상 변경
+                      color: "black",
+                    }),
+                  }}
+                />
+                <S.InputBox
+                  type="text"
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                />
+              </S.SelectInputBox>
+
+              <div>
                 <S.RefreshButton onClick={handleRefreshClick}></S.RefreshButton>
-              </S.SearchContainer>
-              <S.Button onClick={onClick}>글 작성</S.Button>
+                <S.Button onClick={onClick}>글 작성</S.Button>
+              </div>
             </S.TopBar>
             <S.BoardGrid>
               {dogsToShow.map((dog) => (
@@ -291,6 +288,7 @@ function AdoptBoard() {
               ))}
             </S.BoardGrid>
           </S.BoardContainer>
+
           <S.StyledPagination>
             <Pagination
               activePage={activePage}
