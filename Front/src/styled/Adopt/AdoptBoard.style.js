@@ -11,35 +11,37 @@ export const BoardContainer = styled.div`
 `;
 
 export const TopBar = styled.div`
+  position: relative;  // TopBar를 relative로 설정
   display: flex;
-`;
-
-export const SearchContainer = styled.div`
-  display: flex; 
-  justify-content: space-between; 
-  margin-top: 10px; 
-  margin-bottom: 20px; 
-  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 5vh 0;
 `;
 
 export const Button = styled.button`
+  position: absolute;
+  top: 50%;  // 상위 요소의 중앙에서 시작
+  right: 0.5vw;  // 화면의 5% 만큼 오른쪽에서 떨어져 시작
+  transform: translateY(-50%);  // 자신의 높이의 50%만큼 위로 올려서 중앙 정렬
   border: none;
   background-color: #ff914d;
-  padding: 0.5vw 1vw;
-  border-radius: 30px;
+  padding: 0.8vw 1vw;
+  border-radius: 20px;
   color: white;
-  margin-top: 30px;
-  left: 96%;
-  transform: translateX(-50%);
-  position: relative;
+  margin-right: 35px;
   display: block;
   width: fit-content;
   cursor: pointer;
 `;
-export const SelectInputBox = styled.span`
+
+export const SelectInputBox = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;          // 상위 요소의 중앙에서 시작
+  transform: translate(-50%, -50%); // 자신의 크기의 절반만큼 이동하여 중앙 정렬
   width: 500px;
   display: flex; 
-  justify-content: space-between; 
+  justify-content: space-between;         
   border-radius: 20px;  
   border: 1px solid #FF914D;
   padding: 5px;
