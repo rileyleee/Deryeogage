@@ -6,7 +6,6 @@ import UserVideoComponent from './UserVideoComponent';
 import MyVideoComponent from './MyVideoComponent';
 
 import UserModel from './models/user-model';
-import LeaveModal from './LeaveModal';
 // import UserModel from "./openVidu/user-model.js"
 // const localUser = new UserModel()
 //class Room extends Component
@@ -81,18 +80,6 @@ class VideoRoom extends Component {
         console.log('Leave session');
     }
 
-    // handleChangeSessionId(e) {
-    //     this.setState({
-    //         mySessionId: e.target.value,
-    //     });
-    // }
-
-    // handleChangeUserName(e) {
-    //     this.setState({
-    //         myUserName: e.target.value,
-    //     });
-    // }
-    
     handleMainVideoStream(stream) {
         if (this.state.mainStreamManager !== stream) {
             this.setState({
@@ -202,7 +189,7 @@ class VideoRoom extends Component {
 
                 console.log("Created Session:",mySession);
 
-                let participantCount = mySession.streamManagers.length
+                // let participantCount = mySession.streamManagers.length
 
                 // --- 3) Specify the actions when events take place in the session ---
 
@@ -238,9 +225,9 @@ class VideoRoom extends Component {
                 this.getToken().then((token) => {
                     // First param is the token got from the OpenVidu deployment. Second param can be retrieved by every user on event
                     // 'streamCreated' (property Stream.connection.data), and will be appended to DOM as the user's nickname
-                    console.log("connectCount:",participantCount)
+                    // console.log("connectCount:",participantCount)
 
-                    if(participantCount<2){
+                    // if(participantCount<2){
                     mySession.connect(token, { clientData: this.state.myUserName })
                         .then(async () => {
 
@@ -281,9 +268,9 @@ class VideoRoom extends Component {
                         .catch((error) => {
                             console.log('There was an error connecting to the session:', error.code, error.message);
                         });
-                    } else{
-                        console.log("잘못된 접근입니다 (The room is full!");
-                    }
+                    // } else{
+                    //     console.log("잘못된 접근입니다 (The room is full!");
+                    // }
                 });
             },
         );
@@ -315,24 +302,21 @@ class VideoRoom extends Component {
             subscribers: [],
             mySessionId: " ",
             myUserName: " ",
-            // mySessionId: 'SessionA',
-            // myUserName: 'Participant' + Math.floor(Math.random() * 100),
-            mainStreamManager: undefined,
+             mainStreamManager: undefined,
             publisher: undefined
         });
 
-
-        // axios.delete(
-        //     `${this.OPENVIDU_SERVER_URL}/openvidu/api/sessions/${mySession.sessionId}"`,
-        //     {
-        //       headers: {
-        //         Authorization:
-        //           "Basic " + btoa("OPENVIDUAPP:" + this.OPENVIDU_SERVER_SECRET),
-        //         "Content-Type": "application/json",
-        //       },
-        //     }
-        //   )
     }
+
+    confirmLeaveSession = () => {
+        if (window.confirm("정말 퇴장하시겠습니까?")) {
+            this.leaveSession();
+            // alert("방에서 나갑니다");
+        } else {
+            // alert("취소합니다.");
+        }
+    };
+
 
     async switchCamera() {
         try {
@@ -379,19 +363,6 @@ class VideoRoom extends Component {
         const myPlaceholderImage = '/assets/nobody.jpg';
         const localUser = this.state.localUser;
         // const myUserName = this.state.myUserName;
-
-        
-        // const { roomID, nickname } = this.props; // roomID와 nickname 값을 props로부터 가져옵니다.
-
-
-        // const Toolbar = (
-        //     <ToolbarComponent
-        //       camStatusChanged={this.camStatusChanged}
-        //       micStatusChanged={this.micStatusChanged}
-        //       switchCamera={this.switchCamera}
-        //       leaveSession={this.leaveSession}
-        //     />
-        //   )
         
         return (
             <div className="container">
@@ -419,13 +390,13 @@ class VideoRoom extends Component {
                         <div id="session-header">
                             <div id="header-bar">
                             <h1 id="session-title"></h1>
-                            <input
-                                className="btn btn-large btn-danger"
-                                type="button"
-                                id="buttonLeaveSession"
-                                onClick={this.leaveSession}
-                                value="방 나가기"
-                            />
+                                <input
+                                    className="btn btn-large btn-danger"
+                                    type="button"
+                                    id="buttonLeaveSession"
+                                    onClick={this.confirmLeaveSession}
+                                    value="방 나가기"
+                                />
                             </div>
                         </div>
                         <div id ="video-room-section"> 

@@ -212,7 +212,7 @@ const handleCloseChatRoomsModal = () => {
         // 채팅 방 생성이 성공적으로 이루어진 경우
         // 채팅 방으로 이동하는 코드 작성
         console.log(response.data);
-        navigate(`/adopt/chatroom/${response.data.id}`, { state: { data } });
+        navigate(`/adopt/chatroom/${response.data.id}?boardId=${boardId}`, { state: { data } });
       } else {
         // 실패한 경우에 대한 처리
         console.log("채팅 방 생성에 실패했습니다.");

@@ -8,6 +8,7 @@ video {
     /* float: left; */
     cursor: pointer;
     border-radius: 5px;
+    display: block; /* 추가 */
 }
 
 .streamcomponent div {
@@ -18,6 +19,7 @@ video {
     color: #777777;
     font-weight: bold;
     border-bottom-right-radius: 4px;
+    
 }
 p{
     margin: 0;

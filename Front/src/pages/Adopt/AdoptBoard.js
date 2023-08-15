@@ -24,11 +24,20 @@ function getColorForStatus(status) {
 }
 
 function AdoptBoard() {
-  const [activePage, setActivePage] = useState(1);
+  // 초기 상태 설정: 세션 스토리지에서 값 가져오기
+  const initialActivePage = Number(sessionStorage.getItem('activePage')) || 1;
+  const initialSearchText = sessionStorage.getItem('searchText') || "";
+  const initialSearchCategory = sessionStorage.getItem('searchCategory') || "title";
+
+  const [activePage, setActivePage] = useState(initialActivePage);
+  const [searchText, setSearchText] = useState(initialSearchText);
+  const [searchCategory, setSearchCategory] = useState(initialSearchCategory);
   const itemsPerPage = 8; // 한 페이지에 표시할 게시글 수
 
+  // 페이지 번호 변경 핸들러
   const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber);
+    sessionStorage.setItem('activePage', pageNumber);
   };
 
   const navigate = useNavigate();
@@ -42,31 +51,30 @@ function AdoptBoard() {
     { value: 'regionCode', label: '지역' },
   ];
 
-  const [searchText, setSearchText] = useState("");
 
-  // 검색 카테고리 상태
-  const [searchCategory, setSearchCategory] = useState("title");
+
+// 검색 카테고리 및 검색 텍스트 변경 핸들러
+useEffect(() => {
+  sessionStorage.setItem('searchCategory', searchCategory);
+  sessionStorage.setItem('searchText', searchText);
+}, [searchCategory, searchText]);
+
+// 데이터 불러오기: 기존 useEffect에서 분리하여 페이지 및 검색 조건에 따라 호출
+useEffect(() => {
+  //fetchDogs();
+  checkSurvey();
+}, [activePage, searchCategory, searchText]);
 
   const filteredDogs = adoptData.filter((dog) => {
     return dog[searchCategory] ? dog[searchCategory].includes(searchText) : true;
   });
 
 
-  // 랜덤 적용
-  const randomizeArray = (arr) => {
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]]; // 순서 섞기
-    }
-    return arr;
-  };
 
   const nonadoptedDogs = filteredDogs.filter(dog => dog.status === null);
   const adoptedDogs = filteredDogs.filter(dog => dog.status === "arrive");
   const beingadoptedDogs = filteredDogs.filter(dog => dog.status === "depart");
-
-  const randomizedNonadoptedDogs = randomizeArray([...nonadoptedDogs]);
-  const combinedDogs = [...randomizedNonadoptedDogs, ...beingadoptedDogs, ...adoptedDogs];
+  const combinedDogs = [...nonadoptedDogs, ...beingadoptedDogs, ...adoptedDogs];
 
 
 
@@ -83,17 +91,54 @@ function AdoptBoard() {
 
   const fetchDogs = async () => {
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+    const REACT_APP_TMAP_KEY = process.env.REACT_APP_TMAP_KEY;
     try {
       const response = await axios.get(`${REACT_APP_API_URL}/boards/list`, {
         params: {
-          page: activePage, // 활성 페이지를 매개변수로 전달합니다
-          per_page: itemsPerPage, // 페이지 당 아이템 수를 매개변수로 전달합니다
+          page: activePage,
+          per_page: itemsPerPage,
         },
       });
-      setAdoptData(response.data.data);
+      //setAdoptData(response.data.data);
+
+
+        //tmap
+      const dogs = response.data.data;
+      // Calculate distance for each dog
+      const dogsWithDistance = await Promise.all(dogs.map(async (dog) => {
+        const distanceResponse = await axios.get(`https://apis.openapi.sk.com/tmap/routes?version=1&format=json&callback=result&appKey=${REACT_APP_TMAP_KEY}`, {
+            params: {
+                startX: localStorage.getItem("lon"), // Starting point (Seoul)
+                startY: localStorage.getItem("lat"),
+                endX: dog.lon, // Dog's lon
+                endY: dog.lat, // Dog's lat
+                reqCoordType: 'WGS84GEO',
+                resCoordType: 'WGS84GEO'
+            },
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        const distance = (distanceResponse.data.features[0].properties.totalDistance/1000).toFixed(2)+
+        "km";
+
+        return { ...dog, distance };
+    }));
+
+    setAdoptData(dogsWithDistance);
+
+    //setAdoptData(response.data.data);
+      // 세션 스토리지에 게시물 데이터 저장
+      sessionStorage.setItem('adoptData', JSON.stringify(dogsWithDistance));
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleRefreshClick = async () => {
+    console.log("2 ",adoptData);
+    await fetchDogs();
   };
 
   const checkSurvey = async () => {
@@ -117,7 +162,15 @@ function AdoptBoard() {
   const dogsToShow = combinedDogs.slice(startIndex, endIndex);
 
   useEffect(() => {
-    fetchDogs();
+    // 세션 스토리지에서 게시물 데이터 확인
+    const storedAdoptData = sessionStorage.getItem('adoptData');
+    
+    if (storedAdoptData) {
+      setAdoptData(JSON.parse(storedAdoptData));
+    } else {
+      fetchDogs();
+    }
+    
     checkSurvey();
   }, []);
 
@@ -180,13 +233,14 @@ function AdoptBoard() {
         </S.TopBar>
         <S.BoardGrid>
           {dogsToShow.map((dog) => (
-            <S.Media key={dog.id}>
+            <S.Media key={dog.id} onClick={() => handleDogClick(dog)}>
               <DogListItem dog={dog} media={dog.fileList[0]} />
               <S.DogStatus color={getColorForStatus(dog.status)}>
                 {dog.status === "depart" ? "입양 중" :
                   dog.status === "arrive" ? "입양 완료" :
                     dog.status === null ? "입양 가능" : "확인 중"}
               </S.DogStatus>
+              <S.DistanceLabel>{dog.distance}</S.DistanceLabel>
             </S.Media>
           ))}
         </S.BoardGrid>
