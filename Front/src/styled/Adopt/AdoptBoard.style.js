@@ -135,3 +135,31 @@ export const DogStatus = styled.span`
   z-index: 10; 
   padding: 3px 8px;
 `;
+
+export const RefreshButton = styled.button`
+  background: url('/assets/chatimg/reload.png') no-repeat center;
+  background-size: cover;  // 이미지를 버튼 크기에 맞게 조정
+  border: none;
+  width: 24px;  // 아이콘 크기에 맞게 조정
+  height: 24px; // 아이콘 크기에 맞게 조정
+  cursor: pointer;
+  margin-left: 5vh; // 좌우 여백을 주어 S.InputBox와의 간격 조정
+`;
+
+export const DistanceLabel = styled.div`
+  position: absolute;
+  top: 0.8vh; // 상단에서부터의 간격입니다. 필요에 따라 조절하세요.
+  right: 4vh; // 오른쪽에서부터의 간격입니다. 필요에 따라 조절하세요.
+  background-color: rgba(0, 0, 0, 0.5); // 배경을 약간 어둡게 해서 텍스트가 잘 보이게 합니다.
+  padding: 0.5vh 1vh; // 내부 간격입니다. 필요에 따라 조절하세요.
+  border-radius: 5px; // 모서리를 둥글게 합니다.
+  color: white; // 텍스트 색상입니다.
+  font-size: 1.5vh;
+  width: 7.5vh;   // 너비 고정
+  height: 2.5vh;  // 높이 고정
+
+  // 텍스트 가운데 정렬을 위한 Flexbox 속성
+  display: flex;
+  justify-content: center; // 가로 중앙 정렬
+  align-items: center;     // 세로 중앙 정렬
+`;
