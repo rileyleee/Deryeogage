@@ -117,13 +117,12 @@ public class BoardController {
             boardService.saveBoardFile(boardId, nameList);
         }
 
-        if(removedImages.isEmpty()==false){
+        if(!removedImages.isEmpty()){
             for(String path : removedImages){
                 path=path.replaceAll("[\"\\[\\]]", "");
                 log.info("remove : "+path);
                 boardFileRepository.deleteByBoard_IdAndPath(boardId, path );
                 s3FileService.deleteFileByUrl(path);
-
             }
         }
 
