@@ -245,7 +245,7 @@ const formatMessageTime = (createdDate) => {
   };
 
   return (
-    <div className="d-flex flex-column justify-content-between">
+    <div className="d-flex flex-column justify-content-between" style={{ height: '100%' }}>
       <div>
       {!searchMode ? (
     <div className="d-flex justify-content-between">
@@ -326,11 +326,15 @@ const formatMessageTime = (createdDate) => {
         })}
       </MessageList>
       ) : (
+        <>
+        <br/>
         <p>No messages yet.</p>
+        </>
       )}
       </div>
       <div>
       <div className="d-flex justify-content-around">
+        
     <MessageInput
       type="text"
       value={messageInput}
@@ -349,7 +353,7 @@ const formatMessageTime = (createdDate) => {
 export default ChatRoomDetail;
 
 const MessageList = styled.ul`
-  height: 73vh; // 원하는 높이 설정
+  min-height: 40vh; // 원하는 높이 설정
   overflow-y: auto; // 내용이 높이를 초과할 경우 스크롤 생성
   list-style: none;
   padding: 0;

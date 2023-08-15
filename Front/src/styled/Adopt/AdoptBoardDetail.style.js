@@ -239,5 +239,6 @@ export const Profile = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center; // 수직 정렬을 중앙으로 지정 
+  margin-top: 1vh;
 `;
 

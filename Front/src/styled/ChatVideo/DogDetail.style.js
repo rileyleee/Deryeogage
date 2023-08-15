@@ -2,7 +2,10 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const Container = styled.div`
-  height: 75vh;
+display: flex;
+flex-direction: column; // 세로 방향으로 아이템을 나열합니다.
+justify-content: space-between; // 시작과 끝 사이에 최대 간격을 둡니다.
+height: 100%; // 가능한 한 최대 높이를 사용합니다.
 `;
 
 export const Media = styled.div`
@@ -53,11 +56,40 @@ export const Box = styled.div`
   align-items: center;
   flex-direction: column;
   flex: 1;
+  margin-left: 1vw;
   margin-right: 1vw;
+  
+  p {
+    font-size: 15px; // 원하는 폰트 크기로 설정
+  }
+`;
+
+export const infoBox = styled.div`
+  margin: 1vw 0;
+  padding: 2vh 2vw; // 패딩을 증가시켰습니다
+  border: 1px #ff914d solid;
+  border-radius: 15px;
+  background-color: white;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex: 1;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  word-wrap: break-word;
+  white-space: normal;
   
   p {
     font-size: 12px; // 원하는 폰트 크기로 설정
   }
+`;
+
+export const DogInfo = styled.p`
+  font-size: 12px; // 원하는 폰트 크기로 설정
+  text-align: left; // 왼쪽 정렬
+    margin-left: 0;
+
 `;
 
 export const Span = styled.span`
@@ -81,9 +113,7 @@ export const EditButton = styled(Link)`
 `;
 
 export const FixedButton = styled.button`
-// position: absolute;
-  right: 20px;
-  bottom: 20px;
+  align-self: flex-end; 
   padding: 10px 20px;
   background-color: #007BFF;  // 버튼의 배경 색상입니다. 원하는 색으로 변경하세요.
   color: #ffffff;
@@ -91,7 +121,9 @@ export const FixedButton = styled.button`
   border-radius: 30px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-
+  // position: fixed; /* 또는 absolute; 상황에 따라 적절하게 선택 */
+  right: 10px;     /* 우측에서 10px 떨어진 위치 */
+  bottom: 10px;    /* 하단에서 10px 떨어진 위치 */
   &:hover {
     background-color: #0056b3; // 호버 시의 배경 색상입니다.
   }
