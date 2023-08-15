@@ -156,6 +156,7 @@ public class BoardService {
 
             boardSetList.add(thisBoard);
         }
+        Collections.shuffle(boardSetList);
         return boardSetList;
     }
 
