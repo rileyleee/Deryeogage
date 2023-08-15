@@ -1,5 +1,27 @@
 import styled from "styled-components";
+import { RoomInfo } from './../ChatVideo/ChatRoomDetail.style';
 
+export const LoadingText = styled.span`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;  // 비디오 위에 위치하도록 함
+  font-size: 40px;
+  color: white;  // 글자 색은 원하는대로 변경 가능
+`;
+
+
+export const VideoContainer = styled.div`
+  position: relative;  // 이 줄을 추가합니다.
+  border: 1px solid #FF914D;
+  border-radius: 30px;
+  padding-top: 30px;
+  margin-top: 20px;
+  background-color: white;
+  overflow: hidden;  // 비디오가 컨테이너 밖으로 넘치지 않게 합니다.
+  height: 500px;  // 이 줄을 추가합니다.
+`;
 
 
 export const BoardContainer = styled.div`
@@ -105,6 +127,11 @@ export const StyledPagination = styled.div`
      transition: background-color .3s;
    }
 
+   .pagination li a.activePageLink {
+    color: #FF914D;
+
+  }
+
    .pagination li a.active {
      background-color: #ff914d;
      color: white;
@@ -148,8 +175,8 @@ export const RefreshButton = styled.button`
 
 export const DistanceLabel = styled.div`
   position: absolute;
-  top: 0.8vh; // 상단에서부터의 간격입니다. 필요에 따라 조절하세요.
-  right: 4vh; // 오른쪽에서부터의 간격입니다. 필요에 따라 조절하세요.
+  margin-top: 12vh;
+  margin-left: 12vw;
   background-color: rgba(0, 0, 0, 0.5); // 배경을 약간 어둡게 해서 텍스트가 잘 보이게 합니다.
   padding: 0.5vh 1vh; // 내부 간격입니다. 필요에 따라 조절하세요.
   border-radius: 5px; // 모서리를 둥글게 합니다.

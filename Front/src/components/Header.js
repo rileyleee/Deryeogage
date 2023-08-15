@@ -5,8 +5,11 @@ import axios from "axios";
 import { useRecoilState } from "recoil";
 import { SimulationExistAtom, SimulationNum } from "../recoil/SimulationAtom";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Header() {
+  const location = useLocation();
+  const { pathname } = location;
   // 토큰 유무에 따라 로그인 <-> 마이페이지 변경할 수 있게 쓸거임
   const insertedToken = localStorage.getItem("accessToken");
   const isLoggedIn = insertedToken !== null;
@@ -242,6 +245,7 @@ function Header() {
   useEffect(() => {
     console.log(existValue);
   }, [existValue]);
+  
 
   return (
     <S.HeaderWrapper className="navbar navbar-expand-lg">
@@ -249,7 +253,7 @@ function Header() {
         <a className="navbar-brand" href="/">
           <img alt="Logo" src="/assets/logo.png" height="50vh" />
         </a>
-        <button
+        <S.ButtonWrapper
           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
@@ -259,19 +263,25 @@ function Header() {
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
-        </button>
+        </S.ButtonWrapper>
         <div
           className="collapse navbar-collapse justify-content-end"
           id="navbarNavDropdown"
         >
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="/adopt">
+              <S.Navlink
+                active={pathname.startsWith("/adopt")}
+                className="nav-link"
+                aria-current="page"
+                href="/adopt"
+              >
                 입양게시판
-              </a>
+              </S.Navlink>
             </li>
             <li className="nav-item">
-              <a
+              <S.Navlink
+                active={pathname === '/checklist' || pathname === '/checklist/result'}
                 className="nav-link"
                 aria-current="page"
                 href="/checklist"
@@ -281,10 +291,11 @@ function Header() {
                 }}
               >
                 체크리스트
-              </a>
+              </S.Navlink>
             </li>
             <li className="nav-item">
-              <a
+              <S.Navlink
+                active={pathname === "/simulations" || pathname === '/simulations/end' || pathname === '/nosimulations'}
                 className="nav-link"
                 aria-current="page"
                 href="/simulations"
@@ -294,21 +305,28 @@ function Header() {
                 }}
               >
                 시뮬레이션
-              </a>
+              </S.Navlink>
             </li>
 
-            {isLoggedIn ? ( // 토큰이 있으면 마이페이지 버튼을 보여줌
+            {isLoggedIn ? (
               <li className="nav-item">
-                <a className="nav-link" href="/profile">
+                <S.Navlink
+                  active={pathname === "/profile"}
+                  className="nav-link"
+                  href="/profile"
+                >
                   마이페이지
-                </a>
+                </S.Navlink>
               </li>
             ) : (
-              // 토큰이 없으면 로그인 버튼을 보여줌
               <li className="nav-item">
-                <a className="nav-link" href="/login">
+                <S.Navlink
+                  active={pathname === "/login"}
+                  className="nav-link"
+                  href="/login"
+                >
                   로그인
-                </a>
+                </S.Navlink>
               </li>
             )}
           </ul>

@@ -148,7 +148,7 @@ const ModalButton = styled.button`
   border-radius: 5px;
   color: #ffffff;               
   background-color: #ff914d;   
-  padding: 8px 12px;             
+  padding: 6px 12px;             
   transition: 0.3s;             // 마우스 호버 시 부드럽게 스타일 변화
   top: 10px;    
   right: 10px;  
