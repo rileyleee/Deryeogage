@@ -2,8 +2,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import * as S from "../styled/Header.style";
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import { SimulationExistAtom, SimulationNum } from "../recoil/SimulationAtom";
+import {useRecoilState} from "recoil"
+// import { AdoptDataAtom } from "../recoil/AdoptAtom"
+import { SimulationExistAtom } from "../recoil/SimulationAtom";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
@@ -246,13 +247,88 @@ function Header() {
     console.log(existValue);
   }, [existValue]);
   
+  const [adoptdata, setAdoptData] = useState(null);
+  const [postcostdata, setpostcostdata] = useState(null);  
+  console.log(adoptdata)
+  console.log(postcostdata)
+  const [dogToHome, setDogToHome] = useState('start')
+  console.log(dogToHome)
+  const fetchAdopts = async () => {
+    const token = localStorage.getItem("accessToken");
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
+    try {
+      const response = await axios.get(`${REACT_APP_API_URL}/adopts/to`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("adopt/to 값 +++++++++++++++++++++++ ", response);
+
+      const boardResponse = await axios.get(
+        `${REACT_APP_API_URL}/boards/list`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("====================adoptTo:", response.data.data)
+
+      setAdoptData(response.data.data);
+    } catch (error) {
+      console.error("An error occurred while fetching the data:", error);
+    }
+  };
+  useEffect(() => { // 분양 내역 get
+    const getPostCost = async () => {
+      const token = localStorage.getItem("accessToken");
+      const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
+      try {
+        const response = await axios.get(`${REACT_APP_API_URL}/postcosts`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("입양 내역: ",response);
+        setpostcostdata(response.data.data)
+      } catch (error) {
+        console.error("An error occurred while fetching the data:", error);
+      }
+    };
+
+    getPostCost();
+  }, []);
+  
+  
+  // 입양 데이터
+  const AdoptDataComponent = (adoptdata, postcostdata) => {
+    // Step 2: Status 값을 가져오는 함수 작성
+    if (postcostdata !== null && adoptdata !== null) {
+      for (let i=0; i < postcostdata.length; i++) {
+        if (postcostdata[i].returnYn === null) {
+          return adoptdata[i].status;
+        }
+      }
+    }
+  }
+  
+  useEffect(() => {
+    fetchAdopts();
+  }, []);
+
+  useEffect(() => {
+    setDogToHome(AdoptDataComponent(adoptdata, postcostdata))
+  }, [adoptdata, postcostdata]);
+  console.log(AdoptDataComponent(adoptdata, postcostdata))
   return (
     <S.HeaderWrapper className="navbar navbar-expand-lg">
       <div className="container-fluid">
         <a className="navbar-brand" href="/">
           <img alt="Logo" src="/assets/logo.png" height="50vh" />
         </a>
+        <S.DogImg src={dogToHome ? `/assets/adopt/${dogToHome}.png` : `/assets/adopt/start.png`} alt="adopt" height="50vh" />
         <S.ButtonWrapper
           className="navbar-toggler"
           type="button"
@@ -269,6 +345,9 @@ function Header() {
           id="navbarNavDropdown"
         >
           <ul className="navbar-nav">
+            {/* <li className="nav-item">
+              <img src="/assets/adopt/start.png" alt="adopt" />
+            </li> */}
             <li className="nav-item">
               <S.Navlink
                 active={pathname.startsWith("/adopt")}

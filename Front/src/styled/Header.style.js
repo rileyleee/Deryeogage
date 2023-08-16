@@ -35,3 +35,7 @@ const NavigationWrapper = styled.div`
     background-color: #ddd;
   }
 `;
+
+export const DogImg = styled.img`
+  
+`

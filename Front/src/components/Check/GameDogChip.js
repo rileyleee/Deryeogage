@@ -28,7 +28,8 @@ function GameDogChip(props) {
               {
                 "petType": SimulationDogValue,
                 "petName": SimulationNameValue,
-                "background": SimulationBGIValue
+                "background": SimulationBGIValue,
+                "title": "없음"
               },
               {
                 headers: {

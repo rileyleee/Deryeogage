@@ -85,19 +85,19 @@ function UserInfo() {
                 <S.UserInfoText>닉네임 : {nickname}</S.UserInfoText>
               </div>
               <div className="d-flex justify-content-between">
-                <S.UserInfoText>입양 수 : {userInfo.adoptToCount} 건</S.UserInfoText>
+                <S.UserInfoText>입양 수 : {userInfo.adoptToCount}건</S.UserInfoText>
               </div>
               <S.UserInfoText>
-                사전 테스트 점수 : {userInfo.preTestScore}
+                사전 테스트 점수 : {userInfo.preTestScore}점
               </S.UserInfoText>
               <S.TestBtn href="/survey">선호도 조사하기</S.TestBtn>
             </div>
             <div className="col-4">
                 <S.UserInfoText>
-                  칭호 : {userInfo.simulationTitle ? userInfo.simulationTitle : "없음"}
+                  칭호 : {userInfo.simulationTitle}
                 </S.UserInfoText>
                 <S.UserInfoText className="margin">
-                  분양 수 : {userInfo.adoptFromCount} 건
+                  분양 수 : {userInfo.adoptFromCount}건
                 </S.UserInfoText>
             </div>
           </div>
