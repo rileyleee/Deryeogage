@@ -173,6 +173,7 @@ export const HealthInfoBox = styled.div`
   flex-direction: column; // 수직 방향으로 내용을 정렬합니다.
   height: 12vw;
   overflow: auto; // 여기에 추가합니다.
+  word-wrap: break-word;
 `;
 
 export const IntroductionBox = styled.div`
@@ -186,6 +187,7 @@ export const IntroductionBox = styled.div`
   flex-direction: column; // 수직 방향으로 내용을 정렬합니다.
   height: 12vw;
   overflow: auto; // 여기에 추가합니다.
+  word-wrap: break-word;
 `;
 
 export const ModalContainer = styled.div`
