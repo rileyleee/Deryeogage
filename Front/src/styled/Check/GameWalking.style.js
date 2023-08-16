@@ -8,6 +8,10 @@ export const GameStartsecond = styled.div`
     background-repeat: no-repeat;
     background-position: 3% 61%, center;
     background-size: 25% 30%, cover;
+    image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+    image-rendering: -o-crisp-edges;           /* OS X & Windows Opera (12.02+) */
+    image-rendering: pixelated;                /* Chrome */
+    image-rendering: optimizeSpeed;            /* Older versions of FF */
 
     &::before {
         content: '';
@@ -23,6 +27,10 @@ export const GameStartsecond = styled.div`
         transform: rotateX(180deg);
         z-index: 1;
         opacity: 0.7; /* 추가: 이미지 불투명도 설정 */
+        image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+        image-rendering: -o-crisp-edges;           /* OS X & Windows Opera (12.02+) */
+        image-rendering: pixelated;                /* Chrome */
+        image-rendering: optimizeSpeed;            /* Older versions of FF */
     }
 
     & > * {

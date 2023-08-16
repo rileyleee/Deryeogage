@@ -21,6 +21,10 @@ export const GameDogImg = styled.img`
     top: 50%; // 상위 컨테이너 중앙에 위치
     left: 50%; // 상위 컨테이너 중앙에 위치
     transform: translate(25%, 0%); // 위치 조정 및 회전
+    image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+    image-rendering: -o-crisp-edges;           /* OS X & Windows Opera (12.02+) */
+    image-rendering: pixelated;                /* Chrome */
+    image-rendering: optimizeSpeed;            /* Older versions of FF */
 `
 
 export const GameEmergencyBtn = styled.button`

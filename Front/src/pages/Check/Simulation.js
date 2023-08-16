@@ -86,13 +86,11 @@ function Simulation() {
             minutes: newMinutes,
           };
         });
-      }
-      initialMount = false; // 초기 실행 후 false로 설정
-      hpTimer += 1;
-      if (!initialMountHealth) {
-        // 초기 마운트가 아닐 때만 시간 증가
-        if (hpTimer >= 10) {
-          // 10분마다 HP 감소
+        }
+        initialMount = false; // 초기 실행 후 false로 설정
+        hpTimer += 1;
+        if (!initialMountHealth) { // 초기 마운트가 아닐 때만 시간 증가
+        if (hpTimer >= 5) { // 5분마다 HP 감소
           setHpPercentage((prevHpPercentage) => {
             const newHpPercentage =
               prevHpPercentage > 0 ? prevHpPercentage - 1 : 0;

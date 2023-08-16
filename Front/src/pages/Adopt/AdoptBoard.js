@@ -207,7 +207,7 @@ function AdoptBoard() {
       {insertedToken && hasSurvey ? <NotSurvey /> : null}
       {!insertedToken ? <NotLogin /> : null}
 
-      {/* <S.Button onClick={onClick}>글 작성</S.Button> */}
+      { <S.Button onClick={onClick}>글 작성</S.Button> }
       {isLoading ? (
         <S.VideoContainer>
           <video

@@ -10,6 +10,10 @@ export const GameStartsecond = styled.div`
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+    image-rendering: -o-crisp-edges;           /* OS X & Windows Opera (12.02+) */
+    image-rendering: pixelated;                /* Chrome */
+    image-rendering: optimizeSpeed;            /* Older versions of FF */
   }
 
   &.second::before {

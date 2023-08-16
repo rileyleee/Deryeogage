@@ -8,6 +8,10 @@ export const GameStartsecond = styled.div`
         background-repeat: no-repeat;
         background-position: 81% 62%, 85% 65%,60% 80%, center;
         background-size: 10% 10%, 20% 20%, 30% 30%, cover;
+        image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+        image-rendering: -o-crisp-edges;           /* OS X & Windows Opera (12.02+) */
+        image-rendering: pixelated;                /* Chrome */
+        image-rendering: optimizeSpeed;            /* Older versions of FF */
     }
 `
 
