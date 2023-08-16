@@ -4,7 +4,7 @@ export const GameStartsecond = styled.div`
     position: relative;
     height: 70vh;
     padding: 1vh;
-    background-image: url(${props => `assets/${props.petType}/walk${props.petType}.gif`}), url("assets/background/totoro.gif");
+    background-image: url(${props => `/assets/${props.petType}/walk${props.petType}.gif`}), url("/assets/background/totoro.gif");
     background-repeat: no-repeat;
     background-position: 3% 61%, center;
     background-size: 25% 30%, cover;
@@ -20,7 +20,7 @@ export const GameStartsecond = styled.div`
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: url(${props => `assets/${props.petType}/walk${props.petType}.gif`});
+        background-image: url(${props => `/assets/${props.petType}/walk${props.petType}.gif`});
         background-repeat: no-repeat;
         background-position: 3% -7%;
         background-size: 25% 30%;

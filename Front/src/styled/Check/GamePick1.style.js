@@ -24,27 +24,27 @@ export const GamePick1box = styled.button`
     image-rendering: pixelated;                /* Chrome */
     image-rendering: optimizeSpeed;            /* Older versions of FF */
     &.box1 {
-        background-image: url("assets/1/run1.gif"), url("assets/dog_bgi/dog_bgi_1.jpg");
+        background-image: url("/assets/1/run1.gif"), url("/assets/dog_bgi/dog_bgi_1.jpg");
         border: ${props => (props.isclicked ? '2px #FF914D solid' : 'none')};
         background-size: 120% 80%, cover;
     }
     &.box2 {
-        background-image: url("assets/2/run2.gif"), url("assets/dog_bgi/dog_bgi_2.jpg");
+        background-image: url("/assets/2/run2.gif"), url("/assets/dog_bgi/dog_bgi_2.jpg");
         border: ${props => (props.isclicked ? '2px #FF914D solid' : 'none')};
         background-size: 120% 80%, cover;
     }
     &.box3 {
-        background-image: url("assets/3/run3.gif"), url("assets/dog_bgi/dog_bgi_3.jpg");
+        background-image: url("/assets/3/run3.gif"), url("/assets/dog_bgi/dog_bgi_3.jpg");
         border: ${props => (props.isclicked ? '2px #FF914D solid' : 'none')};
         background-size: 120% 80%, cover;
     }
     &.box4 {
-        background-image: url("assets/4/run4.gif"), url("assets/dog_bgi/dog_bgi_4.jpg");
+        background-image: url("/assets/4/run4.gif"), url("/assets/dog_bgi/dog_bgi_4.jpg");
         border: ${props => (props.isclicked ? '2px #FF914D solid' : 'none')};
         background-size: 120% 80%, cover;
     }
     &.box5 {
-        background-image: url("assets/5/run5.gif"), url("assets/dog_bgi/dog_bgi_5.jpg");
+        background-image: url("/assets/5/run5.gif"), url("/assets/dog_bgi/dog_bgi_5.jpg");
         border: ${props => (props.isclicked ? '2px #FF914D solid' : 'none')};
         background-size: 120% 80%, cover;
     }

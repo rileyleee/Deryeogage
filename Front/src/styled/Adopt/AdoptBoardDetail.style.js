@@ -154,7 +154,6 @@ export const PawBox = styled.div`
   flex-direction: column; /* SurveyPaw 컴포넌트들을 수직 방향으로 배치 */
   margin-right: 1vw;
   margin-top:1vh;
-
 `;
 
 export const HealthInfoBox = styled.div`
@@ -166,7 +165,7 @@ export const HealthInfoBox = styled.div`
   border-radius: 30px;
   display: flex;
   flex-direction: column; // 수직 방향으로 내용을 정렬합니다.
-  height: 24.5vh;
+  height: 12vw;
   overflow: auto; // 여기에 추가합니다.
 `;
 
@@ -179,7 +178,7 @@ export const IntroductionBox = styled.div`
   border-radius: 30px;
   display: flex;
   flex-direction: column; // 수직 방향으로 내용을 정렬합니다.
-  height: 24.5vh;
+  height: 12vw;
   overflow: auto; // 여기에 추가합니다.
 `;
 

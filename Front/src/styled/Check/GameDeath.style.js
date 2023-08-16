@@ -5,7 +5,7 @@ export const GameStartsecond = styled.div`
         height: 70vh;
         padding: 1vh;
         background-color: black;
-        background-image: url("assets/emotion/Emote_X.png"), url("assets/things/bubble.png"), url(${props => `assets/${props.petType}/death${props.petType}.png`});
+        background-image: url("/assets/emotion/Emote_X.png"), url("/assets/things/bubble.png"), url(${props => `/assets/${props.petType}/death${props.petType}.png`});
         background-repeat: no-repeat;
         background-position: 57% 49%, 55% 50%,50% 80%;
         background-size: 10% 10%, 20% 20%, 30% 30%;

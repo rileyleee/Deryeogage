@@ -97,7 +97,7 @@ export const requirementImagesState = atom({
   key: 'requirementImagesState',
   default: [
     {
-      image: "assets/things/requirement1.png",
+      image: "/assets/things/requirement1.png",
       timeRanges: [
         { startTime: 9, endTime: 10, check: 0 },
         { startTime: 17, endTime: 18, check: 0 },
@@ -105,7 +105,7 @@ export const requirementImagesState = atom({
       num: 8,
     },
     {
-      image: "assets/things/requirement2.png",
+      image: "/assets/things/requirement2.png",
       timeRanges: [
         { startTime: 12, endTime: 13, check: 0 },
         { startTime: 20, endTime: 21, check: 0 },

@@ -338,7 +338,7 @@ function Header() {
     <S.HeaderWrapper className="navbar navbar-expand-lg">
       <div className="container-fluid">
         <a className="navbar-brand" href="/">
-          <img alt="Logo" src="/assets/logo.png" height="50vh" />
+          <img alt="Logo" src="/assets/Logo.png" height="50vh" />
         </a>
         <S.DogImg src={dogToHome ? `/assets/adopt/${dogToHome}.png` : `/assets/adopt/start.png`} alt="adopt" height="50vh" />
         <S.ButtonWrapper
@@ -363,7 +363,6 @@ function Header() {
             <li className="nav-item">
               <S.Navlink
                 active={pathname.startsWith("/adopt")}
-                className="nav-link"
                 aria-current="page"
                 href="/adopt"
               >
@@ -373,7 +372,6 @@ function Header() {
             <li className="nav-item">
               <S.Navlink
                 active={pathname === "/survey"}
-                className="nav-link"
                 aria-current="page"
                 href="/survey"
                 onClick={(event) => {
@@ -389,7 +387,6 @@ function Header() {
                 active={
                   pathname === "/checklist" || pathname === "/checklist/result"
                 }
-                className="nav-link"
                 aria-current="page"
                 href="/checklist"
                 onClick={(event) => {
@@ -407,7 +404,6 @@ function Header() {
                   pathname === "/simulations/end" ||
                   pathname === "/nosimulations"
                 }
-                className="nav-link"
                 aria-current="page"
                 href="/simulations"
                 onClick={(event) => {
@@ -423,7 +419,6 @@ function Header() {
               <li className="nav-item">
                 <S.Navlink
                   active={pathname === "/profile"}
-                  className="nav-link"
                   href="/profile"
                 >
                   마이페이지
@@ -433,7 +428,6 @@ function Header() {
               <li className="nav-item">
                 <S.Navlink
                   active={pathname === "/login"}
-                  className="nav-link"
                   href="/login"
                 >
                   로그인

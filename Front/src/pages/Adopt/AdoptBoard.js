@@ -263,12 +263,15 @@ function AdoptBoard() {
                 <S.InputBox
                   type="text"
                   value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
+                  onChange={(e) => {
+                    setSearchText(e.target.value)
+                    setActivePage(1); // 페이지를 1로 초기화
+                  }}
                 />
               </S.SelectInputBox>
 
               <div>
-                <S.RefreshButton onClick={handleRefreshClick}></S.RefreshButton>
+                <S.RefreshButton onClick={handleRefreshClick}>새로고침</S.RefreshButton>
                 <S.Button onClick={onClick}>글 작성</S.Button>
               </div>
             </S.TopBar>
@@ -290,7 +293,6 @@ function AdoptBoard() {
               ))}
             </S.BoardGrid>
           </S.BoardContainer>
-
           <S.StyledPagination>
             <Pagination
               activePage={activePage}

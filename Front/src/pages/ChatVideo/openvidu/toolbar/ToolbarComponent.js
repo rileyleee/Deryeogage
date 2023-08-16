@@ -6,9 +6,6 @@ import styled from 'styled-components';
 import { FaMicrophoneSlash, FaMicrophone } from 'react-icons/fa';
 import { MdVideocamOff, MdVideocam } from 'react-icons/md';
 
-
-// const logo = require('../../assets/images/openvidu_logo.png');
-
 export default class ToolbarComponent extends Component {
   constructor(props) {
     super(props);

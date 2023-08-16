@@ -12,7 +12,7 @@ export const LoadingText = styled.span`
 
 export const VideoContainer = styled.div`
   position: relative; // 이 줄을 추가합니다.
-  border: 1px solid #ff914d;
+  /* border: 1px solid #ff914d; */
   border-radius: 30px;
   padding-top: 30px;
   margin-top: 20px;
@@ -44,7 +44,7 @@ export const Button = styled.button`
   transform: translateY(-50%); // 자신의 높이의 50%만큼 위로 올려서 중앙 정렬
   border: none;
   background-color: #ff914d;
-  padding: 0.8vw 1vw;
+  padding: 0.5vw 1vw;
   border-radius: 20px;
   color: white;
   margin-right: 35px;
@@ -149,32 +149,23 @@ export const Smallspacer = styled.div`
   margin: 2vh;
 `;
 
-export const DogStatus = styled.span`
-  font-size: 15px;
-  position: absolute;
-  color: white;
-  top: 320px;
-  right: 10px;
-  background-color: ${(props) => props.color || "green"};
-  border-radius: 10px;
-  z-index: 10;
-  padding: 3px 8px;
-`;
-
 export const RefreshButton = styled.button`
-  background: url("/assets/chatimg/reload.png") no-repeat center;
-  background-size: cover; // 이미지를 버튼 크기에 맞게 조정
+  /* background: url("/assets/chatimg/reload.png") no-repeat center; */
+  /* background-size: cover; // 이미지를 버튼 크기에 맞게 조정 */
   border: none;
-  width: 24px; // 아이콘 크기에 맞게 조정
-  height: 24px; // 아이콘 크기에 맞게 조정
+  width: fit-content;
   cursor: pointer;
   margin-left: 5vh; // 좌우 여백을 주어 S.InputBox와의 간격 조정
+  background-color: #ff914d;
+  padding: 0.5vw 1vw;
+  border-radius: 20px;
+  color: white;
 `;
 
 export const DistanceLabel = styled.div`
   position: absolute;
-  top: 0.8vh; // 상단에서부터의 간격입니다. 필요에 따라 조절하세요.
-  right: 4vh; // 오른쪽에서부터의 간격입니다. 필요에 따라 조절하세요.
+  bottom: 1.5vh; // 상단에서부터의 간격입니다. 필요에 따라 조절하세요.
+  right: 2vh; // 오른쪽에서부터의 간격입니다. 필요에 따라 조절하세요.
   background-color: rgba(
     0,
     0,
@@ -187,9 +178,20 @@ export const DistanceLabel = styled.div`
   font-size: 1.5vh;
   width: 7.5vh; // 너비 고정
   height: 2.5vh; // 높이 고정
-
   // 텍스트 가운데 정렬을 위한 Flexbox 속성
   display: flex;
   justify-content: center; // 가로 중앙 정렬
   align-items: center; // 세로 중앙 정렬
+`;
+
+export const DogStatus = styled.span`
+  font-size: 15px;
+  position: absolute;
+  color: white;
+  top: 2.3vh; // 상단에서부터의 간격입니다. 필요에 따라 조절하세요.
+  left: 2.5vh; // 오른쪽에서부터의 간격입니다. 필요에 따라 조절하세요.
+  background-color: ${(props) => props.color || "green"};
+  border-radius: 10px;
+  z-index: 10;
+  padding: 3px 8px;
 `;

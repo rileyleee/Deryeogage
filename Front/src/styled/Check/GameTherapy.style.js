@@ -6,7 +6,7 @@ export const GameStartsecond = styled.div`
   &.second {
     height: 70vh;
     padding: 1vh;
-    background-image: url("assets/background/hospital.png");
+    background-image: url("/assets/background/hospital.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

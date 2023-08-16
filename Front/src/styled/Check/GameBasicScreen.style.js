@@ -5,7 +5,7 @@ export const GameStartsecond = styled.div`
         height: 70vh;
         padding: 1vh;
         background-image: 
-        url(${props => `assets/home/home${props.background}.jpg`});
+        url(${props => `/assets/home/home${props.background}.jpg`});
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
