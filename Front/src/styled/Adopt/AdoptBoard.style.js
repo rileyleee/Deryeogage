@@ -6,7 +6,7 @@ export const LoadingText = styled.span`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1; // 비디오 위에 위치하도록 함
-  font-size: 40px;
+  font-size: 3vw;
   color: white; // 글자 색은 원하는대로 변경 가능
 `;
 
@@ -14,18 +14,17 @@ export const VideoContainer = styled.div`
   position: relative; // 이 줄을 추가합니다.
   /* border: 1px solid #ff914d; */
   border-radius: 30px;
-  padding-top: 30px;
-  margin-top: 20px;
+  padding-top: 2vw;
+  margin-top: 1.3vw;
   background-color: white;
   overflow: hidden; // 비디오가 컨테이너 밖으로 넘치지 않게 합니다.
-  height: 500px; // 이 줄을 추가합니다.
+  height: 32vw; // 이 줄을 추가합니다.
 `;
 
 export const BoardContainer = styled.div`
   border: 1px solid #ff914d;
   border-radius: 30px;
-  padding-top: 30px;
-  margin-top: 20px;
+  margin-top: 1.3vw;
   background-color: white;
 `;
 
@@ -34,7 +33,7 @@ export const TopBar = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  margin: 5vh 0;
+  margin-top: 2vw;
 `;
 
 export const Button = styled.button`
@@ -47,7 +46,7 @@ export const Button = styled.button`
   padding: 0.5vw 1vw;
   border-radius: 20px;
   color: white;
-  margin-right: 35px;
+  margin-right: 2.3vw;
   display: block;
   width: fit-content;
   cursor: pointer;
@@ -58,12 +57,12 @@ export const SelectInputBox = styled.div`
   top: 50%;
   left: 50%; // 상위 요소의 중앙에서 시작
   transform: translate(-50%, -50%); // 자신의 크기의 절반만큼 이동하여 중앙 정렬
-  width: 500px;
+  width: 32vw;
   display: flex;
   justify-content: space-between;
-  border-radius: 20px;
+  border-radius: 10px;
   border: 1px solid #ff914d;
-  padding: 5px;
+  padding: 0.2vw;
 `;
 
 export const InputBox = styled.input`
@@ -78,11 +77,8 @@ export const InputBox = styled.input`
 export const BoardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  padding: 30px;
-  background-color: white;
+  gap: 1.3vw;
+  padding: 2vw;
   border-radius: 20px;
 `;
 
@@ -108,7 +104,8 @@ export const Media = styled.div`
 `;
 
 export const StyledPagination = styled.div`
-  padding-top: 20px;
+  padding-top: 1.2vw;
+  padding-bottom: 1.2vw;
   .pagination {
     display: flex;
     justify-content: center; // 중앙 정렬
@@ -117,13 +114,13 @@ export const StyledPagination = styled.div`
   }
 
   .pagination li {
-    margin: 0 5px;
+    margin: 0 0.3vw;
   }
 
   .pagination li a {
     text-decoration: none;
     color: #4a2511;
-    padding: 8px 16px;
+    padding: 0.5vw 1vw;
     transition: background-color 0.3s;
   }
 
@@ -142,12 +139,8 @@ export const StyledPagination = styled.div`
   }
 `;
 
-export const Largespacer = styled.div`
-  height: 1350px;
-`;
-
 export const Smallspacer = styled.div`
-  margin: 2vh;
+  margin: 1vw;
 `;
 
 export const RefreshButton = styled.button`
@@ -156,7 +149,7 @@ export const RefreshButton = styled.button`
   border: none;
   width: fit-content;
   cursor: pointer;
-  margin-left: 5vh; // 좌우 여백을 주어 S.InputBox와의 간격 조정
+  margin-left: 2.5vw; // 좌우 여백을 주어 S.InputBox와의 간격 조정
   background-color: #ff914d;
   padding: 0.5vw 1vw;
   border-radius: 20px;
@@ -165,20 +158,20 @@ export const RefreshButton = styled.button`
 
 export const DistanceLabel = styled.div`
   position: absolute;
-  bottom: 1.5vh; // 상단에서부터의 간격입니다. 필요에 따라 조절하세요.
-  right: 2vh; // 오른쪽에서부터의 간격입니다. 필요에 따라 조절하세요.
+  bottom: 1vw; // 상단에서부터의 간격입니다. 필요에 따라 조절하세요.
+  right: 1vw; // 오른쪽에서부터의 간격입니다. 필요에 따라 조절하세요.
   background-color: rgba(
     0,
     0,
     0,
     0.5
   ); // 배경을 약간 어둡게 해서 텍스트가 잘 보이게 합니다.
-  padding: 0.5vh 1vh; // 내부 간격입니다. 필요에 따라 조절하세요.
+  padding: 0.25vw 0.5vw; // 내부 간격입니다. 필요에 따라 조절하세요.
   border-radius: 5px; // 모서리를 둥글게 합니다.
   color: white; // 텍스트 색상입니다.
-  font-size: 1.5vh;
-  width: 7.5vh; // 너비 고정
-  height: 2.5vh; // 높이 고정
+  font-size: 0.3vw;
+  width: 4vw; // 너비 고정
+  height: 1vw; // 높이 고정
   // 텍스트 가운데 정렬을 위한 Flexbox 속성
   display: flex;
   justify-content: center; // 가로 중앙 정렬
@@ -186,13 +179,13 @@ export const DistanceLabel = styled.div`
 `;
 
 export const DogStatus = styled.span`
-  font-size: 15px;
+  font-size: 1vw;
   position: absolute;
   color: white;
-  top: 2.3vh; // 상단에서부터의 간격입니다. 필요에 따라 조절하세요.
-  left: 2.5vh; // 오른쪽에서부터의 간격입니다. 필요에 따라 조절하세요.
+  top: 1vw; // 상단에서부터의 간격입니다. 필요에 따라 조절하세요.
+  left: 1vw; // 오른쪽에서부터의 간격입니다. 필요에 따라 조절하세요.
   background-color: ${(props) => props.color || "green"};
   border-radius: 10px;
   z-index: 10;
-  padding: 3px 8px;
+  padding: 0.2vw 0.4vw;
 `;

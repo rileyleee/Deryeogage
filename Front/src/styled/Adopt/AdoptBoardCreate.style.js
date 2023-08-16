@@ -4,15 +4,15 @@ export const Container = styled.div`
   border: 1px #ff914d solid;
   border-radius: 30px;
   padding: 2vw;
-  margin-top: 4vh;
-  margin-bottom: 4vh;
+  margin-top: 2vw;
+  margin-bottom: 2vw;
   background-color: white;
 `;
 
 export const TitleInputWrapper = styled.div`
   position: relative;
   width: 100%;
-  margin-top: 1vh;
+  margin-top: 0.5vw;
 
   &::after {
     content: "";
@@ -42,14 +42,14 @@ export const TitleInput = styled.input`
 `;
 
 export const ContentBox = styled.div`
-  margin-top: 2vh;
+  margin-top: 1vw;
 `;
 
 export const FlexContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 1vh;
+  margin-top: 0.5vw;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -65,7 +65,7 @@ export const Box = styled.div`
 
   @media (max-width: 768px) {
     margin-right: 0;
-    margin-bottom: 1vh; // 원하는 세로 간격을 추가
+    margin-bottom: 0.5vw; // 원하는 세로 간격을 추가
   }
 `;
 
@@ -79,7 +79,7 @@ export const DogTextarea = styled.textarea`
   border: 1px #ff914d solid;
   border-radius: 30px;
   width: 100%;
-  height: 22vh;
+  height: 11vw;
   padding: 2%;
   resize: none; /* Prevent textarea resizing */
 
@@ -96,7 +96,7 @@ export const Button = styled.button`
   padding: 0.5vw 1vw;
   border-radius: 30px;
   color: white;
-  margin-top: 1vh;
+  margin-top: 0.5vw;
   left: 50%;
   transform: translateX(-50%); /* Add this to center the button horizontally */
   position: relative; /* Add this to enable the horizontal centering */
@@ -140,11 +140,11 @@ export const Tooltip = styled.div`
 
 export const TooltipText = styled.span`
   visibility: hidden;
-  width: 150px;
+  width: 9.7vw;
   background-color: #555;
   color: #fff;
   text-align: center;
-  padding: 1vh;
+  padding: 0.5vw;
   border-radius: 6px;
 
   position: absolute;
