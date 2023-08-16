@@ -174,7 +174,7 @@ public class BoardService {
         };
         System.out.println(Arrays.toString(userPreferences));
 
-        List<BoardEntity> boardEntityList = boardRepository.findAll();
+        List<BoardEntity> boardEntityList = boardRepository.findAllByUserIdNot(userId);
         List<BoardDto> boardDtoList = new ArrayList<>();
         Map<Integer, int[]> boardMap = new HashMap<>();
         for (BoardEntity boardEntity : boardEntityList) {
@@ -186,9 +186,6 @@ public class BoardService {
             if (entity.isPresent()) {
                 continue;
             }
-
-
-
             int[] five = {Character.getNumericValue(boardEntity.getFriendly()),
                     Character.getNumericValue(boardEntity.getActivity()),
                     Character.getNumericValue(boardEntity.getDependency()),
