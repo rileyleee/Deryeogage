@@ -107,7 +107,21 @@ public class SimulationEntity{
                 .build();
     }
 
-    public void update(String requirement) {
+    public void update(SimulationDto simulationDto) {
+        this.cost = simulationDto.getCost();
+        this.lastTime = simulationDto.getLastTime();
+        this.train = simulationDto.getTrain();
+        this.health = simulationDto.getHealth();
+        this.quizNum = simulationDto.getQuizNum();
+        this.requirement = simulationDto.getRequirement();
+        if(simulationDto.getTitle() != null && !simulationDto.getTitle().equals("null")) {
+            this.title = simulationDto.getTitle();
+        }
+        this.end = simulationDto.isEnd();
+        this.endCheck = simulationDto.isEndCheck();
+    }
+
+    public void updateRequirement(String requirement){
         this.requirement = requirement;
     }
 }

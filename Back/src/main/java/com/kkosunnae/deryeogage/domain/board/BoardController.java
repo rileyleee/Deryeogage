@@ -74,6 +74,7 @@ public class BoardController {
             Optional<AdoptEntity> adoptEntity = adoptRepository.findByBoardId(boardId);
             if(!adoptEntity.isEmpty()){
                 thisBoard.setAdopter(adoptEntity.get().getToUser().getId().equals(requestUser));
+                thisBoard.setStatus(adoptEntity.get().getStatus());
                 log.info("adapter : "+thisBoard.isAdopter());
             }
         } else {// 로그인하지 않은 경우
