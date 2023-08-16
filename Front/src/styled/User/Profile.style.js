@@ -9,5 +9,5 @@ export const ProfileImage = styled.img`
 
 
 export const ProfileWrap = styled.div`
-    height: 100vh;
+    height: 89vh;
 `

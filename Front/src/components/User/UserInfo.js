@@ -88,7 +88,7 @@ function UserInfo() {
                 <S.UserInfoText>입양 수 : {userInfo.adoptToCount} 건</S.UserInfoText>
               </div>
               <S.UserInfoText>
-                사전 테스트 점수 : {userInfo.preTestScore}
+                사전 테스트 점수 : {userInfo.preTestScore}점
               </S.UserInfoText>
               <S.TestBtn href="/survey">선호도 조사하기</S.TestBtn>
             </div>

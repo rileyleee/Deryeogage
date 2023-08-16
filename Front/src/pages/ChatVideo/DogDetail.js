@@ -34,7 +34,8 @@ function DogDetail(props) {
   }, []);
 
   return (
-    <div>
+    <>
+    
       {adoptData ? (
         <S.Container>
           <S.TopBox>
@@ -112,7 +113,7 @@ function DogDetail(props) {
       ) : (
         <p>Loading...</p>
       )}
-    </div>
+  </>
   );
 }
 

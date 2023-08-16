@@ -1,8 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AOS from 'aos';
-import 'aos/dist/aos.css';  // AOS 스타일시트 임포트
 
 // common
 import Header from "./components/Header";

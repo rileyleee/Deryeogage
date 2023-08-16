@@ -13,7 +13,7 @@ export const StyledChatRoomDetail = styled.div`
 
 export const StyledChatRoom = styled.div`
   position: relative;
-  border: 1px #ffe7ba solid;
+  border: 1px #ff914d solid;
   border-radius: 10px;
   width: 35%;
   box-sizing: border-box;
@@ -43,7 +43,7 @@ export const ModalButton = styled.button`
   transition: 0.3s; // 마우스 호버 시 부드럽게 스타일 변화
   top: 10px;
   right: 10px;
-
+  margin-top: 2vh;
   &:hover {
     background-color: #ff7140; // 버튼 호버 시 내부 색상 변경
     border-color: #ff7140; // 버튼 호버 시 테두리 색상 변경
