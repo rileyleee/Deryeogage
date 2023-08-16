@@ -101,6 +101,15 @@ export const Media = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  // 애니메이션 효과 지정
+  transition: transform 0.3s, filter 0.3s; // filter 추가
+
+  // 마우스 호버 시 효과
+  &:hover {
+    transform: translateY(-10px); 
+    filter: brightness(1.1); // 밝기를 120%로 증가
+  }
 `;
 
 export const StyledPagination = styled.div`
