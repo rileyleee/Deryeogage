@@ -1,0 +1,232 @@
+
+#video-room-section {
+	position: relative;
+    display: flex;       /* Flexbox 사용 */
+    flex-direction: column; /* 자식 요소들을 수직으로 배열 */
+    height: 100vh;       /* 전체 뷰포트 높이로 설정 */
+}
+
+#other-video-section{
+	width: 100%;
+	float: left; /* 화면의 좌측에 배치 */
+	display: block;
+	border-radius: 10px; /* 모서리 둥글게 */
+    border: 2px solid #000000; /* 테두리 추가 */
+    padding: 2px;
+
+}
+
+#my-video-section{
+	position: relative;
+	width: 50%;
+	height: auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	display: block;
+	border-radius: 10px; /* 모서리 둥글게 */
+    /* border: 2px solid #201306; */
+    /* padding: 4px; */
+}
+
+#other-video-section img{
+	width: 100%;
+	display: block;
+	border-radius: 5px; /* 모서리 둥글게 */
+}
+
+#my-video-section img{
+	width: 100%;
+	display: block;
+	border-radius: 5px; /* 모서리 둥글게 */
+}
+
+
+#stream-container {
+	position: relative;
+}
+
+
+#header-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 세로 중앙 정렬을 위해 추가 */
+	margin-bottom: 10px;
+}
+
+
+#join{
+    text-align: center;
+	justify-content: center;
+	height: 50vh;
+}
+
+#video-intro{
+	display: flex;
+	justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; 
+	height: 40vh;
+}
+
+#join-dialog {
+	display: flex; 
+	flex-direction: column;
+    text-align: center; /* 텍스트를 중앙 정렬 */
+	height: 40vh;
+
+	text-align: center;
+	align-items: center; 
+	justify-content: center;
+}
+
+#join-dialog h4 {
+    margin-bottom: 30px; /* 원하는 간격 값을 조절할 수 있습니다. */
+}
+
+#join-dialog .btn-primary {
+    margin-right: 8px; /* 원하는 간격에 맞게 조절 */
+}
+
+#join-dialog .btn-secondary {
+    margin-left: 8px; /* 원하는 간격에 맞게 조절 */
+}
+
+
+/* #join, #session {
+    position: absolute;
+    margin: auto;
+    top: 100px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70%;
+    width: 70%;
+} */
+ */
+
+
+
+#session-header {
+	margin-bottom: 20px;
+}
+
+#session-title {
+	display: inline-block;
+}
+
+#buttonLeaveSession, #buttonSwitchCamera {
+	position: relative;
+	float: right;
+	margin-top: 20px;
+	
+}
+
+#main-video {
+  position: relative;
+  width: 100%;
+  /* height: 50vh; */
+  display: block;
+}
+
+#video-container {
+  width: 100%; /* 화면의 50%만큼 너비를 차지하도록 설정 */
+  /* height: 25vh; 뷰포트의 25%만큼 높이를 차지하도록 설정 */
+  float: left; /* 화면의 좌측에 배치 */
+  display: block;
+}
+
+
+#video-container video {
+  width: 100%;
+	position: relative;
+	float: left;
+	cursor: pointer;
+}
+
+#main-video video {
+ cursor: initial;
+  width: 100%; /* 화면 전체 너비를 차지 */
+  height: auto;
+}
+
+.stream-placeholder img{
+  width: 100%;
+	position: relative;
+	float: left;
+	cursor: pointer;
+}
+
+.main-video-placeholder video {
+	cursor: initial;
+	width: 100%; /* 화면 전체 너비를 차지 */
+	height: auto;
+  }
+
+#session #video-container img {
+	position: relative;
+	float: left;
+	width: 50%;
+	cursor: pointer;
+	object-fit: cover;
+	height: 180px;
+}
+
+#video-container p {
+  position: absolute;
+	display: inline-block;
+	background: #f8f8f8;
+  left: 0;
+	padding-right: 5px;
+	padding-left: 5px;
+	color: #777777;
+	font-weight: bold;
+  	font-size: 22px;
+	border-bottom-right-radius: 4px;
+  z-index: 1;
+
+}
+
+/* video {
+	width: 100%;
+	height: auto;
+} */
+
+#main-video p {
+	position: absolute;
+	display: inline-block;
+	background: #f8f8f8;
+	padding-right: 5px;
+	padding-left: 5px;
+  top: 0;
+	left: 0;
+	font-size: 22px;
+	color: #777777;
+	font-weight: bold;
+	border-bottom-right-radius: 4px;
+  z-index: 1;
+}
+
+
+
+
+
+
+#session img {
+	width: 100%;
+	height: auto;
+	display: inline-block;
+	object-fit: contain;
+	vertical-align: baseline;
+}
+
+
+
+
+/* xs ans md screen resolutions*/
+
+@media screen and (max-width: 991px) {
+	.vertical-center {
+		width: 85%;
+		padding-top: 10px;
+		top: 57%;
+	}
+}
