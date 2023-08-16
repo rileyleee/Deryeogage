@@ -25,6 +25,10 @@ export const ChatButton = styled(Link)`
   border-radius: 10px;
   text-decoration: none;
   text-align: center;
+  &:hover {
+    background-color: #ff7140; // 버튼 호버 시 내부 색상 변경
+    border-color: #ff7140; // 버튼 호버 시 테두리 색상 변경
+  }
 `;
 
 export const ImageSection = styled.div`
@@ -110,12 +114,14 @@ export const TopButtons = styled.div`
   margin-top: 1vw;
   display: flex;
   justify-content: flex-end;
+
 `;
 
 export const TopButtonsLeft = styled.div`
   margin-top: 1vw;
   display: flex;
   justify-content: flex-start;
+  
 `;
 
 // 찜하기 버튼 스타일
@@ -129,6 +135,10 @@ export const Button = styled.button`
   cursor: pointer;
   margin: 0.6vw;
   border: none;
+  &:hover {
+    background-color: #ff7140; // 버튼 호버 시 내부 색상 변경
+    border-color: #ff7140; // 버튼 호버 시 테두리 색상 변경
+  }
 `;
 
 export const StatusMessage = styled.div`
@@ -173,6 +183,7 @@ export const HealthInfoBox = styled.div`
   flex-direction: column; // 수직 방향으로 내용을 정렬합니다.
   height: 12vw;
   overflow: auto; // 여기에 추가합니다.
+  word-wrap: break-word;
 `;
 
 export const IntroductionBox = styled.div`
@@ -186,6 +197,7 @@ export const IntroductionBox = styled.div`
   flex-direction: column; // 수직 방향으로 내용을 정렬합니다.
   height: 12vw;
   overflow: auto; // 여기에 추가합니다.
+  word-wrap: break-word;
 `;
 
 export const ModalContainer = styled.div`

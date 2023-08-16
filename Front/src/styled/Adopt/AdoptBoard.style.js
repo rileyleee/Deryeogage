@@ -50,6 +50,10 @@ export const Button = styled.button`
   display: block;
   width: fit-content;
   cursor: pointer;
+  &:hover {
+    background-color: #ff7140; // 버튼 호버 시 내부 색상 변경
+    border-color: #ff7140; // 버튼 호버 시 테두리 색상 변경
+  }
 `;
 
 export const SelectInputBox = styled.div`
@@ -163,6 +167,10 @@ export const RefreshButton = styled.button`
   padding: 0.5vw 1vw;
   border-radius: 20px;
   color: white;
+  &:hover {
+    background-color: #ff7140; // 버튼 호버 시 내부 색상 변경
+    border-color: #ff7140; // 버튼 호버 시 테두리 색상 변경
+  }
 `;
 
 export const DistanceLabel = styled.div`
