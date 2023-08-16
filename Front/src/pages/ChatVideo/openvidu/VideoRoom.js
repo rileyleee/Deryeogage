@@ -42,8 +42,6 @@ class VideoRoom extends Component {
         this.handlerJoinSessionEvent = this.handlerJoinSessionEvent.bind(this);// 세션 참가, 방입장
         this.handlerLeaveSessionEvent = this.handlerLeaveSessionEvent.bind(this);// 세션 종료, 방퇴장
         this.handlerErrorEvent = this.handlerErrorEvent.bind(this);
-        // this.handleChangeSessionId = this.handleChangeSessionId.bind(this);
-        // this.handleChangeUserName = this.handleChangeUserName.bind(this);
         this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
         this.toggleSound = this.toggleSound.bind(this)
         this.camStatusChanged = this.camStatusChanged.bind(this) // 카메라 상태 변경
@@ -88,22 +86,7 @@ class VideoRoom extends Component {
         }
     }
 
-    // toggleSound() {
-    //     this.setState({ mutedSound: !this.state.mutedSound })
-    // }
 
-    // 세션을 초기화하고 스트림이 생성될때 세션에 접속
-    // joinSession(event) {
-    //     if (this.state.mySessionId && this.state.myUserName) {
-    //         this.getToken().then((token) => {
-    //             this.setState({
-    //                 token: token,
-    //                 session: true,
-    //             });
-    //         });
-    //         event.preventDefault();
-    //     }
-    // }
     deleteSubscriber(streamManager) {
         let subscribers = this.state.subscribers;
         let index = subscribers.indexOf(streamManager, 0);
@@ -284,8 +267,6 @@ class VideoRoom extends Component {
 
         // --- 7) Leave the session by calling 'disconnect' method over the Session object ---
 
-        // let roomId = this.props.roomId
-        // let nickname = this.props.nickname
         this.props.setShowVideoRoom(false); // 세션 종료시 바로 상세페이지로 이동하기 위한 변수
         const mySession = this.state.session;
 
@@ -293,7 +274,7 @@ class VideoRoom extends Component {
             mySession.disconnect();
         }
 
-        console.log("Session : ", mySession.sessionId);
+        // console.log("Session : ", mySession.sessionId);
 
         // Empty all properties...
         this.OV = null;

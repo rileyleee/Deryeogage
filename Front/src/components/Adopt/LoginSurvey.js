@@ -113,7 +113,6 @@ function LoginSurvey() {
   return (
     <>
       <div>
-        <S.Smallspacer></S.Smallspacer>
         <S.StyledText>
           <S.Span>{localStorage.getItem("nickname")}</S.Span>님의 선호도조사를
           기반으로 강아지를 추천해드려요!
