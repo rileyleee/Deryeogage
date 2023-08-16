@@ -8,6 +8,7 @@ import LoginSurvey from "../../components/Adopt/LoginSurvey";
 import DogListItem from "./../../components/Adopt/DogListItem";
 import Pagination from "react-js-pagination";
 import ReactSelect from "react-select";
+import { act } from "react-dom/test-utils";
 
 function getColorForStatus(status) {
   switch (status) {
@@ -241,6 +242,9 @@ function AdoptBoard() {
                   )}
                   onChange={(option) => {
                     setSearchCategory(option.value);
+                    setActivePage(1);
+                    sessionStorage.setItem("activePage", activePage);
+                    
                   }}
                   options={searchOptions}
                   styles={{
@@ -266,6 +270,7 @@ function AdoptBoard() {
                   onChange={(e) => {
                     setSearchText(e.target.value)
                     setActivePage(1); // 페이지를 1로 초기화
+                    sessionStorage.setItem("activePage", activePage);
                   }}
                 />
               </S.SelectInputBox>
