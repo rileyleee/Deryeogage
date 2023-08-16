@@ -2,10 +2,10 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const Container = styled.div`
-  margin: 2vh 0;
+  margin-top: 2vh;
   display: flex;
   flex-direction: column; // 세로 방향으로 아이템을 나열합니다.
-  height: 82vh; // 가능한 한 최대 높이를 사용합니다.
+  height: auto; // 가능한 한 최대 높이를 사용합니다.
 `;
 
 export const StyledVideo = styled.video`
@@ -41,7 +41,7 @@ export const BoardTitle = styled.div`
 `;
 
 export const DogHealth = styled.div`
-  margin-top: 2vh;
+
   margin-left: 1vw;
   margin-right: 1vw;
 `;
@@ -94,7 +94,7 @@ export const Box = styled.div`
 `;
 
 export const infoBox = styled.div`
-  margin: 1vw 0;
+  margin-top: 1vw;
   padding: 2vh 2vw; // 패딩을 증가시켰습니다
   border: 1px #ff914d solid;
   border-radius: 15px;

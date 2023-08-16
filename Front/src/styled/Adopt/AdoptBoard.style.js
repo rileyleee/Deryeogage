@@ -104,6 +104,7 @@ export const Media = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const StyledPagination = styled.div`

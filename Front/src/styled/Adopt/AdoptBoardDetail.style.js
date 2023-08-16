@@ -150,11 +150,17 @@ export const PawBox = styled.div`
   background-color: #FFF8E4;
   text-align: center;
   display: flex;
-  align-items: center; /* SurveyPaw 컴포넌트들을 수직 방향으로 중앙 정렬 */
-  flex-direction: column; /* SurveyPaw 컴포넌트들을 수직 방향으로 배치 */
+  align-items: center; 
+  flex-direction: column;
   margin-right: 1vw;
-  margin-top:1vh;
+  margin-top: 1vh;
 
+  @media (max-width: 100vw) { 
+    padding: 3vh 0; // 패딩 크기 줄임
+    font-size: 0.8rem; // 글자 크기 줄임
+    margin-right: 0.5vw;
+    margin-top: 0.5vh;
+  }
 `;
 
 export const HealthInfoBox = styled.div`

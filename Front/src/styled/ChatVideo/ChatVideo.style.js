@@ -31,6 +31,7 @@ export const StyledDogDetail = styled.div`
   margin: 10px; // add margin around the box
   padding: 10px; // add padding inside the box
   background-color: white; // set background color to white
+  overflow: auto;
 `;
 
 export const ModalButton = styled.button`
