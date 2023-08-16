@@ -249,11 +249,15 @@ const formatMessageTime = (createdDate) => {
       <div>
       {!searchMode ? (
     <div className="d-flex justify-content-between">
-      <div id="roomInfo"></div>
+      {/* <div id="roomInfo"></div> */}
       <SearchButton onClick={handleSearchClick} />
     </div>
 ) : (
-          <div className="d-flex justify-content-between">
+          <div className="d-flex ">
+            <ExitButton onClick={() => {
+              setSearchMode(false);
+              handleSearchExit();}
+              }></ExitButton>
             <SearchInput
   type="text"
   ref={searchInputRef}  // <-- Add this line
@@ -261,10 +265,7 @@ const formatMessageTime = (createdDate) => {
   onChange={handleSearchInput}
   onKeyPress={handleSearchEnter}
 />
-            <ExitButton onClick={() => {
-              setSearchMode(false);
-              handleSearchExit();}
-              }></ExitButton>
+            
           </div>
         )}
       {messages.length > 0 ? (
@@ -434,7 +435,7 @@ const UserImage = styled.img`
 `;
 
 const SearchInput = styled.input`
-  width: 60%;
+  width: 50%;
 `;
 
 const SearchButton = styled.button`

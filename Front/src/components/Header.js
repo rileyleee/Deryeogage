@@ -3,7 +3,7 @@ import * as S from "../styled/Header.style";
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useRecoilState } from "recoil";
-import { SimulationExistAtom, SimulationNum } from "../recoil/SimulationAtom";
+import { SimulationExistAtom } from "../recoil/SimulationAtom";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
@@ -15,6 +15,18 @@ function Header() {
   const isLoggedIn = insertedToken !== null;
   // 새로 추가된 함수
 
+  const cilckSurvey = useCallback(async () => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      // token이 없으면 localStorage에 redirect 경로를 저장하고 로그인 페이지로 리다이렉트합니다.
+      localStorage.setItem("redirect", "/survey");
+      window.location.href = "/login?redirect=/survey";
+      return;
+    }window.location.href = "/survey";
+  }, []);
+
+
   const checkUserCheckList = useCallback(async () => {
     const token = localStorage.getItem("accessToken");
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -25,6 +37,7 @@ function Header() {
       window.location.href = "/login?redirect=/checklist";
       return;
     }
+
 
     try {
       const response = await axios.get(`${REACT_APP_API_URL}/pretests`, {
@@ -245,7 +258,6 @@ function Header() {
   useEffect(() => {
     console.log(existValue);
   }, [existValue]);
-  
 
   return (
     <S.HeaderWrapper className="navbar navbar-expand-lg">
@@ -281,7 +293,23 @@ function Header() {
             </li>
             <li className="nav-item">
               <S.Navlink
-                active={pathname === '/checklist' || pathname === '/checklist/result'}
+                active={pathname === "/survey"}
+                className="nav-link"
+                aria-current="page"
+                href="/survey"
+                onClick={(event) => {
+                  event.preventDefault();
+                  cilckSurvey(event);
+                }}
+              >
+                선호도조사
+              </S.Navlink>
+            </li>
+            <li className="nav-item">
+              <S.Navlink
+                active={
+                  pathname === "/checklist" || pathname === "/checklist/result"
+                }
                 className="nav-link"
                 aria-current="page"
                 href="/checklist"
@@ -290,12 +318,16 @@ function Header() {
                   checkUserCheckList(event);
                 }}
               >
-                체크리스트
+                사전테스트
               </S.Navlink>
             </li>
             <li className="nav-item">
               <S.Navlink
-                active={pathname === "/simulations" || pathname === '/simulations/end' || pathname === '/nosimulations'}
+                active={
+                  pathname === "/simulations" ||
+                  pathname === "/simulations/end" ||
+                  pathname === "/nosimulations"
+                }
                 className="nav-link"
                 aria-current="page"
                 href="/simulations"

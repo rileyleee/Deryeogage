@@ -5,7 +5,7 @@ import * as S from "../../styled/Check/GameBasicScreen.style"
 import GameMenu from "./GameMenu"
 import GameBtn from "./GameBtn"
 import {useRecoilValue, useRecoilState} from "recoil"
-import { SimulationExistAtom, SimulationWalkingCnt, SimulationCost, requirementImagesState, nextImageState, SimulationHp, GameQuiz, SelectedQuiz } from "../../recoil/SimulationAtom"
+import { SimulationExistAtom, SimulationCost, requirementImagesState, nextImageState, SimulationHp, GameQuiz, SelectedQuiz } from "../../recoil/SimulationAtom"
 
 
 function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기

@@ -1,6 +1,6 @@
 //LoginHandeler.js
 
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
 // import { useRecoilState } from "recoil"; // Recoil에서 useRecoilState를 가져옴
