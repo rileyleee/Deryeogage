@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StyledContainer = styled.div`
-  min-height: 50vh; // 원하는 높이로 설정
+  min-height: 25vw; // 원하는 높이로 설정
   display: flex;
   justify-content: space-between;
 `;
@@ -14,11 +14,11 @@ export const StyledChatRoomDetail = styled.div`
 export const StyledChatRoom = styled.div`
   position: relative;
   border: 1px #ff914d solid;
-  border-radius: 10px;
+  border-radius: 0.6vw;
   width: 35%;
   box-sizing: border-box;
-  margin: 10px; // add margin around the box
-  padding: 10px; // add padding inside the box
+  margin: 0.6vw; // add margin around the box
+  padding: 0.6vw; // add padding inside the box
   background-color: white; // set background color to white
   // flex-direction: column;  // 추가
 `;
@@ -28,9 +28,10 @@ export const StyledDogDetail = styled.div`
   border-radius: 10px;
   width: 65%;
   box-sizing: border-box;
-  margin: 10px; // add margin around the box
-  padding: 10px; // add padding inside the box
+  margin: 0.6vw; // add margin around the box
+  padding: 0.6vw; // add padding inside the box
   background-color: white; // set background color to white
+  overflow: auto;
 `;
 
 export const ModalButton = styled.button`
@@ -39,11 +40,11 @@ export const ModalButton = styled.button`
   border-radius: 5px;
   color: #ffffff;
   background-color: #ff914d;
-  padding: 8px 12px;
+  padding: 0.4vw 1vw;
   transition: 0.3s; // 마우스 호버 시 부드럽게 스타일 변화
-  top: 10px;
-  right: 10px;
-  margin-top: 2vh;
+  top: 0.8vw;
+  right: 0.6vw;
+  margin-top: 1vw;
   &:hover {
     background-color: #ff7140; // 버튼 호버 시 내부 색상 변경
     border-color: #ff7140; // 버튼 호버 시 테두리 색상 변경
@@ -58,16 +59,16 @@ export const Modal = styled.div`
   z-index: 1000; // 다른 요소 위에 나타나도록 z-index 설정
   height: 60%; // 모달 창의 높이를 80%로 설정
   background-color: white; // 배경색을 흰색으로 설정
-  padding: 20px; // 내부 패딩 추가
+  padding: 1.2vw; // 내부 패딩 추가
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); // 모달에 그림자 효과 추가
   text-align: ${(props) =>
     props.modalType === "reservation" ? "center" : "inherit"};
-  width: ${(props) => (props.modalType === "reservation" ? "30vw" : "1000px")};
+  width: ${(props) => (props.modalType === "reservation" ? "30vw" : "65vw")};
 `;
 
 export const CloseButton = styled.button`
   position: absolute; // 상위 요소인 Modal에 대해 절대 위치 설정
-  bottom: 10px; // 하단에서 10px 떨어지도록 설정
+  bottom: 0.6vw; // 하단에서 10px 떨어지도록 설정
   left: 50%; // 왼쪽에서 50% 위치하도록 설정
   transform: translateX(
     -50%
@@ -77,7 +78,7 @@ export const CloseButton = styled.button`
   background-color: #f3f3f3; // 버튼의 배경색 설정 (원하는 색상으로 변경 가능)
   border: none; // 경계선 제거
   border-radius: 5px; // 버튼의 모서리 둥글게 처리
-  font-size: 16px; // 글자 크기 설정
+  font-size: 1rem; // 글자 크기 설정
   :hover {
     background-color: #e6e6e6; // 마우스 오버시 배경색 변경
   }

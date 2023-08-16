@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const MessageList = styled.ul`
-  height: 73vh; // 원하는 높이 설정
+  height: auto; // 원하는 높이 설정
   overflow-y: auto; // 내용이 높이를 초과할 경우 스크롤 생성
   list-style: none;
   padding: 0;
@@ -46,11 +46,11 @@ export const MessageTime = styled.small`
 
 export const MessageInput = styled.input`
   width: 80%;
-  padding: 5px;
+  padding: 0.3vw;
 `;
 
 export const SendButton = styled.button`
-  padding: 5px 10px;
+  padding: 0.3vw 0.6vw;
 `;
 
 export const RoomInfo = styled.div`

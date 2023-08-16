@@ -51,7 +51,7 @@ function UserProfile({ data }) {
       <p>
         분양 수: {userInfo.adoptFromCount || 0}건
       </p>
-      <p>사전테스트 점수: {userInfo.preTestScore || "테스트 수행 전"}점</p>
+      <p>사전테스트 점수: {`${userInfo.preTestScore}점` || "테스트 수행 전"}</p>
       <p>
         시뮬레이션 칭호:{" "}
         {userInfo.simulationTitle || "칭호 부여 전"}

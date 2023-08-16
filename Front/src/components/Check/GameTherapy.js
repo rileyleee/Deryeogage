@@ -22,8 +22,8 @@ function GameTherapy(props) { // 자식에서 부모로 데이터 보내기
 
   return (
     <S.GameStartsecond className="col-10 second">
-        <S.GameDogImg src={`assets/${existData.petType}/sniff${existData.petType}.gif`} alt="" />
-        <S.GameEmergencyBtn><S.GameEmergencyBubble src="assets/things/therapy.png" alt="" /></S.GameEmergencyBtn>
+        <S.GameDogImg src={`/assets/${existData.petType}/sniff${existData.petType}.gif`} alt="" />
+        <S.GameEmergencyBtn><S.GameEmergencyBubble src="/assets/things/therapy.png" alt="" /></S.GameEmergencyBtn>
     </S.GameStartsecond>
     );
   }

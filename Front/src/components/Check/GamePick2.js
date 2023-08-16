@@ -19,7 +19,6 @@ function GamePick2(props) {
       <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-around">
           <S.GamePick1Text className='bgi'>강아지를 키울 집을 골라주세요!</S.GamePick1Text>
           <div className='d-flex justify-content-around align-items-center'>
-          {/* <S.GamePick2Arrow src="assets/things/left-arrow.png" alt="left-arrow" /> */}
           <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="true">
             <div className="carousel-indicators">
               <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>

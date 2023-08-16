@@ -2,14 +2,14 @@ import styled from "styled-components";
 
 export const GameStartsecond = styled.div`
     &.second {
-        padding: 3vh;
-        height: 70vh;
+        height: 34vw;
+        padding: 0.5vw;
         position: relative;
         /* background-color: beige; */
         /* padding-bottom: 35%; */
     }
     &::before {
-        background-image: url("assets/home/home0.png");
+        background-image: url("/assets/home/home0.png");
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
@@ -49,10 +49,10 @@ export const GameStartPtag = styled.p`
 `
 
 export const GameStartButton = styled.button`
-    margin-top: 4vh;
+    margin-top: 2vw;
     font-weight: bold;
     width: 13vw;
-    height: 7vh;
+    height: 3vw;
     background-color: #FF914D;
     border-radius: 30px;
     border: none;

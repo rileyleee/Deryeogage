@@ -28,7 +28,7 @@ export const MissionModal = styled.div`
 export const CloseButton = styled.button`
   background-color: #D6D6D6;
   color: black;
-  padding: 10px 20px;
+  padding: 0.5vw 1vw;
   border: none;
   cursor: pointer;
   border-radius : 10px;
@@ -39,7 +39,7 @@ export const CloseButton = styled.button`
 
 export const MissionContent = styled.div`
   background-color: white;
-  padding: 20px;
+  padding: 1vw;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -69,11 +69,6 @@ export const ConfirmedButton = styled.button`
   color: white;
   border: none;
 `;
-
-// export const MediaContainer = styled.div`
-//   width: 100%;
-//   height: 100%;
-// `;
 
 export const StyledImage = styled.img`
   width: 3vw;
@@ -109,19 +104,8 @@ export const ResponsibilityButton = styled.button`
   }
 `;
 
-export const BoardList = styled.div`
-    margin: 0 2vw;
-`
-
-export const Hr = styled.hr`
-    margin: 0 2vw;
-    height: 2px;
-    color: #FF914D;
-    background-color : #FF914D;
-`
-
 export const BoardRow = styled.div`
-  padding: 1vh 0 1vh 2vw;
+  padding: 0.5vw 0 0.5vw 2vw;
   &.list {
     margin: 0 2vw;
     border-top: 2px solid #CCCCCC;
@@ -135,7 +119,7 @@ export const BoardRow = styled.div`
 `
 
 export const ScrollBar = styled.div`
-  max-height: 40vh; /* 원하는 높이 설정 */
+  max-height: 21vw; /* 원하는 높이 설정 */
   overflow-y: auto;  /* 세로 스크롤 표시 */
   margin-right: 2vw;
 `

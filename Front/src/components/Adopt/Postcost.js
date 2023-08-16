@@ -31,9 +31,9 @@ function Postcost({
     total_amount: 100000,
     vat_amount: 0,
     tax_free_amount: 0,
-    approval_url: `http://localhost:3000/adopt/chatroom/${roomId}?boardId=${boardId}`,
-    fail_url: `http://localhost:3000/adopt/chatroom/${roomId}?boardId=${boardId}`,
-    cancel_url: `http://localhost:3000/adopt/chatroom/${roomId}?boardId=${boardId}`,
+    approval_url: `https://i9b307.p.ssafy.io/adopt/chatroom/${roomId}?boardId=${boardId}`,
+    fail_url: `https://i9b307.p.ssafy.io/adopt/chatroom/${roomId}?boardId=${boardId}`,
+    cancel_url: `https://i9b307.p.ssafy.io/adopt/chatroom/${roomId}?boardId=${boardId}`,
   };
 
   const postData = {
@@ -46,7 +46,7 @@ function Postcost({
 
   useEffect(() => {
     axios({
-      url: "/v1/payment/ready",
+      url: "https://kapi.kakao.com/v1/payment/ready",
       method: "POST",
       headers: {
         Authorization: "KakaoAK e7cb853a9537243908236f15e2fce905",

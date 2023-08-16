@@ -2,10 +2,10 @@ import styled from "styled-components";
 
 export const GameStartsecond = styled.div`
     &.second {
-        height: 70vh;
-        padding: 1vh;
+        height: 34vw;
+        padding: 0.5vw;
         background-image: 
-        url(${props => `assets/home/home${props.background}.jpg`});
+        url(${props => `/assets/home/home${props.background}.jpg`});
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
@@ -32,7 +32,7 @@ export const ModalIMG = styled.img`
 export const DogBtn = styled.button`
     background:transparent;
     border: none;
-    height: 12vh;
+    height: 7vw;
 `
 
 export const DogImg = styled.img`
@@ -45,6 +45,6 @@ export const DogImg = styled.img`
 
 export const Requirement = styled.img`
     width: 7vw;
-    height: 12vh;
+    height: 6vw;
 `
 

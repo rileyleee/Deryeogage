@@ -384,21 +384,19 @@ function AdoptBoardDetail() {
                 <ResultPaw title="털빠짐" selected={adoptData.board.hair} />
               </S.PawBox>
             </Col>
-            <Col xs={8}>
-              <Container>
-                <Row>
-                  <S.DogTitle>건강정보</S.DogTitle>
-                  <S.HealthInfoBox>
-                    <div>{adoptData.board.health}</div>
-                  </S.HealthInfoBox>
-                </Row>
-                <Row>
-                  <S.DogTitle>소개</S.DogTitle>
-                  <S.IntroductionBox>
-                    <div>{adoptData.board.introduction}</div>
-                  </S.IntroductionBox>
-                </Row>
-              </Container>
+            <Col xs={8} className="d-flex flex-column justify-content-between">
+              <div>
+                <S.DogTitle>건강정보</S.DogTitle>
+                <S.HealthInfoBox>
+                  <div>{adoptData.board.health}</div>
+                </S.HealthInfoBox>
+              </div>
+              <div>
+                <S.DogTitle>소개</S.DogTitle>
+                <S.IntroductionBox>
+                  <div>{adoptData.board.introduction}</div>
+                </S.IntroductionBox>
+              </div>
             </Col>
           </Row>
         </Container>
