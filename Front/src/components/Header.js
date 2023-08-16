@@ -3,14 +3,29 @@ import * as S from "../styled/Header.style";
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useRecoilState } from "recoil";
-import { SimulationExistAtom, SimulationNum } from "../recoil/SimulationAtom";
+import { SimulationExistAtom } from "../recoil/SimulationAtom";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Header() {
+  const location = useLocation();
+  const { pathname } = location;
   // 토큰 유무에 따라 로그인 <-> 마이페이지 변경할 수 있게 쓸거임
   const insertedToken = localStorage.getItem("accessToken");
   const isLoggedIn = insertedToken !== null;
   // 새로 추가된 함수
+
+  const cilckSurvey = useCallback(async () => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      // token이 없으면 localStorage에 redirect 경로를 저장하고 로그인 페이지로 리다이렉트합니다.
+      localStorage.setItem("redirect", "/survey");
+      window.location.href = "/login?redirect=/survey";
+      return;
+    }window.location.href = "/survey";
+  }, []);
+
 
   const checkUserCheckList = useCallback(async () => {
     const token = localStorage.getItem("accessToken");
@@ -22,6 +37,7 @@ function Header() {
       window.location.href = "/login?redirect=/checklist";
       return;
     }
+
 
     try {
       const response = await axios.get(`${REACT_APP_API_URL}/pretests`, {
@@ -242,14 +258,90 @@ function Header() {
   useEffect(() => {
     console.log(existValue);
   }, [existValue]);
+  
+  const [adoptdata, setAdoptData] = useState(null);
+  const [postcostdata, setpostcostdata] = useState(null);  
+  console.log(adoptdata)
+  console.log(postcostdata)
+  const [dogToHome, setDogToHome] = useState('start')
+  console.log(dogToHome)
+  const fetchAdopts = async () => {
+    const token = localStorage.getItem("accessToken");
+    const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
+    try {
+      const response = await axios.get(`${REACT_APP_API_URL}/adopts/to`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("adopt/to 값 +++++++++++++++++++++++ ", response);
+
+      const boardResponse = await axios.get(
+        `${REACT_APP_API_URL}/boards/list`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("====================adoptTo:", response.data.data)
+
+      setAdoptData(response.data.data);
+    } catch (error) {
+      console.error("An error occurred while fetching the data:", error);
+    }
+  };
+  useEffect(() => { // 분양 내역 get
+    const getPostCost = async () => {
+      const token = localStorage.getItem("accessToken");
+      const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
+
+      try {
+        const response = await axios.get(`${REACT_APP_API_URL}/postcosts`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("입양 내역: ",response);
+        setpostcostdata(response.data.data)
+      } catch (error) {
+        console.error("An error occurred while fetching the data:", error);
+      }
+    };
+
+    getPostCost();
+  }, []);
+  
+  
+  // 입양 데이터
+  const AdoptDataComponent = (adoptdata, postcostdata) => {
+    // Step 2: Status 값을 가져오는 함수 작성
+    if (postcostdata !== null && adoptdata !== null) {
+      for (let i=0; i < postcostdata.length; i++) {
+        if (postcostdata[i].returnYn === null) {
+          return adoptdata[i].status;
+        }
+      }
+    }
+  }
+  
+  useEffect(() => {
+    fetchAdopts();
+  }, []);
+
+  useEffect(() => {
+    setDogToHome(AdoptDataComponent(adoptdata, postcostdata))
+  }, [adoptdata, postcostdata]);
+  console.log(AdoptDataComponent(adoptdata, postcostdata))
   return (
     <S.HeaderWrapper className="navbar navbar-expand-lg">
       <div className="container-fluid">
         <a className="navbar-brand" href="/">
           <img alt="Logo" src="/assets/logo.png" height="50vh" />
         </a>
-        <button
+        <S.DogImg src={dogToHome ? `/assets/adopt/${dogToHome}.png` : `/assets/adopt/start.png`} alt="adopt" height="50vh" />
+        <S.ButtonWrapper
           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
@@ -259,19 +351,44 @@ function Header() {
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
-        </button>
+        </S.ButtonWrapper>
         <div
           className="collapse navbar-collapse justify-content-end"
           id="navbarNavDropdown"
         >
           <ul className="navbar-nav">
+            {/* <li className="nav-item">
+              <img src="/assets/adopt/start.png" alt="adopt" />
+            </li> */}
             <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="/adopt">
+              <S.Navlink
+                active={pathname.startsWith("/adopt")}
+                className="nav-link"
+                aria-current="page"
+                href="/adopt"
+              >
                 입양게시판
-              </a>
+              </S.Navlink>
             </li>
             <li className="nav-item">
-              <a
+              <S.Navlink
+                active={pathname === "/survey"}
+                className="nav-link"
+                aria-current="page"
+                href="/survey"
+                onClick={(event) => {
+                  event.preventDefault();
+                  cilckSurvey(event);
+                }}
+              >
+                선호도조사
+              </S.Navlink>
+            </li>
+            <li className="nav-item">
+              <S.Navlink
+                active={
+                  pathname === "/checklist" || pathname === "/checklist/result"
+                }
                 className="nav-link"
                 aria-current="page"
                 href="/checklist"
@@ -280,11 +397,16 @@ function Header() {
                   checkUserCheckList(event);
                 }}
               >
-                체크리스트
-              </a>
+                사전테스트
+              </S.Navlink>
             </li>
             <li className="nav-item">
-              <a
+              <S.Navlink
+                active={
+                  pathname === "/simulations" ||
+                  pathname === "/simulations/end" ||
+                  pathname === "/nosimulations"
+                }
                 className="nav-link"
                 aria-current="page"
                 href="/simulations"
@@ -294,21 +416,28 @@ function Header() {
                 }}
               >
                 시뮬레이션
-              </a>
+              </S.Navlink>
             </li>
 
-            {isLoggedIn ? ( // 토큰이 있으면 마이페이지 버튼을 보여줌
+            {isLoggedIn ? (
               <li className="nav-item">
-                <a className="nav-link" href="/profile">
+                <S.Navlink
+                  active={pathname === "/profile"}
+                  className="nav-link"
+                  href="/profile"
+                >
                   마이페이지
-                </a>
+                </S.Navlink>
               </li>
             ) : (
-              // 토큰이 없으면 로그인 버튼을 보여줌
               <li className="nav-item">
-                <a className="nav-link" href="/login">
+                <S.Navlink
+                  active={pathname === "/login"}
+                  className="nav-link"
+                  href="/login"
+                >
                   로그인
-                </a>
+                </S.Navlink>
               </li>
             )}
           </ul>

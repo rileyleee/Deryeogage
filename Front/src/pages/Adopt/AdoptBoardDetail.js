@@ -7,6 +7,8 @@ import ResultPaw from "./../../components/ResultPaw";
 import ReturnPrecosts from "../../components/Adopt/ReturnPreconsts";
 import UserProfile from "../../components/User/UserProfile";
 import ChatRoomsList from "../../pages/ChatVideo/ChatRoomsList";
+import { Link } from "react-router-dom";
+
 function AdoptBoardDetail() {
   const [precostsData, setPrecostsData] = useState(null);
   const [showProfileModal, setShowProfileModal] = useState(false); // 사용자 프로필 모달 상태를 제어하는 상태 변수
@@ -17,16 +19,16 @@ function AdoptBoardDetail() {
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
-  
+
   const [showChatRoomsModal, setShowChatRoomsModal] = useState(false);
 
   const handleShowChatRoomsModal = () => {
     setShowChatRoomsModal(true);
-};
+  };
 
-const handleCloseChatRoomsModal = () => {
+  const handleCloseChatRoomsModal = () => {
     setShowChatRoomsModal(false);
-};
+  };
 
   const toggleProfileModal = (event) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -170,7 +172,7 @@ const handleCloseChatRoomsModal = () => {
     fetchAdoptData();
     fetchFavoriteStatus(); // 찜 상태도 함께 가져옵니다.
     fetchPrecostsData(); // Add this line to fetch the /precosts data.
-  }, [boardId]);
+  }, []);
 
   if (!adoptData) {
     return null; // or a loading component
@@ -212,7 +214,9 @@ const handleCloseChatRoomsModal = () => {
         // 채팅 방 생성이 성공적으로 이루어진 경우
         // 채팅 방으로 이동하는 코드 작성
         console.log(response.data);
-        navigate(`/adopt/chatroom/${response.data.id}`, { state: { data } });
+        navigate(`/adopt/chatroom/${response.data.id}?boardId=${boardId}`, {
+          state: { data },
+        });
       } else {
         // 실패한 경우에 대한 처리
         console.log("채팅 방 생성에 실패했습니다.");
@@ -247,18 +251,25 @@ const handleCloseChatRoomsModal = () => {
         <Container fluid>
           <S.TopRow>
             <Col xs={7}>
-              <S.Status>
-                {/* 입양 상태에 따른 메시지 표시 */}
-                {adoptData.board.status === "depart" && (
-                  <S.StatusMessage>
-                    입양 진행 중인 강아지입니다.
-                  </S.StatusMessage>
-                )}
-                {adoptData.board.status === "arrive" && (
-                  <S.StatusMessage>입양 완료된 강아지입니다</S.StatusMessage>
-                )}
-              </S.Status>
+              <S.TopButtonsLeft>
+                <Link to="/adopt">
+                  <S.Button>목록으로</S.Button>
+                </Link>
+
+                <S.Status>
+                  {/* 입양 상태에 따른 메시지 표시 */}
+                  {adoptData.board.status === "depart" && (
+                    <S.StatusMessage>
+                      입양 진행 중인 강아지입니다.
+                    </S.StatusMessage>
+                  )}
+                  {adoptData.board.status === "arrive" && (
+                    <S.StatusMessage>입양 완료된 강아지입니다</S.StatusMessage>
+                  )}
+                </S.Status>
+              </S.TopButtonsLeft>
             </Col>
+
             <Col xs={5}>
               <S.TopButtons>
                 {!isWriter() && (
@@ -267,19 +278,26 @@ const handleCloseChatRoomsModal = () => {
                   </S.Button>
                 )}
 
-{isWriter() && (
-  <>
-    <S.Button onClick={handleShowChatRoomsModal}>채팅방 목록보기</S.Button>
-    {showChatRoomsModal && (
-      <S.ModalContainer>
-        <S.ModalContent>
-          <ChatRoomsList boardId={boardId} onClose={handleCloseChatRoomsModal} />
-        </S.ModalContent>
-      </S.ModalContainer>
-    )}
-  </>
-)}
-                {canChat() && <S.Button onClick={handleChat}>채팅하기</S.Button>}
+                {isWriter() && (
+                  <>
+                    <S.Button onClick={handleShowChatRoomsModal}>
+                      채팅방 목록보기
+                    </S.Button>
+                    {showChatRoomsModal && (
+                      <S.ModalContainer>
+                        <S.ModalContent>
+                          <ChatRoomsList
+                            boardId={boardId}
+                            onClose={handleCloseChatRoomsModal}
+                          />
+                        </S.ModalContent>
+                      </S.ModalContainer>
+                    )}
+                  </>
+                )}
+                {canChat() && (
+                  <S.Button onClick={handleChat}>채팅하기</S.Button>
+                )}
               </S.TopButtons>
             </Col>
           </S.TopRow>
@@ -348,8 +366,13 @@ const handleCloseChatRoomsModal = () => {
           </Row>
           <Row>
             <Col xs={4}>
-                <S.DogTitle>{adoptData.board.name} 특성과 성격</S.DogTitle>
+              <S.DogTitle>{adoptData.board.name}의 특성과 성격</S.DogTitle>
               <S.PawBox>
+                <S.ResultPawText>
+                  {adoptData.board.name}의 특성과 성격을 보호자가 직접
+                  입력했습니다. <br />이 점을 참고해서 강아지를 간단하게
+                  파악하세요.
+                </S.ResultPawText>
                 {/* 강아지 특성 정보를 표시하는 섹션 */}
                 <ResultPaw title="친화력" selected={adoptData.board.friendly} />
                 <ResultPaw title="활동량" selected={adoptData.board.activity} />
@@ -364,13 +387,13 @@ const handleCloseChatRoomsModal = () => {
             <Col xs={8}>
               <Container>
                 <Row>
-                    <S.DogTitle>건강정보</S.DogTitle>
+                  <S.DogTitle>건강정보</S.DogTitle>
                   <S.HealthInfoBox>
                     <div>{adoptData.board.health}</div>
                   </S.HealthInfoBox>
                 </Row>
                 <Row>
-                    <S.DogTitle>소개</S.DogTitle>
+                  <S.DogTitle>소개</S.DogTitle>
                   <S.IntroductionBox>
                     <div>{adoptData.board.introduction}</div>
                   </S.IntroductionBox>

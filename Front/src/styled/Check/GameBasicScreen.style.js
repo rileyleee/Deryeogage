@@ -5,8 +5,6 @@ export const GameStartsecond = styled.div`
         height: 70vh;
         padding: 1vh;
         background-image: 
-        /* url('assets/things/requirement1.png'),
-        url(${props => `assets/${props.petType}/idle${props.petType}.gif`}),  */
         url(${props => `assets/home/home${props.background}.jpg`});
         background-repeat: no-repeat;
         background-position: center;
@@ -39,6 +37,10 @@ export const DogBtn = styled.button`
 
 export const DogImg = styled.img`
     width: 15vw;
+    image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+    image-rendering: -o-crisp-edges;           /* OS X & Windows Opera (12.02+) */
+    image-rendering: pixelated;                /* Chrome */
+    image-rendering: optimizeSpeed;            /* Older versions of FF */
 `
 
 export const Requirement = styled.img`

@@ -18,6 +18,7 @@ import Home from "./pages/Home";
 import AdoptBoard from "./pages/Adopt/AdoptBoard";
 import AdoptBoardCreate from "./pages/Adopt/AdoptBoardCreate";
 import AdoptBoardDetail from "./pages/Adopt/AdoptBoardDetail";
+import PayResult from "./components/Adopt/PayResult";
 
 // Simulation
 import Simulation from "./pages/Check/Simulation";
@@ -63,6 +64,8 @@ function App() {
             <Route path="/adopt/chatroom/:roomId" element={<ChatVideo />} />
             <Route path="/adopt/edit/:boardId" element={<AdoptBoardCreate />} />
 
+            <Route path="/payresult" element={<PayResult />} />
+            
             {/* 마이페이지 */}
             <Route path="/profile" element={<Profile />} />
             <Route path="/survey" element={<Survey />} />

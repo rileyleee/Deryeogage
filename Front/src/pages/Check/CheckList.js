@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import css from "styled-components";
 import CheckBtn from "../../components/Check/CheckBtn";
 import axios from "axios";
 
@@ -123,7 +122,8 @@ function CheckList() {
             <Tooltip>
               ⓘ
               <TooltipText className="tooltiptext">
-                입양서약서는 <br /> 10자 이상<br /> 작성해주세요.
+                입양서약서는 <br /> 10자 이상
+                <br /> 작성해주세요.
               </TooltipText>
             </Tooltip>{" "}
           </h2>
@@ -145,33 +145,10 @@ function CheckList() {
 export default CheckList;
 
 export const InfoContainer = styled.div`
-  margin-top: 50px;
-  margin-bottom: 20px;
-
-  h4 {
-    font-size: 17px;
-    font-weight: bold;
-    color: #4a2511;
-  }
-
+  margin: 2vh 1vw 4vh;
+  font-size: 2vw;
   span {
     color: #ff914d;
-  }
-`;
-
-const HoverButton = css`
-  &:hover {
-    background-color: #eb7d39;
-    display: inline-block;
-    vertical-align: middle;
-    -webkit-transform: perspective(1px) translateZ(0);
-    transform: perspective(1px) translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    overflow: hidden;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.5s;
-    -webkit-transition-property: color, background-color;
-    transition-property: color, background-color;
   }
 `;
 

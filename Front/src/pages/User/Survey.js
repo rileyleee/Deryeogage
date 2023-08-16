@@ -4,7 +4,6 @@ import SurveyPaw from "../../components/SurveyPaw";
 import * as S from "../../styled/User/Survey.style";
 import axios from "axios";
 import Modal from "react-modal"; // import react-modal
-import { Span } from "../../styled/SurveyPaw.style";
 
 Modal.setAppElement("#root");
 

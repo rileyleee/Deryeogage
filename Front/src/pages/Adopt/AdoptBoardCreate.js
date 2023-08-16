@@ -293,6 +293,7 @@ function AdoptBoardCreate() {
         navigate(`/adopt/${boardId}`);
         // 요청 성공 후
         setIsSubmitting(false); // 요청 상태 초기화
+        sessionStorage.removeItem("adoptData");
       } else {
         // FormData 객체의 내용을 콘솔로 출력하기 위한 코드
         for (var pair of formData.entries()) {
@@ -309,6 +310,7 @@ function AdoptBoardCreate() {
             },
           }
         );
+        sessionStorage.removeItem("adoptData");
 
         const newBoardId = response.data.data; // 서버의 응답 형식에 따라 이 부분이 수정되어야 할 수 있습니다.
         handlePrecostOpen(newBoardId); // 작성하기 버튼 클릭 시 모달 열기

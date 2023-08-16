@@ -81,7 +81,7 @@ function Simulation() {
         const Token = localStorage.getItem('accessToken');
         if (Token && ExistValue.endCheck === true) {
           console.log(ExistValue)
-          const response = await axios.put(`${REACT_APP_API_URL}/simulations/save`, 
+          await axios.put(`${REACT_APP_API_URL}/simulations/save`, 
           ExistValue, 
           {
             headers: {
