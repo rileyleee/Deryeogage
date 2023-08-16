@@ -20,6 +20,9 @@ export const UserInfoWrap = styled.div`
 
 export const UserInfoText = styled.p`
     margin-right: 2vw;
+    &.margin {
+        margin-top : 1.1vw;
+    }
 `
 
 export const MyBtn = styled.button`

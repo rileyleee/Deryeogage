@@ -306,39 +306,35 @@ function Home() {
         <S.Text>
           소중한 생명인 강아지와 오랜시간 함께할 <S.Span>인연</S.Span>을 만듭니다.
         </S.Text>
-        <S.pTag style={{color: textColor}}>{hoverText}</S.pTag>
-            <S.RowWrap className='d-flex justify-content-around align-items-center'>
-              <div className='text-center'>
-                <S.Btn 
-                    onMouseEnter={() => handleMouseEnter(0)}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={(event) => handleLinkClick(event, "/simulations")}
-                >
-                    <img src="/assets/simulation_btn.png" alt="" />
-                </S.Btn>
-                <S.Name className='purple'>시뮬레이션</S.Name>
-              </div>
-              <div className='text-center'>
-                <S.Btn 
-                    onMouseEnter={() => handleMouseEnter(1)}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={(event) => handleLinkClick(event, "/survey")}
-                >
-                    <img src="/assets/survey_btn.png" alt="" />
-                </S.Btn>
-                <S.Name className='green'>설문조사</S.Name>
-              </div>
-              <div className='text-center'>
-                <S.Btn 
-                    onMouseEnter={() => handleMouseEnter(2)}
-                    onMouseLeave={handleMouseLeave}
-                    onClick={(event) => handleLinkClick(event, "/checklist")}
-                >
-                    <img src="/assets/pre-test_btn.png" alt="" />
-                </S.Btn>
-                <S.Name className='blue'>사전테스트</S.Name>
-              </div>
-            </S.RowWrap>
+        <S.pTag style={{color: textColor}} show={hoverText.length > 0}>
+          {hoverText}
+        </S.pTag>
+        <S.RowWrap className='d-flex justify-content-around align-items-center'>
+          <S.ImgDiv className='text-center'>
+              <S.ImgBtn className='simulation'
+              onMouseEnter={() => handleMouseEnter(0)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(event) => handleLinkClick(event, "/simulations")}
+              />
+            <S.Name className='purple'>시뮬레이션</S.Name>
+          </S.ImgDiv>
+          <S.ImgDiv className='text-center'>
+              <S.ImgBtn className='survey'
+              onMouseEnter={() => handleMouseEnter(1)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(event) => handleLinkClick(event, "/survey")}
+              />
+            <S.Name className='green'>설문조사</S.Name>
+          </S.ImgDiv>
+          <S.ImgDiv className='text-center'>
+              <S.ImgBtn className='checklist'
+              onMouseEnter={() => handleMouseEnter(2)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(event) => handleLinkClick(event, "/checklist")}
+              />
+            <S.Name className='blue'>사전테스트</S.Name>
+          </S.ImgDiv>
+        </S.RowWrap>
       </S.HomeContainer>
   </S.MainContainer>
   );

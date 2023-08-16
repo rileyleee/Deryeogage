@@ -21,7 +21,7 @@ export const SimulationExistAtom = atom({
         quizNum : parseInt(localStorage.getItem('quizNum')) || 0,
         requirement : localStorage.getItem('requirement') || '00000',
         startTime : localStorage.getItem('startTime'),
-        title : localStorage.getItem('title') || '',
+        title : localStorage.getItem('title') || null,
         train : localStorage.getItem('train') || '00000000',
         user : localStorage.getItem('user') || 0
     }

@@ -33,16 +33,16 @@ export const RowWrap = styled.div`
   height: 60vh;
 `
 
-export const Btn =styled.button`
-  background-color: transparent;
-  border: none;
-`
 export const pTag = styled.p`
-  height: 2vw;
+  height: ${props => (props.show ? '2vw' : '0')};
   font-size: 2vw;
-  margin: 1vw;
+  margin: ${props => (props.show ? '1vw' : '0')};
   text-align: center;
-`
+  opacity: ${props => (props.show ? 1 : 0)};
+  transition: opacity 0.3s ease, height 0.3s ease, margin 0.3s ease;
+`;
+
+
 
 export const Name = styled.p`
   font-size: 1vw;
@@ -60,3 +60,70 @@ export const Name = styled.p`
 export const Banner = styled.div`
   background-color: white;
 `
+
+export const ImgDiv = styled.div`
+  position: relative;
+  width: 16vw;  // 이미지의 실제 너비값
+  height: 12vw; // 이미지의 실제 높이값
+  overflow: hidden; // Add this line
+`;
+
+export const ImgBtn = styled.div`
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  
+  &.simulation{
+    background-image: url('/assets/simulation_btn.png');
+  }
+  &.survey{
+    background-image: url('/assets/survey_btn.png');
+  }
+  &.checklist{
+    background-image: url('/assets/pre-test_btn.png');
+  }
+
+  &::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    color: black;
+    border-radius: 5px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.5)
+    );
+    transform: skewX(-25deg);
+    opacity: 0;
+    transition: left 0.7s ease, opacity 0.7s ease;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+
+  &:hover::after {
+    left: 75%;
+    opacity: 1;
+  }
+`;

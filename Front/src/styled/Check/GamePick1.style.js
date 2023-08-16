@@ -19,30 +19,34 @@ export const GamePick1box = styled.button`
     background-repeat: no-repeat;
     background-position: center;
     border: none;
+    image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+    image-rendering: -o-crisp-edges;           /* OS X & Windows Opera (12.02+) */
+    image-rendering: pixelated;                /* Chrome */
+    image-rendering: optimizeSpeed;            /* Older versions of FF */
     &.box1 {
-        background-image: url("assets/rundogs/shiba1.gif"), url("assets/dog_bgi/dog_bgi_1.jpg");
+        background-image: url("assets/1/run1.gif"), url("assets/dog_bgi/dog_bgi_1.jpg");
         border: ${props => (props.isclicked ? '2px #FF914D solid' : 'none')};
-        background-size: 70% 50%, cover;
+        background-size: 120% 80%, cover;
     }
     &.box2 {
-        background-image: url("assets/rundogs/walk.gif"), url("assets/dog_bgi/dog_bgi_2.jpg");
+        background-image: url("assets/2/run2.gif"), url("assets/dog_bgi/dog_bgi_2.jpg");
         border: ${props => (props.isclicked ? '2px #FF914D solid' : 'none')};
         background-size: 120% 80%, cover;
     }
     &.box3 {
-        background-image: url("assets/rundogs/run.gif"), url("assets/dog_bgi/dog_bgi_3.jpg");
+        background-image: url("assets/3/run3.gif"), url("assets/dog_bgi/dog_bgi_3.jpg");
         border: ${props => (props.isclicked ? '2px #FF914D solid' : 'none')};
         background-size: 120% 80%, cover;
     }
     &.box4 {
-        background-image: url("assets/rundogs/corgi.gif"), url("assets/dog_bgi/dog_bgi_4.jpg");
+        background-image: url("assets/4/run4.gif"), url("assets/dog_bgi/dog_bgi_4.jpg");
         border: ${props => (props.isclicked ? '2px #FF914D solid' : 'none')};
         background-size: 120% 80%, cover;
     }
     &.box5 {
-        background-image: url("assets/rundogs/shiba2.gif"), url("assets/dog_bgi/dog_bgi_5.jpg");
+        background-image: url("assets/5/run5.gif"), url("assets/dog_bgi/dog_bgi_5.jpg");
         border: ${props => (props.isclicked ? '2px #FF914D solid' : 'none')};
-        background-size: 70% 50%, cover;
+        background-size: 120% 80%, cover;
     }
 `
 
