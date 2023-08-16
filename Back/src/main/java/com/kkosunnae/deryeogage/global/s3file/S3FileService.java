@@ -91,4 +91,19 @@ public class S3FileService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일(" + fileName + ") 입니다.");
         }
     }
+
+    private static String extractFileKeyFromURL(String url) {
+        String[] parts = url.split("/");
+        return parts[parts.length - 1];
+    }
+
+    public void deleteFileByUrl(String fileUrl) {
+        String fileKey = extractFileKeyFromURL(fileUrl);
+        try {
+            amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileKey));
+            log.info("File with URL {} successfully deleted from S3.", fileUrl);
+        } catch (Exception e) {
+            log.error("Error occurred while deleting file with URL {}: {}", fileUrl, e.getMessage());
+        }
+    }
 }

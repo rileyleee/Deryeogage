@@ -1,38 +1,17 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const MainContainer = styled.div`
-  &.slide {
     max-width: 100vw;
     height: 90vh;
-    overflow: auto;
-    scroll-snap-type: y mandatory;
-  }
-  &.slide::-webkit-scrollbar-thumb {
-  background-color: orange;
-  border-radius: 5px;
-}
-  &.slide::-webkit-scrollbar {
-    /* display: none; */
-    /* background-color: white; */
-    width: 5px;
-    margin-left: 5vw;
-  }
-  &.slide::-webkit-scrollbar-track {
-    background-color : white;
-  }
 `
 
 export const HomeContainer = styled.div`
-  scroll-snap-align: center;
   width: 100vw;
   height: 90vh;
   padding: 3vw;
   display: flex; /* Use flexbox to arrange the content */
   flex-direction: column; /* Arrange items vertically */
   position: relative; /* Set relative positioning for absolute elements */
-  /* &.page3 {
-    background-color: blue;
-  } */
 `;
 
 export const Span = styled.span`
@@ -42,76 +21,109 @@ export const Span = styled.span`
 
 export const Main = styled.div`
   padding: 3vh 0;
-  font-size: 4vw;
+  font-size: 3vw;
 `;
 
 export const Text = styled.div`
   padding-bottom: 1vh;
+  font-size: 1.5vw;;
+`;
+
+export const RowWrap = styled.div`
+  height: 60vh;
+`
+
+export const pTag = styled.p`
+  height: ${props => (props.show ? '2vw' : '0')};
   font-size: 2vw;
+  margin: ${props => (props.show ? '1vw' : '0')};
+  text-align: center;
+  opacity: ${props => (props.show ? 1 : 0)};
+  transition: opacity 0.3s ease, height 0.3s ease, margin 0.3s ease;
 `;
 
-export const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column; /* Arrange items vertically */
-  align-items: flex-start;
-  margin-top: 2vh; /* Add spacing between the content and the header */
+
+
+export const Name = styled.p`
+  font-size: 1vw;
+  &.purple {
+    color: #9A5BFF;
+  }
+  &.green {
+    color: #6B9C5A;
+  }
+  &.blue {
+    color: #738BDD;
+  }
+`
+
+export const Banner = styled.div`
+  background-color: white;
+`
+
+export const ImgDiv = styled.div`
+  position: relative;
+  width: 16vw;  // 이미지의 실제 너비값
+  height: 12vw; // 이미지의 실제 높이값
+  overflow: hidden; // Add this line
 `;
 
-export const Div = styled.div`
-  margin: 1vh;
-  padding-top: 2vh;
-  font-size: 3vh;
-`;
+export const ImgBtn = styled.div`
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  
+  &.simulation{
+    background-image: url('/assets/simulation_btn.png');
+  }
+  &.survey{
+    background-image: url('/assets/survey_btn.png');
+  }
+  &.checklist{
+    background-image: url('/assets/pre-test_btn.png');
+  }
 
-export const ImageWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 45vw;
-`;
+  &::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    color: black;
+    border-radius: 5px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
-export const Image = styled.img`
-  width: 30vw; /* Set the width to a fixed size */
-`;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.5)
+    );
+    transform: skewX(-25deg);
+    opacity: 0;
+    transition: left 0.7s ease, opacity 0.7s ease;
+  }
 
-export const StyledLink = styled.a`
-  text-decoration: none;
-  font-size: 1.5vw;
-  color: rgba(255, 145, 77, 1);
-  margin: 1vw;
-  font-weight: bold;
-  cursor: pointer; /* Add cursor: pointer style */
-  &:hover {
-    color: #4A2511;
+  &:hover::before {
+    opacity: 1;
+  }
+
+  &:hover::after {
+    left: 75%;
+    opacity: 1;
   }
 `;
-
-export const VideoContainer = styled.div`
-  overflow: hidden; // 초과 부분은 숨김
-  border-radius: 15px;
-  width: 100%
-  /* height: 70%; */
-`
-
-export const VideoContent = styled.video`
-  position: relative;  // 위치를 조정하기 위해 relative 설정
-  left: -5%; // 왼쪽으로 5%만큼 이동하여 양 옆을 동일하게 5%씩 잘라내기
-  width: 110%; // 원래의 100% + 왼쪽 5% + 오른쪽 5% = 110%
-  /* height: 95%; */
-`
-export const TextPtag = styled.p`
-  font-size: 2vw;
-  margin-bottom: 2vh;
-`
-
-export const ColumnContent = styled.div`
-  height: 80vh;
-`
-
-export const MediaContainer = styled.div`
-  margin-top: 5vh;
-`
-
-export const SurveyContainer = styled.video`
-  border-radius: 20px;
-  border: 2px dashed #FF914D;
-`

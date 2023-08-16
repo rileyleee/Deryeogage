@@ -2,6 +2,7 @@ package com.kkosunnae.deryeogage.domain.chat;
 
 import com.kkosunnae.deryeogage.domain.board.BoardService;
 import com.kkosunnae.deryeogage.domain.user.UserService;
+import com.kkosunnae.deryeogage.global.s3file.S3FileService;
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,8 @@ public class ChatController {
     private final SimpMessagingTemplate messagingTemplate;
     private final UserService userService;
     private final BoardService boardService;
+
+    private final S3FileService s3FileService;
 
     //스케쥴 잡기, 수정, 삭제
     @PutMapping("/room/{roomId}/schedule")
@@ -70,7 +73,7 @@ public class ChatController {
 
         // 새 채팅방 생성 후 반환
         ChatRoomRequestDto chatRoomRequestDto = new ChatRoomRequestDto(userId1,userId2,boardId,boardName);
-        ChatRoomResponseDto chatRoomResponseDto = chatRoomService.save(chatRoomRequestDto);
+        ChatRoomResponseDto chatRoomResponseDto = chatRoomService.save(userId2, chatRoomRequestDto);
         return new ResponseEntity<>(chatRoomResponseDto, HttpStatus.CREATED);
     }
 
@@ -102,8 +105,6 @@ public class ChatController {
         Long userId = jwtUtil.getUserId(jwtToken);
 
         ChatRoomResponseDto chatRoomResponseDto = chatRoomService.findById(userId, id);
-
-
 
         chatMessageService.markMessagesAsRead(id, userId);
         return new ResponseEntity<>(chatRoomResponseDto, HttpStatus.OK);

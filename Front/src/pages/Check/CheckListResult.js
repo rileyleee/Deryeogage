@@ -5,13 +5,6 @@ import styled, { css, keyframes } from 'styled-components';
 import { InfoContainer } from "./CheckList";
 import 'animate.css/animate.css';
 
-const breakpoints = {
-  xs: '480px',
-  sm: '768px',
-  md: '992px',
-  lg: '1200px',
-  lh: '1286px'
-};
 
 // styled-components 추가
 const ResultContainer = styled.div`
@@ -231,8 +224,6 @@ function CheckListResult() {
   const [showAnswers, setShowAnswers] = useState(false);
   const [answers, setAnswers] = useState({});
   const [data, setData] = useState({ score: "", promise: "", date: "" });
-  const [stampFinished, setStampFinished] = useState(false);
-
 
   const handleDeleteClick = async () => {
     // 삭제 버튼 핸들러 추가
@@ -277,11 +268,6 @@ function CheckListResult() {
 
   const currDate = new Date(data.date);
 
-  const handleToggleClick = () => {
-    setShowAnswers(!showAnswers);
-  };
-  console.log(data);
-
   const getAnswerColor = (answer) => {
     switch (answer) {
       case '아주많이':
@@ -297,7 +283,7 @@ function CheckListResult() {
   return (
     <div className="animate__animated animate__fadeIn">
       <InfoContainer>
-        <h4><span>사전테스트</span> 결과를 확인해보세요 !</h4>
+        {localStorage.getItem('nickname')}님의 <span>사전테스트</span> 결과를 확인해보세요
       </InfoContainer>
       <ResultContainer>
         <PledgeContainer>

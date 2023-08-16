@@ -80,24 +80,25 @@ function UserInfo() {
             <div className="col-4">
                 <S.ProfileImage src={profileImg} alt="프로필 이미지" />
             </div>
-            <div className="col-8 d-flex flex-column justify-content-between">
+            <div className="col-4 d-flex flex-column justify-content-between">
               <div className="d-flex justify-content-between">
                 <S.UserInfoText>닉네임 : {nickname}</S.UserInfoText>
-                <S.UserInfoText>
-                  칭호 :{" "}
-                  {userInfo.simulationTitle ? userInfo.simulationTitle : "없음"}
-                </S.UserInfoText>
               </div>
               <div className="d-flex justify-content-between">
-                <S.UserInfoText>입양 : {userInfo.adoptToCount}</S.UserInfoText>
-                <S.UserInfoText>
-                  분양 : {userInfo.adoptFromCount}
-                </S.UserInfoText>
+                <S.UserInfoText>입양 수 : {userInfo.adoptToCount}건</S.UserInfoText>
               </div>
               <S.UserInfoText>
-                사전 테스트 점수 : {userInfo.preTestScore}
+                사전 테스트 점수 : {userInfo.preTestScore}점
               </S.UserInfoText>
               <S.TestBtn href="/survey">선호도 조사하기</S.TestBtn>
+            </div>
+            <div className="col-4">
+                <S.UserInfoText>
+                  칭호 : {userInfo.simulationTitle}
+                </S.UserInfoText>
+                <S.UserInfoText className="margin">
+                  분양 수 : {userInfo.adoptFromCount}건
+                </S.UserInfoText>
             </div>
           </div>
         </div>

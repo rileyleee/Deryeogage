@@ -33,8 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "/v3/api-docs/**",
                         "/webjars/**",
                         "/api/users/oauth",
-                        "/api/boards/list",
-                        "/api/boards/each/**"); //추천 알고리즘은 어떻게 처리하지
+                        "/api/boards/list"); //추천 알고리즘은 어떻게 처리하지
 
 
     }

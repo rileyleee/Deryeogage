@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from "react";
-import axios from 'axios';
+import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as S from "../../styled/Check/GameMenu.style"
-import {useRecoilValue, useRecoilState} from 'recoil'
-import { SimulationExistAtom, SimulationCost  } from "../../recoil/SimulationAtom"
+import {useRecoilValue } from 'recoil'
+import { SimulationExistAtom } from "../../recoil/SimulationAtom"
 
 function GameMenu(props) {
     const existData = useRecoilValue(SimulationExistAtom)

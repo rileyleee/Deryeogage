@@ -34,8 +34,21 @@ public class SimulationService {
         simulationDto.setLastTime(LocalDateTime.now());
         SimulationEntity simulationEntity=simulationDto.toEntity(userRepository);
         SimulationDto savedSimulationDto = simulationRepository.save(simulationEntity).toDto();
+
         return savedSimulationDto;
     }
+
+    public SimulationDto saveSimulation2(SimulationDto simulationDto){
+        simulationDto.setLastTime(LocalDateTime.now());
+//        SimulationEntity simulationEntity=simulationDto.toEntity(userRepository);
+//        SimulationDto savedSimulationDto = simulationRepository.save(simulationEntity).toDto();
+
+        SimulationEntity simulationEntity=simulationRepository.findById(simulationDto.getId()).get();
+        simulationEntity.update(simulationDto);
+        SimulationDto savedSimulationDto = simulationRepository.save(simulationEntity).toDto();
+        return savedSimulationDto;
+    }
+
 
     public SimulationEntity result(Long userId){
         SimulationEntity simulationEntity = simulationRepository.findTopByUserIdAndEndCheckFalseOrderByIdDesc(userId);
@@ -48,7 +61,7 @@ public class SimulationService {
         List<SimulationEntity> simulationEntityList = simulationRepository.findByEndFalse();
         for(SimulationEntity simulationEntity : simulationEntityList){
             String newRequirement = simulationEntity.getRequirement().substring(0,1)+"0"+simulationEntity.getRequirement().substring(2);
-            simulationEntity.update(newRequirement);
+            simulationEntity.updateRequirement(newRequirement);
             simulationRepository.save(simulationEntity);
         }
     }
@@ -59,7 +72,7 @@ public class SimulationService {
         List<SimulationEntity> simulationEntityList = simulationRepository.findByEndFalse();
         for(SimulationEntity simulationEntity : simulationEntityList){
             String newRequirement = simulationEntity.getRequirement().substring(0,2) + "0"+simulationEntity.getRequirement().substring(3);
-            simulationEntity.update(newRequirement);
+            simulationEntity.updateRequirement(newRequirement);
             simulationRepository.save(simulationEntity);
         }
     }

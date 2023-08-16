@@ -1,5 +1,6 @@
 package com.kkosunnae.deryeogage.domain.chat;
 
+import com.kkosunnae.deryeogage.domain.board.BoardRepository;
 import com.kkosunnae.deryeogage.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -18,6 +20,7 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
+    private final BoardRepository boardRepository;
 
 
 
@@ -36,7 +39,9 @@ public class ChatRoomService {
         if (chatRoomEntity != null) {
             // 여기에서 ChatRoomEntity를 ChatRoomResponseDto로 변환하는 로직이 필요할 수 있습니다.
             // 예를 들어, new ChatRoomResponseDto(chatRoomEntity)와 같이 생성자를 사용할 수 있습니다.
-            return new ChatRoomResponseDto(chatRoomEntity);
+            ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(chatRoomEntity);
+            chatRoomResponseDto.setRoomName(boardRepository.findById(boardId).get().getTitle());
+            return chatRoomResponseDto;
         }
         return null;
     }
@@ -60,15 +65,31 @@ public class ChatRoomService {
     @Transactional
     public List<ChatRoomResponseDto> findAllInBoard(Long userId, Integer boardId) {
         List<ChatRoomEntity> chatRooms = chatRoomRepository.findAllByUser1_IdAndBoardId(userId, boardId);
-        return chatRooms.stream()
-                .map(chatRoom -> {
-                    ChatRoomResponseDto dto = new ChatRoomResponseDto(chatRoom);
-                    if(chatRoom.getUser2() != null && chatRoom.getUser2().getId().equals(userId)) {
-                        dto.setSchedule(true);
-                    }
-                    return dto;
-                })
-                .collect(Collectors.toList());
+        List<ChatRoomResponseDto> chatRoomResponseDtoList=new ArrayList<>();
+        for(ChatRoomEntity chatRoomEntity : chatRooms){
+            ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(chatRoomEntity);
+            // 현재 사용자가 입양자면 날짜잡기가 가능하게
+            if(chatRoomEntity.getUser2() != null && chatRoomEntity.getUser2().getId().equals(userId)) {
+                chatRoomResponseDto.setSchedule(true);
+            }
+
+            String myNickName = userRepository.findById(userId).get().getNickname();
+            String yourNickName = (chatRoomEntity.getUser1().getId()==userId) ? chatRoomEntity.getUser2().getNickname() : chatRoomEntity.getUser1().getNickname();
+            String yourImg = (chatRoomEntity.getUser1().getId()==userId) ? chatRoomEntity.getUser2().getImageUrl() : chatRoomEntity.getUser1().getImageUrl();
+            chatRoomResponseDto.setMyNickName(myNickName);
+            chatRoomResponseDto.setYourNickName(yourNickName);
+            chatRoomResponseDto.setYourImg(yourImg);
+
+            chatRoomResponseDto.setSchedule(this.getExist(chatRoomEntity.getId()));
+            chatRoomResponseDto.setScheduledDate(chatRoomEntity.getScheduledDate());
+
+            chatRoomResponseDto.setRoomName(boardRepository.findById(boardId).get().getTitle());
+
+            chatRoomResponseDtoList.add(chatRoomResponseDto);
+        }
+
+
+        return chatRoomResponseDtoList;
     }
 
 
@@ -108,15 +129,20 @@ public class ChatRoomService {
                 chatRoomResponseDto.setMyNickName(myNickName);
         chatRoomResponseDto.setYourNickName(yourNickName);
         chatRoomResponseDto.setYourImg(yourImg);
+        chatRoomResponseDto.setRoomName(boardRepository.findById(entity.getBoardId()).get().getTitle());
+
 
         return chatRoomResponseDto;
     }
 
     /** ChatRoom 생성 */
     @Transactional
-    public ChatRoomResponseDto save(ChatRoomRequestDto chatRoomRequestDto) {
-        ChatRoomEntity chatRoomEntity = chatRoomRequestDto.toEntity(userRepository);
-        return new ChatRoomResponseDto(chatRoomRepository.save(chatRoomEntity));
+    public ChatRoomResponseDto save(Long userId2, ChatRoomRequestDto chatRoomRequestDto) {
+        ChatRoomEntity chatRoomEntity = chatRoomRequestDto.toEntity(userRepository, boardRepository);
+        chatRoomRepository.save(chatRoomEntity);
+
+
+        return  this.findById(userId2,chatRoomEntity.getId());
     }
 
     /** ChatRoom 삭제 */
@@ -134,7 +160,6 @@ public class ChatRoomService {
         }else{ // 일정이 있으면
             return true;
         }
-
     }
     //채팅방 정보 전달
     public ChatRoomDto getRoomInfo(Integer id) {

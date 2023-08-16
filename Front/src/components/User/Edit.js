@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import * as S from "../../styled/User/Edit.style"
-import 'bootstrap/dist/css/bootstrap.min.css';
+import * as S from "../../styled/User/Edit.style";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function Edit({ onClose }) {
   const [profilePic, setProfilePic] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  console.log(imagePreview)
+  const [hasImage, setHasImage] = useState(false); // 이미지가 있는지 여부를 판단하는 상태 변수 추가
   const token = localStorage.getItem("accessToken");
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -22,7 +22,8 @@ function Edit({ onClose }) {
     }
   };
 
-  const handleUploadImage = async () => { // 프로필 이미지 등록
+  const handleUploadImage = async () => {
+    // 프로필 이미지 등록
     const formData = new FormData();
     formData.append("multipartFile", profilePic); // 키를 "multipartFile"로 변경
     try {
@@ -40,7 +41,8 @@ function Edit({ onClose }) {
     }
   };
 
-  const handleUpdateImage = async () => { // 프로필 이미지 업데이트
+  const handleUpdateImage = async () => {
+    // 프로필 이미지 업데이트
     const formData = new FormData();
     formData.append("multipartFile", profilePic); // 키를 "multipartFile"로 변경
     try {
@@ -58,7 +60,7 @@ function Edit({ onClose }) {
     }
   };
 
-  const fetchProfileImage = async () => { // 아마 기존 프로필 이미지 가져옴..?
+  const fetchProfileImage = async () => {
     try {
       const response = await axios.get(`${REACT_APP_API_URL}/users/pic`, {
         headers: {
@@ -66,7 +68,10 @@ function Edit({ onClose }) {
         },
       });
       setImagePreview(response.data);
-      console.log(response.data)
+      if (response.data) {
+        // 이미지가 존재하면 hasImage를 true로 설정
+        setHasImage(true);
+      }
     } catch (error) {
       console.error(
         "An error occurred while fetching the profile image:",
@@ -76,7 +81,7 @@ function Edit({ onClose }) {
   };
 
   useEffect(() => {
-    fetchProfileImage(); // 처음 로드 시 프로필 사진을 가져옴
+    fetchProfileImage();
   }, []);
 
   return (
@@ -91,8 +96,12 @@ function Edit({ onClose }) {
         </S.ImgBox>
       </div>
       <div className="d-flex justify-content-around">
-        <S.ImgChangeBtn onClick={handleUploadImage}>사진 등록</S.ImgChangeBtn>
-        <S.ImgChangeBtn onClick={handleUpdateImage}>사진 수정</S.ImgChangeBtn>
+        {!hasImage && ( // 이미지가 없으면 '사진 등록' 버튼만 보이게 함
+          <S.ImgChangeBtn onClick={handleUploadImage}>사진 등록</S.ImgChangeBtn>
+        )}
+        {hasImage && ( // 이미지가 있으면 '사진 수정' 버튼만 보이게 함
+          <S.ImgChangeBtn onClick={handleUpdateImage}>사진 수정</S.ImgChangeBtn>
+        )}
       </div>
     </div>
   );

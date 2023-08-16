@@ -1,11 +1,9 @@
 import React, {  useState, useEffect } from 'react';
 import axios from "axios";
-import styled from "styled-components";
 import { PiPawPrintFill } from "react-icons/pi";
 import { useRecoilState } from "recoil";
 import {
   SimulationExistAtom,
-  SimulationNum,
   SimulationStartAtom
 } from "../recoil/SimulationAtom";
 import { useNavigate } from "react-router-dom";
@@ -272,10 +270,30 @@ function Home() {
   localStorage.setItem('lat', state.lat);
   localStorage.setItem('lon', state.lon);
 
+  const [hoverText, setHoverText] = useState('');
+  const [textColor, setTextColor] = useState('');
+
+  const texts = [
+      '시뮬레이션을 통해 가상으로 강아지를 키워보세요!',
+      '선호도 조사를 통해 나의 생활에 맞는 강아지를 찾아보세요!',
+      '입양 전 사전테스트를 통해 강아지를 키울 준비가 되었는지 확인해보세요!'
+  ];
+
+  const colors = ['#9A5BFF', '#6B9C5A', '#738BDD'];
+
+  const handleMouseEnter = (index) => {
+      setHoverText(texts[index]);
+      setTextColor(colors[index]);
+  };
+
+  const handleMouseLeave = () => {
+      setHoverText('');
+      setTextColor('');
+  };
 
   return (
-    <S.MainContainer className="row slide">
-      <S.HomeContainer className='page1'>
+    <S.MainContainer className="row">
+      <S.HomeContainer>
         <S.Main>
         <S.Span>데려가개</S.Span>
         </S.Main>
@@ -286,80 +304,36 @@ function Home() {
         <S.Text>
           소중한 생명인 강아지와 오랜시간 함께할 <S.Span>인연</S.Span>을 만듭니다.
         </S.Text>
-      </S.HomeContainer>
-      <S.HomeContainer className='page2'>
-        <S.ContentContainer>
-          <S.Div className='simulation'>
-            <S.TextPtag>시뮬레이션을 통해 가상으로 강아지를 키워보세요!</S.TextPtag>
-            <S.StyledLink
+        <S.pTag style={{color: textColor}} show={hoverText.length > 0}>
+          {hoverText}
+        </S.pTag>
+        <S.RowWrap className='d-flex justify-content-around align-items-center'>
+          <S.ImgDiv className='text-center'>
+              <S.ImgBtn className='simulation'
+              onMouseEnter={() => handleMouseEnter(0)}
+              onMouseLeave={handleMouseLeave}
               onClick={(event) => handleLinkClick(event, "/simulations")}
-            >
-              <PiPawPrintFill /> 시뮬레이션하러 가기
-            </S.StyledLink>
-          </S.Div>
-          <S.MediaContainer className='container'>
-            <div className='row'>
-              <S.ColumnContent className='col-6'></S.ColumnContent>
-              <S.ColumnContent className='col-6'>
-                <S.VideoContainer>
-                  <S.VideoContent autoPlay muted loop>
-                      <source src="/assets/simulation_video.mp4" type="video/mp4" />
-                  </S.VideoContent>
-                </S.VideoContainer>
-              </S.ColumnContent>
-            </div>
-          </S.MediaContainer>
-        </S.ContentContainer>
-    </S.HomeContainer>
-    <S.HomeContainer className='page3'>
-    <S.ContentContainer>
-      <S.Div className='survey'>
-        <S.TextPtag>
-          선호도 조사를 통해 나의 생활에 맞는 강아지를 찾아보세요!
-        </S.TextPtag>
-        <S.StyledLink onClick={(event) => handleLinkClick(event, "/survey")}>
-            <PiPawPrintFill /> 선호도 조사하러 가기
-        </S.StyledLink>
-      </S.Div>
-          <S.MediaContainer className='container'>
-            <div className='row'>
-              <div className='col-6'>
-                <div>
-                  <S.SurveyContainer autoPlay muted loop>
-                      <source src="/assets/survey.mp4" type="video/mp4" />
-                  </S.SurveyContainer>
-                </div>
-              </div>
-              <S.ColumnContent className='col-6'></S.ColumnContent>
-            </div>
-          </S.MediaContainer>
-        </S.ContentContainer>
-    </S.HomeContainer>
-    <S.HomeContainer className='page4'>
-    <S.ContentContainer>
-      <S.Div className='test'>
-        <S.TextPtag>
-          입양 전 사전테스트를 통해 강아지를 키울 준비가 되었는지
-          확인해보세요!
-        </S.TextPtag>
-        <S.StyledLink onClick={(event) => handleLinkClick(event, "/checklist")}>
-          <PiPawPrintFill /> 입양 전 사전테스트하러 가기
-        </S.StyledLink>
-      </S.Div>
-          <S.MediaContainer className='container'>
-            <div className='row'>
-              <S.ColumnContent className='col-6'></S.ColumnContent>
-              <div className='col-6'>
-                <S.VideoContainer>
-                  <S.VideoContent autoPlay muted loop>
-                      <source src="/assets/simulation_video.mp4" type="video/mp4" />
-                  </S.VideoContent>
-                </S.VideoContainer>
-              </div>
-            </div>
-          </S.MediaContainer>
-        </S.ContentContainer>
-    </S.HomeContainer>
+              />
+            <S.Name className='purple'>시뮬레이션</S.Name>
+          </S.ImgDiv>
+          <S.ImgDiv className='text-center'>
+              <S.ImgBtn className='survey'
+              onMouseEnter={() => handleMouseEnter(1)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(event) => handleLinkClick(event, "/survey")}
+              />
+            <S.Name className='green'>설문조사</S.Name>
+          </S.ImgDiv>
+          <S.ImgDiv className='text-center'>
+              <S.ImgBtn className='checklist'
+              onMouseEnter={() => handleMouseEnter(2)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(event) => handleLinkClick(event, "/checklist")}
+              />
+            <S.Name className='blue'>사전테스트</S.Name>
+          </S.ImgDiv>
+        </S.RowWrap>
+      </S.HomeContainer>
   </S.MainContainer>
   );
 }
