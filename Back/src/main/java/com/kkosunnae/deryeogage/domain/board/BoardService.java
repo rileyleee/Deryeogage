@@ -178,6 +178,17 @@ public class BoardService {
         List<BoardDto> boardDtoList = new ArrayList<>();
         Map<Integer, int[]> boardMap = new HashMap<>();
         for (BoardEntity boardEntity : boardEntityList) {
+            Integer boardId = boardEntity.getId();
+            // 입양 정보에 존재 여부 및 depart/arrive 확인하여 게시글별 status 반환
+            Optional<AdoptEntity> entity = adoptRepository.findByBoardId(boardId);
+            // 초기화
+
+            if (entity.isPresent()) {
+                continue;
+            }
+
+
+
             int[] five = {Character.getNumericValue(boardEntity.getFriendly()),
                     Character.getNumericValue(boardEntity.getActivity()),
                     Character.getNumericValue(boardEntity.getDependency()),
