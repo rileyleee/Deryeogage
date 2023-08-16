@@ -18,9 +18,9 @@ const Precost = ({ onClose, boardId }) => {
     total_amount: 100000,
     vat_amount: 0,
     tax_free_amount: 0,
-    approval_url: `http://localhost:3000/adopt/${boardId}`, // 변경된 부분
-    fail_url: `http://localhost:3000/adopt/${boardId}`, // 변경된 부분
-    cancel_url: `http://localhost:3000/adopt/${boardId}`, // 변경된 부분
+    approval_url: `https://i9b307.p.ssafy.io/adopt/${boardId}`, // 변경된 부분
+    fail_url: `https://i9b307.p.ssafy.io/adopt/${boardId}`, // 변경된 부분
+    cancel_url: `https://i9b307.p.ssafy.io/adopt/${boardId}`, // 변경된 부분
   };
 
   useEffect(() => {
