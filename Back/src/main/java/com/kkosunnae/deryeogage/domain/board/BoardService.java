@@ -125,17 +125,38 @@ public class BoardService {
         // 모든 게시글을 돌면서
         for (BoardEntity boardEntity : boardEntityList) {
 
+            Integer boardId = boardEntity.getId();
+
+            // 입양 정보에 존재 여부 및 depart/arrive 확인하여 게시글별 status 반환
+            Optional<AdoptEntity> entity = adoptRepository.findByBoardId(boardId);
+
+            // 초기화
+            AdoptStatus status = AdoptStatus.depart;
+
+            if (entity.isPresent()) {
+                status = entity.get().getStatus();
+            } else {
+                status = null;
+            }
+
             // 하나의 게시글 정보를 dto로 변환
             BoardDto thisBoard = boardEntity.toDto();
+
+            // dto에 입양 정보 담고
+            thisBoard.setStatus(status);
+
             // 하나의 게시글 ID를 가져오고
             Integer thisBoardId = boardEntity.getId();
+
             // 특정 게시글에 업로드된 파일을 꺼내기
             List<String> uploadedFiles = this.getBoardFileUrls(thisBoardId);
+
             // Dto에 담기
             thisBoard.setFileList(uploadedFiles);
 
             boardSetList.add(thisBoard);
         }
+        Collections.shuffle(boardSetList);
         return boardSetList;
     }
 
@@ -241,10 +262,16 @@ public class BoardService {
                     boardFileDto.setPath(savedPaths.get(i));
                     boardFileDto.setCreatedDate(uploadTime);
 
-                    // 그 다음 Entity로 변환하여 DB에 저장
-                    boardFileRepository.save(boardFileDto.toEntity(boardRepository));
+                    try {
+                        // 그 다음 Entity로 변환하여 DB에 저장
+                        boardFileRepository.save(boardFileDto.toEntity(boardRepository));
+                        log.info("File [{}] was successfully saved to the database.", savedNames.get(i));
+                    } catch (Exception e) {
+                        log.error("Error saving file [{}] to the database. Error: {}", savedNames.get(i), e.getMessage());
+                    }
                 });
     }
+
 
     //게시글에 저장된 파일 조회
     @Transactional

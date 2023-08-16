@@ -55,7 +55,7 @@ public class SimulationController {
 
     @PutMapping("/save")
     public void simulationSave(@RequestBody SimulationDto simulationDto){
-        SimulationDto savedSimulation = simulationService.saveSimulation(simulationDto);
+        SimulationDto savedSimulation = simulationService.saveSimulation2(simulationDto);
     }
 
     @GetMapping("/title")
