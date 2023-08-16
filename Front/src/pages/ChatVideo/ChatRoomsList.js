@@ -226,7 +226,6 @@ transition: background-color 0.3s;
         font-weight: bold;
         margin-left: 5px;
     }
-  }
 `;
 
 const fadeIn = keyframes`

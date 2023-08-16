@@ -198,13 +198,15 @@ function AdoptBoard() {
 
   return (
     <div>
-      <S.Smallspacer></S.Smallspacer>
-      <h1>입양게시판</h1>
+      <S.Smallspacer>
+        {" "}
+        <h1>입양게시판</h1>
+      </S.Smallspacer>
+
       {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
       {insertedToken && hasSurvey ? <NotSurvey /> : null}
       {!insertedToken ? <NotLogin /> : null}
 
-      { <S.Button onClick={onClick}>글 작성</S.Button> }
       {isLoading ? (
         <S.VideoContainer>
           <video

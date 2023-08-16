@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-import { RoomInfo } from "./../ChatVideo/ChatRoomDetail.style";
-
 export const LoadingText = styled.span`
   position: absolute;
   top: 50%;
@@ -148,7 +146,7 @@ export const Largespacer = styled.div`
 `;
 
 export const Smallspacer = styled.div`
-  height: 20px;
+  margin: 2vh;
 `;
 
 export const DogStatus = styled.span`

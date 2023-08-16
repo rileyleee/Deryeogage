@@ -10,6 +10,7 @@ export const HeaderWrapper = styled.nav`
 export const Navlink = styled.a`
     color: ${props => (props.active ? '#FF914D' : 'inherit')};
     font-weight: ${props => (props.active ? 'bold' : 'normal')};
+    font-size: 1.2vw;
 `;
 
 export const ButtonWrapper = styled.button`
@@ -17,7 +18,7 @@ export const ButtonWrapper = styled.button`
     border: none;
 `; 
 
-const NavigationWrapper = styled.div`
+export const NavigationWrapper = styled.div`
   a {
     text-decoration: none;
     color: #4A2511;

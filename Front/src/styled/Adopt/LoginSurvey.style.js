@@ -35,10 +35,12 @@ export const CustomCarousel = styled.div`
 
   /* 좌우 버튼 위치 */
   .carousel-control-prev {
-    left: -15%;  /* 기본값은 0% */
+    /* left: -15%;  */
+     /* 기본값은 0% */
   }
   .carousel-control-next {
-    right: -15%; /* 기본값은 0% */
+    /* right: -15%; */
+     /* 기본값은 0% */
   }
 
   /* 하단 5개 버튼 위치 */

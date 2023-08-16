@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import * as S from "../../styled/ChatVideo/DogDetail.style"
+import * as S from "../../styled/ChatVideo/DogDetail.style";
 import ResultPaw from "./../../components/ResultPaw";
 import { Carousel } from "react-bootstrap";
 
@@ -32,13 +31,27 @@ function DogDetail(props) {
     };
 
     fetchAdoptData();
-  }, [boardId]);
+  }, []);
 
   return (
-    <div>
+    <>
+    
       {adoptData ? (
         <S.Container>
-          <h4>{adoptData.board.title}</h4>
+          <S.TopBox>
+            <S.BoardTitle>
+              게시글 제목 : {adoptData.board.title} <br />
+              작성자 : {adoptData.board.userNickname}
+            </S.BoardTitle>
+            <S.FixedButton
+              onClick={() => {
+                // 화상 채팅을 시작하면 showVideoRoom을 true로 설정
+                props.setShowVideoRoom(true);
+              }}
+            >
+              화상채팅 열기
+            </S.FixedButton>
+          </S.TopBox>
           <S.FlexContainer>
             <S.Box>
               <Carousel>
@@ -47,16 +60,16 @@ function DogDetail(props) {
                     const isVideo = fileName.endsWith(".mp4");
                     return (
                       <Carousel.Item key={index}>
-                        <S.Media>
+                        <S.MediaContainer>
                           {isVideo ? (
-                            <video controls autoPlay loop muted>
+                            <S.StyledVideo controls autoPlay loop muted>
                               <source src={fileUrl} type="video/mp4" />
                               Your browser does not support the video tag.
-                            </video>
+                            </S.StyledVideo>
                           ) : (
-                            <img src={fileUrl} alt="Dog" />
+                            <S.StyledMedia src={fileUrl} alt="Dog" />
                           )}
-                        </S.Media>
+                        </S.MediaContainer>
                       </Carousel.Item>
                     );
                   }
@@ -67,36 +80,40 @@ function DogDetail(props) {
                 <p>이 름 : {adoptData.board.name}</p>
                 <p>나 이 : {adoptData.board.age} 세</p>
                 <p>지 역 : {adoptData.board.regionCode}</p>
-                <p>성 별 : {adoptData.board.gender ? "남자" : "여자"}</p>
+                <p>성 별 : {adoptData.board.gender ? "수컷" : "암컷"}</p>
                 <p>
-                  칩 등록 여부 : {adoptData.board.chipYn ? "등록" : "미등록(알 수 없음)"}
+                  칩 등록 여부 :{" "}
+                  {adoptData.board.chipYn ? "등록" : "미등록(알 수 없음)"}
                 </p>
               </S.DogInfo>
             </S.Box>
             <S.Box>
-              {/* 강아지 특성 정보를 표시하는 섹션 */}
-              <ResultPaw title="친화력" selected={adoptData.board.friendly} small={true} />
-              <ResultPaw title="활동량" selected={adoptData.board.activity} small={true} />
-              <ResultPaw title="의존도" selected={adoptData.board.dependency} small={true} />
-              <ResultPaw title="왈왈왈" selected={adoptData.board.bark} small={true} />
-              <ResultPaw title="털빠짐" selected={adoptData.board.hair} small={true} />
+              <S.Text>
+                {adoptData.board.name}의 <S.Span>성격</S.Span>과{" "}
+                <S.Span>특성</S.Span>을 확인하세요
+              </S.Text>
+              <S.DogPersonality>
+                {/* 강아지 특성 정보를 표시하는 섹션 */}
+                <ResultPaw title="친화력" selected={adoptData.board.friendly} />
+                <ResultPaw title="활동량" selected={adoptData.board.activity} />
+                <ResultPaw
+                  title="의존도"
+                  selected={adoptData.board.dependency}
+                />
+                <ResultPaw title="왈왈왈" selected={adoptData.board.bark} />
+                <ResultPaw title="털빠짐" selected={adoptData.board.hair} />
+              </S.DogPersonality>
             </S.Box>
           </S.FlexContainer>
-          <S.Span>건강정보</S.Span>
-           <S.infoBox>
-          {adoptData.board.health}
-          </S.infoBox>
-          <S.FixedButton onClick={() => {
-            // 화상 채팅을 시작하면 showVideoRoom을 true로 설정
-            props.setShowVideoRoom(true);
-          }}>
-            화상채팅 열기
-          </S.FixedButton>
+          <S.DogHealth>
+            {adoptData.board.name}의 <S.Span>건강정보</S.Span>를 확인하세요
+            <S.infoBox>{adoptData.board.health}</S.infoBox>
+          </S.DogHealth>
         </S.Container>
       ) : (
         <p>Loading...</p>
       )}
-    </div>
+  </>
   );
 }
 

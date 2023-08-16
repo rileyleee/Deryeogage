@@ -102,7 +102,8 @@ export const TopRow = styled.div`
 
 export const Status = styled.div`
   display: flex;
-  align-items: flex-end; // 내부 아이템들을 바닥에 붙이기 위함
+  padding-left: 2vw;
+  padding-bottom: 0.5vh;
   margin-top: 2vh;
 `;
 
@@ -110,6 +111,12 @@ export const TopButtons = styled.div`
   margin-top: 2vh;
   display: flex;
   justify-content: flex-end;
+`;
+
+export const TopButtonsLeft = styled.div`
+  margin-top: 2vh;
+  display: flex;
+  justify-content: flex-start;
 `;
 
 // 찜하기 버튼 스타일
@@ -126,12 +133,8 @@ export const Button = styled.button`
 `;
 
 export const StatusMessage = styled.div`
-  padding: 5px 10px;
-  border-radius: 5px;
   font-size: 1.5rem;
   color: #4A2511; // 원하는 색상을 사용
-  text-align: left;
-  margin: 10px;
   z-index: 1;
 `;
 
@@ -141,7 +144,7 @@ export const StyledLink = styled(BaseLink)`
 `;
 
 export const PawBox = styled.div`
-  padding: 11vh 0;
+  padding: 5vh 0;
   border: none;
   border-radius: 30px;
   background-color: #FFF8E4;
@@ -163,7 +166,7 @@ export const HealthInfoBox = styled.div`
   border-radius: 30px;
   display: flex;
   flex-direction: column; // 수직 방향으로 내용을 정렬합니다.
-  height: 28vh;
+  height: 24.5vh;
   overflow: auto; // 여기에 추가합니다.
 `;
 
@@ -176,7 +179,7 @@ export const IntroductionBox = styled.div`
   border-radius: 30px;
   display: flex;
   flex-direction: column; // 수직 방향으로 내용을 정렬합니다.
-  height: 28vh;
+  height: 24.5vh;
   overflow: auto; // 여기에 추가합니다.
 `;
 
@@ -221,6 +224,9 @@ export const DogTitle = styled.div`
   text-align: center;
   margin: 1vh 0; // 상단 및 하단 여백 추가
 
+`;
+export const ResultPawText = styled.div`
+  margin: 2vh 0; // 상단 및 하단 여백 추가
 `;
 
 export const BoardTitle = styled.div`

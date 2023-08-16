@@ -1,11 +1,9 @@
 import React, {  useState, useEffect } from 'react';
 import axios from "axios";
-import styled from "styled-components";
 import { PiPawPrintFill } from "react-icons/pi";
 import { useRecoilState } from "recoil";
 import {
   SimulationExistAtom,
-  SimulationNum,
   SimulationStartAtom
 } from "../recoil/SimulationAtom";
 import { useNavigate } from "react-router-dom";
