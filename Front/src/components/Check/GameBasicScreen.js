@@ -171,12 +171,12 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
         // 만약 matchedImage가 없고, "assets/things/requirement4.png"의 출현 횟수가 8 미만이면
         // 해당 이미지를 보여준다
         else if (req4Count < 8 && Math.random() < 0.5) { // 50%의 확률로 이미지가 보이게 설정, 확률은 조정 가능
-          setShowRandomImage("assets/things/requirement4.png");
+          setShowRandomImage("/assets/things/requirement4.png");
           setRequirementNum(11);
           setIsImageVisible(true);
         }
         else if (emergency < 2 && Math.random() < 0.2) {
-          setShowRandomImage("assets/things/sick.png");
+          setShowRandomImage("/assets/things/sick.png");
           setRequirementNum(13);
           setIsImageVisible(true);
         }
@@ -207,9 +207,9 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
       const handleImageClick = () => {
         if (isImageVisible) {
           setIsImageVisible(false)
-          if (requirementImages[0].image === "assets/things/requirement1.png" && showRandomImage === "assets/things/requirement1.png") {
+          if (requirementImages[0].image === "/assets/things/requirement1.png" && showRandomImage === "/assets/things/requirement1.png") {
             console.log(requirementImages[0].image, showRandomImage)
-            setNextImage("assets/things/requirement3.png");
+            setNextImage("/assets/things/requirement3.png");
           }
         }
     };
@@ -281,7 +281,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                             </div>
                             <div class="modal-body">
                                 하루에 산책은 3번만 가능합니다🐶
-                                <S.ModalIMG src="assets/walking.jpg" alt="walking" />
+                                <S.ModalIMG src="/assets/walking.jpg" alt="walking" />
                             </div>
                         </div>
                     </div>
@@ -323,7 +323,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
             </div>
         </div>
         <div className='d-flex justify-content-center'>
-            <S.DogImg src={`assets/${simulationExistValue.petType}/idle${simulationExistValue.petType}.gif`} alt="" />
+            <S.DogImg src={`/assets/${simulationExistValue.petType}/idle${simulationExistValue.petType}.gif`} alt="" />
             <S.DogBtn 
                 onClick={(e) => {
                     if (parseInt(simulationExistValue.cost) < currentPayValue) {
@@ -381,7 +381,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                     </div>
                     <div class="modal-body">
                         <h3>당신의 소중한 가족을 버리실건가요?</h3>
-                        <S.ModalIMG src="assets/crying.jpg" alt="crying" />
+                        <S.ModalIMG src="/assets/crying.jpg" alt="crying" />
                     </div>
                 </div>
             </div>

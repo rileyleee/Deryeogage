@@ -46,7 +46,7 @@ function Postcost({
 
   useEffect(() => {
     axios({
-      url: "/v1/payment/ready",
+      url: "https://kapi.kakao.com/v1/payment/ready",
       method: "POST",
       headers: {
         Authorization: "KakaoAK e7cb853a9537243908236f15e2fce905",

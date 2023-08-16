@@ -11,6 +11,8 @@ export const Navlink = styled.a`
     color: ${props => (props.active ? '#FF914D' : 'inherit')};
     font-weight: ${props => (props.active ? 'bold' : 'normal')};
     font-size: 1.2vw;
+    text-decoration: none;
+    margin-right: 1vw;
 `;
 
 export const ButtonWrapper = styled.button`
@@ -18,25 +20,7 @@ export const ButtonWrapper = styled.button`
     border: none;
 `; 
 
-export const NavigationWrapper = styled.div`
-  a {
-    text-decoration: none;
-    color: #4A2511;
-    padding: 8px 16px;
-    transition: background-color .3s;
-  }
-
-  a.active {
-    background-color: #FF914D;
-    color: white;
-    border-radius: 30px;
-  }
-
-  a:hover:not(.active) {
-    background-color: #ddd;
-  }
-`;
-
 export const DogImg = styled.img`
-  
+  margin-left: 1vw;
+  margin-bottom: 1vh;
 `

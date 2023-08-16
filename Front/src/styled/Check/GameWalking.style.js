@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 export const GameStartsecond = styled.div`
     position: relative;
-    height: 70vh;
-    padding: 1vh;
-    background-image: url(${props => `assets/${props.petType}/walk${props.petType}.gif`}), url("assets/background/totoro.gif");
+    height: 34vw;
+    padding: 0.5vw;
+    background-image: url(${props => `/assets/${props.petType}/walk${props.petType}.gif`}), url("/assets/background/totoro.gif");
     background-repeat: no-repeat;
     background-position: 3% 61%, center;
     background-size: 25% 30%, cover;
@@ -20,7 +20,7 @@ export const GameStartsecond = styled.div`
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: url(${props => `assets/${props.petType}/walk${props.petType}.gif`});
+        background-image: url(${props => `/assets/${props.petType}/walk${props.petType}.gif`});
         background-repeat: no-repeat;
         background-position: 3% -7%;
         background-size: 25% 30%;
@@ -39,35 +39,25 @@ export const GameStartsecond = styled.div`
     }
 `
 
-
-export const GameBasicButton = styled.button`
-    border: 1px #6458F5 solid;
-    background-color: white;
-    border-radius: 30px;
-    padding: 3px 1vw;
-    margin-bottom: 1vh;
-    font-weight: bold;
-    text-align: center
-`
-
 export const GameWalkingHp = styled.div`
     background-image: linear-gradient(to right, #FF914D ${props => props.width}%, white ${props => props.width}%);
     width: 30vw;
-    height: 5vh;
+    height: 2.5vw;
     border-radius: 30px;
     border: 2px black solid;
-    margin-top: 2vh;
+    margin-top: 1vw;
 `
 
 export const GameWalkingPtag = styled.p`
     color: black;
-    line-height: 5vh;
+    line-height: 2.5vw;
     margin-left: 1vw;
 `
 
 export const GameWalkingBtn = styled.button`
     width: 20vw;
-    height: 10vh;
+    height: 5vw;
+    margin-top: 5vw;
     border: 1px solid #FF914D;
     background-color: white;
     border-radius: 20px;

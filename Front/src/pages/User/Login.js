@@ -15,10 +15,12 @@ function Login() {
     <S.LoginContainer>
       <S.LoginBox>
         <S.Title>로그인</S.Title>
-        <p>따뜻한 마음을 나누는 곳, 데려가개에 오신 것을 환영합니다.</p>
-        <p>로그인하고, 사랑스러운 강아지와 새로운 인연을 맺어보세요.</p>
-        <S.Button onClick={handleKakaoLogin} />
+        <S.Text>
+          <p>따뜻한 마음을 나누는 곳, 데려가개에 오신 것을 환영합니다.</p>
+          <p>로그인하고, 사랑스러운 강아지와 새로운 인연을 맺어보세요.</p>
+        </S.Text>
 
+        <S.Button onClick={handleKakaoLogin} />
       </S.LoginBox>
     </S.LoginContainer>
   );

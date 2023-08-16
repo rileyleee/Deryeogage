@@ -2,12 +2,12 @@ import styled from 'styled-components';
 
 export const MainContainer = styled.div`
     max-width: 100vw;
-    height: 90vh;
+    height: 89vh;
 `
 
 export const HomeContainer = styled.div`
   width: 100vw;
-  height: 90vh;
+  height: 89vh;
   padding: 3vw;
   display: flex; /* Use flexbox to arrange the content */
   flex-direction: column; /* Arrange items vertically */
@@ -27,6 +27,9 @@ export const Main = styled.div`
 export const Text = styled.div`
   padding-bottom: 1vh;
   font-size: 1.5vw;;
+  &.text {
+    margin-bottom: 1.5vw;
+  }
 `;
 
 export const RowWrap = styled.div`

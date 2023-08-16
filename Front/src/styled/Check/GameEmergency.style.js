@@ -4,9 +4,9 @@ export const GameStartsecond = styled.div`
   position: relative;
 
   &.second {
-    height: 70vh;
-    padding: 1vh;
-    background-image: url("assets/background/hospital.png");
+    height: 34vw;
+    padding: 0.5vw;
+    background-image: url("/assets/background/hospital.png");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -35,7 +35,7 @@ export const GameStartsecond = styled.div`
 
 export const GameDogImg = styled.img`
     width: 12vW; // 이미지 너비 설정
-    height: 14vh; // 이미지 높이 설정
+    height: 7vw; // 이미지 높이 설정
     object-fit: cover; // 이미지의 비율 유지 및 적절히 크기 맞춤
     position: absolute; // 이미지 위치 절대값 설정
     top: 50%; // 상위 컨테이너 중앙에 위치
@@ -50,7 +50,7 @@ export const GameEmergencyBtn = styled.button`
 
 export const GameEmergencyBubble = styled.img`
     width: 8vW;
-    height: 10vh;
+    height: 5vw;
     position: absolute; // 이미지 위치 절대값 설정
     top: 50%; // 상위 컨테이너 중앙에 위치
     left: 50%; // 상위 컨테이너 중앙에 위치

@@ -19,7 +19,7 @@ export const CarouselContainer = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   margin-top: 1%;
-  margin-bottom: 5%;
+  margin-bottom: 3%;
   border-radius: 30px;
 `;
 
@@ -91,6 +91,7 @@ export const CaptionContainer = styled.div`
 export const StyledText = styled.p`
   font-size: 20px;       // 글자 크기 지정. 원하는 크기로 조절 가능.
   margin-bottom: 15px;   // 아래쪽 간격 지정. 원하는 크기로 조절 가능.
+  margin-left: 1vw;
 `;
 
 export const Box = styled.div`

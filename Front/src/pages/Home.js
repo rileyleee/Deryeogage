@@ -125,15 +125,11 @@ function Home() {
 
             // 체력 회복 및 감소 계산
             const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes)/10)
+            // const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes))
             const totalRecoveryMinutes = recoveryHours * 6;
             setExistValue(prevState => ({
               ...prevState,
-              health: Math.min(
-                100,
-                Math.max(
-                  0,
-                  prevState.health - totalHpMinutes + totalRecoveryMinutes
-                )
+              health: Math.min(100, Math.max(0, prevState.health - totalHpMinutes + totalRecoveryMinutes)
               ),
             }));
             
@@ -301,7 +297,7 @@ function Home() {
           데려가개는 강아지들의 <S.Span>행복한 미래</S.Span>를 최우선으로 성숙한
           반려문화를 도모합니다.
         </S.Text>
-        <S.Text>
+        <S.Text className='text'>
           소중한 생명인 강아지와 오랜시간 함께할 <S.Span>인연</S.Span>을 만듭니다.
         </S.Text>
         <S.pTag style={{color: textColor}} show={hoverText.length > 0}>

@@ -23,7 +23,7 @@ export const ImgChangeBtn = styled.button`
   border: none;
   background-color: #FFE7BA;
   border-radius: 20px;
-  padding: 1vh 1vw;
+  padding: 0.5vw 1vw;
 `
 
 export const ImgBox = styled.div`

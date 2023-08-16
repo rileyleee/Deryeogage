@@ -22,7 +22,7 @@ function DogListItem({ dog, media }) {
       return (
         <div style={{ position: "relative", width: "100%", height: "250px" }}>
           <video
-            style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", borderRadius: "30px" }}
+            style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", borderRadius: "20px" }}
             src={media}
             autoPlay
             loop
@@ -31,12 +31,12 @@ function DogListItem({ dog, media }) {
         </div>
       );
     } else {
-      return <Card.Img variant="top" src={media} style={{ width: "100%", height: "250px", borderRadius: "30px"}} />;
+      return <Card.Img variant="top" src={media} style={{ width: "100%", height: "250px", borderRadius: "20px"}} />;
     }
   };
 
   return (
-    <Card style={{ width: "18rem", border: 0}} onClick={handleClick}>
+    <Card style={{ width: "18rem", border: '1px solid #F2F2F2', padding:'1vh', borderRadius:'10px'}} onClick={handleClick}>
       {renderMedia(media)}
       <Card.Body>
         <Card.Title style={{ textOverflow: "ellipsis", display:"block", overflow:"hidden", whiteSpace:"nowrap"}}>{dog.title}</Card.Title>
