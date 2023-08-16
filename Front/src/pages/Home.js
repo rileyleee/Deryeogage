@@ -124,8 +124,8 @@ function Home() {
             }
 
             // 체력 회복 및 감소 계산
-            const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes)/10)
-            // const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes))
+            // const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes)/10)
+            const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes))
             const totalRecoveryMinutes = recoveryHours * 6;
             setExistValue(prevState => ({
               ...prevState,
@@ -270,12 +270,13 @@ function Home() {
   const [textColor, setTextColor] = useState('');
 
   const texts = [
+      '강아지의 새로운 삶의 시작과 소중한 추억을 함께 만들어보세요!',
       '시뮬레이션을 통해 가상으로 강아지를 키워보세요!',
       '선호도 조사를 통해 나의 생활에 맞는 강아지를 찾아보세요!',
       '입양 전 사전테스트를 통해 강아지를 키울 준비가 되었는지 확인해보세요!'
   ];
 
-  const colors = ['#9A5BFF', '#6B9C5A', '#738BDD'];
+  const colors = ['#FF9DE9', '#9A5BFF', '#6B9C5A', '#738BDD'];
 
   const handleMouseEnter = (index) => {
       setHoverText(texts[index]);
@@ -304,9 +305,17 @@ function Home() {
           {hoverText}
         </S.pTag>
         <S.RowWrap className='d-flex justify-content-around align-items-center'>
+        <S.ImgDiv className='text-center'>
+          <S.ImgBtn className='adopt'
+              onMouseEnter={() => handleMouseEnter(0)}
+              onMouseLeave={handleMouseLeave}
+              onClick={(event) => handleLinkClick(event, "/adopt")}
+              />
+            <S.Name className='purple'>시뮬레이션</S.Name>
+          </S.ImgDiv>
           <S.ImgDiv className='text-center'>
               <S.ImgBtn className='simulation'
-              onMouseEnter={() => handleMouseEnter(0)}
+              onMouseEnter={() => handleMouseEnter(1)}
               onMouseLeave={handleMouseLeave}
               onClick={(event) => handleLinkClick(event, "/simulations")}
               />
@@ -314,7 +323,7 @@ function Home() {
           </S.ImgDiv>
           <S.ImgDiv className='text-center'>
               <S.ImgBtn className='survey'
-              onMouseEnter={() => handleMouseEnter(1)}
+              onMouseEnter={() => handleMouseEnter(2)}
               onMouseLeave={handleMouseLeave}
               onClick={(event) => handleLinkClick(event, "/survey")}
               />
@@ -322,7 +331,7 @@ function Home() {
           </S.ImgDiv>
           <S.ImgDiv className='text-center'>
               <S.ImgBtn className='checklist'
-              onMouseEnter={() => handleMouseEnter(2)}
+              onMouseEnter={() => handleMouseEnter(3)}
               onMouseLeave={handleMouseLeave}
               onClick={(event) => handleLinkClick(event, "/checklist")}
               />

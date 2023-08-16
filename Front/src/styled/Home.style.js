@@ -66,8 +66,8 @@ export const Banner = styled.div`
 
 export const ImgDiv = styled.div`
   position: relative;
-  width: 16vw;  // 이미지의 실제 너비값
-  height: 12vw; // 이미지의 실제 높이값
+  width: 13vw;  // 이미지의 실제 너비값
+  height: 9.7vw; // 이미지의 실제 높이값
   overflow: hidden; // Add this line
 `;
 
@@ -79,6 +79,9 @@ export const ImgBtn = styled.div`
   background-position: center;
   position: relative;
   
+  &.adopt{
+    background-image: url('/assets/adopt_btn.png');
+  }
   &.simulation{
     background-image: url('/assets/simulation_btn.png');
   }
