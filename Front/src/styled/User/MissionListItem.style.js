@@ -19,5 +19,5 @@ export const MissionSubmit = styled.button`
     border : none;
     border-radius: 10px;
     background-color : #FFE7BA;
-    padding : 0.5vh 1vh;
+    padding : 0.25vw 0.5vw;
 `

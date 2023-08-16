@@ -2,19 +2,19 @@ import styled from "styled-components";
 
 export const GameStartfirst = styled.div`
     &.first {
-        padding: 4.5vh;
-        margin-top: 1vh;
-        margin-bottom: 1vh;
+        padding: 2vw;
+        margin-top: 1vw;
+        margin-bottom: 1vw;
         border: 1px #FF914D solid; // borderColor 프롭에 따라 테두리 색 변경
         border-radius: 30px;
         background-color: white;
-        height: 80vh;
+        height: 38vw;
     }
 `
 export const GameStartsecond = styled.div`
     &.second {
-        padding: 3vh;
-        height: 70vh;
+        height: 34vw;
+        padding: 1.5vw;
         position: relative;
         /* background-color: beige; */
         /* padding-bottom: 35%; */
@@ -38,7 +38,7 @@ export const GameStartsecond = styled.div`
 export const GameNoBox = styled.div`
     text-align: center;
     background-color: white;
-    height: 25vh;
+    height: 12vw;
     font-size: 3vw;
     font-weight: bold;
 `

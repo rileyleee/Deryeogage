@@ -2,24 +2,24 @@ import styled from "styled-components";
 
 export const GameStartfirst = styled.div`
     &.first {
-        padding: 4.5vh;
-        margin-top: 1vh;
-        margin-bottom: 1vh;
+        padding: 2vw;
+        margin-top: 1vw;
+        margin-bottom: 1vw;
         border: 1px #FF914D solid; // borderColor 프롭에 따라 테두리 색 변경
         border-radius: 30px;
         background-color: white;
-        height: 80vh;
+        height: 38vw;
     }
 `
 export const GameEnd = styled.div`
-    padding: 3vh;
-    height: 70vh;
+    height: 34vw;
+    padding: 1.5vw;
     background-color: #FFF8E4;
 `
 
 export const GameResultBox = styled.div`
     background-color: white;
-    height: 60vh;
+    height: 30vw;
     width: 30vw;
     font-weight: bold;
     border-radius: 30px;
@@ -30,6 +30,7 @@ export const GameResultBox = styled.div`
 export const GameResulth3 = styled.p`
     text-align: center;
     font-size: 2vw;
+    margin-bottom: 1vw;
 `
 export const GameResultp = styled.p`
     font-size: 1.5vw;
@@ -46,9 +47,9 @@ export const GameResultBtn = styled.button`
     padding-right: 2vw;
     border: none;
     border-radius: 30px;
-    padding-bottom: 1vh;
-    padding-top: 1vh;
-    margin-top: 2vh;
+    padding-bottom: 0.5vw;
+    padding-top: 0.5vw;
+    margin-top: 1vw;
 `
 
 export const CheckImg = styled.img`

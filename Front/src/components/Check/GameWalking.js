@@ -28,7 +28,6 @@ function GameWalking(props) { // 자식에서 부모로 데이터 보내기
   return (
     <S.GameStartsecond className="col-10 second"
     petType={dogData}>
-        {/* <S.GameBasicButton onClick={() => setHandleMove(5)}>집으로 돌아가기</S.GameBasicButton> */}
         <div className="d-flex justify-content-center">
             <S.GameWalkingHp width={progress}>
                 <S.GameWalkingPtag>스페이스 바를 마구 누르세요..🏃‍♀️🏃‍♂️</S.GameWalkingPtag>
