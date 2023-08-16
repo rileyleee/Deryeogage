@@ -103,7 +103,7 @@ const AnswersContainer = styled.div`
   
   const HoverButton = css`
     &:hover {
-      background-color: #eb7d39;
+      background-color: #ff7140;
       display: inline-block;
       vertical-align: middle;
       -webkit-transform: perspective(1px) translateZ(0);
