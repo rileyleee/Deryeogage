@@ -68,6 +68,7 @@ export const MediaContainer = styled.div`
   width: 25%;
   height: 290px;
   overflow: hidden;
+  z-index: 1000; // 다른 요소보다 위에 위치하기 위해 높은 값 지정
 `;
 
 export const StyledMedia = styled.img`

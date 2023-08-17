@@ -79,7 +79,6 @@ function Home() {
           } else {
             setExistValue(simulationData);; // SET하자마자 담기지 않아서 response.data로 해줌
             localStorage.setItem("activatedNum", 5);
-            console.log(existValue)
 
             const startTimeHours = Number(simulationData.startTime.substr(11, 2)); // 시작 시간
             const startTimeMinutes = Number(simulationData.startTime.substr(14, 2)); // 시작 분
@@ -117,21 +116,11 @@ function Home() {
               Hours += 1
               Minutes -= 60
             }
-            // 오전 12시 ~ 오전 8시 사이의 시간을 계산
-            let recoveryHours = 0;
-            for (let hour = lastTimeHours; hour !== currentHours; hour = (hour + 1) % 24) {
-                if (hour >= 0 && hour < 8) recoveryHours++;
+            // 24시간이 넘어가면 24:00으로 고정
+            if (Hours >= 24) {
+              Hours = 24;
+              Minutes = 0;
             }
-
-            // 체력 회복 및 감소 계산
-            // const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes)/10)
-            const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes))
-            const totalRecoveryMinutes = recoveryHours * 6;
-            setExistValue(prevState => ({
-              ...prevState,
-              health: Math.min(100, Math.max(0, prevState.health - totalHpMinutes + totalRecoveryMinutes)
-              ),
-            }));
             
             localStorage.setItem('timeDifference', JSON.stringify({
               hours: Hours,

@@ -59,14 +59,15 @@ export const Button = styled.button`
 export const SelectInputBox = styled.div`
   position: absolute;
   top: 50%;
-  left: 50%; // 상위 요소의 중앙에서 시작
-  transform: translate(-50%, -50%); // 자신의 크기의 절반만큼 이동하여 중앙 정렬
+  left: 50%; 
+  transform: translate(-50%, -50%);
   width: 32vw;
   display: flex;
   justify-content: space-between;
   border-radius: 10px;
   border: 1px solid #ff914d;
   padding: 0.2vw;
+  z-index: 1000; // 다른 요소보다 위에 위치하기 위해 높은 값 지정
 `;
 
 export const InputBox = styled.input`
