@@ -13,7 +13,7 @@ function Reservation({
   changeClass,
 }) {
   const [reservationScheduled, setReservationScheduled] = useState(null);
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date()); // 선택 날짜 관련
   const [scheduledDate, setScheduledDate] = useState(null);
   const [showPostCost, setShowPostCost] = useState(false);
   const [boardInfo, setBoardInfo] = useState({
@@ -21,112 +21,71 @@ function Reservation({
     user1: null,
     user2: null,
   });
-  
-  console.log("roomId!!!!!!!!!!!!!!!!!!!!!", roomId);
-  console.log("startDate", startDate.toISOString().split("T")[0]);
 
-  const handleConfirmClick = async () => {
+  const handleReservation = async () => {
     const token = localStorage.getItem("accessToken");
     const scheduledDateToSend = startDate.toISOString().split("T")[0];
-
+    
     const headers = {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     };
-
+  
     const postData = {
       boardId: boardInfo.boardId,
       scheduledDate: scheduledDateToSend,
       fromUserId: boardInfo.user1,
       toUserId: boardInfo.user2,
     };
-
+  
     const putDataForRoom = {
       roomId: parseInt(roomId, 10),
       scheduledDate: scheduledDateToSend,
     };
-
-    if (reservationScheduled) {
-      handlePostCostClick();
-    } else {
-      try {
-        const putRequestForRoom = axios.put(
-          `${process.env.REACT_APP_API_URL}/chat/room/${roomId}/schedule`,
-          putDataForRoom,
-          { headers }
-        );
-
-        const postRequestForAdopts = axios.post(
-          `${process.env.REACT_APP_API_URL}/adopts`,
-          postData,
-          { headers }
-        );
-
-        await Promise.all([putRequestForRoom, postRequestForAdopts]);
-        console.log("Requests were successful!");
-        setShowPostCost(true);
-        changeClass("postcost");
-      } catch (error) {
-        console.error("Failed to send requests:", error);
-      }
-    }
-  };
-
-  const handlePostCostClick = async () => {
-    const token = localStorage.getItem("accessToken");
-    const scheduledDateToSend = startDate.toISOString().split("T")[0];
-    console.log("Selected date:", startDate);
-    console.log("Scheduled date to send:", scheduledDateToSend);
-
-    const postData = {
-      boardId: boardInfo.boardId,
-      scheduledDate: scheduledDateToSend,
-      fromUserId: boardInfo.user1,
-      toUserId: boardInfo.user2,
-    };
-
-    const putDataForRoom = {
-      roomId: parseInt(roomId, 10),
-      scheduledDate: scheduledDateToSend,
-    };
-
+  
     const putDataForAdopts = {
       boardId: parseInt(boardId, 10),
       scheduledDate: scheduledDateToSend,
     };
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    };
-
+    
     const putRequestForRoom = axios.put(
       `${process.env.REACT_APP_API_URL}/chat/room/${roomId}/schedule`,
       putDataForRoom,
       { headers }
     );
-
+    
     let requests = [putRequestForRoom];
-
-    // 조건에 따라 /adopts로의 요청을 PUT 또는 POST로 수행
+    
     if (reservationScheduled) {
-      // 예약이 스케줄된 경우 PUT 요청 수행
       const putRequestForAdopts = axios.put(
         `${process.env.REACT_APP_API_URL}/adopts`,
         putDataForAdopts,
         { headers }
       );
       requests.push(putRequestForAdopts);
+    } else {
+      const postRequestForAdopts = axios.post(
+        `${process.env.REACT_APP_API_URL}/adopts`,
+        postData,
+        { headers }
+      );
+      requests.push(postRequestForAdopts);
     }
+    
     try {
       await Promise.all(requests);
       console.log("Requests were successful!");
-      closeModal();
+      if (!reservationScheduled) {
+        setShowPostCost(true);
+        changeClass("postcost");
+      } else {
+        closeModal();
+      }
     } catch (error) {
-      console.log(error);
       console.error("Failed to send requests:", error);
     }
   };
+  
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -182,7 +141,7 @@ function Reservation({
           <S.SelectedDate>
             선택한 날짜: {startDate.toLocaleDateString()}
           </S.SelectedDate>
-          <S.ConfirmButton onClick={handleConfirmClick}>
+          <S.ConfirmButton onClick={handleReservation}>
             {reservationScheduled ? "예약 수정하기" : "예약하기"}
           </S.ConfirmButton>
         </>
