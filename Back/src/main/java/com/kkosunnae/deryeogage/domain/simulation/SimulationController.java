@@ -2,11 +2,17 @@ package com.kkosunnae.deryeogage.domain.simulation;
 
 import com.kkosunnae.deryeogage.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 @RestController
@@ -37,6 +43,29 @@ public class SimulationController {
                 }
             } else {
                 // 진행 중인 시뮬레이션 객체와 함께 200 OK 응답
+                LocalDateTime lastTime = simulationDto.getLastTime();
+                LocalDateTime nowTime = LocalDateTime.now();
+
+                // lastTime이 23시 59분 이전이고 nowTime이 06시 00분 이후인지 확인
+                if(simulationDto.getHealth()>0){
+                    if (lastTime.toLocalTime().isBefore(LocalTime.of(23, 59)) &&
+                            nowTime.toLocalTime().isAfter(LocalTime.of(8, 0)) &&
+                            nowTime.minusDays(1).isAfter(lastTime)) {
+                        simulationDto.setHealth((byte)100);
+                        log.info("health : zzzzzzzzzz");
+                    } else {
+                        // nowTime과 lastTime의 차이를 분 단위로 계산
+                        Byte minutesDifference = (byte) ChronoUnit.MINUTES.between(lastTime, nowTime);
+                        byte newHealth = (byte)(simulationDto.getHealth()-minutesDifference);
+                        if(newHealth<0){
+                            newHealth=0;
+                        }
+                        simulationDto.setHealth(newHealth);
+                        // minutesDifference를 다른 로직에 사용하거나 출력하실 수 있습니다.
+                        System.out.println("Time difference in minutes: " + minutesDifference);
+                    }
+                }
+
                 return new ResponseEntity<>(simulationDto, HttpStatus.OK);
             }
         }
@@ -54,15 +83,24 @@ public class SimulationController {
     }
 
     @PutMapping("/save")
-    public void simulationSave(@RequestBody SimulationDto simulationDto){
-        SimulationDto savedSimulation = simulationService.saveSimulation2(simulationDto);
-    }
+    public boolean simulationSave(@RequestBody SimulationDto simulationDto){
 
-    @GetMapping("/title")
-    public String getTitle(@RequestHeader("Authorization") String authorizationHeader){
-        String jwtToken = authorizationHeader.substring(7);
-        Long userId = jwtUtil.getUserId(jwtToken);
+        // simulationDto의 마지막 시간을 가져옵니다.
+        LocalTime lastTime = simulationDto.getLastTime().toLocalTime();
 
-        return simulationService.getTitle(userId);
+        // 현재 시간을 가져옵니다.
+        LocalTime currentTime = LocalTime.now();
+
+        // 23시 59분과 06시 00분을 정의합니다.
+        LocalTime maxLastTime = LocalTime.of(23, 59);
+        LocalTime minCurrentTime = LocalTime.of(8, 0);
+
+        // 조건을 확인합니다.
+        if (!lastTime.isAfter(maxLastTime) && currentTime.isAfter(minCurrentTime)) {
+            SimulationDto savedSimulation = simulationService.saveSimulation2(simulationDto);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
