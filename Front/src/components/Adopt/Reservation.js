@@ -23,6 +23,7 @@ function Reservation({
   });
 
   const handleReservation = async () => {
+    sessionStorage.removeItem("adoptData");
     const token = localStorage.getItem("accessToken");
     const scheduledDateToSend = startDate.toISOString().split("T")[0];
     

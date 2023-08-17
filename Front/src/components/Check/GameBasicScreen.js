@@ -21,6 +21,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     const [selectedQuiz, setSelectedQuiz] = useRecoilState(SelectedQuiz);
     console.log(quizCount)
     console.log(requirement)
+    console.log(requirementImages)
 
       // 산책 횟수 카운트
     let walking = simulationExistValue.requirement ? simulationExistValue.requirement.substr(3, 1) : 0;
@@ -31,7 +32,11 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
         setHpPercentage(parseInt(localStorage.getItem('hpPercentage')))
         setCost(parseInt(localStorage.getItem('cost')))
         setQuizCount(localStorage.getItem('quizNum'))
-      }, [setRequirement, setHpPercentage, setCost, setQuizCount]);
+        const savedRequirementImages = localStorage.getItem('requirementImages');
+        if (savedRequirementImages) {
+            setRequirementImages(JSON.parse(savedRequirementImages));
+        }
+      }, [setRequirement, setHpPercentage, setCost, setQuizCount, setRequirementImages]);
 
       const move = (hp, pay) => {
         setSimulationExistValue(prevState => {
@@ -104,11 +109,11 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
         }
     }
     useEffect(() => {
-        localStorage.setItem('hpPercentage', simulationExistValue.health);
-        localStorage.setItem('cost', simulationExistValue.cost);
-        localStorage.setItem('requirement', simulationExistValue.requirement);
-        }
-      , [simulationExistValue]);
+      localStorage.setItem('hpPercentage', simulationExistValue.health);
+      localStorage.setItem('cost', simulationExistValue.cost);
+      localStorage.setItem('requirement', simulationExistValue.requirement);
+      localStorage.setItem('requirementImages', JSON.stringify(requirementImages))
+  }, [simulationExistValue, requirementImages]);
 
       const [showRandomImage, setShowRandomImage] = useState(null); // 어떤 이미지 보여줄건지
       const [requirementNum, setRequirementNum] = useState(0); // 요구사항 컴포넌트 번호
@@ -149,6 +154,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
           const matchedTimeRange = img.timeRanges.find(
             (range) => currentHour >= range.startTime && currentHour < range.endTime && range.check === 0
           );
+          console.log(matchedTimeRange)
           if (matchedTimeRange) {
             matchedImage = img.image;
             matchedNum = img.num;
@@ -161,12 +167,13 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
           }
           return img;
         });
-      
+        console.log(matchedImage)
         setRequirementImages(updatedImages);
         if (matchedImage) {
           setShowRandomImage(matchedImage); // 현재 시간대에 해당하는 이미지 설정
           setRequirementNum(matchedNum);
           setIsImageVisible(!!matchedImage); // showRandomImage가 존재하면 이미지를 보이도록 설정
+          console.log(showRandomImage, requirementNum, isImageVisible)
         }
         // 만약 matchedImage가 없고, "assets/things/requirement4.png"의 출현 횟수가 8 미만이면
         // 해당 이미지를 보여준다
@@ -224,7 +231,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
           setShowRandomImage(nextImage);  // nextImage에 해당하는 이미지 설정
           setIsImageVisible(true);  // 변경된 이미지를 보이도록 설정
           setNextImage(null);  // nextImage 상태를 초기화
-        }, 3 * 60 * 1000);  // 3분 후에 실행
+        }, 3 * 1000);  // 3분 후에 실행
     
         return () => clearTimeout(timeoutId);  // useEffect의 cleanup 함수에서 setTimeout을 clear함
       }
@@ -304,14 +311,17 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                             </div>
                             <div class="modal-body">
                                 <S.GameModalBody>
-                                    <p>▪ 체력은 100 이상 넘어가지 않음</p>
-                                    <p>▪ 게임은 24시간 후 종료, 체력 0이 되면 사망</p>
-                                    <p>▪ 밥 3000원 / 체력 +20 / 총 2회 (8~9시, 17~18시)</p>
-                                    <p>▪ 간식 1500원 / 체력 +10 / 총 2회 (12시~13시, 20시~21시)</p>
-                                    <p>▪ 배변패드 500원 / 체력 +5 / 총 2회 (식사 후 3분 후에)</p>
-                                    <p>▪ 장난감 500원 / 체력 +5 / 총 8회(랜덤)</p>
-                                    <p>▪ 산책 1000원 / 체력 +5 / 총 3회 (원할 때 가능)</p>
+                                    <p>▪ 체력은 100 이상 넘어가지 않습니다.</p>
+                                    <p>▪ 게임은 24시간 후 종료, 체력 0이 되면 사망합니다.</p>
+                                    <p>▪ 게임이 완전히 끝나면 새로 시작할 수 있습니다.</p>
+                                    <p>▪ 산책, 요구사항, 훈련, 퀴즈 등으로 hp와 돈을 늘릴 수 있습니다.</p>
+                                    <p>▪ 밥 3000원 / 체력 +20 / 최대 2회 (8~9시, 17~18시)</p>
+                                    <p>▪ 간식 1500원 / 체력 +10 / 최대 2회 (12시~13시, 20시~21시)</p>
+                                    <p>▪ 배변패드 500원 / 체력 +5 / 최대 2회 (식사 후 3분 후에)</p>
+                                    <p>▪ 장난감 500원 / 체력 +5 / 최대 8회(랜덤)</p>
+                                    <p>▪ 산책 1000원 / 체력 +5 / 최대 3회 (원할 때 가능)</p>
                                     <p>▪ 병원비 120000원 / 미수행 시 체력 -30 / 최대 2회 (랜덤)</p>
+                                    <p>▪ 퀴즈 / 돈 +5000 / 최대 5회</p>
                                 </S.GameModalBody>
                             </div>
                             </div>

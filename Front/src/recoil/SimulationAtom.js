@@ -93,9 +93,7 @@ export const SimulationHp = atom({
     default: 100
 
 })
-export const requirementImagesState = atom({
-  key: 'requirementImagesState',
-  default: [
+const defaultRequirementImages = [
     {
       image: "/assets/things/requirement1.png",
       timeRanges: [
@@ -112,8 +110,15 @@ export const requirementImagesState = atom({
       ],
       num: 10,
     },
-  ],
-});
+  ];
+  
+  const savedRequirementImages = localStorage.getItem('requirementImages');
+  
+  
+export const requirementImagesState = atom({
+    key: 'requirementImagesState',
+    default: savedRequirementImages ? JSON.parse(savedRequirementImages) : defaultRequirementImages,
+  });
 
 export const nextImageState = atom({
     key: 'nextImageState',

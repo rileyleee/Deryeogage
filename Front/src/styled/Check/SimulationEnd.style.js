@@ -49,9 +49,12 @@ export const GameResultBtn = styled.button`
     border-radius: 30px;
     padding-bottom: 0.5vw;
     padding-top: 0.5vw;
-    margin-top: 1vw;
 `
 
 export const CheckImg = styled.img`
     width: 1vw;
+`
+
+export const PTAG = styled.p`
+    margin-top: 1vw;
 `
