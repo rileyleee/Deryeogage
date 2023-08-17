@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const StyledContainer = styled.div`
-  min-height: 25vw; // 원하는 높이로 설정
+  margin-top: 1vw;
+  height: 47vw; // 원하는 높이로 설정
   display: flex;
   justify-content: space-between;
 `;
@@ -12,7 +13,6 @@ export const StyledChatRoomDetail = styled.div`
 `;
 
 export const StyledChatRoom = styled.div`
-  height: 50vw;
   position: relative;
   border: 1px #ff914d solid;
   border-radius: 0.6vw;
@@ -25,7 +25,6 @@ export const StyledChatRoom = styled.div`
 `;
 
 export const StyledDogDetail = styled.div`
-  height: 50vw;
   border: 1px #ff914d solid;
   border-radius: 10px;
   width: 65%;
@@ -44,7 +43,7 @@ export const ModalButton = styled.button`
   background-color: #ff914d;
   padding: 0.4vw 1vw;
   transition: 0.3s; // 마우스 호버 시 부드럽게 스타일 변화
-  top: 0.8vw;
+  top: -0.5vw;
   right: 0.6vw;
   margin-top: 1vw;
   &:hover {

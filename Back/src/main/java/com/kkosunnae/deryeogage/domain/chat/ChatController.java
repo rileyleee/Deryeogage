@@ -83,6 +83,7 @@ public class ChatController {
         String jwtToken = authorizationHeader.substring(7);
         Long userId = jwtUtil.getUserId(jwtToken);
 
+
         List<ChatRoomResponseDto> chatRoomResponseDtoList = chatRoomService.findAll(userId);
         return new ResponseEntity<>(chatRoomResponseDtoList, HttpStatus.OK);
     }

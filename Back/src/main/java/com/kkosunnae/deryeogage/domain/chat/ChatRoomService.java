@@ -22,6 +22,8 @@ public class ChatRoomService {
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
 
+    private final ChatMessageRepository chatMessageRepository;
+
 
 
     @Transactional
@@ -50,15 +52,37 @@ public class ChatRoomService {
     @Transactional
     public List<ChatRoomResponseDto> findAll(Long userId) {
         List<ChatRoomEntity> chatRooms = chatRoomRepository.findAllByUser1_IdOrUser2_Id(userId, userId);
-        return chatRooms.stream()
-                .map(chatRoom -> {
-                    ChatRoomResponseDto dto = new ChatRoomResponseDto(chatRoom);
-                    if(chatRoom.getUser2() != null && chatRoom.getUser2().getId().equals(userId)) {
-                        dto.setSchedule(true);
-                    }
-                    return dto;
-                })
-                .collect(Collectors.toList());
+        List<ChatRoomResponseDto> chatRoomResponseDtoList=new ArrayList<>();
+        for(ChatRoomEntity chatRoomEntity : chatRooms){
+            if(chatMessageRepository.findByChatRoomId(chatRoomEntity.getId()).size()==0) continue;
+
+
+
+            ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(chatRoomEntity);
+            // 현재 사용자가 입양자면 날짜잡기가 가능하게
+            if(chatRoomEntity.getUser2() != null && chatRoomEntity.getUser2().getId().equals(userId)) {
+                chatRoomResponseDto.setSchedule(true);
+            }
+
+            String myNickName = userRepository.findById(userId).get().getNickname();
+            String yourNickName = (chatRoomEntity.getUser1().getId()==userId) ? chatRoomEntity.getUser2().getNickname() : chatRoomEntity.getUser1().getNickname();
+            String yourImg = (chatRoomEntity.getUser1().getId()==userId) ? chatRoomEntity.getUser2().getImageUrl() : chatRoomEntity.getUser1().getImageUrl();
+            chatRoomResponseDto.setMyNickName(myNickName);
+            chatRoomResponseDto.setYourNickName(yourNickName);
+            chatRoomResponseDto.setYourImg(yourImg);
+
+            chatRoomResponseDto.setSchedule(this.getExist(chatRoomEntity.getId()));
+            chatRoomResponseDto.setScheduledDate(chatRoomEntity.getScheduledDate());
+
+            chatRoomResponseDto.setRoomName(boardRepository.findById(chatRoomEntity.getBoardId()).get().getTitle());
+
+            chatRoomResponseDto.setBoardId(chatRoomEntity.getBoardId());
+
+            chatRoomResponseDtoList.add(chatRoomResponseDto);
+        }
+
+
+        return chatRoomResponseDtoList;
     }
 
     /** 내가 올린 분양글에 대한 전체 ChatRoom 조회 */
@@ -67,6 +91,7 @@ public class ChatRoomService {
         List<ChatRoomEntity> chatRooms = chatRoomRepository.findAllByUser1_IdAndBoardId(userId, boardId);
         List<ChatRoomResponseDto> chatRoomResponseDtoList=new ArrayList<>();
         for(ChatRoomEntity chatRoomEntity : chatRooms){
+            if(chatMessageRepository.findByChatRoomId(chatRoomEntity.getId()).size()==0) continue;
             ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(chatRoomEntity);
             // 현재 사용자가 입양자면 날짜잡기가 가능하게
             if(chatRoomEntity.getUser2() != null && chatRoomEntity.getUser2().getId().equals(userId)) {
@@ -84,6 +109,8 @@ public class ChatRoomService {
             chatRoomResponseDto.setScheduledDate(chatRoomEntity.getScheduledDate());
 
             chatRoomResponseDto.setRoomName(boardRepository.findById(boardId).get().getTitle());
+
+            chatRoomResponseDto.setBoardId(chatRoomEntity.getBoardId());
 
             chatRoomResponseDtoList.add(chatRoomResponseDto);
         }
