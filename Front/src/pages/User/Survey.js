@@ -9,7 +9,7 @@ Modal.setAppElement("#root");
 
 function Survey() {
   const navigate = useNavigate();
-
+  const [draggingIndex, setDraggingIndex] = useState(null);
   const [ranking, setRanking] = useState([0, 1, 2, 3, 4]);
   const [friendly, setFriendly] = useState(0);
   const [activity, setActivity] = useState(0);
@@ -126,12 +126,17 @@ function Survey() {
   // 드래그 앤 드롭
   const onDragStart = (e, index) => {
     e.dataTransfer.setData("index", index);
+    setDraggingIndex(index);
   };
 
   const onDragOver = (e) => {
     e.preventDefault();
   };
 
+  const onDragEnd = (e) => {
+    setDraggingIndex(null);
+  };
+  
   const onDrop = (e, index) => {
     const draggedIndex = e.dataTransfer.getData("index");
     const newRanking = [...ranking];
@@ -160,10 +165,12 @@ function Survey() {
             </S.SmallText>
 
             {ranking.map((item, index) => (
-              <div
+              <S.DraggableItem
                 key={index}
                 draggable
+                isDragging={draggingIndex === index}
                 onDragStart={(e) => onDragStart(e, index)}
+                onDragEnd={onDragEnd}
                 onDragOver={onDragOver}
                 onDrop={(e) => onDrop(e, index)}
               >
@@ -177,7 +184,7 @@ function Survey() {
                     selectors[item](value);
                   }}
                 />
-              </div>
+              </S.DraggableItem>
             ))}
           </S.SurveyContainer>
           {surveyData ? (

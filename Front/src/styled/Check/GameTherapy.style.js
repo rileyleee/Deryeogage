@@ -40,3 +40,12 @@ export const GameEmergencyBubble = styled.img`
     left: 50%; // 상위 컨테이너 중앙에 위치
     transform: translate(120%, -50%); // 위치 조정 및 회전
 `
+
+export const WalkingText = styled.div`
+    font-size: 3vw;
+    font-weight: bold;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`

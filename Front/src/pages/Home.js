@@ -316,7 +316,7 @@ function Home() {
               onMouseLeave={handleMouseLeave}
               onClick={(event) => handleLinkClick(event, "/survey")}
               />
-            <S.Name className='green'>설문조사</S.Name>
+            <S.Name className='green'>선호도조사</S.Name>
           </S.ImgDiv>
           <S.ImgDiv className='text-center'>
               <S.ImgBtn className='checklist'
