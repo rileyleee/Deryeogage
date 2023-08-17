@@ -124,17 +124,12 @@ function Home() {
             }
 
             // 체력 회복 및 감소 계산
-            // const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes)/10)
-            const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes))
+            const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes)/10)
+            // const totalHpMinutes = Math.round(((hpHours - recoveryHours) * 60 + hpMinutes))
             const totalRecoveryMinutes = recoveryHours * 6;
             setExistValue(prevState => ({
               ...prevState,
-              health: Math.min(
-                100,
-                Math.max(
-                  0,
-                  prevState.health - totalHpMinutes + totalRecoveryMinutes
-                )
+              health: Math.min(100, Math.max(0, prevState.health - totalHpMinutes + totalRecoveryMinutes)
               ),
             }));
             

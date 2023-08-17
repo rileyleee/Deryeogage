@@ -6,26 +6,26 @@ export const GameBasicHp = styled.div`
         return `linear-gradient(to right, ${rgbaBorderColor} ${hpPercentage}%, rgba(255, 255, 255, 0.8) ${hpPercentage}%)`;
     }};
     width: 10vw;
-    height: 2vh;
+    height: 1vw;
     border-radius: 10px;
     border: 1px black solid;
-    margin-top: 2vh;
-    margin-bottom: 2vh;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
     font-size: 1vw;
     text-align: center;
-    line-height: 2vh;
+    line-height: 1vw;
 `
 
 export const GameBasicIcon = styled.div`
-    margin-right: 2vh;
+    margin-right: 1vw;
 `
 
 export const GameBasicMenu = styled.div`
     border: 1px ${({ borderColor }) => borderColor} solid; // borderColor 프롭에 따라 테두리 색 변경
     background-color: white;
     border-radius: 15px;
-    margin-bottom: 1vh;
-    padding: 1vh 0.5vw 0 1vh;
+    margin-bottom: 0.5vw;
+    padding: 0.5vw 0.5vw 0 0.5vw;
 `
 
 export const GameIcon = styled.p`

@@ -3,15 +3,15 @@ import styled from "styled-components";
 export const GameStartsecond = styled.div`
     &.second {
         border: 1px #C5C1BF dashed;
-        height: 70vh;
-        padding: 3vh;
+        height: 34vw;
+        padding: 1.5vw;
         /* background-color: beige; */
         /* padding-bottom: 35%; */
     }
 `
 
 export const GamePick2BGI = styled.button`
-    height:45vh;
+    height:23vw;
     width: 40vw;
     background-repeat: no-repeat;
     background-position: center;

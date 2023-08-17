@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const BoardGroupWrap = styled.div`
     background-color: white;
-    height: 55vh;
+    height: 28vw;
     border: 1px solid #FF914D;
     border-radius: 30px;
     margin: 0 2vw;
@@ -16,5 +16,5 @@ export const BoardBtn = styled.button`
 `
 
 export const Board = styled.div`
-    margin: 2vh 0;
+    margin: 1vw 0;
 `

@@ -2,17 +2,14 @@ import styled from "styled-components";
 
 export const GameStartsecond = styled.div`
     &.second {
-        height: 70vh;
+        height: 34vw;
+        padding: 1.5vw;
         border: 1px #C5C1BF dashed;
-        padding: 3vh;
-        /* height: 70vh; */
-        /* background-color: beige; */
-        /* padding-bottom: 35%; */
     }
 `
 
 export const GamePick1box = styled.button`
-    height: 20vh;
+    height: 10vw;
     /* margin-right: 0.9vw;
     margin-left: 0.9vw; */
     border-radius: 30px;
@@ -51,14 +48,14 @@ export const GamePick1box = styled.button`
 `
 
 export const GamePick1Text = styled.p`
-    font-size: 3vh;
+    font-size: 1.5vw;
     font-weight: bold;
     color: #4A2511;
     text-align: center;
 `
 
 export const GamePick1Input = styled.input`
-    height: 5vh;
+    height: 2.5vw;
     width: 15vw;
     border-radius: 30px;
     border: 1px #FF914D solid;
