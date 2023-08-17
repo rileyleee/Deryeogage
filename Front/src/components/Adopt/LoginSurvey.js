@@ -114,10 +114,10 @@ function LoginSurvey() {
     <>
       <div>
         <br></br>
-        <S.StyledText>
-          <S.Span>{localStorage.getItem("nickname")}</S.Span>님의 선호도조사를
+        <S.StyledTextTitle>
+         {localStorage.getItem("nickname")}님의 선호도조사를
           기반으로 강아지를 추천해드려요!
-        </S.StyledText>
+        </S.StyledTextTitle>
         {dogs.length < 5 ? (
           <p>게시글이 부족합니다.</p>
         ) : (

@@ -1,6 +1,19 @@
-import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Link as BaseLink } from "react-router-dom";
+import styled, { keyframes } from 'styled-components';
+
+export const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+export const PageContainer = styled.div`
+  animation: ${fadeIn} 1s ease-in-out;
+`;
 
 export const Container = styled.div`
   margin-bottom: 1vw;
@@ -244,6 +257,7 @@ export const DogTitle = styled.div`
 `;
 export const ResultPawText = styled.div`
   margin: 1vw 0; // 상단 및 하단 여백 추가
+  font-size: 1.1rem;
 `;
 
 export const BoardTitle = styled.div`

@@ -88,8 +88,14 @@ export const CaptionContainer = styled.div`
 `;
 
 export const StyledText = styled.p`
-  font-size: 20px;       // 글자 크기 지정. 원하는 크기로 조절 가능.
-  margin-bottom: 15px;   // 아래쪽 간격 지정. 원하는 크기로 조절 가능.
+  font-size: 1.3vw;     // 글자 크기 지정. 원하는 크기로 조절 가능.
+  margin-bottom: 1vw;   // 아래쪽 간격 지정. 원하는 크기로 조절 가능.
+  margin-left: 1vw;
+`;
+
+export const StyledTextTitle = styled.p`
+  font-size: 1.5vw;     // 글자 크기 지정. 원하는 크기로 조절 가능.
+  margin-bottom: 1vw;   // 아래쪽 간격 지정. 원하는 크기로 조절 가능.
   margin-left: 1vw;
 `;
 
