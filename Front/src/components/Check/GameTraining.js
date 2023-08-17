@@ -107,6 +107,7 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
     <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-between"
     petType={simulationExistValue.petType}
     changingWord={animation}>
+        <audio src="/audio/GameTraining_BGM.mp3" autoPlay loop />
         <div className="d-flex justify-content-between">
             <div>
                 <GameBtn className="blue" onClick={() => setHandleMove(5)}>집으로 돌아가기</GameBtn> 

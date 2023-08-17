@@ -48,3 +48,8 @@ export const Requirement = styled.img`
     height: 6vw;
 `
 
+export const AudioBtn = styled.button`
+    background-color: transparent;
+    border: none;
+    width: 2vw;
+`

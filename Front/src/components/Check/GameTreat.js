@@ -23,6 +23,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     <S.GameStartsecond className="col-10 second"
     petType={existData.petType}
     >
+      <S.WalkingText>간식 먹는 중...</S.WalkingText>
     </S.GameStartsecond>
     );
   }

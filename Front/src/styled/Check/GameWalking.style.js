@@ -62,3 +62,9 @@ export const GameWalkingBtn = styled.button`
     background-color: white;
     border-radius: 20px;
 `
+
+export const WalkingText = styled.div`
+    margin-top: 2vw;
+    font-size: 3vw;
+    font-weight: bold;
+`

@@ -276,7 +276,6 @@ function Header() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("adopt/to 값 +++++++++++++++++++++++ ", response);
 
       const boardResponse = await axios.get(
         `${REACT_APP_API_URL}/boards/list`,
@@ -286,8 +285,7 @@ function Header() {
           },
         }
       );
-      console.log("====================adoptTo:", response.data.data)
-
+      
       setAdoptData(response.data.data);
     } catch (error) {
       console.error("An error occurred while fetching the data:", error);
