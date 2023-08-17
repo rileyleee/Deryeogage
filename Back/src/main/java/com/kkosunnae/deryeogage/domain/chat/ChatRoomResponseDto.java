@@ -23,6 +23,8 @@ public class ChatRoomResponseDto {
 
     private String yourImg;
 
+    private Integer boardId;
+
     public ChatRoomResponseDto(ChatRoomEntity entity) {
         this.id = entity.getId();
         this.roomName = entity.getRoomName();
