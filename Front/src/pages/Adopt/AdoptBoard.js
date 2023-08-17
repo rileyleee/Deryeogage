@@ -198,7 +198,7 @@ function AdoptBoard() {
   }
 
   return (
-    <>
+    < >
       {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
       {insertedToken && hasSurvey ? <NotSurvey /> : null}
       {!insertedToken ? <NotLogin /> : null}

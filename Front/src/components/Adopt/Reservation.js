@@ -21,13 +21,9 @@ function Reservation({
     user1: null,
     user2: null,
   });
+  
   console.log("roomId!!!!!!!!!!!!!!!!!!!!!", roomId);
   console.log("startDate", startDate.toISOString().split("T")[0]);
-
-  const handleReservationComplete = () => {
-    closeModal();
-    onReservationComplete();
-  };
 
   const handleConfirmClick = async () => {
     const token = localStorage.getItem("accessToken");
@@ -121,21 +117,11 @@ function Reservation({
         { headers }
       );
       requests.push(putRequestForAdopts);
-    } else {
-      // 예약이 아직 스케줄되지 않았다면 POST 요청 수행
-      const postRequestForAdopts = axios.post(
-        `${process.env.REACT_APP_API_URL}/adopts`,
-        postData,
-        { headers }
-      );
-      requests.push(postRequestForAdopts);
     }
-
     try {
       await Promise.all(requests);
       console.log("Requests were successful!");
       closeModal();
-      onReservationComplete();
     } catch (error) {
       console.log(error);
       console.error("Failed to send requests:", error);
