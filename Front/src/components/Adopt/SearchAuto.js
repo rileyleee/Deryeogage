@@ -107,7 +107,7 @@ function SearchAuto({ region, setRegion, initialValue  }) {
   }, []);
 
   return (
-   <div className="App">
+   <div className="App" style={{marginLeft:"2vw"}}>
       <div id="map" ref={mapRef} style={{ width: "100%", height: "100%" }} />
       <input
         id="pac-input"

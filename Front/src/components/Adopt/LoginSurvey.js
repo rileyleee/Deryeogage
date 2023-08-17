@@ -113,10 +113,11 @@ function LoginSurvey() {
   return (
     <>
       <div>
-        <S.StyledText>
-          <S.Span>{localStorage.getItem("nickname")}</S.Span>님의 선호도조사를
+        <br></br>
+        <S.StyledTextTitle>
+         {localStorage.getItem("nickname")}님의 선호도조사를
           기반으로 강아지를 추천해드려요!
-        </S.StyledText>
+        </S.StyledTextTitle>
         {dogs.length < 5 ? (
           <p>게시글이 부족합니다.</p>
         ) : (
@@ -147,13 +148,17 @@ function LoginSurvey() {
                       </S.CaptionContainer>
                       <S.Box>
                         {/* 강아지 특성 정보를 표시하는 섹션 */}
-                        {dog.name}의 특성
+                        <S.pTag>{dog.name}의 특성</S.pTag>
+                        <S.Result>
                         {renderDogAttributes(dog, surveyData.ranking)}
+                        </S.Result>
                       </S.Box>
                       <S.Box>
                         {/* 사용자 선호도조사를 표시하는 섹션 */}
-                        {localStorage.getItem("nickname")}님의 선호도
+                        <S.pTag>{localStorage.getItem("nickname")}님의 선호도</S.pTag>
+                        <S.Result>
                         {renderAttributes(surveyData)}
+                        </S.Result>
                       </S.Box>
                     </S.MediaAndCaptionContainer>
                   </Carousel.Item>

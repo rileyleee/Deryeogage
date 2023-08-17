@@ -48,7 +48,10 @@ export const pTag = styled.p`
 
 
 export const Name = styled.p`
-  font-size: 1vw;
+  font-size: 1.5vw;
+  &.pink {
+    color: #FF9DE9;
+  }
   &.purple {
     color: #9A5BFF;
   }
@@ -66,19 +69,22 @@ export const Banner = styled.div`
 
 export const ImgDiv = styled.div`
   position: relative;
-  width: 16vw;  // 이미지의 실제 너비값
-  height: 12vw; // 이미지의 실제 높이값
+  /* width: 15.7vw;  // 이미지의 실제 너비값
+  height: 13vw; // 이미지의 실제 높이값 */
   overflow: hidden; // Add this line
 `;
 
 export const ImgBtn = styled.div`
   cursor: pointer;
-  width: 100%;
-  height: 100%;
+  width: 15.1vw;
+  height: 11.3vw;
   background-size: cover;
   background-position: center;
   position: relative;
   
+  &.adopt{
+    background-image: url('/assets/adopt_btn.png');
+  }
   &.simulation{
     background-image: url('/assets/simulation_btn.png');
   }

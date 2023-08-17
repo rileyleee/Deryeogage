@@ -6,7 +6,7 @@ export const Span = styled.span`
 `;
 
 export const Div = styled.div`
-  font-size: 2vw;
+  font-size: 1.5vw;
   margin-left: 1vw;
 `;
 

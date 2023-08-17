@@ -39,8 +39,11 @@ function DogDetail(props) {
       {adoptData ? (
         <S.Container>
           <S.TopBox>
+            <S.TitleDiv>
+              게시글 제목 : {adoptData.board.title}
+            </S.TitleDiv>
+            <div className="d-flex justify-content-between">
             <S.BoardTitle>
-              게시글 제목 : {adoptData.board.title} <br />
               작성자 : {adoptData.board.userNickname}
             </S.BoardTitle>
             <S.FixedButton
@@ -51,6 +54,7 @@ function DogDetail(props) {
             >
               화상채팅 열기
             </S.FixedButton>
+            </div>
           </S.TopBox>
           <S.FlexContainer>
             <S.Box>

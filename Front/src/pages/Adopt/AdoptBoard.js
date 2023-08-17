@@ -8,6 +8,7 @@ import LoginSurvey from "../../components/Adopt/LoginSurvey";
 import DogListItem from "./../../components/Adopt/DogListItem";
 import Pagination from "react-js-pagination";
 import ReactSelect from "react-select";
+import { act } from "react-dom/test-utils";
 
 function getColorForStatus(status) {
   switch (status) {
@@ -197,12 +198,7 @@ function AdoptBoard() {
   }
 
   return (
-    <div>
-      <S.Smallspacer>
-        {" "}
-        <h1>입양게시판</h1>
-      </S.Smallspacer>
-
+    < >
       {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
       {insertedToken && hasSurvey ? <NotSurvey /> : null}
       {!insertedToken ? <NotLogin /> : null}
@@ -241,6 +237,8 @@ function AdoptBoard() {
                   )}
                   onChange={(option) => {
                     setSearchCategory(option.value);
+                    setActivePage(1);
+                    sessionStorage.setItem("activePage", activePage);
                   }}
                   options={searchOptions}
                   styles={{
@@ -264,14 +262,17 @@ function AdoptBoard() {
                   type="text"
                   value={searchText}
                   onChange={(e) => {
-                    setSearchText(e.target.value)
+                    setSearchText(e.target.value);
                     setActivePage(1); // 페이지를 1로 초기화
+                    sessionStorage.setItem("activePage", activePage);
                   }}
                 />
               </S.SelectInputBox>
 
               <div>
-                <S.RefreshButton onClick={handleRefreshClick}>새로고침</S.RefreshButton>
+                <S.RefreshButton onClick={handleRefreshClick}>
+                  새로고침
+                </S.RefreshButton>
                 <S.Button onClick={onClick}>글 작성</S.Button>
               </div>
             </S.TopBar>
@@ -310,7 +311,7 @@ function AdoptBoard() {
           </S.StyledPagination>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

@@ -85,12 +85,17 @@ export const CaptionContainer = styled.div`
   margin-right: 10px; 
   height: 300px;
   background-color: #FFF7E7;
-  color:#4A2511;
 `;
 
 export const StyledText = styled.p`
-  font-size: 20px;       // 글자 크기 지정. 원하는 크기로 조절 가능.
-  margin-bottom: 15px;   // 아래쪽 간격 지정. 원하는 크기로 조절 가능.
+  font-size: 1.3vw;     // 글자 크기 지정. 원하는 크기로 조절 가능.
+  margin-bottom: 1vw;   // 아래쪽 간격 지정. 원하는 크기로 조절 가능.
+  margin-left: 1vw;
+`;
+
+export const StyledTextTitle = styled.p`
+  font-size: 1.5vw;     // 글자 크기 지정. 원하는 크기로 조절 가능.
+  margin-bottom: 1vw;   // 아래쪽 간격 지정. 원하는 크기로 조절 가능.
   margin-left: 1vw;
 `;
 
@@ -107,3 +112,12 @@ export const Box = styled.div`
   flex-direction: column; /* SurveyPaw 컴포넌트들을 수직 방향으로 배치 */
   /* margin-right: 1vw; */
 `;
+
+export const Result = styled.div`
+  margin-right: 1vw;
+  margin-bottom: 1vw;
+`
+
+export const pTag = styled.p`
+  font-weight: bold;
+`

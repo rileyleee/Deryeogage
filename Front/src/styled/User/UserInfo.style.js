@@ -27,10 +27,15 @@ export const UserInfoText = styled.p`
 `
 
 export const MyBtn = styled.button`
-    width : 12vw;
+    width : 10vw;
     background-color: #FFF1D6;
     border: none;
     border-radius: 10px;
+    &:hover {
+    background-color: #ffaf4d; // 버튼 호버 시 내부 색상 변경
+    border-color: #ffaf4d; // 버튼 호버 시 테두리 색상 변경
+    color: white;
+  }
 `
 
 export const TestBtn = styled.a`

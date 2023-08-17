@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 export const Span = styled.span`
   color: rgba(255, 145, 77, 1);
@@ -18,7 +18,7 @@ export const CenteredDiv = styled.div`
 export const Div = styled.div`
   padding: 1vw;
   width: 40vw;
-  height: 37vw;
+  height: auto;
   background-color: white;
   border: 1px #ff914d solid;
   border-radius: 30px;
@@ -42,6 +42,10 @@ export const Button = styled.button`
   border-radius: 30px;
   color: white;
   margin-bottom: 0.5vw;
+  &:hover {
+    background-color: #ff7140; // 버튼 호버 시 내부 색상 변경
+    border-color: #ff7140; // 버튼 호버 시 테두리 색상 변경
+  }
 `;
 
 export const Drag = styled.div`
@@ -60,4 +64,17 @@ export const Survey = styled.div`
   margin-bottom: 0.5vw;
   margin-top: 0.5vw;
   font-weight: bold;
+`;
+
+export const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+export const PageContainer = styled.div`
+  animation: ${fadeIn} 1s ease-in-out;
 `;

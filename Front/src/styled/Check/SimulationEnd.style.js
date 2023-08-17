@@ -29,7 +29,7 @@ export const GameResultBox = styled.div`
 
 export const GameResulth3 = styled.p`
     text-align: center;
-    font-size: 2vw;
+    font-size: 1.7vw;
     margin-bottom: 1vw;
 `
 export const GameResultp = styled.p`

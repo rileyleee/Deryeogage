@@ -16,12 +16,6 @@ function Postcost({
   const [next_redirect_pc_url, setNextRedirectPcUrl] = useState("");
   const [tid, setTid] = useState("");
 
-  const headers = {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json",
-  };
-  
-
   const params = {
     cid: "TC0ONETIME",
     partner_order_id: "partner_order_id",
@@ -42,7 +36,6 @@ function Postcost({
     fromUserId,
     toUserId,
   };
-
 
   useEffect(() => {
     axios({
@@ -82,17 +75,6 @@ function Postcost({
         }
       );
 
-      console.log("Cost sent successfully");
-      console.log("여기 ! !여 기 !! 여 기");
-
-      // 두 번째 POST 요청
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/adopts`,
-        postData,
-        { headers }
-      );
-
-      console.log("POST request was successful!", response);
       onReservationComplete(); // 예약이 성공적으로 완료되었다는 것을 상위 컴포넌트에 알림
     } catch (error) {
       console.error("Failed to send cost and post request:", error);
@@ -145,7 +127,6 @@ function Postcost({
         </S.Notification>
       </S.ModalContainer>
     </S.ModalOverlay>
-
   );
 }
 

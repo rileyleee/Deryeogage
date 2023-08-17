@@ -103,7 +103,7 @@ const AnswersContainer = styled.div`
   
   const HoverButton = css`
     &:hover {
-      background-color: #eb7d39;
+      background-color: #ff7140;
       display: inline-block;
       vertical-align: middle;
       -webkit-transform: perspective(1px) translateZ(0);
@@ -283,7 +283,7 @@ function CheckListResult() {
   return (
     <div className="animate__animated animate__fadeIn">
       <InfoContainer>
-        {localStorage.getItem('nickname')}님의 <span>사전테스트</span> 결과를 확인해보세요
+        {localStorage.getItem('nickname')}님의 사전테스트 결과를 확인해보세요
       </InfoContainer>
       <ResultContainer>
         <PledgeContainer>

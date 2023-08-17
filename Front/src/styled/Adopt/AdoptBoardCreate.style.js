@@ -117,8 +117,9 @@ export const SamllText = styled.span`
 
 export const Title = styled.div`
   font-weight: bold;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   text-align: center;
+  margin-bottom: 2vw;
 `;
 
 export const Warning = styled.div`
