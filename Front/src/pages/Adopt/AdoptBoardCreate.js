@@ -6,6 +6,7 @@ import DogInfoSection from "../../components/Adopt/DogInfoSection";
 import PersonalitySection from "../../components/Adopt/PersonalitySection";
 import Precost from "./../../components/Adopt/Precosts";
 import * as S from "../../styled/Adopt/AdoptBoardCreate.style";
+import { PiPawPrintFill } from "react-icons/pi";
 
 function AdoptBoardCreate() {
   const navigate = useNavigate();
@@ -338,7 +339,7 @@ function AdoptBoardCreate() {
       </S.Title>
       <form onSubmit={handleSubmit}>
         <S.ContentBox>
-          <S.Span>제목</S.Span>을 작성해주세요.
+          <PiPawPrintFill style={{color:"#FF914D", marginBottom:"0.2vw"}}></PiPawPrintFill><S.Span> 제목</S.Span>을 작성해주세요.
           <S.Tooltip>
             ⓘ
             <S.TooltipText className="tooltiptext">
@@ -407,7 +408,7 @@ function AdoptBoardCreate() {
             />
           </S.Box>
         </S.FlexContainer>
-        강아지의 <S.Span>건강정보</S.Span>를 상세하게 작성해주세요.
+        <PiPawPrintFill style={{color:"#FF914D", marginBottom:"0.2vw"}}></PiPawPrintFill> 강아지의 <S.Span>건강정보</S.Span>를 상세하게 작성해주세요.
         <S.Tooltip>
           ⓘ
           <S.TooltipText className="tooltiptext">
@@ -421,7 +422,7 @@ function AdoptBoardCreate() {
           (글자수: {healthCharCount} / 300)
         </S.SamllText>
         <S.DogTextarea value={dogHealth} onChange={handleHealthChange} />
-        강아지를 자유롭게 <S.Span>소개</S.Span>해주세요.
+        <PiPawPrintFill style={{color:"#FF914D", marginBottom:"0.2vw"}}></PiPawPrintFill> 강아지를 자유롭게 <S.Span>소개</S.Span>해주세요.
         <S.Tooltip>
           ⓘ
           <S.TooltipText className="tooltiptext">

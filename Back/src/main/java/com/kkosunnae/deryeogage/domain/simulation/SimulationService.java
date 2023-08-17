@@ -80,6 +80,7 @@ public class SimulationService {
 
     private static final Map<String, Integer> titleRankings = new HashMap<>();
     static {
+        titleRankings.put("없음",8);
         titleRankings.put("도살자", 7);
         titleRankings.put("생초보 양육자", 6);
         titleRankings.put("새싹 양육자", 5);

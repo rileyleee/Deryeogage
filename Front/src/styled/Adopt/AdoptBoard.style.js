@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 export const LoadingText = styled.span`
   position: absolute;
@@ -50,6 +50,10 @@ export const Button = styled.button`
   display: block;
   width: fit-content;
   cursor: pointer;
+  &:hover {
+    background-color: #ff7140; // 버튼 호버 시 내부 색상 변경
+    border-color: #ff7140; // 버튼 호버 시 테두리 색상 변경
+  }
 `;
 
 export const SelectInputBox = styled.div`
@@ -101,6 +105,15 @@ export const Media = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  // 애니메이션 효과 지정
+  transition: transform 0.3s, filter 0.3s; // filter 추가
+
+  // 마우스 호버 시 효과
+  &:hover {
+    transform: translateY(-10px); 
+    filter: brightness(1.1); // 밝기를 120%로 증가
+  }
 `;
 
 export const StyledPagination = styled.div`
@@ -154,6 +167,10 @@ export const RefreshButton = styled.button`
   padding: 0.5vw 1vw;
   border-radius: 20px;
   color: white;
+  &:hover {
+    background-color: #ff7140; // 버튼 호버 시 내부 색상 변경
+    border-color: #ff7140; // 버튼 호버 시 테두리 색상 변경
+  }
 `;
 
 export const DistanceLabel = styled.div`
@@ -188,4 +205,17 @@ export const DogStatus = styled.span`
   border-radius: 10px;
   z-index: 10;
   padding: 0.2vw 0.4vw;
+`;
+
+export const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+export const PageContainer = styled.div`
+  animation: ${fadeIn} 1s ease-in-out;
 `;

@@ -143,54 +143,51 @@ function Survey() {
   const nickname = localStorage.getItem("nickname");
 
   return (
-    <S.CenteredDiv>
-      <S.Div>
-        {/* Button to trigger the modal */}
-        {hasSubmitted && (
-          <div>
-            {nickname}님은 이미 설문을 제출했습니다
-          </div>
-        )}
+    <S.PageContainer>
+      <S.CenteredDiv>
+        <S.Div>
+          {/* Button to trigger the modal */}
+          {hasSubmitted && <div>{nickname}님은 이미 설문을 제출했습니다</div>}
 
-        <S.SurveyContainer>
-          <S.Survey>선호도조사</S.Survey>
-          <S.Drag>
-            항목을 <S.Span>드래그</S.Span>하여 중요도 순위를 조정해 보세요
+          <S.SurveyContainer>
+            <S.Survey>선호도조사</S.Survey>
+            <S.Drag>
+              항목을 <S.Span>드래그</S.Span>하여 중요도 순위를 조정해 보세요
             </S.Drag>
-          <S.SmallText>
-            선호도 조사를 통해 {nickname}님의 생활에 맞는
-            강아지를 추천해 드립니다
-          </S.SmallText>
+            <S.SmallText>
+              선호도 조사를 통해 {nickname}님의 생활에 맞는 강아지를 추천해
+              드립니다
+            </S.SmallText>
 
-
-          {ranking.map((item, index) => (
-            <div
-              key={index}
-              draggable
-              onDragStart={(e) => onDragStart(e, index)}
-              onDragOver={onDragOver}
-              onDrop={(e) => onDrop(e, index)}
-            >
-              <SurveyPaw
-                title={titles[item]}
-                rank={index + 1}  // 현재 순위를 전달합니다.
-                initial={
-                  surveyData ? parseInt(surveyData[`${egtitles[item]}`]) : 0
-                }
-                onSelect={(value) => {
-                  selectors[item](value);
-                }}
-              />
-            </div>
-          ))}
-        </S.SurveyContainer>
-        {surveyData ? (
-          <S.Button onClick={handleUpdate}>수정하기</S.Button>
-        ) : (
-          <S.Button onClick={handleSubmit}>등록하기</S.Button>
-        )}
-      </S.Div>
-    </S.CenteredDiv>
+            {ranking.map((item, index) => (
+              <div
+                key={index}
+                draggable
+                onDragStart={(e) => onDragStart(e, index)}
+                onDragOver={onDragOver}
+                onDrop={(e) => onDrop(e, index)}
+              >
+                <SurveyPaw
+                  title={titles[item]}
+                  rank={index + 1} // 현재 순위를 전달합니다.
+                  initial={
+                    surveyData ? parseInt(surveyData[`${egtitles[item]}`]) : 0
+                  }
+                  onSelect={(value) => {
+                    selectors[item](value);
+                  }}
+                />
+              </div>
+            ))}
+          </S.SurveyContainer>
+          {surveyData ? (
+            <S.Button onClick={handleUpdate}>수정하기</S.Button>
+          ) : (
+            <S.Button onClick={handleSubmit}>등록하기</S.Button>
+          )}
+        </S.Div>
+      </S.CenteredDiv>
+    </S.PageContainer>
   );
 }
 

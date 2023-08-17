@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CheckBtn from "../../components/Check/CheckBtn";
@@ -145,14 +145,17 @@ function CheckList() {
 export default CheckList;
 
 export const InfoContainer = styled.div`
-  margin: 2vh 1vw 4vh;
-  font-size: 2vw;
+  margin-top: 3vh;
+  margin-left: 1vw;
+
+  font-size: 1.5vw;
   span {
     color: #ff914d;
   }
 `;
 
 const SubmitButton = styled.button`
+  margin-bottom: 1vw;
   padding: 10px;
   font-size: 1em;
   background-color: #ff914d;
@@ -161,7 +164,7 @@ const SubmitButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   &:hover {
-    background-color: #eb7d39;
+    background-color: #ff7140;
     display: inline-block;
     vertical-align: middle;
     -webkit-transform: perspective(1px) translateZ(0);

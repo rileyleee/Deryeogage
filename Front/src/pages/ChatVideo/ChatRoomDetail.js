@@ -245,10 +245,7 @@ function ChatRoomDetail() {
 
   return (
     <Container>
-      <div
-        className="d-flex flex-column justify-content-between"
-        style={{ height: "100%" }}
-      >
+      <div className="d-flex flex-column justify-content-between" style={{ height: "100%" }}>
         <div>
           {!searchMode ? (
             <div className="d-flex justify-content-between">
@@ -482,9 +479,9 @@ const ExitButton = styled.button`
   }
 `;
 
-export const Container = styled.div`
+const Container = styled.div`
   margin: 2vh 0;
   display: flex;
   flex-direction: column; // 세로 방향으로 아이템을 나열합니다.
-  height: 82vh; // 가능한 한 최대 높이를 사용합니다.
+  height: 47vw;
 `;

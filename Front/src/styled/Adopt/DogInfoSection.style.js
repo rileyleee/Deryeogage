@@ -6,7 +6,7 @@ export const DogInfo = styled.div`
   border: 1px #ff914d solid;
   border-radius: 30px;
   background-color: white;
-  text-align: center;
+  /* text-align: center; */
 `;
 export const Div = styled.div`
   margin: 1vw 0;
@@ -28,10 +28,17 @@ export const Warning = styled.span`
 
 export const StyledInput = styled.input`
   width: 12vw; // 원하는 width 값으로 변경 가능
+  margin-left: 2vw;
+`;
+
+export const AgeInput = styled.input`
+  margin-left: 2vw;
+  text-align: center;
 `;
 
 export const StyledSelect = styled.select`
   width: 12vw; // 원하는 width 값으로 변경 가능
+  margin-left: 2vw;
 `;
 
 export const Tooltip = styled.div`

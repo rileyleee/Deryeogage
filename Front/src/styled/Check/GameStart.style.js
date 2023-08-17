@@ -62,4 +62,8 @@ export const GameStartButton = styled.button`
     left: 50%;
     transform: translate(-50%, 0%);
     /* 수평 정렬 */
+     &:hover {
+    background-color: #ff7140; // 버튼 호버 시 내부 색상 변경
+    border-color: #ff7140; // 버튼 호버 시 테두리 색상 변경
+  }
 `
