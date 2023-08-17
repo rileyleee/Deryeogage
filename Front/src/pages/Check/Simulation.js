@@ -56,7 +56,7 @@ function Simulation() {
   useEffect(() => {
     // 처음 로드할 때 localStorage에서 hpPercentage를 가져와서 상태를 설정합니다.
     setHpPercentage(simulationExistValue.health);
-  }, []);
+  }, [simulationExistValue.health]);
   console.log(simulationExistValue);
   // 시간 및 hp 계산
   useEffect(() => {
@@ -289,10 +289,6 @@ function Simulation() {
     }
   }, [timeDifference, simulationExistValue.endTime, setSimulationExistValue]);
 
-  // if (loading) {
-  //   return <div>Loading...</div>; // 로딩 중인 경우 표시할 컴포넌트
-  // }
-  // else {
   return (
     <div className="container" id="Simulation" style={{ position: "relative" }}>
       <GameText />

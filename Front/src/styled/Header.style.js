@@ -22,5 +22,4 @@ export const ButtonWrapper = styled.button`
 
 export const DogImg = styled.img`
   margin-left: 1vw;
-  margin-bottom: 1vh;
 `
