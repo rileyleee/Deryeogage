@@ -3,12 +3,14 @@ import styled, { keyframes } from 'styled-components';
 export const Span = styled.span`
   color: rgba(255, 145, 77, 1);
 `;
-
+export const DraggableItem = styled.div`
+  opacity: ${props => (props.isDragging ? 0.5 : 1)};
+`;
 export const CenteredDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: auto;
+  height: 74vh;
   width: 100%;
   overflow: hidden;
   padding: 0;
