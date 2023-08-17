@@ -304,14 +304,14 @@ function Home() {
         <S.pTag style={{color: textColor}} show={hoverText.length > 0}>
           {hoverText}
         </S.pTag>
-        <S.RowWrap className='d-flex justify-content-around align-items-center'>
+        <S.RowWrap className='d-flex justify-content-between align-items-center'>
         <S.ImgDiv className='text-center'>
           <S.ImgBtn className='adopt'
               onMouseEnter={() => handleMouseEnter(0)}
               onMouseLeave={handleMouseLeave}
               onClick={(event) => handleLinkClick(event, "/adopt")}
               />
-            <S.Name className='purple'>시뮬레이션</S.Name>
+            <S.Name className='pink'>입양게시판</S.Name>
           </S.ImgDiv>
           <S.ImgDiv className='text-center'>
               <S.ImgBtn className='simulation'

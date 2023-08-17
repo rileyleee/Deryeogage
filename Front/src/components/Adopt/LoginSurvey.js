@@ -148,13 +148,17 @@ function LoginSurvey() {
                       </S.CaptionContainer>
                       <S.Box>
                         {/* 강아지 특성 정보를 표시하는 섹션 */}
-                        {dog.name}의 특성
+                        <S.pTag>{dog.name}의 특성</S.pTag>
+                        <S.Result>
                         {renderDogAttributes(dog, surveyData.ranking)}
+                        </S.Result>
                       </S.Box>
                       <S.Box>
                         {/* 사용자 선호도조사를 표시하는 섹션 */}
-                        {localStorage.getItem("nickname")}님의 선호도
+                        <S.pTag>{localStorage.getItem("nickname")}님의 선호도</S.pTag>
+                        <S.Result>
                         {renderAttributes(surveyData)}
+                        </S.Result>
                       </S.Box>
                     </S.MediaAndCaptionContainer>
                   </Carousel.Item>

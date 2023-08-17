@@ -12,6 +12,7 @@ export const StyledChatRoomDetail = styled.div`
 `;
 
 export const StyledChatRoom = styled.div`
+  height: 50vw;
   position: relative;
   border: 1px #ff914d solid;
   border-radius: 0.6vw;
@@ -24,6 +25,7 @@ export const StyledChatRoom = styled.div`
 `;
 
 export const StyledDogDetail = styled.div`
+  height: 50vw;
   border: 1px #ff914d solid;
   border-radius: 10px;
   width: 65%;

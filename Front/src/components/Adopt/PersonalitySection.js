@@ -1,6 +1,7 @@
 import React from "react";
 import SurveyPaw from "../../components/SurveyPaw";
 import * as S from "../../styled/Adopt/PersonalitySection.style";
+import { PiPawPrintFill } from "react-icons/pi";
 
 function PersonalitySection({
   friendly,
@@ -16,7 +17,7 @@ function PersonalitySection({
 }) {
   return (
     <S.Div>
-      강아지의 <S.Span>성격</S.Span>과 <S.Span>특성</S.Span>을 선택해주세요.
+      <PiPawPrintFill style={{color:"#FF914D", marginBottom:"0.2vw"}}></PiPawPrintFill> 강아지의 <S.Span>성격</S.Span>과 <S.Span>특성</S.Span>을 선택해주세요.
       <S.DogCheck>
         <S.CheckPaw>
         <SurveyPaw title="친화력" value={friendly} onSelect={setFriendly} />

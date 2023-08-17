@@ -2,6 +2,7 @@
 
 import React from "react";
 import * as S from "../../styled/Adopt/ImageSection.style";
+import { PiPawPrintFill } from "react-icons/pi";
 
 function ImageSection({
   selectedImages,
@@ -15,7 +16,7 @@ function ImageSection({
   return (
     <div>
         <S.MediaSection>
-          <S.Span>사진</S.Span>을 등록해주세요.{" "}
+        <PiPawPrintFill style={{color:"#FF914D", marginBottom:"0.2vw"}}></PiPawPrintFill><S.Span> 사진</S.Span>을 등록해주세요.{" "}
           <S.SamllText>(사진등록은 필수입니다.)</S.SamllText>
           <S.FlexContainer>
             {/* "Add Photo" button */}
@@ -47,7 +48,7 @@ function ImageSection({
         </S.MediaSection>
 
         <S.MediaSection>
-          <S.Span>동영상</S.Span>을 등록해주세요.
+        <PiPawPrintFill style={{color:"#FF914D", marginBottom:"0.2vw"}}></PiPawPrintFill><S.Span> 동영상</S.Span>을 등록해주세요.
           <S.SamllText>(동영상은 선택사항입니다.)</S.SamllText>
           <S.FlexContainer>
             {/* "Add Video" button */}

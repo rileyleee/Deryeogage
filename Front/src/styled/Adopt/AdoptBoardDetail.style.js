@@ -129,8 +129,8 @@ export const Button = styled.button`
   font-size: 1.3rem;
   background-color: #ff914d;
   color: white;
-  padding: 0.3vw 0.6vw;
-  border-radius: 10px;
+  padding: 0.3vw 1vw;
+  border-radius: 20px;
   text-decoration: none;
   cursor: pointer;
   margin: 0.6vw;

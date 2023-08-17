@@ -47,8 +47,8 @@ export const DogHealth = styled.div`
 `;
 
 export const TopBox = styled.div`
-  display: flex;
-  justify-content: space-between;
+  /* display: flex;
+  justify-content: space-between; */
 `;
 
 export const MediaContainer = styled.div`
@@ -71,7 +71,7 @@ export const FlexContainer = styled.div`
   display: flex;
   gap: 0.6vw; /* Adjust this value as per your preference */
   margin-bottom: 0.2vw; /* Add margin to separate sections */
-  margin-top: 0.5vw;
+  /* margin-top: 0.5vw; */
 `;
 
 export const Box = styled.div`
@@ -129,14 +129,22 @@ export const FixedButton = styled.button`
   background-color: #ff914d; // 버튼의 배경 색상입니다. 원하는 색으로 변경하세요.
   color: #ffffff;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   // position: fixed; /* 또는 absolute; 상황에 따라 적절하게 선택 */
   margin-right: 1vw;
-  margin-bottom: 1.3vw;
   &:hover {
     background-color: #ff7140; // 버튼 호버 시 내부 색상 변경
     border-color: #ff7140; // 버튼 호버 시 테두리 색상 변경
   }
 `;
+
+
+export const TitleDiv = styled.div`
+  background-color: #FFF8E4;
+  padding: 0.5vw 1vw;
+  border-radius: 10px;
+  margin: 0 1vw 1vw 1vw;
+  font-size: 1.3rem;
+`
