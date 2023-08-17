@@ -47,6 +47,9 @@ function AdoptBoard() {
   const [adoptData, setAdoptData] = useState([]);
   const [hasSurvey, setHasSurvey] = useState(false);
 
+  // 지역/거리 호버
+  const [isHovered, setIsHovered] = useState(false);
+
   // 검색 기능
   const searchOptions = [
     { value: "title", label: "제목" },
@@ -198,7 +201,7 @@ function AdoptBoard() {
   }
 
   return (
-    < >
+    <div>
       {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
       {insertedToken && hasSurvey ? <NotSurvey /> : null}
       {!insertedToken ? <NotLogin /> : null}
@@ -239,6 +242,7 @@ function AdoptBoard() {
                     setSearchCategory(option.value);
                     setActivePage(1);
                     sessionStorage.setItem("activePage", activePage);
+                    
                   }}
                   options={searchOptions}
                   styles={{
@@ -262,7 +266,7 @@ function AdoptBoard() {
                   type="text"
                   value={searchText}
                   onChange={(e) => {
-                    setSearchText(e.target.value);
+                    setSearchText(e.target.value)
                     setActivePage(1); // 페이지를 1로 초기화
                     sessionStorage.setItem("activePage", activePage);
                   }}
@@ -270,9 +274,7 @@ function AdoptBoard() {
               </S.SelectInputBox>
 
               <div>
-                <S.RefreshButton onClick={handleRefreshClick}>
-                  새로고침
-                </S.RefreshButton>
+                <S.RefreshButton onClick={handleRefreshClick}>새로고침</S.RefreshButton>
                 <S.Button onClick={onClick}>글 작성</S.Button>
               </div>
             </S.TopBar>
@@ -280,7 +282,11 @@ function AdoptBoard() {
               {dogsToShow.map((dog) => (
                 <S.Media key={dog.id} onClick={() => handleDogClick(dog)}>
                   <DogListItem dog={dog} media={dog.fileList[0]} />
-                  <S.DistanceLabel>{dog.distance}</S.DistanceLabel>
+                  <S.DistanceLabel 
+        onMouseEnter={() => setIsHovered(dog.id)} 
+        onMouseLeave={() => setIsHovered(null)}>
+          {isHovered === dog.id ? dog.distance : dog.regionCode}
+      </S.DistanceLabel>
                   <S.DogStatus color={getColorForStatus(dog.status)}>
                     {dog.status === "depart"
                       ? "입양 중"
@@ -311,8 +317,9 @@ function AdoptBoard() {
           </S.StyledPagination>
         </div>
       )}
-    </>
+    </div>
   );
 }
 
 export default AdoptBoard;
+

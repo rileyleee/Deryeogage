@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled from "styled-components";
 
 export const LoadingText = styled.span`
   position: absolute;
@@ -69,6 +69,7 @@ export const SelectInputBox = styled.div`
   padding: 0.2vw;
   z-index: 1000; // 다른 요소보다 위에 위치하기 위해 높은 값 지정
 `;
+
 
 export const InputBox = styled.input`
   width: 100%;
@@ -184,12 +185,12 @@ export const DistanceLabel = styled.div`
     0,
     0.5
   ); // 배경을 약간 어둡게 해서 텍스트가 잘 보이게 합니다.
-  padding: 0.25vw 0.5vw; // 내부 간격입니다. 필요에 따라 조절하세요.
+  padding: 0.25vw 0.2vw; // 내부 간격입니다. 필요에 따라 조절하세요.
   border-radius: 5px; // 모서리를 둥글게 합니다.
   color: white; // 텍스트 색상입니다.
-  font-size: 0.3vw;
-  width: 4vw; // 너비 고정
-  height: 1vw; // 높이 고정
+  font-size: 0.7vw;
+  width: 7vw; // 너비 고정
+  height: 2vw; // 높이 고정
   // 텍스트 가운데 정렬을 위한 Flexbox 속성
   display: flex;
   justify-content: center; // 가로 중앙 정렬
@@ -206,17 +207,4 @@ export const DogStatus = styled.span`
   border-radius: 10px;
   z-index: 10;
   padding: 0.2vw 0.4vw;
-`;
-
-export const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
-export const PageContainer = styled.div`
-  animation: ${fadeIn} 1s ease-in-out;
 `;

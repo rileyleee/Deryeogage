@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const GameStartsecond = styled.div`
     &.second {
+        position: relative;
         height: 34vw;
         padding: 0.5vw;
         background-image: url("/assets/emotion/Emote_Note.png"), url("/assets/things/bubble.png"), url(${props => `/assets/${props.petType}/jump${props.petType}.gif`}),url("/assets/requirement/toy.jpg");
@@ -23,4 +24,13 @@ export const GameBasicButton = styled.button`
     margin-bottom: 0.5vw;
     font-weight: bold;
     text-align: center
+`
+
+export const WalkingText = styled.div`
+    font-size: 3vw;
+    font-weight: bold;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 `

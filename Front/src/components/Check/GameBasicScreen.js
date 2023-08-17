@@ -177,14 +177,14 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
         }
         // 만약 matchedImage가 없고, "assets/things/requirement4.png"의 출현 횟수가 8 미만이면
         // 해당 이미지를 보여준다
-        else if (req4Count < 8 && Math.random() < 0.5) { // 50%의 확률로 이미지가 보이게 설정, 확률은 조정 가능
-          setShowRandomImage("/assets/things/requirement4.png");
-          setRequirementNum(11);
-          setIsImageVisible(true);
-        }
         else if (emergency < 2 && Math.random() < 0.2) {
           setShowRandomImage("/assets/things/sick.png");
           setRequirementNum(13);
+          setIsImageVisible(true);
+        }
+        else if (req4Count < 8 && Math.random() < 0.5) { // 50%의 확률로 이미지가 보이게 설정, 확률은 조정 가능
+          setShowRandomImage("/assets/things/requirement4.png");
+          setRequirementNum(11);
           setIsImageVisible(true);
         }
       
@@ -253,7 +253,20 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
   useEffect(() => {
     console.log(selectedQuiz);
   }, [selectedQuiz]);
-      
+
+  // 음악 넣기
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+  
+  const togglePlay = () => {
+    if (isPlaying) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
+    }
+    setIsPlaying(!isPlaying);
+  }
+
   return (
     <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-between"
     petType={simulationExistValue.petType}
@@ -294,8 +307,16 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
                     </div>
                 </div>
             </div>
-            <div>
-                <GameBtn className="orange" as="div">{simulationExistValue.petName}네 집</GameBtn>
+            <div className="d-flex">
+                <GameBtn style={{height:"2vw"}} className="orange" as="div">{simulationExistValue.petName}네 집</GameBtn>
+                <div>
+                  <audio ref={audioRef} src="/audio/GameBasicScreen_BGM.mp3" autoPlay loop>
+                    Your browser does not support the audio element.
+                  </audio>
+                  <S.AudioBtn onClick={togglePlay}>
+                    {isPlaying ? <img src="/assets/things/play.png" alt="" /> : <img src="/assets/things/pause.png" alt="" />}
+                  </S.AudioBtn>
+                </div>
             </div>
             <div className="d-flex flex-column justify-content-between align-items-end">
                 <div className="d-flex flex-column">

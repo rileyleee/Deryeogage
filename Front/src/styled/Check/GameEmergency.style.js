@@ -4,6 +4,7 @@ export const GameStartsecond = styled.div`
   position: relative;
 
   &.second {
+    position: relative; /* 중앙 정렬을 위한 기준점 설정 */
     height: 34vw;
     padding: 0.5vw;
     background-image: url("/assets/background/hospital.png");
@@ -55,4 +56,13 @@ export const GameEmergencyBubble = styled.img`
     top: 50%; // 상위 컨테이너 중앙에 위치
     left: 50%; // 상위 컨테이너 중앙에 위치
     transform: translate(120%, -30%); // 위치 조정 및 회전
+`
+
+export const WalkingText = styled.div`
+    font-size: 3vw;
+    font-weight: bold;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 `

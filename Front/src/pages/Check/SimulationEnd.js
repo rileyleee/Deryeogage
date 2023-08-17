@@ -137,7 +137,7 @@ return (
                     <S.GameResultli>기다려! {train.substr(4, 2) === "20" && <S.CheckImg src="/assets/things/checked.png" alt="" />}</S.GameResultli>
                     <S.GameResultli>하우스! {train.substr(6, 2) === "30" && <S.CheckImg src="/assets/things/checked.png" alt="" />}</S.GameResultli>
                     <br />
-                    <S.GameResulth3>{nickname} 님은 {ExistValue.title} 입니다.</S.GameResulth3>
+                    <S.GameResulth3>{nickname} 님은 <br />{ExistValue.title} 입니다.</S.GameResulth3>
                     <div className='d-flex justify-content-center'>
                       <S.GameResultBtn onClick={sendData}>확인</S.GameResultBtn>
                     </div>
