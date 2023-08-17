@@ -10,7 +10,7 @@ export const CenteredDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 74vh;
+  height: auto;
   width: 100%;
   overflow: hidden;
   padding: 0;
