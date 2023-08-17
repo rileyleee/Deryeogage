@@ -245,7 +245,10 @@ function ChatRoomDetail() {
 
   return (
     <Container>
-      <div className="d-flex flex-column justify-content-between" style={{ height: "100%" }}>
+      <div
+        className="d-flex flex-column justify-content-between"
+        style={{ height: "100%" }}
+      >
         <div>
           {!searchMode ? (
             <div className="d-flex justify-content-between">
@@ -340,7 +343,6 @@ function ChatRoomDetail() {
             </>
           )}
         </div>
-        <div>
           <div className="d-flex justify-content-around">
             <MessageInput
               type="text"
@@ -353,7 +355,6 @@ function ChatRoomDetail() {
               {/* 아이콘 크기를 원하는 대로 조절할 수 있습니다 */}
             </SendButton>
           </div>
-        </div>
       </div>
     </Container>
   );
@@ -362,10 +363,11 @@ function ChatRoomDetail() {
 export default ChatRoomDetail;
 
 const MessageList = styled.ul`
-  min-height: 40vh; // 원하는 높이 설정
+  height: 38vw; // 원하는 높이 설정
   overflow-y: auto; // 내용이 높이를 초과할 경우 스크롤 생성
   list-style: none;
   padding: 0;
+  margin-top: 1vw;
 `;
 
 const MessageItem = styled.li`
@@ -374,9 +376,9 @@ const MessageItem = styled.li`
   flex-direction: ${(props) =>
     props.rightAlign ? "row-reverse" : "row"}; // 추가
   border-radius: 30px;
-  padding: 0.5vh;
-  margin-left: ${(props) => (props.rightAlign ? "0" : "4vh")};
-  margin-right: ${(props) => (props.rightAlign ? "4vh" : "0")};
+  padding: 0.25vw;
+  margin-left: ${(props) => (props.rightAlign ? "0" : "2vw")};
+  margin-right: ${(props) => (props.rightAlign ? "2vw" : "0")};
   word-break: break-all;
 `;
 
@@ -387,7 +389,7 @@ const MessageContent = styled.div`
   // border: 1px solid;
   border: none;
   border-radius: 30px;
-  padding: 0.8vh;
+  padding: 0.4vw;
   color: gray;
   word-break: break-all; // 이 줄을 추가
   background-color: ${(props) => (props.rightAlign ? "#FFE7BA" : "#D8D8D8")};
@@ -436,8 +438,8 @@ const DateIndicator = styled.div`
 `;
 
 const UserImage = styled.img`
-  width: 5vh; // 원하는 사이즈로 조절
-  height: 5vh;
+  width: 2.5vw; // 원하는 사이즈로 조절
+  height: 2.5vw;
   border-radius: 50%; // 동그란 형태를 만들기 위해
   margin-right: 5px; // 오른쪽 여백 추가
 `;
@@ -453,8 +455,8 @@ const SearchButton = styled.button`
   background-size: contain;
   background-color: transparent; // 배경색을 제거
   border: none;
-  width: 4vh; // 원하는 크기로 조절
-  height: 4vh; // 원하는 크기로 조절
+  width: 2vw; // 원하는 크기로 조절
+  height: 2vw; // 원하는 크기로 조절
   cursor: pointer;
 
   &:hover,
@@ -470,8 +472,8 @@ const ExitButton = styled.button`
   background-size: contain;
   background-color: transparent; // 배경색을 제거
   border: none;
-  width: 4vh; // 원하는 크기로 조절
-  height: 4vh; // 원하는 크기로 조절
+  width: 2vw; // 원하는 크기로 조절
+  height: 2vw; // 원하는 크기로 조절
   cursor: pointer;
   &:hover,
   &:focus {
@@ -479,9 +481,8 @@ const ExitButton = styled.button`
   }
 `;
 
-const Container = styled.div`
-  margin: 2vh 0;
+export const Container = styled.div`
   display: flex;
   flex-direction: column; // 세로 방향으로 아이템을 나열합니다.
-  height: 47vw;
+  height: 40vw; // 가능한 한 최대 높이를 사용합니다.
 `;
