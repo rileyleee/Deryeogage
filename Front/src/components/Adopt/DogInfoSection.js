@@ -106,6 +106,7 @@ function DogInfoSection({
           onChange={(e) => handleDogTypeCodeChange(e.target.value)}
           value={dogTypeCode}
         >
+          <option>선택해주세요</option>
           <option value="기타">기타</option>
           <option value="말티즈">말티즈</option>
           <option value="푸들">푸들</option>
