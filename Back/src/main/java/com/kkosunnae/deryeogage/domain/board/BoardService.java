@@ -172,7 +172,6 @@ public class BoardService {
                 Character.getNumericValue(survey.get().getBark()),
                 Character.getNumericValue(survey.get().getHair())
         };
-        System.out.println(Arrays.toString(userPreferences));
 
         List<BoardEntity> boardEntityList = boardRepository.findAllByUserIdNot(userId);
         List<BoardDto> boardDtoList = new ArrayList<>();
