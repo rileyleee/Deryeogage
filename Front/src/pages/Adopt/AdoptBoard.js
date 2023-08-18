@@ -174,7 +174,6 @@ function AdoptBoard() {
   const startIndex = (activePage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const dogsToShow = combinedDogs.slice(startIndex, endIndex);
-  
 
   useEffect(() => {
     // 세션 스토리지에서 게시물 데이터 확인
@@ -199,7 +198,7 @@ function AdoptBoard() {
   }
 
   return (
-    <div>
+    < >
       {insertedToken && !hasSurvey ? <LoginSurvey /> : null}
       {insertedToken && hasSurvey ? <NotSurvey /> : null}
       {!insertedToken ? <NotLogin /> : null}
@@ -240,7 +239,6 @@ function AdoptBoard() {
                     setSearchCategory(option.value);
                     setActivePage(1);
                     sessionStorage.setItem("activePage", activePage);
-                    
                   }}
                   options={searchOptions}
                   styles={{
@@ -264,7 +262,7 @@ function AdoptBoard() {
                   type="text"
                   value={searchText}
                   onChange={(e) => {
-                    setSearchText(e.target.value)
+                    setSearchText(e.target.value);
                     setActivePage(1); // 페이지를 1로 초기화
                     sessionStorage.setItem("activePage", activePage);
                   }}
@@ -272,7 +270,9 @@ function AdoptBoard() {
               </S.SelectInputBox>
 
               <div>
-                <S.RefreshButton onClick={handleRefreshClick}>새로고침</S.RefreshButton>
+                <S.RefreshButton onClick={handleRefreshClick}>
+                  새로고침
+                </S.RefreshButton>
                 <S.Button onClick={onClick}>글 작성</S.Button>
               </div>
             </S.TopBar>
@@ -311,7 +311,7 @@ function AdoptBoard() {
           </S.StyledPagination>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

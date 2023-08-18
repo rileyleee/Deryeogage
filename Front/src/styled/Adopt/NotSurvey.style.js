@@ -6,8 +6,9 @@ export const Span = styled.span`
 `;
 
 export const Div = styled.div`
-  font-size: 2vw;
+  font-size: 1.5vw;
   margin-left: 1vw;
+  margin-top: 3vh;
 `;
 
 // 새로운 스타일드 컴포넌트를 정의하여 a 태그에 스타일을 적용

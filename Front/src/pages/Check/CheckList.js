@@ -145,8 +145,10 @@ function CheckList() {
 export default CheckList;
 
 export const InfoContainer = styled.div`
-  margin: 2vh 1vw 4vh;
-  font-size: 2vw;
+  margin-top: 3vh;
+  margin-left: 1vw;
+
+  font-size: 1.5vw;
   span {
     color: #ff914d;
   }

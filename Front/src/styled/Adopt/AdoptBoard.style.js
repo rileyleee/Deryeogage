@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 export const LoadingText = styled.span`
   position: absolute;
@@ -206,4 +206,17 @@ export const DogStatus = styled.span`
   border-radius: 10px;
   z-index: 10;
   padding: 0.2vw 0.4vw;
+`;
+
+export const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+export const PageContainer = styled.div`
+  animation: ${fadeIn} 1s ease-in-out;
 `;
