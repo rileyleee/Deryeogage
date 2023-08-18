@@ -15,14 +15,14 @@ function GameMenu(props) {
                 <S.GameIcon>💸</S.GameIcon>
                 <S.GameIcon>💖</S.GameIcon>
                 {/* <p>{state.icon}</p> */}
-                <img src={localStorage.getItem('imgSrc')} style={{ width: '40px', height: '40px' }} />
+                {/* <img src={localStorage.getItem('imgSrc')} style={{ width: '40px', height: '40px' }} /> */}
 
             </S.GameBasicIcon>
             <div>
                 <S.GameText>{props.time}</S.GameText>
                 <S.GameText>{existData.cost}원</S.GameText>
                 <S.GameBasicHp borderColor={borderColor} hpPercentage={existData.health}>{existData.health}</S.GameBasicHp>
-                <S.GameText>{localStorage.getItem('humidity')}</S.GameText>
+                {/* <S.GameText>{localStorage.getItem('humidity')}</S.GameText> */}
             </div>
         </S.GameBasicMenu>
     );
