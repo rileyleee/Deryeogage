@@ -36,6 +36,7 @@ function Home() {
     }
   }, [existValue]);
   const handleLinkClick = async (event, page) => {
+    getLocationAndWeather();
     if (event) event.preventDefault();
     // 로그인 여부를 확인하여 이동할 페이지 결정
     if (localStorage.getItem("accessToken")) {
@@ -208,8 +209,7 @@ function Home() {
   });
 
   // 컴포넌트 생성 후 날씨 정보 조회
-  useEffect(() => {
-    // 위에서 만든 상태 변수에 값을 전달
+  const getLocationAndWeather = () => {
     const getLocation = () => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(getWeather);
@@ -217,15 +217,15 @@ function Home() {
         console.error('Geolocation is not supported by this browser.');
       }
     };
-
-    // 사용자의 위치를 기반으로 날씨 정보를 가져오는 함수
+  
     const getWeather = (position) => {
+      console.log(position)
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
       const apiKey = process.env.REACT_APP_WEATHER_KEY;
-      const lang = 'kr'; // 한국어 설정
+      const lang = 'kr';
       const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&lang=${lang}`;
-
+  
       axios
         .get(url)
         .then((responseData) => {
@@ -239,14 +239,15 @@ function Home() {
             icon: data.weather[0].icon,
             loading: false,
             lat: lat,
-            lon:lon,
+            lon: lon,
           });
         })
         .catch((error) => console.log(error));
     };
-
+  
     getLocation();
-  }, []);
+  }
+  
 
   const imgSrc = `https://openweathermap.org/img/wn/${state.icon}@2x.png`;
   
