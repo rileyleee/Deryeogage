@@ -177,7 +177,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
         }
         // 만약 matchedImage가 없고, "assets/things/requirement4.png"의 출현 횟수가 8 미만이면
         // 해당 이미지를 보여준다
-        else if (emergency < 2 && Math.random() < 0.2) {
+        else if (emergency < 2 && Math.random() < 1) {
           setShowRandomImage("/assets/things/sick.png");
           setRequirementNum(13);
           setIsImageVisible(true);
