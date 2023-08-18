@@ -253,8 +253,8 @@ function Home() {
   
   localStorage.setItem('humidity', state.desc);
   localStorage.setItem('imgSrc', imgSrc);
-  localStorage.setItem('lat', state.lat);
-  localStorage.setItem('lon', state.lon);
+  localStorage.setItem('lat', 36.355202);
+  localStorage.setItem('lon', 127.298288);
 
   const [hoverText, setHoverText] = useState('');
   const [textColor, setTextColor] = useState('');
