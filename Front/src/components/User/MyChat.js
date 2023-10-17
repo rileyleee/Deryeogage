@@ -93,14 +93,12 @@ const getFormattedDate = (inputDate) => {
         },
       });
       const data = await response.json();
-      console.log("chatrooms : ",data);
 
       // 비동기 함수들로 데이터를 미리 가져온 후 chatRooms 상태를 설정합니다.
       const chatRoomsData = await Promise.all(
         data.map(async (room) => {
           const nonReadCount = await loadNonReadCount(room.id);
           const lastMessageData = await loadLastMessage(room.id);
-          console.log(room);
           return { 
             ...room, 
             nonReadCount, 

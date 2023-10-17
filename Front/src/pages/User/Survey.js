@@ -35,11 +35,8 @@ function Survey() {
       })
       .then((response) => {
         if (response.data.data) {
-          console.log("수정하기로 바뀜");
-          console.log(response.data.data);
           const surveyData = response.data.data;
           setSurveyData(surveyData); // 응답 데이터를 상태로 저장합니다.
-          console.log(surveyData);
           setHasSubmitted(true);
           setRanking(
             surveyData.ranking.split("").map((num) => parseInt(num) - 1)
@@ -63,7 +60,6 @@ function Survey() {
   const handleSubmit = () => {
     setHasSubmitted(true);
     const rankingString = ranking.map((item) => item + 1).join("");
-    console.log("현재 순서:", rankingString);
     const data = {
       friendly: friendly.toString(),
       activity: activity.toString(),
@@ -81,7 +77,6 @@ function Survey() {
         },
       })
       .then((response) => {
-        console.log("설문 데이터가 성공적으로 제출되었습니다!", response);
         setSurveyData(data); // 제출한 설문 데이터를 상태로 업데이트합니다.
         navigate("/adopt");
       })
@@ -95,7 +90,6 @@ function Survey() {
   const handleUpdate = () => {
     setHasSubmitted(true);
     const rankingString = ranking.map((item) => item + 1).join("");
-    console.log("현재 순서:", rankingString);
     const data = {
       friendly: friendly.toString(),
       activity: activity.toString(),
@@ -113,7 +107,6 @@ function Survey() {
         },
       })
       .then((response) => {
-        console.log("설문 데이터가 성공적으로 수정되었습니다!", response);
         setSurveyData(data); // 수정한 설문 데이터를 상태로 업데이트합니다.
         navigate("/adopt");
       })

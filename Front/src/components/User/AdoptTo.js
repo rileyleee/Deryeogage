@@ -10,24 +10,21 @@ function AdoptTo() {
   const [selectedMissionId, setSelectedMissionId] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [postCost, setPostCost] = useState([])
-  console.log(postCost)
-  console.log("=================adopts: ", adopts);
   const nickname = localStorage.getItem('nickname')
-  console.log(selectedMissionId, selectedIndex)
 
+  // 미션하기 버튼 클릭 어쩌구
   const handleMissionClick = (missionId, index) => {
     setShowMissionModal(true);
     setSelectedMissionId(missionId);
     setSelectedIndex(index); // 인덱스를 상태로 설정
-    console.log(missionId);
   };
 
   const closeModal = () => {
     setShowMissionModal(false);
   };
 
+  // 입양 confirm 데이터 수정
   const handleConfirmAdoption = async (adoptId, index) => {
-    console.log("+++++++++++++++++++++++++++++++++++++adoptId", adoptId);
     const token = localStorage.getItem("accessToken");
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
     try {
@@ -50,6 +47,7 @@ function AdoptTo() {
     }
   };
 
+  // 입양 책임비 데이터 수정
   const handleResponsibilityFeeReturn = async (boardId, index) => {
     const token = localStorage.getItem("accessToken");
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -63,15 +61,12 @@ function AdoptTo() {
           },
         }
       );
-      console.log(adopts);
       fetchAdopts();
       const updatedAdopts = [...adopts];
       updatedAdopts[selectedIndex].adoptionStatus = "completed"; // 해당 입양 항목을 완료 상태로 설정
       setAdopts(updatedAdopts);
-      console.log("여까지 오니?")
       const updatedPostcost = [...postCost];
       const targetIndex = updatedPostcost.findIndex(item => item.boardId === boardId);
-      console.log(targetIndex)
       if (targetIndex !== -1) {
         updatedPostcost[targetIndex].returnYn = true;
           setPostCost(updatedPostcost);
@@ -81,6 +76,7 @@ function AdoptTo() {
     }
   };
 
+  // 입양 데이터 get
   const fetchAdopts = async () => {
     const token = localStorage.getItem("accessToken");
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -91,7 +87,6 @@ function AdoptTo() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("adopt/to 값 +++++++++++++++++++++++ ", response);
 
       const boardResponse = await axios.get(
         `${REACT_APP_API_URL}/boards/list`,
@@ -101,7 +96,6 @@ function AdoptTo() {
           },
         }
       );
-      console.log("====================adoptTo:", response.data.data);
 
     const adoptsWithBoardInfo = await Promise.all(
       response.data.data.map(async (adopt) => {
@@ -151,7 +145,8 @@ function AdoptTo() {
     fetchAdopts();
   }, []);
 
-  useEffect(() => { // 분양 내역 get
+  // 입양 책임비 내역 get
+  useEffect(() => { 
     const getPreCost = async () => {
       const token = localStorage.getItem("accessToken");
       const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -162,7 +157,6 @@ function AdoptTo() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("입양 내역: ",response);
         setPostCost(response.data.data)
       } catch (error) {
         console.error("An error occurred while fetching the data:", error);
@@ -172,6 +166,7 @@ function AdoptTo() {
     getPreCost();
   }, []);
 
+  // 사진 or 영상 데이터
   const Media = ({ src }) => {
     if (src.endsWith(".mp4")) {
       return (

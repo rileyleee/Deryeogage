@@ -154,7 +154,6 @@ function AdoptBoard() {
   };
 
   const handleRefreshClick = async () => {
-    console.log("2 ", adoptData);
     await fetchDogs();
   };
 

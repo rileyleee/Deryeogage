@@ -17,6 +17,7 @@ function Simulation() {
   const [title, setTitle] = useState('')
   const navigate = useNavigate();
 
+  // 원래 trainCheck값이 0이 아니어야 칭호를 주는걸로 하려고 했는데 안썼다..
   useEffect(() => {
     let count = 0;
     if (train.substr(0, 2) === "10") {
@@ -34,6 +35,7 @@ function Simulation() {
     setTrainCheck(count);
   }, [train]); // train 값이 변경될 때만 이 효과를 실행합니다.
   
+  // hp점수에 따라 칭호 부여
   useEffect(() => {
     let newTitle;
     const health = parseInt(ExistValue.health);
@@ -67,6 +69,7 @@ function Simulation() {
 
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
+  // endCheck를 true로 바꾸고 로컬에 해당 값 저장
   const sendData = async () => {
     setExistValue((prevState) => ({
       ...prevState,
@@ -74,13 +77,13 @@ function Simulation() {
     }));
     localStorage.setItem('endCheck', true);
   };
-  console.log(ExistValue)
+  
+  // endCheck값이 true이면 put요청 실행
   useEffect(() => {
     const sendToServer = async () => {
       try {
         const Token = localStorage.getItem('accessToken');
         if (Token && ExistValue.endCheck === true) {
-          console.log(ExistValue)
           await axios.put(`${REACT_APP_API_URL}/simulations/save`, 
           ExistValue, 
           {

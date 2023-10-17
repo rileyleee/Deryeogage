@@ -12,7 +12,6 @@ function MissionListItem({
   const [previewImage, setPreviewImage] = useState(null);
   const [submissionComplete, setSubmissionComplete] = useState(false); // 추가
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
-  console.log(selectedFile)
 
   // 파일 입력창에 대한 참조를 생성
   const fileInputRef = useRef(null);
@@ -71,10 +70,8 @@ function MissionListItem({
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
-    console.log(file)
     // 파일을 읽어 미리보기 URL을 생성
     const reader = new FileReader();
-    console.log(reader)
     reader.onloadend = () => {
       setPreviewImage(reader.result);
     };
@@ -121,7 +118,6 @@ function MissionListItem({
     try {
       const token = localStorage.getItem("accessToken");
       const urlId = missionNumber; // 여기에 필요한 urlId 값을 넣으세요
-      console.log(missionId);
       await axios.put(
         `${REACT_APP_API_URL}/missions/${missionId}/${urlId}`,
         { id: missionId },

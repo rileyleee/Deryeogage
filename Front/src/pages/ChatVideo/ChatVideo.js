@@ -17,7 +17,6 @@ function ChatVideo() {
   const [isReservationScheduled, setIsReservationScheduled] = useState(false);
   const [className, setClassName] = useState("reservation");
   const modalRef = useRef();
-  console.log(className)
 
   const onReservationComplete = () => {
     setIsReservationScheduled(true);
@@ -44,7 +43,6 @@ function ChatVideo() {
           }
         );
         const authorId = response.data.data[0].userId; // 글 작성자의 ID를 가져옵니다. (데이터 구조에 따라 변경 필요)
-        console.log("authorId : ", response.data.data[0]);
         setIsAuthor(response.data.data[0].writer); // 글 작성자와 현재 사용자의 ID가 같은지 비교하여 상태 업데이트
         setIsReservationScheduled(response.data.data[0].status);
       } catch (error) {

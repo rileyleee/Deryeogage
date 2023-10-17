@@ -6,8 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function AdoptFrom() {
   const [adopts, setAdopts] = useState([]);
   const [precost, setPrecost] = useState([]);
-  console.log(precost);
 
+  // 분양 데이터 comfirm 데이터 수정
   const handleConfirmAdoption = async (adoptId, toUserId, index) => {
     sessionStorage.removeItem("adoptData");
     const token = localStorage.getItem("accessToken");
@@ -34,6 +34,7 @@ function AdoptFrom() {
     }
   };
 
+  // 분양 데이터 책임비 데이터 수정
   const handleRefundResponsibility = async (boardId, index) => {
     const token = localStorage.getItem("accessToken");
     const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -62,8 +63,8 @@ function AdoptFrom() {
     }
   };
 
+  // 분양 내역 get
   useEffect(() => {
-    // 분양 내역 get
     const fetchAdopts = async () => {
       const token = localStorage.getItem("accessToken");
       const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -74,7 +75,6 @@ function AdoptFrom() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("분양내역: ", response);
         const adoptRequests = response.data.data.map(async (adopt) => {
           const boardResponse = await axios.get(
             `${REACT_APP_API_URL}/boards/each/${adopt.boardId}`,
@@ -102,8 +102,8 @@ function AdoptFrom() {
     fetchAdopts();
   }, []);
 
+  // 책임비 내역 get
   useEffect(() => {
-    // 분양 내역 get
     const getPreCost = async () => {
       const token = localStorage.getItem("accessToken");
       const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
@@ -114,7 +114,6 @@ function AdoptFrom() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("분양내역: ", response);
         setPrecost(response.data.data);
       } catch (error) {
         console.error("An error occurred while fetching the data:", error);

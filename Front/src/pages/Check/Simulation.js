@@ -29,35 +29,27 @@ import GameTherapy from "../../components/Check/GameTherapy";
 
 function Simulation() {
   const location = useLocation();
-  // localStorage에서 값을 가져와서 초기 상태를 설정합니다.
+  // localStorage에서 값을 가져와서 초기 상태를 설정
   const [activatedNum, setActivatedNum] = useState(() =>
     parseInt(localStorage.getItem("activatedNum"), 10)
   );
   // 다음, 이전 페이지로 이동하기 위한 변수
-  // activatedNum이 변경될 때마다 localStorage를 업데이트 합니다.
+  // activatedNum이 변경될 때마다 localStorage를 업데이트
   // 데이터 로컬스토리지에 등록
-  const [simulationExistValue, setSimulationExistValue] =
-    useRecoilState(SimulationExistAtom);
-  console.log(simulationExistValue);
-  // const [hpPercentage, setHpPercentage] = useRecoilState(SimulationHp)
-  const [timeDifference, setTimeDifference] = useState(
-    JSON.parse(localStorage.getItem("timeDifference"))
-  );
-  console.log(timeDifference);
-  // 죽었야 안죽었냐
+  const [simulationExistValue, setSimulationExistValue] = useRecoilState(SimulationExistAtom);
+  const [timeDifference, setTimeDifference] = useState(JSON.parse(localStorage.getItem("timeDifference")))
+  // 죽었냐 안죽었냐
   const [isDead, setIsDead] = useState(false);
-  const [hpPercentage, setHpPercentage] = useState(null); // hp값을 계산해야 되니까 따로 빼놓는거임
-  console.log(hpPercentage);
-  const navigate = useNavigate();
-  const [isButtonVisible, setButtonVisible] = useState(false);
-  const StartValue = useRecoilValue(SimulationStartAtom);
-  console.log(StartValue);
+  const [hpPercentage, setHpPercentage] = useState(null) // hp값을 계산해야 되니까 따로 빼놓는거임
+  const navigate = useNavigate()
+  const [isButtonVisible, setButtonVisible] = useState(false)
+  const StartValue = useRecoilValue(SimulationStartAtom)
 
   useEffect(() => {
     // 처음 로드할 때 localStorage에서 hpPercentage를 가져와서 상태를 설정합니다.
     setHpPercentage(simulationExistValue.health);
   }, [simulationExistValue.health]);
-  console.log(simulationExistValue);
+
   // 시간 및 hp 계산
   useEffect(() => {
     let hpTimer = 0;
@@ -94,7 +86,6 @@ function Simulation() {
           setHpPercentage((prevHpPercentage) => {
             const newHpPercentage =
               prevHpPercentage > 0 ? prevHpPercentage - 1 : 0;
-            console.log(newHpPercentage, timeDifference);
             setSimulationExistValue((prevState) => ({
               ...prevState,
               health: newHpPercentage,
@@ -130,7 +121,6 @@ function Simulation() {
 
   // 화면에 보여주는 값으로 변경해서 보여주기
   const displayTime = () => {
-    console.log(timeDifference, timeDifference.hours);
     return `${timeDifference.hours
       .toString()
       .padStart(2, "0")}:${timeDifference.minutes.toString().padStart(2, "0")}`;
@@ -139,7 +129,6 @@ function Simulation() {
   useEffect(() => {
     // 현재 주소를 가져옵니다.
     const currentPath = location.pathname;
-    // console.log(currentPath)
 
     // 만약 현재 주소가 http://localhost:8080/simulations/2941475981이 아닌 경우에만 activatedNum을 5로 변경합니다.
     if (currentPath !== "/simulations") {
@@ -166,7 +155,6 @@ function Simulation() {
   };
   const handleMove = (num) => {
     // 게임 메인페이지에서 기능 버튼 눌렀을 때 해당 화면으로 이동하게
-    // console.log(num)
     setActivatedNum(num);
   };
   const gamePages = {
@@ -243,8 +231,6 @@ function Simulation() {
 
   // 컴포넌트가 마운트 될 때 5초마다 sendData 함수 호출
   useEffect(() => {
-    console.log("simulationExistValue.end:", simulationExistValue.end); // 현재 값 확인
-
     if (simulationExistValue.end === true) {
       return;
     } else {
@@ -272,7 +258,6 @@ function Simulation() {
 
     const endTime = new Date(localStorage.getItem("endTime"));
     const now = new Date();
-    console.log(endTime, now);
 
     // 24시간 차이 계산
     const differenceInMilliseconds = endTime - now;

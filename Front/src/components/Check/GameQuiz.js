@@ -5,7 +5,7 @@ import * as S from "../../styled/Check/GameQuiz.style"
 import { useRecoilValue, useRecoilState } from "recoil"
 import { SimulationExistAtom,  SelectedQuiz } from "../../recoil/SimulationAtom"
 
-function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
+function GameQuiz(props) { // 자식에서 부모로 데이터 보내기
     const setHandleMove = (num) => {
         props.handleMove(num)
     }
@@ -14,6 +14,7 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
     const [userAnswer, setUserAnswer] = useState(null);
     const [isAnswered, setIsAnswered] = useState(null); // 답을 선택하지 않은 상태
 
+    // 누른 값이 정답인지 판별하고 값 변경
     const handleAnswer = (answer) => {
         const isCorrect = Quiz["정답"] === answer; // 정답인지 확인
         setUserAnswer(answer);
@@ -26,13 +27,12 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
         }));
     };
     
-
     useEffect(() => {
         localStorage.setItem('quizNum', simulationExistValue.quizNum);
         localStorage.setItem('cost', simulationExistValue.cost)
         }
-      , [simulationExistValue]);
-    console.log(simulationExistValue.cost)
+      , [simulationExistValue])
+      
     const questionText = isAnswered === null ? "문제" : isAnswered ? "정답" : "틀렸어요";
     const descriptionText = isAnswered === null ? Quiz["문제"] : Quiz["해설"];
 
@@ -77,4 +77,4 @@ function GameBasicScreen(props) { // 자식에서 부모로 데이터 보내기
       );
   }
   
-  export default GameBasicScreen;
+  export default GameQuiz;

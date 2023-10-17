@@ -97,7 +97,6 @@ const getFormattedDate = (inputDate) => {
         data.map(async (room) => {
           const nonReadCount = await loadNonReadCount(room.id);
           const lastMessageData = await loadLastMessage(room.id);
-          console.log(room);
           return { 
             ...room, 
             nonReadCount, 
@@ -128,7 +127,6 @@ const getFormattedDate = (inputDate) => {
 
 
     } catch (error) {
-      console.log("Error", error);
       setChatRooms([]);
     }
   };

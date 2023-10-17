@@ -11,7 +11,6 @@ function UserInfo() {
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
   const [userInfo, setUserInfo] = useState([]);
   const profileImg = userInfo.profilePic || "/assets/default.png";
-  console.log(profileImg)
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -19,6 +18,7 @@ function UserInfo() {
     window.location.href = "/";
   };
 
+  // 유저 데이터 get
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -34,7 +34,9 @@ function UserInfo() {
     } catch (error) {
       console.error("Failed to fetch user profile:", error);
     }
-  };
+  }
+
+  // 프로필 데이터 get
   useEffect(() => {
     const ProfileData = async () => {
       try {
@@ -47,8 +49,6 @@ function UserInfo() {
             },
           }
         );
-
-        console.log(response.data.data);
         setUserInfo(response.data.data); // userInfo 상태 업데이트
       } catch (error) {
         console.error("Failed to fetch user profile:", error);

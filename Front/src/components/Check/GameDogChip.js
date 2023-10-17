@@ -15,9 +15,9 @@ function GameDogChip(props) {
   const SimulationNameValue = useRecoilValue(SimulationName) // 이름
   const SimulationBGIValue = useRecoilValue(SimulationBGI) // 배경
   const [existValue, setExistValue] = useRecoilState(SimulationExistAtom)
-  console.log(SimulationDogValue, SimulationNameValue, SimulationBGIValue)
   const [startValue, setStartValue] = useRecoilState(SimulationStartAtom)
 
+  // 로그인 했을 때 POST요청 보냄(강아지 종류, 이름, 게임배경)
   const handleSubmit = async (event) => {
     if (localStorage.getItem("accessToken")) { // 로그인 했을 때만
       const REACT_APP_API_URL = process.env.REACT_APP_API_URL
@@ -38,8 +38,10 @@ function GameDogChip(props) {
                 }
               }
           );
+        // simulation start 어쩌구 초기화
         setStartValue('')
         setExistValue(response.data) // SimulationExistAtom에 데이터 저장
+        // 값들 localstorage에 저장
         localStorage.setItem('petType', response.data.petType)
         localStorage.setItem('background', response.data.background)
         localStorage.setItem('cost', 300000)
@@ -63,12 +65,14 @@ function GameDogChip(props) {
   };
   }
 
+  // 강아지 칩 번호 저장?
   const handleShowNum = buttonIndex => {
     setdogNumber(buttonIndex);
   };
 
+  // 15자리 랜덤 숫자 생성
   const RandomNumber = () => {
-    const randomNumber = Math.floor(100000000000000 + Math.random() * 900000000000000); // 15자리 랜덤 숫자 생성
+    const randomNumber = Math.floor(100000000000000 + Math.random() * 900000000000000); 
     return randomNumber.toString(); // 문자열로 변환하여 반환
   }
   return (

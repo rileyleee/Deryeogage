@@ -259,7 +259,6 @@ function CheckListResult() {
           promise: response.data.data.promise,
           date: response.data.data.responseDate
         });
-        console.log(response);
       })
       .catch((error) => {
         console.error("There was an error!", error);

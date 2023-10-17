@@ -12,7 +12,6 @@ const LoginHandeler = () => {
   const navigate = useNavigate();
   // 인가코드 뽑아오기
   const code = new URL(window.location.href).searchParams.get("code");
-  console.log(code);
   const redirectPath = localStorage.getItem("redirect") || "/";
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 
@@ -29,17 +28,11 @@ const LoginHandeler = () => {
       })
         .then((res) => {
           //백에서 완료후 우리사이트 전용 토큰 넘겨주는게 성공했다면
-          console.log(res);
           //계속 쓸 정보들( ex: 이름) 등은 localStorage에 저장해두자
           localStorage.setItem("accessToken", res.data.data.accessToken);
 
           //로그인이 성공하면 이동할 페이지
-
-
-          
-          console.log("로그인 완료했음");
           getNickname();
-          console.log("getNickname 함수 호출함");
 
         })
         .catch((err) => {
@@ -51,7 +44,6 @@ const LoginHandeler = () => {
 
   const getNickname = async () => {
     const token = localStorage.getItem("accessToken");
-    console.log(`토큰 : ${token}`);
     await axios({
       method: "GET",
       url: `${REACT_APP_API_URL}/users`,
@@ -61,8 +53,6 @@ const LoginHandeler = () => {
       },
     })
       .then((res) => {
-        console.log(res);
-        console.log("getNickname 함수 실행됐닥");
         localStorage.setItem("nickname", res.data.data);
         navigate(redirectPath); // 저장된 경로로 이동
         localStorage.removeItem("redirect"); // 경로 정보 삭제

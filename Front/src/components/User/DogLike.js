@@ -4,7 +4,8 @@ import * as S from "../../styled/User/DogLike.style"
 
 function DogLike() {
   const [favoritedPosts, setFavoritedPosts] = useState([]);
-  const REACT_APP_API_URL = process.env.REACT_APP_API_URL; // API URL을 지정합니다.
+  const REACT_APP_API_URL = process.env.REACT_APP_API_URL; // API URL을 지정
+
 
   useEffect(() => {
     const fetchFavoritedPosts = async () => {
@@ -15,11 +16,10 @@ function DogLike() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("찜하기 ~~~~~~~~~~~~~~~~~~~~~~~~", response.data.data); // 로깅
 
-        // 좋아요한 게시글의 ID를 가져옵니다.
+        // 좋아요한 게시글의 ID를 get
         const favoriteBoardIds = response.data.data.map((item) => item.boardId);
-        // 각 게시글 ID에 대해 세부 정보를 가져옵니다.
+        // 각 게시글 ID에 대해 세부 정보 get
         const favoritedPostsDetails = await Promise.all(
           favoriteBoardIds.map((boardId) =>
             axios
@@ -42,7 +42,6 @@ function DogLike() {
               }) )
           )
         );
-        console.log(favoritedPostsDetails); // 로깅
         setFavoritedPosts(favoritedPostsDetails);
       } catch (error) {
         console.error(error);
@@ -52,7 +51,6 @@ function DogLike() {
     fetchFavoritedPosts();
   }, []);
 
-  console.log(favoritedPosts); // 로깅
 
   return (
     <div className="container">

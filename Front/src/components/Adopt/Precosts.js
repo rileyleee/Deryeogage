@@ -37,8 +37,6 @@ const Precost = ({ onClose, boardId }) => {
         const {
           data: { next_redirect_pc_url, tid },
         } = response;
-        console.log(next_redirect_pc_url);
-        console.log(tid);
         window.localStorage.setItem("tid", tid);
         setNextRedirectPcUrl(next_redirect_pc_url);
         setTid(tid);
@@ -70,7 +68,6 @@ const Precost = ({ onClose, boardId }) => {
       })
       .catch((error) => {
         // 오류가 발생한 경우에 수행할 작업을 작성합니다.
-        console.error("납부 실패:", error);
         alert("납부에 실패하였습니다. 다시 시도해주세요.");
       });
   };

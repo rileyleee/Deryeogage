@@ -26,7 +26,7 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
     const MAX_HOUSE_SCORE = 20; // 하우스 훈련의 최대 점수
     const MAX_SIT_SCORE = 30; // 앉아 훈련의 최대 점수
 
-    
+    // training 값 localstorage에서 가져옴
     useEffect(() => {
         if (localStorage.getItem('train')) {
             setTrain(localStorage.getItem('train'));
@@ -38,7 +38,7 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
         setHpPercentage(parseInt(localStorage.getItem('hpPercentage')))
     }, []);
 
-    
+    // training 할 때마다 hp 줄이기
     const decreaseHp = () => {
         setSimulationExistValue(prevState => {
             const newHp = Math.max(hpPercentage - 1, 0);
@@ -50,12 +50,13 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
         });
     };
     
-
+    // training 할 때마다 카운트 올리기
     const increaseScore = (setter) => {
         setter((prevScore) => prevScore + 1)
     }
     const [isButtonDisabled, setIsButtonDisabled] = useState(false); // 버튼 활성화
 
+    // 훈련할 때 모든 버튼 3초간 비활성화
     useEffect(() => {
         if (animation !== "idlefast") {
             setIsButtonDisabled(true); // Disable buttons
@@ -68,6 +69,7 @@ function GameTraining(props) { // 자식에서 부모로 데이터 보내기
         }
     }, [animation]);
 
+    // 훈련할 때 애니메이션 변경
     const increaseScoreWithAnimation = (setter, animationName, num) => {
         increaseScore(setter);
         setAnimation(animationName);

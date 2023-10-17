@@ -58,7 +58,6 @@ function Home() {
             },
           });
           const now = new Date()
-          console.log(Date())
           const currentHours = now.getHours()
           const currentMinutes = now.getMinutes()
           const simulationData = response.data;
@@ -112,7 +111,6 @@ function Home() {
             // 
             let Hours = diffHours + hpHours // 게임을 시작한 이후로 지난 시간의 시간
             let Minutes = diffMinutes + hpMinutes // 게임을 시작안 이후로 지난 시간의 분
-            console.log(Hours, Minutes)
             if (Minutes >= 60) {
               Hours += 1
               Minutes -= 60
@@ -219,7 +217,6 @@ function Home() {
     };
   
     const getWeather = (position) => {
-      console.log(position)
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
       const apiKey = process.env.REACT_APP_WEATHER_KEY;

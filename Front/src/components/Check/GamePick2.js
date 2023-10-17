@@ -14,7 +14,6 @@ function GamePick2(props) {
     setCurrentButton(buttonIndex);
     setBGIValue(buttonIndex)
   };
-  // console.log(BGIValue)
     return (
       <S.GameStartsecond className="col-10 second d-flex flex-column justify-content-around">
           <S.GamePick1Text className='bgi'>강아지를 키울 집을 골라주세요!</S.GamePick1Text>

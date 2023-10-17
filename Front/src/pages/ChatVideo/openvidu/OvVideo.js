@@ -14,16 +14,6 @@ export default class OpenViduVideoComponent extends Component {
 
    //새로운 비디오 스트림 반영
     componentDidUpdate(props) { // 컴포넌트가 화면에 그려진 직후, 마운트 완료 후에 호출
-        // BB if (props && !!this.videoRef) {
-        //     this.props.streamManager.addVideoElement(this.videoRef.current);
-        // }
-        // if (this.props && this.props.user.streamManager && !!this.videoRef) { //user객체의 streamManager가 존재하는지 확인(streamManager는 Openvidu에서 제공하는 클래스. 이게 없으면 연결 불가능)
-        //     // console.log("새 비디오 PROPS: ", this.props)
-        //     this.props.user.getStreamManager().addVideoElement(this.videoRef.current) // streamManager를 이용해 사용자의 비디오 스트림을 비디오 요소에 추가
-        //     if (this.props.user.type === "local") { // 로컬 사용자라면,
-        //       this.props.myVideoRef.current = this.videoRef.current // 부모 사용자의 myVideoRef에 이 요소 할당
-        //     }
-        //   }
         if (props && !!this.videoRef) {
             this.props.streamManager.addVideoElement(this.videoRef.current);
         }

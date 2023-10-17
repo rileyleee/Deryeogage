@@ -16,22 +16,22 @@ function GameWalking(props) { // 자식에서 부모로 데이터 보내기
   useEffect(() => {
     const handleSpacebarPress = (event) => {
       if (event.code === "Space") {
-        event.preventDefault(); // 스페이스바를 눌렀을 때의 기본 동작(스크롤 이동 등)을 막습니다.
+        event.preventDefault(); // 스페이스바를 눌렀을 때의 기본 동작(스크롤 이동 등) 막기
       }
     };
 
     const handleSpacebarRelease = (event) => {
       if (event.code === "Space") {
-        setProgress(prev => (prev < 100 ? prev + 10 : 100)); // 100을 초과하지 않도록 합니다.
+        setProgress(prev => (prev < 100 ? prev + 10 : 100)); // 100을 초과하지 않도록
       }
     };
 
-    // 스페이스바를 눌렀을 때의 기본 동작을 막는 이벤트 리스너를 추가합니다.
+    // 스페이스바를 눌렀을 때의 기본 동작을 막는 이벤트 리스너를 추가
     window.addEventListener("keydown", handleSpacebarPress);
-    // 스페이스바를 뗐을 때의 동작을 처리하는 이벤트 리스너를 추가합니다.
+    // 스페이스바를 뗐을 때의 동작을 처리하는 이벤트 리스너를 추가
     window.addEventListener("keyup", handleSpacebarRelease);
 
-    return () => { // 컴포넌트가 unmount될 때 이벤트 리스너를 제거합니다.
+    return () => { // 컴포넌트가 unmount될 때 이벤트 리스너를 제거
       window.removeEventListener("keydown", handleSpacebarPress);
       window.removeEventListener("keyup", handleSpacebarRelease);
     };

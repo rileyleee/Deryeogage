@@ -5,7 +5,6 @@ import * as S from "../../styled/User/MyAdopt.style"
 
 function MyAdopt() {
   const [posts, setPosts] = useState([]);
-  console.log(posts)
   const navigate = useNavigate();
   const REACT_APP_API_URL = process.env.REACT_APP_API_URL
   // Load user posts on mount

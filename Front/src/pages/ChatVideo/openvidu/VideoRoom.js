@@ -489,7 +489,6 @@ class VideoRoom extends Component {
                     },
                 })
                 .then((response) => {
-                    console.log('TOKEN', response);
                     resolve(response.data.token);
                 })
                 .catch((error) => reject(error));

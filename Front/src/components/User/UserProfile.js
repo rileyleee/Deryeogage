@@ -17,8 +17,6 @@ function UserProfile({ data }) {
             Authorization: `Bearer ${token}`,
           },
         });
-
-        console.log(response.data.data);
         setUserInfo(response.data.data); // userInfo 상태 업데이트
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
@@ -27,8 +25,6 @@ function UserProfile({ data }) {
 
     fetchUserProfile();
   }, [data, REACT_APP_API_URL]);
-
-  console.log("USERINFO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", userInfo);
 
   // 입양서약서 보기 버튼 클릭 핸들러
   const handleShowPromiseClick = () => {

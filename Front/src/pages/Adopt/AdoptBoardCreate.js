@@ -57,8 +57,6 @@ function AdoptBoardCreate() {
           const data = response.data.data;
           const dogData = data[0];
           const mediaData = data[1];
-
-          console.log("useEffect에서 콘솔찍음", data, dogData, mediaData);
           // 다른 상태 설정
           // 0번 인덱스에서의 데이터 처리
           setTitle(dogData.title);
@@ -99,8 +97,6 @@ function AdoptBoardCreate() {
           setSelectedImages(images);
           setSelectedVideos(videos);
           setOriginalImages(images);
-
-          console.log("selectedImages : ", selectedImages);
         });
     }
   }, [boardId]);

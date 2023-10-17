@@ -51,8 +51,6 @@ function Postcost({
         const {
           data: { next_redirect_pc_url, tid },
         } = response;
-        console.log(next_redirect_pc_url);
-        console.log(tid);
         window.localStorage.setItem("tid", tid);
         setNextRedirectPcUrl(next_redirect_pc_url);
         setTid(tid);

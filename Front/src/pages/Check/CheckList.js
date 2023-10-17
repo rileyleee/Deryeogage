@@ -89,11 +89,9 @@ function CheckList() {
           }
         )
         .then((response) => {
-          console.log("사전테스트 제출 완", response);
           navigate("/checklist/result");
         })
         .catch((error) => {
-          console.log(promise, score);
           console.error("사전테스트 제출 오류", error);
         });
     }

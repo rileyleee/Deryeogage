@@ -6,17 +6,18 @@ import { SimulationExistAtom } from "../../recoil/SimulationAtom"
 import {useNavigate} from "react-router-dom"
 
 function GameDeath(props) {
-    // 버튼이 보이는지 여부를 제어하는 상태 변수를 추가합니다.
+    // 버튼이 보이는지 여부를 제어하는 상태 변수를 추가
     const [showButton, setShowButton] = useState(false);
     const nickname = localStorage.getItem('nickname')
     
+
+    // 컴포넌트가 마운트될 때 5초 후에 버튼을 보이게
     useEffect(() => {
-        // 컴포넌트가 마운트될 때 5초 후에 버튼을 보이게 합니다.
         const timer = setTimeout(() => {
             setShowButton(true);
         }, 5000);
 
-        // 컴포넌트가 unmount될 때 타이머를 정리합니다.
+        // 컴포넌트가 unmount될 때 타이머를 정리
         return () => clearTimeout(timer);
     }, []);
 

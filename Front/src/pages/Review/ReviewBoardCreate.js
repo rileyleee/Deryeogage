@@ -15,7 +15,6 @@ function ReviewBoardCreate() {
       ...ReviewContent,
       [name]: value,
     });
-    console.log(ReviewContent);
   };
 
   return (
@@ -35,11 +34,9 @@ function ReviewBoardCreate() {
             data="<p>입양 후기를 자유롭게 작성해주세요.</p>"
             onReady={(editor) => {
               // You can store the "editor" and use when it is needed.
-              console.log("Editor is ready to use!", editor);
             }}
             onChange={(event, editor) => {
               const data = editor.getData();
-              console.log({ event, editor, data });
               setReviewContent({
                 ...ReviewContent,
                 content: data,
