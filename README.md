@@ -29,7 +29,7 @@
 
 |                  이은경                   |                      김서영                       |               김현수                |               이수연                |               이준용               |                    정동교                     |
 | :---------------------------------------: | :-----------------------------------------------: | :---------------------------------: | :---------------------------------: | :--------------------------------: | :-------------------------------------------: |
-|    <img src="assets/team/이은경.png" width="120" height="150" >     |        <img src="assets/team/박영기.png" width="120" height="150">         | <img src="assets/team/선다영.png" width="120" height="150">  | <img src="assets/team/이수연.png" width="120" height="150">  | <img src="assets/team/정동교.png" width="120" height="150"> |      <img src="assets/team/함소명.png" width="120" height="150">       |
+|    <img src="assets/team/앙경.jpg" width="120" height="150" >     |        <img src="assets/team/더영.jpg" width="120" height="150">         | <img src="assets/team/기멘수.jpg" width="120" height="150">  | <img src="assets/team/수염.jpg" width="120" height="150">  | <img src="assets/team/뽀용.jpg" width="120" height="150"> |      <img src="assets/team/교동.png" width="120" height="150">       |
 |                 팀장(BE)                  |                     팀원(FE)                      |              팀원(BE)               |              팀원(FE)               |              팀원(BE)              |                   팀원(BE/FE)                    |
 | [rileyleee](https://github.com/rileyleee) | [rileyleee](https://github.com/rileyleee) | [footdev](https://github.com/footdev) | [bagoye](https://github.com/bagoye) | [rileyleee](https://github.com/rileyleee)  | [dngyj](https://github.com/dngyj) |
 
@@ -58,7 +58,11 @@
 
 # 6. 주요 기술 스택 소개
 
+<img src="assets/skill/기술 및 아키텍처.png" width="200" >   
+
 # 7. 서비스 아키텍처
+
+<img src="assets/skill/시스템 아키텍처.png" width="200" >   
 
 # 8. 주요 기획 및 설계 자료
 
