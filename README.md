@@ -58,11 +58,14 @@
 
 # 6. 주요 기술 스택 소개
 
-<img src="assets/skill/기술 및 아키텍처.png" width="200" >   
+<div>
+    <img src="assets/skill/기술및아키텍처.png" width="200"/>   
+</div>
 
 # 7. 서비스 아키텍처
-
-<img src="assets/skill/시스템 아키텍처.png" width="200" >   
+<div>
+    <img src="assets/skill/시스템아키텍처.png" width="200"/>   
+</div>
 
 # 8. 주요 기획 및 설계 자료
 
