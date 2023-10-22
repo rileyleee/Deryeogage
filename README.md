@@ -58,11 +58,12 @@
 
 # 6. 주요 기술 스택 소개
 
-![주요기술스택소개](assets/skill/기술및아키텍처.png)   
+<img src="assets/skill/주요기술스택.PNG"> 
 
 # 7. 서비스 아키텍처
 
-![시스템아키텍처](assets/skill/시스템아키텍처.png) 
+<img src="assets/skill/시스템아키텍처.PNG"> 
+
 
 # 8. 주요 기획 및 설계 자료
 
