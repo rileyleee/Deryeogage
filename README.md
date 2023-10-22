@@ -58,16 +58,16 @@
 
 # 6. 주요 기술 스택 소개
 
-<div>
-    <img src="assets/skill/기술및아키텍처.png" width="200"/>   
-</div>
+![주요기술스택소개](assets/skill/기술및아키텍처.png)   
 
 # 7. 서비스 아키텍처
-<div>
-    <img src="assets/skill/시스템아키텍처.png" width="200"/>   
-</div>
+
+![시스템아키텍처](assets/skill/시스템아키텍처.png) 
 
 # 8. 주요 기획 및 설계 자료
+
+#### | [요구사항정의서](https://docs.google.com/spreadsheets/d/1Uqf0YmFeVwYuZPWYLiKWIPeZA8cFOR7hSE0o8xM8RLo/edit#gid=0) | [사용자스토리](https://docs.google.com/spreadsheets/d/1AOAkrt0WQE_8c0uHmOPhKNq8UcjX5U-gLw8P4L1d1dc/edit#gid=0) | [ERD](https://www.erdcloud.com/d/JZdkyKFKmvn88mqBG) | [와이어프레임](https://www.figma.com/file/JjoMiub1PyJ7eyNGYR8V0Z/E1I5-%EA%BC%AC%EC%88%9C%EB%82%B4?type=design&node-id=0-1&mode=design&t=aXh5UjBfkJRemuwG-0) | [API설계서]() |
+
 
 # 9. 프로젝트 파일 구조
 
