@@ -31,7 +31,7 @@
 | :---------------------------------------: | :-----------------------------------------------: | :---------------------------------: | :---------------------------------: | :--------------------------------: | :-------------------------------------------: |
 |    <img src="assets/team/앙경.jpg" width="120" height="150" >     |        <img src="assets/team/더영.jpg" width="120" height="150">         | <img src="assets/team/기멘수.jpg" width="120" height="150">  | <img src="assets/team/수염.jpg" width="120" height="150">  | <img src="assets/team/뽀용.jpg" width="120" height="150"> |      <img src="assets/team/교동.png" width="120" height="150">       |
 |                 팀장(BE)                  |                     팀원(FE)                      |              팀원(BE)               |              팀원(FE)               |              팀원(BE)              |                   팀원(BE/FE)                    |
-| [rileyleee](https://github.com/rileyleee) | [rileyleee](https://github.com/rileyleee) | [footdev](https://github.com/footdev) | [bagoye](https://github.com/bagoye) | [rileyleee](https://github.com/rileyleee)  | [dngyj](https://github.com/dngyj) |
+| [rileyleee](https://github.com/rileyleee) | [ksykma](https://github.com/ksykma) | [footdev](https://github.com/footdev) | [bagoye](https://github.com/bagoye) | [elle6044](https://github.com/elle6044)  | [dngyj](https://github.com/dngyj) |
 
 
 # 4. 데려가개 소개
