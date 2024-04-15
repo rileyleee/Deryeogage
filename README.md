@@ -266,7 +266,7 @@ E1I5팀은 이러한 문제의 주 원인이 낮은 입양 만족도에 있다�
 
 # :hammer_and_wrench: 7. 서비스 아키텍처
 
-<img src="assets/skill/시스템아키텍처.PNG"> 
+<img src="img/데려가개시스템아키텍처.png"> 
 
 <br/>
 
