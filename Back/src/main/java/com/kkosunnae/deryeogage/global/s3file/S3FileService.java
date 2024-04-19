@@ -21,7 +21,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class S3FileService {
     private final AmazonS3 amazonS3;
-    @Value("${cloud.aws.s3.bucket}")
+    @Value("${cloud.aws.s3.bucketName}")
     private String bucket;
 
     public Map<String, List> uploadFile(List<MultipartFile> multipartFile) { //DTO에 반영필요...

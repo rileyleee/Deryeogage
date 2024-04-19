@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### JWT, AWS S3 Keys ###
+application-private.properties
